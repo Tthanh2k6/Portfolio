@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ultimate Realistic Prompt Engineering Portfolio</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600&family=Syne:wght@800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- GIAO DIỆN NỀN & CHỮ TỐI GIẢN --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0b0c10;
+            background-image: url('IMG/background_info.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            user-select: none;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        /* --- KHU VỰC BỐ CỤC CHÍNH --- */
+        .container {
+            width: 100%;
+            max-width: 1600px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 4rem;
+        }
+
+        /* Khung chứa chữ bên trái */
+        .content-left {
+            max-width: 850px; 
+            z-index: 2;
+        }
+
+        /* Tạo hiệu ứng trượt lên cho từng dòng chữ lề trái */
+        .content-left > * {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .content-left > *.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* DÒNG 1: + AVAILABLE FOR WORK */
+        .status {
+            font-size: 0.91rem; 
+            color: #6b7280; 
+            text-transform: uppercase;
+            letter-spacing: 3.9px; 
+            margin-bottom: 2.6rem; 
+            font-weight: 500;
+            font-family: 'Fira Code', monospace;
+        }
+
+        /* DÒNG 2 & 3: CHỮ TIÊU ĐỀ RỘNG VÀ ĐẬM NÉT */
+        h1 {
+            font-family: 'Syne', sans-serif;
+            font-size: 6.5rem; 
+            font-weight: 800;
+            line-height: 0.95;
+            margin-bottom: 2.2rem; 
+            letter-spacing: -2.6px; 
+            text-transform: none;
+        }
+
+        h1 .title-top {
+            color: #ffffff;
+            display: block;
+        }
+
+        h1 .title-bottom {
+            color: #52525b; 
+            display: block;
+        }
+
+        /* DÒNG 4: HAPPY CODING CHỮ THƯỜNG DẠNG TERMINAL */
+        .happy-coding {
+            font-family: 'Fira Code', monospace;
+            font-size: 1.235rem; 
+            color: #a1a1aa; 
+            text-transform: lowercase; 
+            margin-bottom: 2.2rem; 
+            display: inline-block;
+        }
+
+        .happy-coding::after {
+            content: ' _';
+            font-weight: 700;
+            color: #a1a1aa;
+            animation: blink 0.8s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* DÒNG 5, 6, 7: MÔ TẢ CHI TIẾT VỚI FONT MẢNH MÀU TRẦM */
+        .description {
+            color: #9ca3af; 
+            font-size: 1.105rem; 
+            line-height: 1.8;
+            margin-bottom: 3.2rem; 
+            font-weight: 400;
+            max-width: 650px; 
+        }
+
+        /* DÒNG 8: TAGS HIỆU ỨNG GLASSMORPHISM TỐI GIẢN */
+        .tags {
+            display: flex;
+            gap: 10.4px; 
+            margin-bottom: 3.8rem; 
+        }
+
+        .tag {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(15.6px); 
+            -webkit-backdrop-filter: blur(15.6px); 
+            padding: 8px 20px; 
+            border-radius: 130px; 
+            font-size: 0.975rem; 
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #d1d5db;
+            box-shadow: 0 5.2px 26px rgba(0, 0, 0, 0.2); 
+            transition: all 0.3s ease;
+        }
+        
+        .tag:hover {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+
+        /* DÒNG CUỐI: CÁC LINK KHÁM PHÁ DẠNG MONOSPACE */
+        .explore-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px; 
+        }
+
+        .explore {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.975rem; 
+            color: #52525b;
+            text-transform: lowercase;
+            letter-spacing: -0.26px; 
+        }
+
+        /* --- KHU VỰC DÂY ĐEO VÀ THẺ VẬT LÝ --- */
+        .content-right {
+            position: relative;
+            width: 450px; 
+            height: 845px; 
+        }
+
+        #lanyard-svg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        #lanyard-rope {
+            stroke: #14151a;
+            stroke-width: 15.6; 
+            stroke-linecap: round;
+        }
+
+        .lanyard-text-style {
+            font-size: 9.1px; 
+            font-weight: 800;
+            letter-spacing: 3.9px; 
+            text-transform: uppercase;
+            fill: #ffffff;
+            opacity: 0.85;
+        }
+
+        #lanyard-clip {
+            fill: none;
+            stroke: #27272a;
+            stroke-width: 3.9; 
+        }
+
+        /* Tấm thẻ ID (+30% kích thước), vị trí ban đầu đồng bộ với engine vật lý */
+        .id-card {
+            width: 364px; 
+            height: 520px; 
+            background: #111218;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20.8px; 
+            padding: 23.4px; 
+            position: fixed;
+            transform: translate(-50%, 0); 
+            box-shadow: 0 52px 104px rgba(0, 0, 0, 0.6); 
+            z-index: 10;
+            cursor: grab;
+            transition: box-shadow 0.2s ease;
+            overflow: hidden;
+        }
+
+        .id-card:active {
+            cursor: grabbing;
+            box-shadow: 0 19.5px 39px rgba(0, 0, 0, 0.8); 
+        }
+
+        .id-card::before {
+            content: 'MEMBER CARD';
+            position: absolute;
+            left: 10.4px; 
+            top: 50%;
+            transform: translateY(-50%) rotate(-90deg);
+            transform-origin: left center;
+            font-size: 0.78rem; 
+            color: rgba(255, 255, 255, 0.15);
+            letter-spacing: 2.6px; 
+            white-space: nowrap;
+        }
+
+        .photo-box {
+            width: 100%;
+            height: 82%; 
+            background: #191b24;
+            border-radius: 13px; 
+            overflow: hidden;
+            margin-bottom: 18.2px; 
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            pointer-events: none;
+        }
+
+        .photo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(0%) contrast(100%); /* Giữ màu gốc rực rỡ */
+        }
+
+        .card-info {
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .card-name {
+            font-size: 1.3rem; 
+            font-weight: 600;
+            color: #f3f4f6;
+        }
+
+        .card-title {
+            font-size: 0.975rem; 
+            color: #6b7280;
+            margin-top: 3.9px; 
+            text-transform: uppercase;
+            letter-spacing: 1.3px; 
+        }
+
+        @media (max-width: 1400px) {
+            h1 { font-size: 5.5rem; } 
+        }
+
+        @media (max-width: 768px) {
+            .container { flex-direction: column-reverse; gap: 5.2rem; padding: 0 1.5rem; }
+            h1 { font-size: 4.55rem; }
+            .content-right { height: 520px; width: 100%; }
+            .content-left { max-width: 100%; } 
+            .id-card { width: 299px; height: 429px; padding: 18px; }
+            .card-name { font-size: 1.17rem; }
+            .card-title { font-size: 0.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="content-left" id="content-left">
+            <div class="status">+ AVAILABLE FOR WORK</div>
+            
+            <h1>
+                <span class="title-top">Prompt</span>
+                <span class="title-bottom">Engineering</span>
+            </h1>
+            
+            <div class="happy-coding" id="typing-effect"></div>
+            
+            <p class="description">
+                Sức mạnh của ngôn ngữ: Kết nối ý tưởng và trí tuệ nhân tạo.<br>
+                Tối ưu hóa Prompts: Nghệ thuật điều khiển AI.<br>
+                Triết lý: Hiểu, Thử nghiệm, Tinh chỉnh.
+            </p>
+            
+            <div class="tags">
+                <div class="tag">Python</div>
+                <div class="tag">JavaScript</div>
+                <div class="tag">React</div>
+            </div>
+            
+            <div class="explore-group">
+                <div class="explore">↓ explore my skills above</div>
+                <div class="explore">↗ explore portfolio & contact details below</div>
+            </div>
+        </div>
+
+        <div class="content-right" id="rope-anchor-zone"></div>
+    </div>
+
+    <svg id="lanyard-svg">
+        <path id="lanyard-rope" fill="none"/>
+        <text class="lanyard-text-style" dy="3.3" dominant-baseline="central">
+            <textPath id="lanyard-text-path" href="#lanyard-rope">
+                &nbsp;&nbsp;&nbsp;&nbsp;3D CARD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3D CARD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3D CARD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3D CARD&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3D CARD
+            </textPath>
+        </text>
+        <circle id="lanyard-clip" r="13" stroke="#27272a" stroke-width="3.9" fill="none" />
+    </svg>
+
+    <div class="id-card" id="id-card">
+        <div class="photo-box">
+            <img src="IMG/Profile.jpeg" alt="Avatar">
+        </div>
+        <div class="card-info">
+            <div class="card-name">RIFQI M. ALIY</div>
+            <div class="card-title">Prompt Engineer</div>
+        </div>
+    </div>
+
+    <script>
+        const svgPath = document.getElementById('lanyard-rope');
+        const svgClip = document.getElementById('lanyard-clip');
+        const idCard = document.getElementById('id-card');
+        const anchorZone = document.getElementById('rope-anchor-zone');
+        const contentLeft = document.getElementById('content-left');
+        const typingElement = document.getElementById('typing-effect');
+
+        // --- ENGINE VẬT LÝ VERLET (THẢ RƠI TỰ NHIÊN BAN ĐẦU) ---
+        const totalPoints = 25; 
+        const segmentLen = 11;  
+        const gravity = 0.4;    
+        const bounceFriction = 0.95;
+        const physicsPoints = [];
+
+        let anchorX = 0, anchorY = 0;
+        let isDragging = false;
+        let mouseX = 0, mouseY = 0;
+        let grabOffsetX = 0;
+        let grabOffsetY = 0;
+
+        function calcAnchor() {
+            const rect = anchorZone.getBoundingClientRect();
+            anchorX = rect.left + rect.width / 2;
+            anchorY = -30; 
+        }
+
+        // Khởi tạo các điểm vật lý chồng tụ lại tại điểm neo để tạo gia tốc rơi tự do xuống
+        function initPhysics() {
+            calcAnchor();
+            for (let i = 0; i < totalPoints; i++) {
+                physicsPoints.push({
+                    x: anchorX,
+                    y: anchorY, 
+                    oldX: anchorX,
+                    oldY: anchorY
+                });
+            }
+        }
+
+        function updatePhysics() {
+            physicsPoints[0].x = anchorX;
+            physicsPoints[0].y = anchorY;
+            physicsPoints[0].x += Math.sin(Date.now() * 0.002) * 0.35;
+
+            if (isDragging) {
+                const lastPoint = physicsPoints[totalPoints - 1];
+                lastPoint.x = mouseX - grabOffsetX;
+                lastPoint.y = mouseY - grabOffsetY;
+            }
+
+            for (let i = 1; i < totalPoints; i++) {
+                const p = physicsPoints[i];
+                const velX = (p.x - p.oldX) * bounceFriction;
+                const velY = (p.y - p.oldY) * bounceFriction;
+
+                p.oldX = p.x;
+                p.oldY = p.y;
+
+                p.x += velX;
+                p.y += velY + gravity;
+            }
+
+            for (let loop = 0; loop < 16; loop++) {
+                for (let i = 0; i < totalPoints - 1; i++) {
+                    const p1 = physicsPoints[i];
+                    const p2 = physicsPoints[i + 1];
+
+                    const dx = p2.x - p1.x;
+                    const dy = p2.y - p1.y;
+                    const currentDist = Math.sqrt(dx * dx + dy * dy);
+                    const diff = segmentLen - currentDist;
+                    const errorPercent = (diff / currentDist) * 0.5;
+                    const offsetX = dx * errorPercent;
+                    const offsetY = dy * errorPercent;
+
+                    if (i === 0) {
+                        p2.x += offsetX * 2;
+                        p2.y += offsetY * 2;
+                    } else {
+                        p1.x -= offsetX;
+                        p1.y -= offsetY;
+                        p2.x += offsetX;
+                        p2.y += offsetY;
+                    }
+                }
+            }
+
+            let pathString = `M ${physicsPoints[0].x} ${physicsPoints[0].y}`;
+            for (let i = 1; i < totalPoints - 1; i++) {
+                const midX = (physicsPoints[i].x + physicsPoints[i + 1].x) / 2;
+                const midY = (physicsPoints[i].y + physicsPoints[i + 1].y) / 2;
+                pathString += ` Q ${physicsPoints[i].x} ${physicsPoints[i].y}, ${midX} ${midY}`;
+            }
+            pathString += ` L ${physicsPoints[totalPoints - 1].x} ${physicsPoints[totalPoints - 1].y}`;
+            svgPath.setAttribute('d', pathString);
+
+            const lastNode = physicsPoints[totalPoints - 1];
+            svgClip.setAttribute('cx', lastNode.x);
+            svgClip.setAttribute('cy', lastNode.y);
+
+            idCard.style.left = `${lastNode.x}px`;
+            idCard.style.top = `${lastNode.y}px`;
+
+            requestAnimationFrame(updatePhysics);
+        }
+
+        // --- HIỆU ỨNG INTRO XUẤT HIỆN CHỮ SO LE ---
+        function runIntroSequence() {
+            // Kích hoạt xuất hiện tuần tự các dòng chữ lề trái (Staggered Effect)
+            const textElements = contentLeft.children;
+            for (let i = 0; i < textElements.length; i++) {
+                setTimeout(() => {
+                    textElements[i].classList.add('visible');
+                }, 300 + (i * 150)); 
+            }
+
+            // 3. Kích hoạt hiệu ứng đánh máy chữ ngay sau khi dòng text Happy Coding xuất hiện
+            setTimeout(typeCharacter, 300 + (3 * 150) + 200);
+        }
+
+        // --- HIỆU ỨNG GÕ CHỮ ---
+        const textToType = "Happy coding";
+        let charIndex = 0;
+
+        function typeCharacter() {
+            if (charIndex < textToType.length) {
+                typingElement.innerHTML += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(typeCharacter, 120);
+            }
+        }
+
+        // Tương tác chuột kéo thả dây đeo
+        idCard.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            const lastPoint = physicsPoints[totalPoints - 1];
+            grabOffsetX = e.clientX - lastPoint.x;
+            grabOffsetY = e.clientY - lastPoint.y;
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            if (!isDragging) {
+                physicsPoints.forEach(p => {
+                    const diffX = p.x - mouseX;
+                    const diffY = p.y - mouseY;
+                    const distance = Math.sqrt(diffX * diffX + diffY * diffY);
+                    if (distance < 25) { 
+                        p.x += (diffX / distance) * 2;
+                    }
+                });
+            }
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        window.addEventListener('resize', calcAnchor);
+
+        // --- KHỞI CHẠY HỆ THỐNG ĐỒNG THỜI NGAY KHI TẢI TRANG ---
+        initPhysics();
+        updatePhysics(); // Chạy liên tục vòng lặp vật lý ngay lập tức
+        runIntroSequence(); // Chạy chuỗi hiệu ứng chữ trượt lên
+    </script>
+</body>
+</html>

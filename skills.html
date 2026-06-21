@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trần Trung Thành — Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 0;
+            background: #06070d url('IMG/Background.jpeg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            perspective: 1000px;
+            overflow: hidden;
+            font-family: 'Be Vietnam Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none; -webkit-user-select: none;
+            -webkit-user-drag: none;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle, rgba(0,162,255,0.05) 0%, rgba(240,147,43,0.02) 60%, transparent 100%);
+            pointer-events: none; z-index: 1;
+            animation: techPulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes techPulse { 0%{opacity:.5} 100%{opacity:1} }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 36px;
+            opacity: 0;
+            animation: fadeIn 0.9s ease 0.4s forwards;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 34px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            cursor: none !important;
+            user-select: none;
+        }
+        .nav-links a:hover { color: #fff; }
+
+        .scroll-hint {
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 100px;
+            padding: 9px 20px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            cursor: none !important;
+            backdrop-filter: blur(6px);
+            background: rgba(255,255,255,0.04);
+        }
+
+        /* ===== LEFT SECTION ===== */
+        .left-section {
+            position: fixed;
+            top: 24%;
+            left: 54px;
+            z-index: 90;
+            max-width: 520px;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.5s forwards;
+        }
+
+        .left-section .line-1 {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.8rem;
+            font-weight: 700;
+            margin: 0 0 12px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+        }
+
+        .left-section .line-2 {
+            font-size: clamp(2.8rem, 4.5vw, 4rem);
+            font-weight: 900;
+            margin: 0 0 22px 0;
+            line-height: 1.05;
+            letter-spacing: -1px;
+        }
+
+        .left-section .line-2 .word-1 {
+            color: #00d8ff;
+            text-shadow: 0 0 35px rgba(0, 216, 255, 0.6), 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .left-section .line-2 .word-2 {
+            color: #ff9f43;
+            text-shadow: 0 0 35px rgba(255, 159, 67, 0.6), 0 4px 15px rgba(0,0,0,0.6);
+        }
+
+        .left-section .line-3 {
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 1.15rem;
+            font-weight: 600;
+            line-height: 1.6;
+            margin: 0;
+            min-height: 1.6em;
+            text-shadow: 0 2px 12px rgba(0,0,0,0.7);
+        }
+
+        .left-section .line-4 {
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.88rem;
+            font-weight: 400;
+            line-height: 1.6;
+            margin-top: 18px;
+            opacity: 0;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            animation: fadeInText 1.2s ease 3s forwards;
+        }
+
+        @keyframes fadeInText {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        .typewriter-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1.1em;
+            background-color: #00d8ff;
+            margin-left: 6px;
+            vertical-align: middle;
+            animation: blinkCursor 0.7s infinite;
+            box-shadow: 0 0 10px #00d8ff;
+        }
+
+        @keyframes blinkCursor {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== KEYBOARD 3D ===== */
+        .main-scene {
+            position: relative; display: flex; flex-direction: column;
+            align-items: center; transform-style: preserve-3d;
+            transform: rotateX(46deg) rotateY(0deg) rotateZ(-36deg);
+            padding-top: 220px; z-index: 2;
+        }
+
+        .text-display {
+            position: absolute; top: 0; left: 0; text-align: left;
+            width: 422px; height: 160px;
+            transform-style: preserve-3d; 
+            transform: translateZ(60px);
+            pointer-events: none; opacity: 0;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: flex-start;
+        }
+        .text-display.active { opacity: 1; }
+        
+        /* Hiệu ứng Motion Blur nhẹ nhàng sang bên phải */
+        .text-display.blur-swipe-anim {
+            transform-origin: left center; 
+            animation: textMotionBlur 0.32s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes textMotionBlur {
+            0% {
+                transform: translateZ(60px) translateX(0) scaleX(1);
+                opacity: 1;
+            }
+            55% {
+                /* Đã giảm độ lệch (50px) và giảm độ giãn (1.3) để chữ gọn gàng hơn */
+                transform: translateZ(60px) translateX(50px) scaleX(1.3);
+                opacity: 0;
+            }
+            58% {
+                /* Xuất hiện mượt từ khoảng cách gần (-35px) bên trái */
+                transform: translateZ(60px) translateX(-35px) scaleX(1.3);
+                opacity: 0;
+            }
+            100% {
+                transform: translateZ(60px) translateX(0) scaleX(1);
+                opacity: 1;
+            }
+        }
+
+        .text3d { position: relative; transform-style: preserve-3d; width: 100%; }
+        .text3d .front, .text3d .extrude { display: block; width: 100%; margin: 0; white-space: pre-wrap; }
+        .text3d .extrude { position: absolute; top: 0; left: 0; user-select: none; }
+        .text-title { font-size: 5rem; font-weight: 900; margin: 0 0 26px 0; line-height: 1.08; text-transform: uppercase; }
+        .text-title .front { color: #ffffff; text-shadow: 0 0 15px rgba(255,255,255,0.4); }
+        .text-desc { font-size: 1.5rem; font-weight: 800; line-height: 1.3; letter-spacing: -0.3px; margin: 0; max-width: 430px; }
+        .text-desc .front { color: #f2f2f2; }
+
+        .keyboard-case {
+            width: max-content;
+            background-color: rgba(26, 27, 35, 0.85);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px; padding: 28px;
+            transform-style: preserve-3d;
+            box-shadow: -1px 1px 0px #0e0f14, -2px 2px 0px #0e0f14, -3px 3px 0px #0e0f14, -15px 20px 35px rgba(0,0,0,0.9);
+            display: grid; grid-template-columns: repeat(4, 78px); gap: 18px;
+        }
+
+        .keycap {
+            position: relative; width: 78px; height: 78px;
+            border-radius: 16px;
+            transform-style: preserve-3d; transform: translateZ(16px);
+            transition: transform 0.18s cubic-bezier(0.25,1,0.5,1), filter 0.18s ease;
+            will-change: transform;
+            box-shadow: -1px 1px 0px var(--shadow-color), -2px 2px 0px var(--shadow-color),
+                        -3px 3px 1px var(--shadow-color), -4px 4px 1px rgba(0,0,0,0.3),
+                        -5px 5px 1px rgba(0,0,0,0.4), -8px 10px 15px rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
+            cursor: none !important;
+            pointer-events: auto !important; 
+        }
+        .keycap img, .keycap span, .keycap::before { 
+            pointer-events: none !important; 
+        }
+        
+        .keycap img { width: 46px; height: 46px; object-fit: contain; transform: translateZ(3px); filter: drop-shadow(-1px 2px 2px rgba(0,0,0,0.4)); }
+        .keycap span { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: -0.5px; transform: translateZ(4px); text-shadow: -1px 1px 0px rgba(0,0,0,0.3); text-align: center; line-height: 1.1; }
+        .keycap::before { content:''; position:absolute; top:2px; left:2px; right:2px; bottom:2px; border-radius:11px; background: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(0,0,0,0.15) 100%); }
+        .keycap:hover  { transform: translateZ(26px) translateX(2px) translateY(-2px); filter: brightness(1.18) saturate(1.1); }
+        .keycap:active { transform: translateZ(6px) translateX(-3px) translateY(3px); filter: brightness(0.95); }
+
+        .key-html   { background-color: #ff5722; --shadow-color: #b73209; color: #fff; }
+        .key-css    { background-color: #2196f3; --shadow-color: #0d6aad; color: #fff; }
+        .key-js     { background-color: #ffeb3b; --shadow-color: #bfa500; color: #000; }
+        .key-cpp    { background-color: #007acc; --shadow-color: #005187; color: #fff; }
+        .key-java   { background-color: #e76f51; --shadow-color: #a73e25; color: #fff; }
+        .key-php    { background-color: #777bb4; --shadow-color: #4f5b93; color: #fff; }
+        .key-python { background-color: #3875a6; --shadow-color: #204969; color: #fff; }
+        .key-mysql  { background-color: #00a8cc; --shadow-color: #006b82; color: #fff; }
+        .key-react  { background-color: #2c3e50; --shadow-color: #1a252f; color: #00d8ff; }
+        .key-git    { background-color: #f4511e; --shadow-color: #b02600; color: #fff; }
+        .key-github { background-color: #33353f; --shadow-color: #1a1b21; color: #fff; }
+        .key-vscode { background-color: #00a2ff; --shadow-color: #006bb3; color: #fff; }
+        .key-chatgpt{ background-color: #10a37f; --shadow-color: #0a664f; color: #fff; }
+        .key-claude { background-color: #e08260; --shadow-color: #a64f31; color: #fff; }
+        .key-gemini { background-color: #4c75f2; --shadow-color: #2143b3; color: #fff; }
+        .key-expo   { background-color: #eef1f7; --shadow-color: #b9c0cf; color: #1a1b23; }
+
+        /* ===== MOUSE PRISM CURSOR ===== */
+        html, body, * { cursor: none !important; } 
+
+        #cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 26px; height: 26px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(2px) brightness(1.25) saturate(1.3);
+            -webkit-backdrop-filter: blur(2px) brightness(1.25) saturate(1.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.45);
+            border-radius: 60% 40% 40% 60% / 60% 40% 60% 40%;
+            mix-blend-mode: plus-lighter;
+            pointer-events: none !important; 
+            z-index: 999999;
+            transform-origin: center center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), inset 0 0 6px rgba(255, 255, 255, 0.35);
+            transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.25s ease, border-radius 0.2s ease, background-image 0.3s ease;
+        }
+
+        #cursor.hidden { opacity: 0; }
+        #cursor.on-keycap {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border-color: rgba(255, 255, 255, 0.75);
+            background-image: radial-gradient(circle, rgba(255,255,255,0.15) 0%, var(--prism-color, rgba(255,255,255,0.05)) 100%);
+        }
+        #cursor.on-nav {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            border-color: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Information</a>
+            <a href="#">Project</a>
+            <a href="#">Contact</a>
+        </div>
+        <div class="scroll-hint">Scroll mouse for more</div>
+    </nav>
+
+    <div class="left-section">
+        <p class="line-1">Always improving myself day by day</p>
+        <h2 class="line-2"><span class="word-1">Current</span> <span class="word-2">skills</span></h2>
+        <p class="line-3"><span id="typewriter"></span><span class="typewriter-cursor"></span></p>
+        <p class="line-4">
+            Transforming complex development challenges into smooth, fluid user experiences. Focusing on optimized performance, responsive layouts, and scalable codebases.
+        </p>
+    </div>
+
+    <div class="main-scene">
+        <div class="text-display" id="infoPanel">
+            <h1 class="text-title text3d" id="infoTitle"></h1>
+            <p class="text-desc text3d"   id="infoDesc"></p>
+        </div>
+
+        <div class="keyboard-case">
+            <div class="keycap key-html"   data-title="HTML5"          data-desc="Cấu trúc web ngữ nghĩa, chuẩn truy cập & SEO."><img src="IMG/HTML.png" alt="HTML"></div>
+            <div class="keycap key-css"    data-title="CSS3"            data-desc="Giao diện responsive với Flexbox, Grid và animation mượt mà."><img src="IMG/CSS.png" alt="CSS"></div>
+            <div class="keycap key-js"     data-title="JavaScript / TS" data-desc="Frontend tương tác, API Node.js và app di động."><img src="IMG/JavaScript.png" alt="JS"></div>
+            <div class="keycap key-cpp"    data-title="C / C++"         data-desc="Xử lý hiệu năng cao, quản lý bộ nhớ thủ công, đệ quy tối ưu."><img src="IMG/C++.png" alt="C++"></div>
+            <div class="keycap key-java"   data-title="Java"            data-desc="Backend doanh nghiệp và ứng dụng Android trên nền JVM."><img src="IMG/Java.jpg" alt="Java"></div>
+            <div class="keycap key-php"    data-title="PHP"             data-desc="Web động & ứng dụng MVC: ORM, routing, bảo mật."><img src="IMG/PHP-logo.png" alt="PHP"></div>
+            <div class="keycap key-python" data-title="Python"          data-desc="Tự động hóa, API bất đồng bộ và mọi thử nghiệm ML/AI."><img src="IMG/Python.png" alt="Python"></div>
+            <div class="keycap key-mysql"  data-title="MySQL"           data-desc="Lược đồ quan hệ xử lý logic phân hạng nhiều tầng."><img src="IMG/MySQL-Photoroom.png" alt="MySQL"></div>
+            <div class="keycap key-react"  data-title="React"           data-desc="Giao diện hiện đại: component, hook, RSC, Tailwind."><img src="IMG/React.png" alt="React"></div>
+            <div class="keycap key-git"    data-title="Git"             data-desc="Quản lý phiên bản chi tiết cho codebase phức tạp."><img src="IMG/Git.png" alt="Git"></div>
+            <div class="keycap key-github" data-title="GitHub"          data-desc="Quản lý phiên bản, nhánh và cộng tác nhóm."><img src="IMG/GitHub.png" alt="GitHub"></div>
+            <div class="keycap key-vscode" data-title="VS Code"         data-desc="Buồng lái phát triển nhanh, tối ưu cho tự động hóa."><img src="IMG/Visual_Studio_Code.png" alt="VSCode"></div>
+            <div class="keycap key-chatgpt"data-title="ChatGPT"         data-desc="Trợ thủ lập trình cặp và tự động hóa hằng ngày."><img src="IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png" alt="ChatGPT"></div>
+            <div class="keycap key-claude" data-title="Claude"          data-desc="Suy luận sâu và kiểm chứng logic code hóc búa."><img src="IMG/Claude.png" alt="Claude"></div>
+            <div class="keycap key-gemini" data-title="Gemini"          data-desc="Suy luận đa phương thức ngay trong quy trình code."><img src="IMG/Gemini.png" alt="Gemini"></div>
+            <div class="keycap key-expo"   data-title="Expo"            data-desc="Build, OTA update & phát hành app React Native đa nền tảng."><img src="IMG/unnamed-Photoroom.png" alt="Expo"></div>
+        </div>
+    </div>
+
+    <script>
+        const keycaps   = document.querySelectorAll('.keycap');
+        const infoPanel = document.getElementById('infoPanel');
+        const infoTitle = document.getElementById('infoTitle');
+        const infoDesc  = document.getElementById('infoDesc');
+        const cursor    = document.getElementById('cursor');
+
+        function buildLayers(container, depth, step) {
+            container.innerHTML = '';
+            for (let i = depth; i >= 1; i--) {
+                const layer = document.createElement('span');
+                layer.className = 'extrude';
+                const t = i / depth;
+                const light = Math.round(58 - t * 28);
+                layer.style.color = `hsl(222,9%,${light}%)`;
+                layer.style.transform = `translateZ(${-i * step}px)`;
+                if (i === depth) layer.style.textShadow = '3px 4px 12px rgba(0,0,0,0.5)';
+                container.appendChild(layer);
+            }
+            const front = document.createElement('span');
+            front.className = 'front';
+            container.appendChild(front);
+            container._layers = container.querySelectorAll('.extrude, .front');
+        }
+        function setText(container, text) {
+            container._layers.forEach(l => l.textContent = text);
+        }
+
+        buildLayers(infoTitle, 18, 0.6);
+        buildLayers(infoDesc,  6,  0.5);
+
+        let currentTitle = null;
+        let blurTimeout = null;
+
+        function showInfo(title, desc) {
+            if (title === currentTitle) return;
+            currentTitle = title;
+            
+            if (blurTimeout) clearTimeout(blurTimeout);
+
+            infoPanel.classList.remove('blur-swipe-anim');
+            void infoPanel.offsetWidth; 
+            infoPanel.classList.add('blur-swipe-anim');
+
+            // Giữ nguyên đồng bộ thời gian thực mượt mà cho hiệu ứng mới
+            blurTimeout = setTimeout(() => {
+                setText(infoTitle, title);
+                setText(infoDesc, desc);
+            }, 110); 
+        }
+
+        /* ===== TYPEWRITER ANIMATION ===== */
+        const textTarget = document.getElementById('typewriter');
+        const textToType = "Experience gained through projects and school";
+        let charIndex = 0;
+
+        function startTypewriter() {
+            if (charIndex < textToType.length) {
+                textTarget.textContent += textToType.charAt(charIndex);
+                charIndex++;
+                setTimeout(startTypewriter, 45);
+            }
+        }
+        setTimeout(startTypewriter, 1200);
+
+        /* ===== LERP MOUSE ENGINE ===== */
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 }; 
+        let pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };    
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        }, { passive: true });
+
+        function updateCursor() {
+            let dtX = mouse.x - pos.x;
+            let dtY = mouse.y - pos.y;
+
+            pos.x += dtX * 0.14; 
+            pos.y += dtY * 0.14;
+
+            let velocity = Math.sqrt(dtX * dtX + dtY * dtY);
+            let angle = Math.atan2(dtY, dtX);
+
+            let stretchX = 1 + (velocity * 0.007);
+            let stretchY = 1 - (velocity * 0.005);
+
+            stretchX = Math.min(Math.max(stretchX, 0.7), 2.3);
+            stretchY = Math.min(Math.max(stretchY, 0.35), 1.1);
+
+            cursor.style.transform = `translate3d(${pos.x - 13}px, ${pos.y - 13}px, 0) rotate(${angle}rad) scale(${stretchX}, ${stretchY})`;
+
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+
+        document.addEventListener('mouseleave', () => cursor.classList.add('hidden'));
+        document.addEventListener('mouseenter', () => cursor.classList.remove('hidden'));
+
+        /* ===== HOVER KEYCAPS ===== */
+        keycaps.forEach(key => {
+            key.addEventListener('mouseenter', () => {
+                const t = key.getAttribute('data-title');
+                const d = key.getAttribute('data-desc');
+                if (t && d) { 
+                    showInfo(t, d); 
+                    infoPanel.classList.add('active'); 
+                }
+
+                const bg = getComputedStyle(key).backgroundColor;
+                const rgb = bg.match(/\d+/g);
+                if (rgb) {
+                    const alphaColor = `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, 0.28)`;
+                    cursor.style.setProperty('--prism-color', alphaColor);
+                }
+                cursor.classList.add('on-keycap');
+            });
+
+            key.addEventListener('mouseleave', () => {
+                cursor.classList.remove('on-keycap');
+            });
+        });
+
+        document.querySelectorAll('.nav-links a, .scroll-hint').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('on-nav'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('on-nav'));
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Isometric Neon Grid — Expansive Foggy Night</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000; overflow: hidden; width: 100vw; height: 100vh; }
+
+    canvas {
+      display: block;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+
+    /* Vignette sương mù mép màn hình giúp hòa trộn mịn màng vào nền đen */
+    #vignette {
+      position: fixed; inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background: radial-gradient(
+        ellipse 62% 68% at 50% 46%,
+        transparent 30%,
+        rgba(0,0,0,0.50) 52%,
+        rgba(0,0,0,0.78) 68%,
+        rgba(0,0,0,0.92) 82%,
+        rgba(0,0,0,0.97) 96%
+      );
+    }
+
+    /* ═══════════════════════════════════════════════════════════════════
+       CSS LỚP CHỮ GIAO DIỆN (ĐÃ FIX KÍCH THƯỚC & VỊ TRÍ CHUẨN PIXEL)
+       ═══════════════════════════════════════════════════════════════════ */
+    .ui-container {
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      padding: 55px 65px; /* Cân bằng lại lề sát viền như ảnh mẫu */
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      pointer-events: none; 
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    .ui-container a, .ui-container button {
+      pointer-events: auto;
+    }
+
+    /* --- Thanh Menu Trên Cùng (Navbar) --- */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13.5px;
+      font-weight: 500;
+      opacity: 0.65; /* Làm mờ dịu đi giống ảnh gốc */
+      letter-spacing: 0.2px;
+      transition: opacity 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      opacity: 1;
+    }
+
+    .scroll-btn {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      padding: 9px 22px;
+      border-radius: 50px;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      transition: all 0.3s ease;
+      opacity: 0.5;
+    }
+
+    .scroll-btn:hover {
+      opacity: 0.9;
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    /* --- Khu Vực Chữ Dưới Cùng --- */
+    .bottom-section {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-bottom: 0px; /* Đẩy sát xuống đáy */
+    }
+
+    .tagline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13.5px;
+      color: #777777; /* Màu xám công nghệ trung tính chuẩn thiết kế */
+      letter-spacing: -0.1px;
+      margin-bottom: 10px; /* Thu hẹp khoảng cách với tên */
+    }
+
+    .main-name {
+      font-size: 88px; /* Tăng kích thước cực đại */
+      font-weight: 900; /* Độ dày tối đa (Black) để chữ trông đặc và béo */
+      color: #ffffff;
+      line-height: 0.95;
+      margin-bottom: 28px; /* Khoảng cách xuống hàng danh mục dưới */
+      letter-spacing: -2.5px; /* Ép các ký tự sát nhau tạo khối liền mạch */
+      text-shadow: 0 5px 25px rgba(0, 0, 0, 0.6); 
+    }
+
+    .categories {
+      font-size: 11px;
+      font-weight: 600;
+      color: #444444; /* Hạ tông màu tối xuống giống ảnh mẫu */
+      letter-spacing: 4px;
+      display: flex;
+      gap: 12px;
+    }
+
+    .categories span {
+      color: #262626; /* Thanh gạch chéo ẩn hẳn vào nền tối */
+    }
+
+    /* Định hình giao diện khi co màn hình nhỏ */
+    @media (max-width: 1024px) {
+      .main-name { font-size: 64px; letter-spacing: -1.5px; }
+      .ui-container { padding: 40px; }
+    }
+    @media (max-width: 768px) {
+      .ui-container { padding: 30px; }
+      .main-name { font-size: 46px; letter-spacing: -1px; }
+      .scroll-btn { display: none; }
+      .nav-links { gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="vignette"></div>
+
+  <div class="ui-container">
+    <nav class="navbar">
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#info">Information</a>
+        <a href="#project">Project</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <button class="scroll-btn">Scroll mouse for more</button>
+    </nav>
+
+    <div class="bottom-section">
+      <div class="tagline">Just chill. The future is rendering...</div>
+      <h1 class="main-name">Trần Trung Thành</h1>
+      <div class="categories">
+        AI <span>\</span> WEB3 <span>\</span> UI <span>\</span> 3D <span>\</span> MOTION <span>\</span> VIDEO
+      </div>
+    </div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://cdn.jsdelivr.net/npm/three@0.163.0/build/three.module.js",
+      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.163.0/examples/jsm/"
+    }
+  }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { EffectComposer }  from 'three/addons/postprocessing/EffectComposer.js';
+    import { RenderPass }      from 'three/addons/postprocessing/RenderPass.js';
+    import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+    
+    import { LineSegments2 }       from 'three/addons/lines/LineSegments2.js';
+    import { LineSegmentsGeometry } from 'three/addons/lines/LineSegmentsGeometry.js';
+    import { LineMaterial }         from 'three/addons/lines/LineMaterial.js';
+
+    // ═══════════════════════════════════════════════════════════════════
+    // CẤU HÌNH MA TRẬN RỘNG LỚN KHÔNG GIAN (ĐÃ FIX ĐIỂM MÙ GÓC DƯỚI)
+    // ═══════════════════════════════════════════════════════════════════
+    const VISIBLE_GRID_SIZE = 20;  
+    const GRID_SIZE         = 38;  
+    const CUBE_SIZE         = 6.2;   
+    const GRID_SPACING      = 10.2;  
+    const MIN_H             = 0.10;  
+    const MAX_H             = 6.0;   
+    const HOVER_R           = 20.0;  
+    const LERP_IN           = 0.16;  
+    const LERP_OUT          = 0.055; 
+    const BG_OPA            = 0.06;  
+    const BG_ARM            = 1.60;  
+    
+    const FOG_START         = 40.0;  
+    const FOG_END           = 95.0;  
+
+    const LINE_THICKNESS    = 3.8;   
+    const BLOOM_STRENGTH    = 1.1;   
+    const BLOOM_RADIUS      = 0.38;  
+    const BLOOM_THRESHOLD   = 0.15;  
+    const BASE_H            = 0.15;  
+
+    const IDLE_MS           = 3000;  
+    const CAMERA_Y_OFFSET   = 20;    
+
+    const C_PINK   = new THREE.Color('#FF00FF');
+    const C_PURPLE = new THREE.Color('#9900FF');
+    const C_CYAN   = new THREE.Color('#00FFFF');
+
+    function neonColor(t) {
+      const c = new THREE.Color();
+      if (t < 0.5) return c.lerpColors(C_PINK, C_PURPLE, t * 2);
+      return c.lerpColors(C_PURPLE, C_CYAN, (t - 0.5) * 2);
+    }
+
+    // ═══════════════════════════════════════════════════════════════════
+    // KHỞI TẠO HỆ THỐNG RENDER
+    // ═══════════════════════════════════════════════════════════════════
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      powerPreference: 'high-performance',
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2.0));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.0;
+    document.body.insertBefore(renderer.domElement, document.getElementById('vignette'));
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#000000');
+
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, -500, 500);
+    camera.position.set(10, 10, 10);
+    camera.lookAt(0, 0, 0);
+
+    function updateCamera() {
+      const w = window.innerWidth, h = window.innerHeight;
+      camera.left   = -w / 2;
+      camera.right  =  w / 2;
+      camera.top    =  h / 2 + CAMERA_Y_OFFSET;
+      camera.bottom = -h / 2 + CAMERA_Y_OFFSET;
+      camera.zoom = Math.min(w, h) / (VISIBLE_GRID_SIZE * GRID_SPACING * 0.4);
+      camera.updateProjectionMatrix();
+    }
+
+    const composer = new EffectComposer(renderer);
+    composer.addPass(new RenderPass(scene, camera));
+    const bloomPass = new UnrealBloomPass(
+      new THREE.Vector2(window.innerWidth, window.innerHeight),
+      BLOOM_STRENGTH,
+      BLOOM_RADIUS,
+      BLOOM_THRESHOLD,
+    );
+    composer.addPass(bloomPass);
+
+    scene.add(new THREE.AmbientLight('#ffffff', 0.04));
+    const hw = ((GRID_SIZE - 1) / 2) * GRID_SPACING;
+    const pinkLight = new THREE.PointLight('#FF00FF', 1.5, hw * 2.5, 1.5);
+    pinkLight.position.set(-FOG_START, 8.0, FOG_START); 
+    scene.add(pinkLight);
+    const cyanLight = new THREE.PointLight('#00FFFF', 1.5, hw * 2.5, 1.5);
+    cyanLight.position.set(FOG_START, 8.0, -FOG_START);
+    scene.add(cyanLight);
+
+    // ═══════════════════════════════════════════════════════════════════
+    // TẠO DỮ LIỆU TỌA ĐỘ VÀ MÀU SẮC LƯỚI
+    // ═══════════════════════════════════════════════════════════════════
+    const cubes = [];
+    for (let x = 0; x < GRID_SIZE; x++) {
+      for (let z = 0; z < GRID_SIZE; z++) {
+        const t  = (x / (GRID_SIZE - 1) + z / (GRID_SIZE - 1)) / 2;
+        const px = (x - (GRID_SIZE - 1) / 2) * GRID_SPACING;
+        const pz = (z - (GRID_SIZE - 1) / 2) * GRID_SPACING;
+        
+        const initialLevel = Math.floor(Math.random() * 5); 
+        const levelH = MIN_H + initialLevel * 1.1;
+
+        cubes.push({ 
+          px, pz, 
+          color: neonColor(t).clone(),
+          idleTargetH: levelH,
+          nextUpdate: performance.now() + Math.random() * 1000
+        });
+      }
+    }
+    const N = cubes.length;
+
+    // LỚP 1: LƯỚI NỀN DẤU MỜ MẶC ĐỊNH
+    {
+      cubes.forEach(({ px, pz, color }) => {
+        const pos = [
+          px - BG_ARM, 0.01, pz,   px + BG_ARM, 0.01, pz,
+          px, 0.01, pz - BG_ARM,   px, 0.01, pz + BG_ARM
+        ];
+        const col = [];
+        for (let k = 0; k < 4; k++) col.push(color.r, color.g, color.b);
+
+        const g = new THREE.BufferGeometry();
+        g.setAttribute('position', new THREE.BufferAttribute(new Float32Array(pos), 3));
+        g.setAttribute('color',    new THREE.BufferAttribute(new Float32Array(col), 3));
+        
+        const distToCenter = Math.sqrt(px * px + pz * pz);
+        let fogFactor = 1.0 - (distToCenter - FOG_START) / (FOG_END - FOG_START);
+        fogFactor = Math.max(0.0, Math.min(1.0, fogFactor));
+
+        const mat = new THREE.LineBasicMaterial({
+          vertexColors: true,
+          transparent:  true,
+          opacity:      BG_OPA * fogFactor,
+          depthWrite:   false,
+        });
+        
+        scene.add(new THREE.LineSegments(g, mat));
+      });
+    }
+
+    // LỚP 2: CÁC KHỐI CUBE TƯƠNG TÁC + MẶT SÀN ĐẶC
+    function makeCubeEdgesGeom2() {
+      const hw = CUBE_SIZE / 2;
+      const pts = [
+        [-hw, -0.5, -hw], [hw, -0.5, -hw], [hw, -0.5,  hw], [-hw, -0.5,  hw],
+        [-hw,  0.5, -hw], [hw,  0.5, -hw], [hw,  0.5,  hw], [-hw,  0.5,  hw],
+      ];
+      const edges = [
+        [0,1],[1,2],[2,3],[3,0], 
+        [4,5],[5,6],[6,7],[7,4], 
+        [0,4],[1,5],[2,6],[3,7], 
+      ];
+      const pos = [], vcol = [];
+      edges.forEach(([a, b], i) => {
+        pos.push(...pts[a], ...pts[b]);
+        const br = i < 4 ? 1.0 : 0.65; 
+        vcol.push(br, br, br,  br, br, br);
+      });
+      
+      const g = new LineSegmentsGeometry();
+      g.setPositions(pos);
+      g.setColors(vcol);
+      return g;
+    }
+
+    const edgesGeom = makeCubeEdgesGeom2();
+    const boxGeom   = new THREE.BoxGeometry(CUBE_SIZE, 1, CUBE_SIZE);
+    const baseGeom  = new THREE.BoxGeometry(GRID_SPACING * 1.005, BASE_H, GRID_SPACING * 1.005);
+
+    const groups    = [];  
+    const solidMats = [];  
+    const edgeMats  = [];  
+    const baseMats  = [];  
+    const heights   = new Float32Array(N).fill(MIN_H);
+    const opacities = new Float32Array(N).fill(0);
+
+    cubes.forEach(({ px, pz, color }, i) => {
+      const hex = '#' + color.getHexString();
+
+      const baseMesh = new THREE.Mesh(
+        baseGeom,
+        new THREE.MeshBasicMaterial({
+          color:       hex,
+          transparent: true,
+          opacity:     0,
+          depthWrite:  false,
+        })
+      );
+      baseMesh.position.set(px, BASE_H / 2, pz);
+      baseMesh.renderOrder = 1;
+      scene.add(baseMesh);
+      baseMats.push(baseMesh.material);
+
+      const group = new THREE.Group();
+      group.position.set(px, MIN_H * 0.5, pz);
+      group.scale.y = MIN_H;
+
+      const solidMat = new THREE.MeshStandardMaterial({
+        color: '#010101', metalness: 0.4, roughness: 0.5,
+        transparent: true, opacity: 0,
+      });
+      group.add(new THREE.Mesh(boxGeom, solidMat));
+      solidMats.push(solidMat);
+
+      const edgeMat = new LineMaterial({
+        color:        hex, 
+        vertexColors: true,
+        linewidth:    LINE_THICKNESS, 
+        transparent:  true, 
+        opacity:      0, 
+        depthWrite:   false,
+      });
+      edgeMat.resolution.set(window.innerWidth, window.innerHeight); 
+      
+      const thickLines = new LineSegments2(edgesGeom, edgeMat);
+      group.add(thickLines);
+      edgeMats.push(edgeMat);
+
+      groups.push(group);
+      scene.add(group);
+    });
+
+    const platform = new THREE.Mesh(
+      new THREE.PlaneGeometry(hw * 2 + GRID_SPACING, hw * 2 + GRID_SPACING),
+      new THREE.MeshStandardMaterial({ color: '#FF6600', roughness: 0.55, metalness: 0.35 })
+    );
+    platform.rotation.x = -Math.PI / 2;
+    platform.position.y = -0.01;
+    scene.add(platform);
+
+    // ═══════════════════════════════════════════════════════════════════
+    // LOGIC CHUỘT KHÔNG GIAN TOÀN MÀN HÌNH
+    // ═══════════════════════════════════════════════════════════════════
+    const mouse3D    = new THREE.Vector3(99999, 0, 99999);
+    let isActive     = false;
+    let lastMoveTime = Date.now();
+
+    const raycaster   = new THREE.Raycaster();
+    const groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+    const rayTarget   = new THREE.Vector3();
+
+    window.addEventListener('mousemove', (e) => {
+      raycaster.setFromCamera(
+        new THREE.Vector2(
+          (e.clientX / window.innerWidth) * 2 - 1,
+          (e.clientY / window.innerHeight) * -2 + 1,
+        ),
+        camera,
+      );
+      if (raycaster.ray.intersectPlane(groundPlane, rayTarget)) {
+        mouse3D.copy(rayTarget);
+        isActive     = true;
+        lastMoveTime = Date.now();
+      }
+    });
+
+    document.addEventListener('mouseleave', () => {
+      isActive = false;
+      mouse3D.set(99999, 0, 99999);
+    });
+
+    // ═══════════════════════════════════════════════════════════════════
+    // VÒNG LẶP HÌNH ẢNH & THUẬT TOÁN RADIAL FOG FALLOFF
+    // ═══════════════════════════════════════════════════════════════════
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const now = performance.now(); 
+      const isIdle = !isActive || (Date.now() - lastMoveTime > IDLE_MS);
+      const mx = mouse3D.x;
+      const mz = mouse3D.z;
+
+      for (let i = 0; i < N; i++) {
+        const cube = cubes[i];
+        const { px, pz } = cube;
+
+        const distToCenter = Math.sqrt(px * px + pz * pz);
+        let fogFactor = 1.0 - (distToCenter - FOG_START) / (FOG_END - FOG_START);
+        fogFactor = Math.max(0.0, Math.min(1.0, fogFactor)); 
+
+        const distToMouse = Math.sqrt((px - mx) ** 2 + (pz - mz) ** 2);
+        const active = !isIdle && distToMouse <= HOVER_R;
+
+        let tH = MIN_H;
+        let tO = 0.0;
+
+        if (active) {
+          tH = MAX_H;
+          tO = 1.0 * Math.min(1.0, fogFactor + 0.6); 
+          cube.nextUpdate = 0; 
+        } else if (isIdle) {
+          if (now > cube.nextUpdate) {
+            const randomLevel = Math.floor(Math.random() * 5); 
+            cube.idleTargetH  = MIN_H + randomLevel * 1.1;     
+            cube.nextUpdate   = now + 600 + Math.random() * 600; 
+          }
+          
+          tH = MIN_H + (cube.idleTargetH - MIN_H) * fogFactor;
+          const progress = (cube.idleTargetH - MIN_H) / 4.4; 
+          tO = (0.10 + progress * 0.35) * fogFactor; 
+        }
+
+        const lr     = tO > opacities[i] ? LERP_IN : LERP_OUT;
+        heights[i]   = lerp(heights[i],   tH, lr);
+        opacities[i] = lerp(opacities[i], tO, lr);
+
+        const h = heights[i];
+        const o = opacities[i];
+
+        groups[i].scale.y    = h;
+        groups[i].position.y = h * 0.5;
+
+        solidMats[i].opacity = o;
+        edgeMats[i].opacity  = o;
+        baseMats[i].opacity  = o;
+      }
+
+      composer.render();
+    }
+
+    window.addEventListener('resize', () => {
+      const w = window.innerWidth, h = window.innerHeight;
+      renderer.setSize(w, h);
+      composer.setSize(w, h);
+      bloomPass.resolution.set(w, h);
+      edgeMats.forEach(mat => mat.resolution.set(w, h));
+      updateCamera();
+    });
+
+    updateCamera();
+    animate();
+  </script>
+</body>
+</html>

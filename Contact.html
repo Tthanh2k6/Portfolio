@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trần Trung Thành — Project Showcase & Contact</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: #06070d;
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                url('IMG/Background.jpeg');
+            background-size: 40px 40px, 40px 40px, cover;
+            background-position: center;
+            background-repeat: repeat, repeat, no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Be Vietnam Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            user-select: none; -webkit-user-select: none;
+            -webkit-user-drag: none;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Nền mờ ảo đồng bộ */
+        body::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle, rgba(0,162,255,0.04) 0%, rgba(240,147,43,0.01) 60%, transparent 100%);
+            pointer-events: none; z-index: 1;
+            animation: techPulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes techPulse { 0%{opacity:.5} 100%{opacity:1} }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 36px;
+            opacity: 0;
+            animation: fadeIn 0.9s ease 0.2s forwards;
+            backdrop-filter: blur(8px);
+            background: rgba(6, 7, 13, 0.4);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 34px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            cursor: none !important;
+            user-select: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .nav-links a:hover { color: #fff; }
+        .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+
+        .scroll-hint {
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 100px;
+            padding: 9px 20px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            cursor: none !important;
+            backdrop-filter: blur(6px);
+            background: rgba(255,255,255,0.04);
+        }
+
+        /* ===== MAIN HEADER ===== */
+        .contact-header-wrapper {
+            text-align: center;
+            margin-top: 130px;
+            margin-bottom: 30px;
+            padding: 0 20px;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.3s forwards;
+        }
+
+        .contact-subtitle {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.65);
+            margin: 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* ===== GRID LAYOUT ===== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 40px 60px 40px;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeIn 1.2s ease 0.4s forwards;
+        }
+
+        /* Glassmorphic Columns */
+        .contact-column-card {
+            background: rgba(18, 20, 29, 0.55);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 24px;
+            padding: 36px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+            height: max-content;
+        }
+
+        .column-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+        }
+
+        .column-subtitle {
+            font-size: 0.88rem;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.5;
+            margin: 0 0 28px 0;
+        }
+
+        /* ===== FORM INPUTS ===== */
+        .form-group {
+            position: relative;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            width: 20px;
+            height: 20px;
+            color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1.5px solid rgba(255, 255, 255, 0.06);
+            border-radius: 12px;
+            padding: 16px 16px 16px 50px;
+            font-family: inherit;
+            font-size: 0.92rem;
+            color: #ffffff;
+            outline: none;
+            cursor: none !important;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+
+        textarea.form-input {
+            resize: none;
+            height: 120px;
+        }
+
+        .form-input:focus {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(0, 162, 255, 0.6);
+            box-shadow: 0 0 20px rgba(0, 162, 255, 0.15);
+        }
+
+        .form-input:focus + .input-icon {
+            color: #00a2ff;
+        }
+
+        /* Submit Button */
+        .submit-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.9rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 15px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            cursor: none !important;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            width: 100%;
+            margin-bottom: 32px;
+        }
+
+        .submit-btn:hover {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+            transition: transform 0.3s ease;
+        }
+
+        .submit-btn:hover svg {
+            transform: translate(2px, -2px);
+        }
+
+        /* ===== SOCIAL GRID ===== */
+        .social-section-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 0 16px 0;
+            letter-spacing: 0.5px;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .social-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            color: #ffffff;
+            cursor: none !important;
+            transition: all 0.3s ease;
+        }
+
+        /* LinkedIn card takes full width */
+        .social-card.large {
+            grid-column: span 2;
+        }
+
+        .social-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .social-icon {
+            width: 22px;
+            height: 22px;
+            color: rgba(255, 255, 255, 0.7);
+            fill: currentColor;
+            transition: color 0.3s ease;
+        }
+
+        .social-card:hover .social-icon {
+            color: #ffffff;
+        }
+
+        .social-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .social-name {
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .social-handle {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.4);
+            margin-top: 2px;
+        }
+
+        /* ===== COMMENTS / GUESTBOOK ===== */
+        .comments-input-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .comments-input-row .form-group {
+            margin-bottom: 0;
+        }
+
+        /* Textarea specifically without left icon padding for comments */
+        .comment-textarea {
+            padding-left: 18px;
+        }
+
+        /* Action buttons below comments form */
+        .comments-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 30px;
+        }
+
+        .action-sub-btn {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1.5px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: rgba(255, 255, 255, 0.6);
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 600;
+            padding: 14px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            cursor: none !important;
+            transition: all 0.3s ease;
+        }
+
+        .action-sub-btn:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .action-sub-btn svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .action-post-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: #ffffff;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 700;
+            padding: 14px 0;
+            cursor: none !important;
+            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .action-post-btn:hover {
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        /* ===== COMMENTS FEED ===== */
+        .comments-feed-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.6);
+            margin: 0 0 16px 0;
+            letter-spacing: 0.5px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 24px;
+        }
+
+        .comments-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            max-height: 480px;
+            overflow-y: auto;
+            padding-right: 6px;
+        }
+
+        /* Scrollbar customization */
+        .comments-list::-webkit-scrollbar {
+            width: 4px;
+        }
+        .comments-list::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .comments-list::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+        .comments-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* Single Comment Card */
+        .comment-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 14px;
+            padding: 16px;
+            display: flex;
+            gap: 14px;
+            position: relative;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        .comment-card:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .comment-card.pinned {
+            border-color: rgba(147, 51, 234, 0.3);
+            background: rgba(147, 51, 234, 0.02);
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #252836;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-transform: uppercase;
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comment-content-box {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .comment-author-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 5px;
+        }
+
+        .comment-author-name {
+            font-size: 0.88rem;
+            font-weight: 700;
+        }
+
+        .comment-badge-pinned {
+            background: rgba(147, 51, 234, 0.2);
+            border: 1.5px solid rgba(147, 51, 234, 0.4);
+            border-radius: 6px;
+            color: #c084fc;
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            padding: 2px 6px;
+            text-transform: uppercase;
+        }
+
+        .comment-text {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.45;
+            margin: 0;
+        }
+
+        /* Comment image attachment */
+        .comment-attachment {
+            width: 100%;
+            max-width: 140px;
+            height: 90px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-top: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Comment Like button */
+        .comment-like-box {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: none !important;
+            transition: color 0.3s ease;
+        }
+
+        .comment-like-box:hover, .comment-like-box.liked {
+            color: #f43f5e;
+        }
+
+        .comment-like-box svg {
+            width: 14px;
+            height: 14px;
+            fill: currentColor;
+            transition: transform 0.2s ease;
+        }
+
+        .comment-like-box:active svg {
+            transform: scale(1.3);
+        }
+
+        /* ===== MOUSE PRISM CURSOR ===== */
+        html, body, * { cursor: none !important; }
+
+        #cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 26px; height: 26px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(2px) brightness(1.25) saturate(1.3);
+            -webkit-backdrop-filter: blur(2px) brightness(1.25) saturate(1.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.45);
+            border-radius: 60% 40% 40% 60% / 60% 40% 60% 40%;
+            mix-blend-mode: plus-lighter;
+            pointer-events: none !important; 
+            z-index: 999999;
+            transform-origin: center center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), inset 0 0 6px rgba(255, 255, 255, 0.35);
+            transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        height 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        border-color 0.25s ease, 
+                        border-radius 0.2s ease, 
+                        background-image 0.3s ease;
+        }
+
+        #cursor.hidden { opacity: 0; }
+        #cursor.on-card {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border-color: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        #cursor.on-nav {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            border-color: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ===== TOAST ALERTS ===== */
+        .toast-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast {
+            pointer-events: auto;
+            background: rgba(18, 20, 29, 0.95);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 162, 255, 0.25);
+            border-radius: 12px;
+            padding: 16px 24px;
+            color: #ffffff;
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 162, 255, 0.1);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-icon {
+            width: 18px;
+            height: 18px;
+            color: #00a2ff;
+            flex-shrink: 0;
+        }
+
+        /* Utilities */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 0 20px 40px 20px;
+            }
+            .contact-header-wrapper {
+                margin-top: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- NAVBAR (Original Navbar) -->
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="Home.html">Home</a>
+            <a href="Info.html">Information</a>
+            <a href="skills.html">Skills</a>
+            <a href="Project.html">Project</a>
+            <a href="Contact.html" class="active">Contact</a>
+        </div>
+        <div class="scroll-hint">Let's build together</div>
+    </nav>
+
+    <!-- TITLE -->
+    <div class="contact-header-wrapper">
+        <h1 class="gallery-title" style="margin-bottom: 12px;">
+            <span class="word-project">Project</span>
+            <span class="word-showcase">Showcase</span>
+        </h1>
+        <p class="contact-subtitle">Have something in mind? Send a message and let's connect.</p>
+    </div>
+
+    <!-- TWO-COLUMN GRID -->
+    <section class="contact-grid">
+        
+        <!-- LEFT COLUMN: Hubungi Saya / Contact Form + Socials -->
+        <div class="contact-column-card">
+            <h2 class="column-title">Hubungi Saya</h2>
+            <p class="column-subtitle">Feel free to reach out if you want to collaborate, discuss ideas, or simply say hello.</p>
+            
+            <form id="contactForm" onsubmit="handleContactSubmit(event)">
+                <!-- Name field -->
+                <div class="form-group">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <input type="text" class="form-input" id="contactName" placeholder="Your Name" required>
+                </div>
+                <!-- Email field -->
+                <div class="form-group">
+                    <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    <input type="email" class="form-input" id="contactEmail" placeholder="Your Email" required>
+                </div>
+                <!-- Message field -->
+                <div class="form-group">
+                    <svg class="input-icon" style="top: 16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+                    <textarea class="form-input" id="contactMessage" placeholder="Your Message" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path></svg>
+                    Send Message
+                </button>
+            </form>
+
+            <h3 class="social-section-title">Connect With Me</h3>
+            <div class="social-grid">
+                <!-- LinkedIn card (Large) -->
+                <a href="https://linkedin.com" target="_blank" class="social-card large">
+                    <svg class="social-icon" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    <div class="social-info">
+                        <span class="social-name">LinkedIn</span>
+                        <span class="social-handle">@tranthanh</span>
+                    </div>
+                </a>
+                <!-- Instagram -->
+                <a href="https://instagram.com" target="_blank" class="social-card">
+                    <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <div class="social-info">
+                        <span class="social-name">Instagram</span>
+                        <span class="social-handle">@thanh.dev</span>
+                    </div>
+                </a>
+                <!-- Youtube -->
+                <a href="https://youtube.com" target="_blank" class="social-card">
+                    <svg class="social-icon" viewBox="0 0 24 24"><path d="M23.498 6.163c-.272-1.023-1.077-1.83-2.101-2.102C19.537 3.5 12 3.5 12 3.5s-7.537 0-9.397.561c-1.024.272-1.829 1.079-2.101 2.102C0 8.023 0 12 0 12s0 3.977.502 5.837c.272 1.023 1.077 1.83 2.101 2.102C4.463 20.5 12 20.5 12 20.5s7.537 0 9.397-.561c1.024-.272 1.829-1.079 2.101-2.102C24 15.977 24 12 24 12s0-3.977-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <div class="social-info">
+                        <span class="social-name">Youtube</span>
+                        <span class="social-handle">@tranthanh_dev</span>
+                    </div>
+                </a>
+                <!-- Github -->
+                <a href="https://github.com" target="_blank" class="social-card">
+                    <svg class="social-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <div class="social-info">
+                        <span class="social-name">Github</span>
+                        <span class="social-handle">@tranthanh</span>
+                    </div>
+                </a>
+                <!-- TikTok -->
+                <a href="https://tiktok.com" target="_blank" class="social-card">
+                    <svg class="social-icon" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.03 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.06-2.89-.54-4.06-1.44-.48-.37-.9-.81-1.25-1.31-.04 2.5-.02 5-.04 7.5-.07 1.73-.55 3.49-1.57 4.9-1.24 1.77-3.23 2.97-5.39 3.27-1.9.29-3.92.05-5.67-.84-2.12-1.04-3.69-3.15-4.14-5.49-.49-2.31-.03-4.83 1.34-6.79 1.4-2.03 3.73-3.32 6.22-3.42.06 1.49.03 2.99.04 4.49-.93.02-1.92.24-2.68.84-.85.64-1.34 1.69-1.4 2.76-.08 1.25.43 2.53 1.37 3.32.99.85 2.37 1.13 3.61.79 1.19-.31 2.2-1.22 2.62-2.38.31-.83.33-1.74.32-2.62.01-4.08-.01-8.15.02-12.23z"/></svg>
+                    <div class="social-info">
+                        <span class="social-name">TikTok</span>
+                        <span class="social-handle">@thanh_code</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: Comments / Guestbook -->
+        <div class="contact-column-card">
+            <h2 class="column-title">Comments</h2>
+            <p class="column-subtitle">Leave your thoughts here</p>
+
+            <form id="commentForm" onsubmit="handleCommentSubmit(event)">
+                <div class="comments-input-row">
+                    <!-- User name -->
+                    <div class="form-group">
+                        <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <input type="text" class="form-input" id="commenterName" placeholder="Your Name" required>
+                    </div>
+                    <!-- Comment content -->
+                    <div class="form-group">
+                        <textarea class="form-input comment-textarea" id="commentText" placeholder="Your Comment" required></textarea>
+                    </div>
+                </div>
+
+                <div class="comments-actions">
+                    <!-- Upload file -->
+                    <button type="button" class="action-sub-btn" id="uploadBtn" onclick="triggerFileInput()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <span id="uploadLabel">Upload Image</span>
+                    </button>
+                    <input type="file" id="commentImageInput" accept="image/*" style="display: none;" onchange="handleImageSelected(event)">
+                    
+                    <!-- Submit comment -->
+                    <button type="submit" class="action-post-btn">Post Comment</button>
+                </div>
+            </form>
+
+            <h3 class="comments-feed-title">Latest Comments</h3>
+            
+            <!-- COMMENTS LIST CONTAINER -->
+            <div class="comments-list" id="commentsList">
+                <!-- Rendered dynamically by Javascript -->
+            </div>
+        </div>
+
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bottom-controls" style="padding-bottom: 30px;">
+        <div class="scroll-hint">© 2026 Trần Trung Thành. All rights reserved.</div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Database cục bộ của phiên làm việc chứa các bình luận preloaded
+        const initialComments = [
+            {
+                id: 1,
+                author: "Rifqi Muhammad A",
+                text: "Terima kasih sudah mampir",
+                pinned: true,
+                likes: 2,
+                liked: false,
+                image: null,
+                initial: "R"
+            },
+            {
+                id: 2,
+                author: "rifqi",
+                text: "y",
+                pinned: false,
+                likes: 0,
+                liked: false,
+                image: null,
+                initial: "R"
+            },
+            {
+                id: 3,
+                author: "kyy",
+                text: "hii",
+                pinned: false,
+                likes: 0,
+                liked: false,
+                image: null,
+                initial: "K"
+            },
+            {
+                id: 4,
+                author: "kyy",
+                text: "hii",
+                pinned: false,
+                likes: 0,
+                liked: false,
+                image: null,
+                initial: "K"
+            }
+        ];
+
+        let comments = [...initialComments];
+        let selectedImageBase64 = null;
+
+        const commentsList = document.getElementById('commentsList');
+
+        // Hàm render danh sách bình luận
+        function renderComments() {
+            commentsList.innerHTML = "";
+            comments.forEach(comment => {
+                const card = document.createElement('div');
+                card.className = `comment-card ${comment.pinned ? 'pinned' : ''}`;
+                
+                card.innerHTML = `
+                    <div class="comment-avatar">${comment.initial}</div>
+                    <div class="comment-content-box">
+                        <div class="comment-author-row">
+                            <span class="comment-author-name">${comment.author}</span>
+                            ${comment.pinned ? `<span class="comment-badge-pinned">Pinned</span>` : ''}
+                        </div>
+                        <p class="comment-text">${comment.text}</p>
+                        ${comment.image ? `<img src="${comment.image}" class="comment-attachment" alt="Attached Image">` : ''}
+                    </div>
+                    <div class="comment-like-box ${comment.liked ? 'liked' : ''}" onclick="toggleLike(${comment.id})">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                        <span>${comment.likes}</span>
+                    </div>
+                `;
+                commentsList.appendChild(card);
+            });
+        }
+
+        renderComments();
+
+        // Xử lý nút Tim (Like)
+        function toggleLike(id) {
+            comments = comments.map(comment => {
+                if (comment.id === id) {
+                    const liked = !comment.liked;
+                    const likes = liked ? comment.likes + 1 : comment.likes - 1;
+                    return { ...comment, liked, likes };
+                }
+                return comment;
+            });
+            renderComments();
+        }
+
+        // Xử lý gửi Form liên hệ (Hubungi Saya)
+        function handleContactSubmit(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('contactName').value;
+            const email = document.getElementById('contactEmail').value;
+            const message = document.getElementById('contactMessage').value;
+
+            // Hiển thị thông báo Toast thành công
+            showToast("Message encrypted & sent successfully!");
+
+            // Reset form
+            document.getElementById('contactForm').reset();
+        }
+
+        // Xử lý khi chọn ảnh đính kèm bình luận
+        function triggerFileInput() {
+            document.getElementById('commentImageInput').click();
+        }
+
+        function handleImageSelected(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    selectedImageBase64 = e.target.result;
+                    document.getElementById('uploadLabel').innerText = "Image Selected";
+                    document.getElementById('uploadBtn').style.borderColor = "rgba(0, 162, 255, 0.4)";
+                    document.getElementById('uploadBtn').style.color = "#00a2ff";
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Xử lý gửi bình luận mới
+        function handleCommentSubmit(event) {
+            event.preventDefault();
+
+            const author = document.getElementById('commenterName').value;
+            const text = document.getElementById('commentText').value;
+            const initial = author.trim().charAt(0).toUpperCase() || "?";
+
+            const newComment = {
+                id: Date.now(),
+                author: author,
+                text: text,
+                pinned: false,
+                likes: 0,
+                liked: false,
+                image: selectedImageBase64,
+                initial: initial
+            };
+
+            // Thêm vào đầu danh sách (dưới các bình luận Pinned nếu có, hoặc trên cùng)
+            // Để đơn giản, ta tìm các bình luận pinned để giữ chúng trên cùng, còn lại chèn ngay dưới
+            const pinnedComments = comments.filter(c => c.pinned);
+            const regularComments = comments.filter(c => !c.pinned);
+            
+            comments = [...pinnedComments, newComment, ...regularComments];
+            
+            renderComments();
+            showToast("Comment posted successfully!");
+
+            // Reset form bình luận
+            document.getElementById('commentForm').reset();
+            selectedImageBase64 = null;
+            document.getElementById('uploadLabel').innerText = "Upload Image";
+            document.getElementById('uploadBtn').style.borderColor = "rgba(255, 255, 255, 0.1)";
+            document.getElementById('uploadBtn').style.color = "rgba(255, 255, 255, 0.6)";
+        }
+
+        // Giao diện Toast Notifications
+        function showToast(message) {
+            const container = document.getElementById('toastContainer');
+            
+            const toast = document.createElement('div');
+            toast.className = "toast";
+            toast.innerHTML = `
+                <svg class="toast-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                <span>${message}</span>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Trigger reflow/animation
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+
+            // Remove toast after 3.5s
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => {
+                    toast.remove();
+                }, 400);
+            }, 3500);
+        }
+
+        // ===== LERP MOUSE ENGINE (Hiệu ứng chuột dẻo) =====
+        const cursor = document.getElementById('cursor');
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 }; 
+        let pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };    
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        }, { passive: true });
+
+        function updateCursor() {
+            let dtX = mouse.x - pos.x;
+            let dtY = mouse.y - pos.y;
+
+            pos.x += dtX * 0.14; 
+            pos.y += dtY * 0.14;
+
+            let velocity = Math.sqrt(dtX * dtX + dtY * dtY);
+            let angle = Math.atan2(dtY, dtX);
+
+            let stretchX = 1 + (velocity * 0.007);
+            let stretchY = 1 - (velocity * 0.005);
+
+            stretchX = Math.min(Math.max(stretchX, 0.7), 2.3);
+            stretchY = Math.min(Math.max(stretchY, 0.35), 1.1);
+
+            cursor.style.transform = `translate3d(${pos.x - 13}px, ${pos.y - 13}px, 0) rotate(${angle}rad) scale(${stretchX}, ${stretchY})`;
+
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+
+        document.addEventListener('mouseleave', () => cursor.classList.add('hidden'));
+        document.addEventListener('mouseenter', () => cursor.classList.remove('hidden'));
+
+        // Hover elements to stretch cursor
+        function attachCursorHoverListeners() {
+            document.querySelectorAll('a, button, input, textarea, .comment-like-box').forEach(el => {
+                // Remove existing if any to avoid duplication
+                el.removeEventListener('mouseenter', addNavHover);
+                el.removeEventListener('mouseleave', removeNavHover);
+                
+                el.addEventListener('mouseenter', addNavHover);
+                el.addEventListener('mouseleave', removeNavHover);
+            });
+        }
+
+        function addNavHover() { cursor.classList.add('on-nav'); }
+        function removeNavHover() { cursor.classList.remove('on-nav'); }
+
+        attachCursorHoverListeners();
+
+        // Re-attach listeners when comments list is re-rendered
+        const observer = new MutationObserver(() => {
+            attachCursorHoverListeners();
+        });
+        observer.observe(commentsList, { childList: true });
+
+    </script>
+</body>
+</html>

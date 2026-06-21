@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trần Trung Thành — Project Showcase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: #06070d;
+            background-image: url('IMG/Background.jpeg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow: hidden;
+            font-family: 'Be Vietnam Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #ffffff;
+            user-select: none; -webkit-user-select: none;
+            -webkit-user-drag: none;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Nền mờ ảo đồng bộ */
+        body::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(circle, rgba(0,162,255,0.04) 0%, rgba(240,147,43,0.01) 60%, transparent 100%);
+            pointer-events: none; z-index: 1;
+            animation: techPulse 8s ease-in-out infinite alternate;
+        }
+        @keyframes techPulse { 0%{opacity:.5} 100%{opacity:1} }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 22px 36px;
+            opacity: 0;
+            animation: fadeIn 0.9s ease 0.2s forwards;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 34px;
+        }
+
+        .nav-links a {
+            color: rgba(255,255,255,0.75);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+            cursor: none !important;
+            user-select: none;
+            transition: color 0.3s ease, text-shadow 0.3s ease;
+        }
+        .nav-links a:hover { color: #fff; }
+        .nav-links a.active { color: #ffffff; text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+
+        .scroll-hint {
+            border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 100px;
+            padding: 9px 20px;
+            color: rgba(255,255,255,0.6);
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            cursor: none !important;
+            backdrop-filter: blur(6px);
+            background: rgba(255,255,255,0.04);
+        }
+
+        /* ===== MAIN GALLERY TITLE ===== */
+        .gallery-title-wrapper {
+            text-align: center;
+            margin-top: 120px;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeUp 0.9s ease 0.3s forwards;
+        }
+
+        .gallery-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.6rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            gap: 14px;
+        }
+
+        .gallery-title .word-project {
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+        }
+
+        .gallery-title .word-showcase {
+            background: linear-gradient(90deg, #00a2ff 0%, #f0932b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 8px rgba(0, 162, 255, 0.15));
+        }
+
+        /* ===== FILMSTRIP CONTAINER ===== */
+        .filmstrip-container {
+            position: relative;
+            width: 100%;
+            height: 580px;
+            z-index: 2;
+            overflow: visible;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            animation: fadeIn 1.2s ease 0.4s forwards;
+        }
+
+        /* Cuộn phim răng đục chạy nền */
+        .filmstrip-bg-ribbon {
+            position: absolute;
+            left: 0; right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 260px;
+            background: rgba(18, 20, 27, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .filmstrip-bg-ribbon::before, .filmstrip-bg-ribbon::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background-image: repeating-linear-gradient(to right, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 8px, transparent 8px, transparent 18px);
+        }
+        .filmstrip-bg-ribbon::before { top: 6px; }
+        .filmstrip-bg-ribbon::after { bottom: 6px; }
+
+        /* Moving track */
+        .filmstrip-track {
+            display: flex;
+            align-items: center;
+            height: 100%;
+            will-change: transform;
+            transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+            z-index: 2;
+        }
+
+        /* ===== CLASS KHÓA TRANSITION ĐỂ JUMP TRÁNH NHẤP NHÁY VÀ GIẬT HÌNH ===== */
+        .no-transitions, .no-transitions * {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        /* ===== TRƯỢT NHANH KHI CLICK CARD HOẶC INDICATOR ===== */
+        .fast-transitions, .fast-transitions * {
+            transition-duration: 0.28s !important;
+        }
+
+        /* ===== PROJECT CARD ===== */
+        .project-card {
+            position: relative;
+            width: 360px;
+            height: 220px;
+            margin: 0 35px;
+            border-radius: 20px;
+            overflow: hidden;
+            flex-shrink: 0;
+            background: rgba(18, 19, 26, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            cursor: none !important;
+            opacity: 0.25;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            padding: 14px;
+            transition: height 0.65s cubic-bezier(0.25, 1, 0.5, 1), 
+                        border-color 0.5s ease, 
+                        box-shadow 0.5s ease,
+                        opacity 0.6s ease;
+        }
+
+        /* Thẻ lân cận */
+        .project-card.neighbor {
+            opacity: 0.65;
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        /* Thẻ active phình to */
+        .project-card.active {
+            height: 550px;
+            opacity: 1;
+            border: 2px solid #ffffff;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(255,255,255,0.08);
+            background: #111219;
+            z-index: 10;
+            padding: 16px;
+        }
+
+        /* SHARED IMAGE BOX */
+        .card-img-box {
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #000;
+            flex-shrink: 0;
+            transition: height 0.65s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.65s ease;
+        }
+
+        .project-card.active .card-img-box {
+            height: 200px;
+            border-radius: 14px;
+        }
+
+        /* Image transitions */
+        .project-card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: grayscale(1) brightness(0.5);
+            transition: filter 0.45s ease, transform 0.6s ease;
+        }
+
+        /* Sắc độ thẻ lân cận */
+        .project-card.neighbor .project-card-img {
+            filter: grayscale(0.6) brightness(0.75);
+        }
+
+        /* Sắc độ thẻ active chính giữa */
+        .project-card.active .project-card-img {
+            filter: grayscale(0) brightness(0.95);
+        }
+
+        .project-card:hover .project-card-img {
+            transform: scale(1.03);
+        }
+
+        /* --- COLLAPSED INFO STYLE --- */
+        .info-collapsed {
+            display: flex;
+            flex-direction: column;
+            margin-top: 12px;
+            opacity: 1;
+            transition: opacity 0.4s ease;
+        }
+
+        .project-card.active .info-collapsed {
+            opacity: 0;
+            height: 0;
+            margin: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .collapsed-num {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+        }
+
+        .collapsed-title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin: 0;
+            letter-spacing: -0.2px;
+        }
+
+        .collapsed-preview-link {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.4);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* --- EXPANDED INFO STYLE --- */
+        .info-expanded {
+            display: flex;
+            flex-direction: column;
+            margin-top: 14px;
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease 0.15s, height 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+            pointer-events: none;
+        }
+
+        .project-card.active .info-expanded {
+            opacity: 1;
+            height: calc(100% - 214px);
+            pointer-events: auto;
+        }
+
+        .expanded-title {
+            font-size: 1.28rem;
+            font-weight: 800;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+            letter-spacing: -0.5px;
+            flex-shrink: 0;
+        }
+
+        .expanded-desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 1.5;
+            margin: 0 0 12px 0;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .expanded-details {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 16px;
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.85);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 12px;
+            flex-shrink: 0;
+        }
+
+        .detail-row {
+            display: flex;
+            gap: 8px;
+        }
+
+        .detail-label {
+            color: rgba(255, 255, 255, 0.4);
+            width: 60px;
+            font-weight: 500;
+        }
+
+        .expanded-btn {
+            background: #252e42;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            text-align: center;
+            padding: 12px 0;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-decoration: none;
+            width: 100%;
+            transition: all 0.3s ease;
+            margin-top: auto; 
+            cursor: none !important;
+        }
+
+        .expanded-btn:hover {
+            background: #ffffff;
+            color: #000000;
+        }
+
+        /* ===== BOTTOM CONTROLS ===== */
+        .bottom-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 60px 40px 60px;
+            z-index: 2;
+            opacity: 0;
+            animation: fadeIn 0.9s ease 0.5s forwards;
+        }
+
+        /* Slide indicators */
+        .indicators-wrapper {
+            display: flex;
+            gap: 12px;
+        }
+
+        .indicator {
+            width: 32px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 2px;
+            transition: background 0.3s ease, width 0.3s ease;
+            cursor: none !important;
+        }
+
+        .indicator.active {
+            background: #ffffff;
+            width: 48px;
+        }
+
+        /* Navigation Arrows */
+        .nav-arrows {
+            display: flex;
+            gap: 20px;
+        }
+
+        .arrow-btn {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 1.6rem;
+            font-weight: 300;
+            cursor: none !important;
+            transition: color 0.3s ease, transform 0.2s ease;
+            padding: 10px;
+        }
+
+        .arrow-btn:hover {
+            color: #ffffff;
+            transform: scale(1.15);
+        }
+
+        /* ===== MOUSE PRISM CURSOR ===== */
+        html, body, * { cursor: none !important; }
+
+        #cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 26px; height: 26px;
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(2px) brightness(1.25) saturate(1.3);
+            -webkit-backdrop-filter: blur(2px) brightness(1.25) saturate(1.3);
+            border: 1.5px solid rgba(255, 255, 255, 0.45);
+            border-radius: 60% 40% 40% 60% / 60% 40% 60% 40%;
+            mix-blend-mode: plus-lighter;
+            pointer-events: none !important; 
+            z-index: 999999;
+            transform-origin: center center;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2), inset 0 0 6px rgba(255, 255, 255, 0.35);
+            transition: width 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        height 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), 
+                        border-color 0.25s ease, 
+                        border-radius 0.2s ease, 
+                        background-image 0.3s ease;
+        }
+
+        #cursor.hidden { opacity: 0; }
+        #cursor.on-card {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            border-color: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.1);
+        }
+        #cursor.on-nav {
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            border-color: rgba(255, 255, 255, 0.85);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Utilities */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .navbar { padding: 20px; }
+            .gallery-title-wrapper { margin-top: 100px; }
+            .project-card { width: 320px; }
+            .project-card.active { height: 510px; }
+            .card-img-box { height: 110px; }
+            .project-card.active .card-img-box { height: 180px; }
+            .bottom-controls { padding: 0 30px 30px 30px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="cursor"></div>
+
+    <!-- NAVBAR (Original Navbar) -->
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="Home.html">Home</a>
+            <a href="Info.html">Information</a>
+            <a href="skills.html">Skills</a>
+            <a href="Project.html" class="active">Project</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <div class="scroll-hint">Hover cards to inspect</div>
+    </nav>
+
+    <!-- TITLE -->
+    <div class="gallery-title-wrapper">
+        <h1 class="gallery-title">
+            <span class="word-project">Project</span>
+            <span class="word-showcase">Showcase</span>
+        </h1>
+    </div>
+
+    <!-- FILMSTRIP CONTAINER -->
+    <main class="filmstrip-container" id="filmstripContainer">
+        <div class="filmstrip-bg-ribbon"></div>
+        <div class="filmstrip-track" id="filmstripTrack">
+            <!-- Render các thẻ dự án bằng Javascript -->
+        </div>
+    </main>
+
+    <!-- BOTTOM CONTROLS -->
+    <footer class="bottom-controls">
+        <div class="indicators-wrapper" id="indicatorsWrapper">
+            <!-- Render slide indicators dynamically -->
+        </div>
+    </footer>
+
+    <!-- SCRIPTS -->
+    <script>
+        // Danh sách dự án mẫu
+        const projects = [
+            {
+                id: "neoswap",
+                category: "WEB3 & FINTECH",
+                shortName: "NEXUS SWAP",
+                title: "NEXUS | Swap & Exchange",
+                desc: "Hệ thống giao dịch phi tập trung tối ưu hóa trượt giá và thanh khoản. Cung cấp bảng điều khiển trực quan hiển thị hoạt động giao dịch của các ví Web3.",
+                image: "IMG/neoswap.png",
+                role: "Lead Frontend Developer",
+                client: "Nexus Finance Corp.",
+                year: "2025",
+                yearRole: "2025 • Lead Frontend"
+            },
+            {
+                id: "cognitive",
+                category: "AI & COGNITION",
+                shortName: "COGNITIVE AI",
+                title: "COGNITIVE | Neural Thought Tree",
+                desc: "Hệ thống AI trực quan hóa các tầng suy luận và gỡ lỗi logic cho mô hình ngôn ngữ lớn (LLM). Cung cấp giao diện tương tác dạng cây tư duy thời gian thực.",
+                image: "IMG/cognitive.png",
+                role: "Fullstack AI Engineer",
+                client: "Cognitive Intelligence Labs",
+                year: "2026",
+                yearRole: "2026 • AI Engineer"
+            },
+            {
+                id: "vortex",
+                category: "3D & MOTION DESIGN",
+                shortName: "VORTEX MOTION",
+                title: "VORTEX | 3D Motion Library",
+                desc: "Thư viện hoạt ảnh mô phỏng động lực học chất lỏng 3D bóng bẩy. Thiết kế hoàn hảo cho các màn hình trình diễn tương tác hiệu năng cao trên trình duyệt.",
+                image: "IMG/vortex.png",
+                role: "3D Generalist & Designer",
+                client: "Vortex Media Studios",
+                year: "2024",
+                yearRole: "2024 • 3D Generalist"
+            },
+            {
+                id: "decentralized",
+                category: "BLOCKCHAIN & DID",
+                shortName: "IDENTITY SDK",
+                title: "DID | Cryptographic Identity",
+                desc: "Thư viện xác thực danh tính phi tập trung dựa trên mật mã học blockchain, hỗ trợ ký khóa số, ví Web3 và cơ chế xác thực không mật khẩu FIDO2.",
+                image: "IMG/decentralized.png",
+                role: "Cryptographic Engineer",
+                client: "Identity Decentralized Labs",
+                year: "2025",
+                yearRole: "2025 • Crypto Eng"
+            },
+            {
+                id: "aura",
+                category: "UX/UI WELLNESS",
+                shortName: "AURA SYSTEM",
+                title: "AURA | Digital Wellness Platform",
+                desc: "Thiết kế ứng dụng di động toàn diện hỗ trợ thiền định, lối sống chánh niệm và theo dõi hành trình sức khỏe. Tập trung tối đa vào UX tĩnh lặng và giao diện tối giản.",
+                image: "IMG/aura.png",
+                role: "Lead UX/UI Designer",
+                client: "Aura Health Inc.",
+                year: "2024",
+                yearRole: "2024 • Lead UX/UI"
+            }
+        ];
+
+        const track = document.getElementById('filmstripTrack');
+        const indicatorsWrapper = document.getElementById('indicatorsWrapper');
+        const cursor = document.getElementById('cursor');
+
+        // BẢN CLONE VÔ TẬN 5 SET (25 CARDS) ĐỂ TRÁNH GIỚI HẠN BIÊN TRÊN MÀN HÌNH SIÊU RỘNG (4K, UltraWide)
+        // Set chính ở giữa là set thứ 3 (indices từ 10 đến 14). 
+        // Vị trí mặc định lúc đầu: activeIndex = 12 (Vortex Motion của set 3)
+        let activeIndex = 12;
+        let cards = [];
+        let isTransitioning = false;
+
+        // Render dự án
+        function buildGallery() {
+            track.innerHTML = "";
+            indicatorsWrapper.innerHTML = "";
+
+            const repeatCount = 5; // Tăng lên 5 set để tạo buffer 10 card hai bên cực rộng
+            for (let r = 0; r < repeatCount; r++) {
+                projects.forEach((proj, projIdx) => {
+                    const cardIdx = r * projects.length + projIdx;
+                    
+                    const card = document.createElement('div');
+                    card.className = `project-card ${cardIdx === activeIndex ? 'active' : ''}`;
+                    card.setAttribute('data-index', cardIdx);
+                    
+                    card.innerHTML = `
+                        <!-- SHARED IMAGE BOX -->
+                        <div class="card-img-box">
+                            <img src="${proj.image}" alt="${proj.title}" class="project-card-img" draggable="false" onerror="this.src='https://placehold.co/600x338/111219/ffffff?text=${encodeURIComponent(proj.shortName)}'">
+                        </div>
+
+                        <!-- COLLAPSED LAYOUT -->
+                        <div class="info-collapsed">
+                            <span class="collapsed-num">${proj.category}</span>
+                            <h3 class="collapsed-title">${proj.shortName}</h3>
+                            <span class="collapsed-preview-link">${proj.yearRole}</span>
+                        </div>
+
+                        <!-- EXPANDED LAYOUT -->
+                        <div class="info-expanded">
+                            <h2 class="expanded-title">${proj.title}</h2>
+                            <p class="expanded-desc">${proj.desc}</p>
+                            <div class="expanded-details">
+                                <div class="detail-row">
+                                    <span class="detail-label">Role:</span>
+                                    <span>${proj.role}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Client:</span>
+                                    <span>${proj.client}</span>
+                                </div>
+                                <div class="detail-row">
+                                    <span class="detail-label">Year:</span>
+                                    <span>${proj.year}</span>
+                                </div>
+                            </div>
+                            <a href="#" class="expanded-btn">VIEW CASE STUDY</a>
+                        </div>
+                    `;
+                    
+                    track.appendChild(card);
+                    cards.push(card);
+                });
+            }
+
+            // Tạo các gạch slide đại diện cho 5 dự án gốc
+            projects.forEach((proj, idx) => {
+                const indicator = document.createElement('div');
+                indicator.className = `indicator ${idx === (activeIndex % projects.length) ? 'active' : ''}`;
+                indicator.addEventListener('click', () => {
+                    track.classList.add('fast-transitions');
+                    goToProject(idx);
+                    resetAutoplayTimer();
+                });
+                indicatorsWrapper.appendChild(indicator);
+            });
+        }
+
+        buildGallery();
+
+        // Cập nhật trạng thái slider và căn giữa card active
+        function updateCarousel() {
+            const logicalProjIndex = activeIndex % projects.length;
+
+            cards.forEach((card, idx) => {
+                card.classList.remove('active', 'neighbor');
+                
+                if (idx === activeIndex) {
+                    card.classList.add('active');
+                } else if (idx === activeIndex - 1 || idx === activeIndex + 1) {
+                    card.classList.add('neighbor');
+                }
+            });
+
+            // Cập nhật indicators hoạt động theo index logic
+            const indicators = document.querySelectorAll('.indicator');
+            indicators.forEach((ind, idx) => {
+                if (idx === logicalProjIndex) {
+                    ind.classList.add('active');
+                } else {
+                    ind.classList.remove('active');
+                }
+            });
+
+            // Tính toán căn giữa active card
+            const viewportCenter = window.innerWidth / 2;
+            const activeCard = cards[activeIndex];
+            const activeCardCenterOffset = activeCard.offsetLeft + (activeCard.offsetWidth / 2);
+            const translateX = viewportCenter - activeCardCenterOffset;
+
+            track.style.transform = `translate3d(${translateX}px, 0, 0)`;
+        }
+
+        // Bổ trợ tìm đích trượt gần nhất trong track
+        function getShortestPath(fromIndex, targetLogical) {
+            const len = projects.length;
+            const currentLogical = fromIndex % len;
+            let diff = targetLogical - currentLogical;
+            
+            if (diff > 2) diff -= len;
+            if (diff < -2) diff += len;
+            
+            return fromIndex + diff;
+        }
+
+        // Thực hiện kỹ thuật nhảy trước khi trượt (Pre-Transition Jump)
+        function goToProject(targetLogical) {
+            if (isTransitioning) return;
+            
+            const closestTarget = getShortestPath(activeIndex, targetLogical);
+            
+            if (closestTarget >= 10 && closestTarget <= 14) {
+                isTransitioning = true;
+                activeIndex = closestTarget;
+                updateCarousel();
+            } else {
+                isTransitioning = true;
+                const safeTarget = 10 + targetLogical;
+                const start = safeTarget - (closestTarget - activeIndex);
+                
+                // Jump không transition đến start index
+                activeIndex = start;
+                track.classList.add('no-transitions');
+                updateCarousel();
+                track.offsetHeight; // Lệnh ép buộc reflow đồng bộ
+                track.classList.remove('no-transitions');
+                
+                // Kích hoạt transition trượt đến safeTarget sau một khoảng trễ cực nhỏ
+                setTimeout(() => {
+                    activeIndex = safeTarget;
+                    updateCarousel();
+                }, 20);
+            }
+        }
+
+        // Kết thúc chuyển động trượt -> mở khóa transition
+        function handleTransitionEnd() {
+            isTransitioning = false;
+            track.classList.remove('fast-transitions');
+        }
+
+        // Lắng nghe sự kiện kết thúc chuyển động transform của track
+        track.addEventListener('transitionend', (e) => {
+            if (e.target === track && e.propertyName === 'transform') {
+                handleTransitionEnd();
+            }
+        });
+
+        // Đợi cấu trúc DOM render ổn định
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                updateCarousel();
+                resetAutoplayTimer();
+            }, 150);
+        });
+
+        window.addEventListener('resize', () => {
+            track.classList.add('no-transitions');
+            updateCarousel();
+            track.offsetHeight;
+            setTimeout(() => {
+                track.classList.remove('no-transitions');
+            }, 35);
+        });
+
+        // Click vào card để kích hoạt
+        cards.forEach((card, idx) => {
+            card.addEventListener('click', () => {
+                const clickedLogical = idx % projects.length;
+                track.classList.add('fast-transitions');
+                goToProject(clickedLogical);
+                resetAutoplayTimer();
+            });
+
+            card.addEventListener('mouseenter', () => {
+                cursor.classList.add('on-card');
+                if (card.classList.contains('active')) {
+                    resetAutoplayTimer();
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                cursor.classList.remove('on-card');
+                resetAutoplayTimer();
+            });
+        });
+
+        function slideNext() {
+            const nextLogical = (activeIndex + 1) % projects.length;
+            goToProject(nextLogical);
+        }
+
+        function slidePrev() {
+            const prevLogical = (activeIndex - 1 + projects.length) % projects.length;
+            goToProject(prevLogical);
+        }
+
+        // (Arrow navigation buttons removed)
+
+        // ===== AUTOPLAY ENGINE (Lướt 3s/lần ở trạng thái tĩnh) =====
+        let autoplayTimeout = null;
+        const AUTOPLAY_DELAY = 3000; // Đổi thẻ sau mỗi 3 giây
+
+        function resetAutoplayTimer() {
+            if (autoplayTimeout) {
+                clearTimeout(autoplayTimeout);
+            }
+
+            // Nếu chuột đang hover vào card main (active), dừng hoàn toàn tự động chuyển
+            const activeCard = cards[activeIndex];
+            if (activeCard && activeCard.matches(':hover')) {
+                return;
+            }
+
+            autoplayTimeout = setTimeout(() => {
+                slideNext();
+                resetAutoplayTimer();
+            }, AUTOPLAY_DELAY);
+        }
+
+        // Tương tác chuột -> Tạm dừng đếm ngược
+        window.addEventListener('mousemove', resetAutoplayTimer);
+        window.addEventListener('mousedown', resetAutoplayTimer);
+        window.addEventListener('keydown', resetAutoplayTimer);
+        window.addEventListener('wheel', resetAutoplayTimer);
+
+        // Chuột rời tab hoặc window -> tiếp tục tự chạy lướt vô tận
+        document.addEventListener('mouseleave', () => {
+            resetAutoplayTimer();
+        });
+
+        document.addEventListener('mouseenter', () => {
+            resetAutoplayTimer();
+        });
+
+        // ===== LERP MOUSE ENGINE (Hiệu ứng chuột dẻo) =====
+        let mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 }; 
+        let pos = { x: window.innerWidth / 2, y: window.innerHeight / 2 };    
+
+        window.addEventListener('mousemove', e => {
+            mouse.x = e.clientX;
+            mouse.y = e.clientY;
+        }, { passive: true });
+
+        function updateCursor() {
+            let dtX = mouse.x - pos.x;
+            let dtY = mouse.y - pos.y;
+
+            pos.x += dtX * 0.14; 
+            pos.y += dtY * 0.14;
+
+            let velocity = Math.sqrt(dtX * dtX + dtY * dtY);
+            let angle = Math.atan2(dtY, dtX);
+
+            let stretchX = 1 + (velocity * 0.007);
+            let stretchY = 1 - (velocity * 0.005);
+
+            stretchX = Math.min(Math.max(stretchX, 0.7), 2.3);
+            stretchY = Math.min(Math.max(stretchY, 0.35), 1.1);
+
+            cursor.style.transform = `translate3d(${pos.x - 13}px, ${pos.y - 13}px, 0) rotate(${angle}rad) scale(${stretchX}, ${stretchY})`;
+
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+
+        document.addEventListener('mouseleave', () => cursor.classList.add('hidden'));
+        document.addEventListener('mouseenter', () => cursor.classList.remove('hidden'));
+
+        // Hover elements
+        document.querySelectorAll('.nav-links a, .arrow-btn, .scroll-hint, .indicator, .expanded-btn').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('on-nav'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('on-nav'));
+        });
+    </script>
+</body>
+</html>
