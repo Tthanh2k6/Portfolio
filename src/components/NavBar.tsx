@@ -118,10 +118,12 @@ export function NavBar({ className = "" }: { className?: string }) {
           aria-hidden="true"
           style={{
             position:     "absolute",
-            left:         bubbleRect.left - 12,
-            top:          bubbleRect.top  - 6,
-            width:        bubbleRect.width  + 24,
-            height:       bubbleRect.height + 12,
+            // Khớp đúng hộp của <Link> (đã có padding px-3 py-1.5), nên cả vùng
+            // bong bóng đều click được — không cần offset thêm như trước.
+            left:         bubbleRect.left,
+            top:          bubbleRect.top,
+            width:        bubbleRect.width,
+            height:       bubbleRect.height,
             borderRadius: "9999px",
             background:   "rgba(255,255,255,0.10)",
             border:       "1px solid rgba(255,255,255,0.18)",
@@ -135,7 +137,7 @@ export function NavBar({ className = "" }: { className?: string }) {
       )}
 
       <ul
-        className="relative flex items-center gap-12 font-sans text-lg text-zinc-400"
+        className="relative flex items-center gap-6 font-sans text-lg text-zinc-400"
         style={{ zIndex: 1 }}
       >
         {navItems.map((item, idx) => (
@@ -147,7 +149,7 @@ export function NavBar({ className = "" }: { className?: string }) {
           >
             <Link
               to={item.to}
-              className="transition-colors duration-300 hover:text-white [&.active]:text-white"
+              className="inline-block px-3 py-1.5 transition-colors duration-300 hover:text-white [&.active]:text-white"
             >
               {item.label}
             </Link>
