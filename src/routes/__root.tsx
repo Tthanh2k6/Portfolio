@@ -120,7 +120,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+      {/* Bắt buộc: các route con render ở đây. Xóa <Outlet /> sẽ làm hỏng toàn bộ route con. */}
       <Outlet />
       <CustomCursor />
     </QueryClientProvider>
@@ -128,7 +128,7 @@ function RootComponent() {
 }
 
 
-// ─── Custom Cursor ──────────────────────────────────────────────────
+// ─── Con trỏ tùy chỉnh ──────────────────────────────────────────────────
 function CustomCursor() {
   const [mounted, setMounted] = useState(false);
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -166,15 +166,15 @@ function CustomCursor() {
       let vx = velRef.current.x;
       let vy = velRef.current.y;
 
-      // Spring-damper physics constants
-      const spring = 0.085;  // Spring coefficient (stiffness)
-      const damping = 0.62;  // Damping coefficient (friction/resistance)
+      // Hằng số vật lý lò xo - giảm chấn
+      const spring = 0.085;  // Hệ số lò xo (độ cứng)
+      const damping = 0.62;  // Hệ số giảm chấn (ma sát/lực cản)
 
-      // Calculate acceleration
+      // Tính gia tốc
       const ax = (targetX - px) * spring - vx * damping;
       const ay = (targetY - py) * spring - vy * damping;
 
-      // Update velocity & position
+      // Cập nhật vận tốc & vị trí
       vx += ax;
       vy += ay;
       px += vx;
@@ -183,16 +183,16 @@ function CustomCursor() {
       posRef.current = { x: px, y: py };
       velRef.current = { x: vx, y: vy };
 
-      // Calculate speed and angle of travel for dynamic stretching
+      // Tính tốc độ và góc di chuyển để co giãn động
       const speed = Math.sqrt(vx * vx + vy * vy);
       const angle = Math.atan2(vy, vx);
 
-      // Droplet stretch factors: stretches along velocity axis, contracts perpendicular to it
+      // Hệ số co giãn dạng giọt nước: kéo dài theo trục vận tốc, co lại theo phương vuông góc
       const maxStretch = 1.95;
       const stretch = Math.min(1 + speed * 0.038, maxStretch);
       const shrink = Math.max(1 - speed * 0.018, 0.45);
 
-      // Smoothly animate hover scale expansion
+      // Hoạt ảnh phóng to khi hover một cách mượt mà
       const targetHoverScale = targetHoverScaleRef.current;
       let currentHoverScale = hoverScaleRef.current;
       currentHoverScale += (targetHoverScale - currentHoverScale) * 0.15;
@@ -202,7 +202,7 @@ function CustomCursor() {
       const finalScaleY = shrink * currentHoverScale;
 
       if (cursorRef.current) {
-        // No hard offset here! Centering is handled by CSS margin-top/margin-left
+        // Không offset cứng ở đây! Việc canh giữa được xử lý bằng CSS margin-top/margin-left
         cursorRef.current.style.transform =
           `translate3d(${px}px, ${py}px, 0) rotate(${angle}rad) scale(${finalScaleX}, ${finalScaleY})`;
       }
@@ -240,7 +240,7 @@ function CustomCursor() {
 
   return createPortal(
     <div ref={cursorRef} className="skills-cursor">
-      {/* Center dot - displays actual color for targeting */}
+      {/* Chấm trung tâm - hiển thị màu thật để ngắm mục tiêu */}
       <div
         style={{
           position: "absolute",

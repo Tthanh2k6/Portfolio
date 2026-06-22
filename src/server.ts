@@ -18,8 +18,8 @@ async function getServerEntry(): Promise<ServerEntry> {
   return serverEntryPromise;
 }
 
-// h3 swallows in-handler throws into a normal 500 Response with body
-// {"unhandled":true,"message":"HTTPError"} — try/catch alone never fires for those.
+// h3 nuốt các throw trong handler và biến thành Response 500 thông thường với body
+// {"unhandled":true,"message":"HTTPError"} — chỉ try/catch không bao giờ bắt được những trường hợp này.
 async function normalizeCatastrophicSsrResponse(response: Response): Promise<Response> {
   if (response.status < 500) return response;
   const contentType = response.headers.get("content-type") ?? "";

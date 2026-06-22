@@ -17,10 +17,11 @@ interface Toast {
   message: string;
 }
 
+// Danh sách link mạng xã hội mặc định (dùng khi localStorage chưa có "contact_socials")
 const DEFAULT_SOCIALS = [
-  { type: "GitHub", url: "https://github.com", handle: "@tranthanh", visible: true, large: true },
-  { type: "Facebook", url: "https://facebook.com", handle: "Trần Trung Thành", visible: true, large: false },
-  { type: "Zalo", url: "https://zalo.me", handle: "Trần Trung Thành", visible: true, large: false },
+  { type: "GitHub", url: "https://github.com/Tthanh2k6", handle: "@Tthanh2k6", visible: true, large: true },
+  { type: "Facebook", url: "https://www.facebook.com/tran.trung.thanh.239362", handle: "Trần Trung Thành", visible: true, large: false },
+  { type: "Zalo", url: "https://zaloapp.com/qr/p/rmo5prbvj5ul", handle: "Trần Trung Thành", visible: true, large: false },
 ];
 
 function getSocialIcon(type: string) {
@@ -75,32 +76,25 @@ function getSocialIcon(type: string) {
   );
 }
 
+// Comment mặc định: lời chào của chủ trang, được ghim (pinned) lên đầu sổ lưu bút
 const initialComments: Comment[] = [
   {
     id: 1,
-    author: "Rifqi Muhammad A",
-    text: "Terima kasih đã mampir",
+    author: "Trần Trung Thành",
+    text: "Chào mừng bạn đến với portfolio của mình! Cảm ơn bạn đã ghé thăm — hãy để lại một lời nhắn hoặc cảm nghĩ nhé. 👋",
     pinned: true,
-    likes: 2,
-    liked: false,
-    image: null,
-    initial: "R",
-  },
-  {
-    id: 3,
-    author: "kyy",
-    text: "hii",
-    pinned: false,
     likes: 0,
     liked: false,
     image: null,
-    initial: "K",
+    initial: "T",
   },
 ];
 
 function ToastItem({ toast }: { toast: Toast }) {
   const [show, setShow] = useState(false);
 
+  // Trễ 10ms để bật class "show" sau khi mount -> kích hoạt transition trượt lên;
+  // sau 3500ms gỡ class để toast trượt ra (toast bị xóa hẳn khỏi state sau 4000ms ở showToast)
   useEffect(() => {
     const timerShow = setTimeout(() => setShow(true), 10);
     const timerHide = setTimeout(() => setShow(false), 3500);
@@ -132,19 +126,20 @@ export function ContactSection() {
   const [socials, setSocials] = useState<any[]>(DEFAULT_SOCIALS);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
-  // Contact Form state
+  // State của form liên hệ
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactMessage, setContactMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
 
-  // Guestbook Form state
+  // State của form sổ lưu bút
   const [commentAuthor, setCommentAuthor] = useState("");
   const [commentText, setCommentText] = useState("");
   const [selectedImageBase64, setSelectedImageBase64] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Phát CustomEvent toàn cục để con trỏ chuột tùy chỉnh (custom cursor) phóng to/thu nhỏ khi hover
   const triggerCursorHover = (enter: boolean) => {
     const eventName = enter ? "cursorHoverEnter" : "cursorHoverLeave";
     window.dispatchEvent(new CustomEvent(eventName));
@@ -163,7 +158,9 @@ export function ContactSection() {
     }, 4000);
   };
 
-  // Load dy details from localStorage on client side mount
+  // CMS phía client (không cần backend): trang /admin ghi dữ liệu vào localStorage,
+  // còn trang công khai này đọc lại các key đó khi mount. Nếu chưa có dữ liệu thì giữ giá trị mặc định.
+  // Đọc trong useEffect (không phải lúc khởi tạo state) vì localStorage chỉ tồn tại ở client, tránh lỗi SSR.
   useEffect(() => {
     const storedSocials = localStorage.getItem("contact_socials");
     if (storedSocials) {
@@ -189,8 +186,10 @@ export function ContactSection() {
     if (!contactName.trim() || !contactEmail.trim() || !contactMessage.trim()) return;
 
     setIsSending(true);
+    // Email người nhận do trang /admin cấu hình (key "contact_receiver_email"); nếu chưa có thì dùng mặc định
     const receiverEmail = localStorage.getItem("contact_receiver_email") || "ttrungthanh90@gmail.com";
 
+    // Gửi mail qua dịch vụ FormSubmit (không cần backend riêng); _captcha=false để bỏ qua captcha
     try {
       const response = await fetch(`https://formsubmit.co/ajax/${receiverEmail}`, {
         method: "POST",
@@ -225,6 +224,8 @@ export function ContactSection() {
     fileInputRef.current?.click();
   };
 
+  // Đọc ảnh người dùng chọn và chuyển sang chuỗi base64/dataURL để lưu thẳng vào localStorage cùng bình luận
+  // (vì không có server lưu file, ảnh được nhúng trực tiếp dưới dạng data URL)
   const handleImageSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -254,6 +255,8 @@ export function ContactSection() {
       initial,
     };
 
+    // Chèn bình luận mới ngay sau các bình luận đã ghim (pinned luôn nằm trên đầu),
+    // rồi lưu lại "contact_comments" để trang /admin và lần tải sau đọc được
     setComments((prev) => {
       const pinned = prev.filter((c) => c.pinned);
       const regular = prev.filter((c) => !c.pinned);
@@ -288,7 +291,7 @@ export function ContactSection() {
 
   return (
     <div className="contact-page-container">
-      {/* SCOPED CUSTOM CSS STYLES */}
+      {/* CSS TÙY CHỈNH CỤC BỘ */}
       <style>{`
         .contact-page-container {
           background-color: #0b0c10;
@@ -836,7 +839,7 @@ export function ContactSection() {
         }
       `}</style>
 
-      {/* TOAST NOTIFICATIONS */}
+      {/* THÔNG BÁO TOAST */}
       <div className="toast-container">
         {toasts.map((t) => (
           <ToastItem key={t.id} toast={t} />
@@ -846,7 +849,7 @@ export function ContactSection() {
       {/* NAVBAR */}
       <NavBar />
 
-      {/* HEADER TITLE */}
+      {/* TIÊU ĐỀ HEADER */}
       <div className="contact-header-wrapper">
         <h1 className="gallery-title" style={{ marginBottom: "12px" }}>
           <span className="word-project">Get In</span>
@@ -857,9 +860,9 @@ export function ContactSection() {
         </p>
       </div>
 
-      {/* TWO-COLUMN GRID */}
+      {/* GRID HAI CỘT */}
       <section className="contact-grid">
-        {/* LEFT COLUMN: Contact Form + Social Grid */}
+        {/* CỘT TRÁI: Form liên hệ + Grid mạng xã hội */}
         <div className="contact-column-card">
           <h2 className="column-title">Contact Me</h2>
           <p className="column-subtitle">
@@ -867,7 +870,7 @@ export function ContactSection() {
           </p>
 
           <form onSubmit={handleContactSubmit}>
-            {/* Name input */}
+            {/* Ô nhập tên */}
             <div className="form-group">
               <svg
                 className="input-icon"
@@ -890,7 +893,7 @@ export function ContactSection() {
               />
             </div>
 
-            {/* Email input */}
+            {/* Ô nhập email */}
             <div className="form-group">
               <svg
                 className="input-icon"
@@ -913,7 +916,7 @@ export function ContactSection() {
               />
             </div>
 
-            {/* Message input */}
+            {/* Ô nhập tin nhắn */}
             <div className="form-group">
               <svg
                 className="input-icon"
@@ -966,14 +969,14 @@ export function ContactSection() {
           </div>
         </div>
 
-        {/* RIGHT COLUMN: Guestbook / Comments */}
+        {/* CỘT PHẢI: Sổ lưu bút / Bình luận */}
         <div className="contact-column-card">
           <h2 className="column-title">Comments</h2>
           <p className="column-subtitle">Leave your thoughts here</p>
 
           <form onSubmit={handleCommentSubmit}>
             <div className="comments-input-row">
-              {/* Comment Name */}
+              {/* Tên người bình luận */}
               <div className="form-group">
                 <svg
                   className="input-icon"
@@ -996,7 +999,7 @@ export function ContactSection() {
                 />
               </div>
 
-              {/* Comment text */}
+              {/* Nội dung bình luận */}
               <div className="form-group">
                 <textarea
                   className="form-input comment-textarea"
@@ -1010,7 +1013,7 @@ export function ContactSection() {
             </div>
 
             <div className="comments-actions">
-              {/* Upload image */}
+              {/* Tải ảnh lên */}
               <button
                 type="button"
                 className="action-sub-btn animate-pulse-glow"
@@ -1044,7 +1047,7 @@ export function ContactSection() {
 
           <h3 className="comments-feed-title">Latest Comments</h3>
 
-          {/* COMMENTS FEED LIST */}
+          {/* DANH SÁCH BÌNH LUẬN */}
           <div className="comments-list">
             {comments.map((comment) => (
               <div
@@ -1085,7 +1088,7 @@ export function ContactSection() {
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* CHÂN TRANG */}
       <footer className="bottom-controls" style={{ paddingBottom: "30px", zIndex: 2 }}>
       </footer>
     </div>

@@ -12,7 +12,7 @@ export const Route = createFileRoute("/admin")({
   component: AdminPanel,
 });
 
-// DEFAULT VALUES FALLBACKS (To initialize form states correctly)
+// GIÁ TRỊ MẶC ĐỊNH DỰ PHÒNG (Để khởi tạo state của form cho đúng)
 const DEFAULT_CUBES = {
   pink: "#FF00FF",
   purple: "#9900FF",
@@ -90,68 +90,77 @@ const DEFAULT_MAP = {
   "Git": "Git",
 };
 
+// Danh sách dự án mặc định = các repo công khai thật trên GitHub (đồng bộ với ProjectSection).
+// Chỉ hiện trong trình sửa admin khi localStorage "project_list" còn trống.
+const GITHUB_USER = "Tthanh2k6";
+const ghImage = (repo: string) =>
+  `https://opengraph.githubassets.com/1/${GITHUB_USER}/${repo}`;
+
+// Ảnh chụp màn hình thật của từng dự án (trong public IMG/), ưu tiên hơn ảnh OpenGraph
+const REPO_IMAGES: Record<string, string> = {
+  DiemDanhQR: "/IMG/project-diemdanhqr.jpg",
+  AI_Lab: "/IMG/project-ailab.png",
+  KNN: "/IMG/project-knn.png",
+  Portfolio: "/IMG/project-portfolio.png",
+};
+const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
+
 const DEFAULT_PROJECTS = [
   {
-    id: "neoswap",
-    category: "WEB3 & FINTECH",
-    shortName: "NEXUS SWAP",
-    title: "NEXUS | Swap & Exchange",
-    desc: "Hệ thống giao dịch phi tập trung tối ưu hóa trượt giá và thanh khoản. Cung cấp bảng điều khiển trực quan hiển thị hoạt động giao dịch của các ví Web3.",
-    image: "/IMG/neoswap.png",
-    role: "Lead Frontend Developer",
-    client: "Nexus Finance Corp.",
-    year: "2025",
-  },
-  {
-    id: "cognitive",
-    category: "AI & COGNITION",
-    shortName: "COGNITIVE AI",
-    title: "COGNITIVE | Neural Thought Tree",
-    desc: "Hệ thống AI trực quan hóa các tầng suy luận và gỡ lỗi logic cho mô hình ngôn ngữ lớn (LLM). Cung cấp giao diện tương tác dạng cây tư duy thời gian thực.",
-    image: "/IMG/cognitive.png",
-    role: "Fullstack AI Engineer",
-    client: "Cognitive Intelligence Labs",
+    id: "DiemDanhQR",
+    category: "JAVASCRIPT",
+    shortName: "QR ATTENDANCE",
+    title: "DiemDanhQR | Điểm danh QR",
+    desc: "Công cụ điểm danh bằng mã QR: quét QR trên điện thoại, tự ghi vào Google Sheets qua Google Apps Script — chạy dạng PWA, không cần server riêng.",
+    image: projectImage("DiemDanhQR"),
+    role: "JavaScript Developer",
+    client: "Dự án cá nhân",
     year: "2026",
+    link: `https://github.com/${GITHUB_USER}/DiemDanhQR`,
   },
   {
-    id: "vortex",
-    category: "3D & MOTION DESIGN",
-    shortName: "VORTEX MOTION",
-    title: "VORTEX | 3D Motion Library",
-    desc: "Thư viện hoạt ảnh mô phỏng động lực học chất lỏng 3D bóng bẩy. Thiết kế hoàn hảo cho các màn hình trình diễn tương tác hiệu năng cao trên trình duyệt.",
-    image: "/IMG/vortex.png",
-    role: "3D Generalist & Designer",
-    client: "Vortex Media Studios",
-    year: "2024",
+    id: "AI_Lab",
+    category: "TYPESCRIPT & AI",
+    shortName: "AI LAB",
+    title: "AI_Lab | Thử nghiệm AI",
+    desc: "AI Game Arena — ứng dụng Electron cho AI tự học, tiến hóa và thi đấu game thời gian thực (Minimax, MCTS, mạng nơ-ron, giải thuật di truyền).",
+    image: projectImage("AI_Lab"),
+    role: "TypeScript Developer",
+    client: "Dự án cá nhân",
+    year: "2026",
+    link: `https://github.com/${GITHUB_USER}/AI_Lab`,
   },
   {
-    id: "decentralized",
-    category: "BLOCKCHAIN & DID",
-    shortName: "IDENTITY SDK",
-    title: "DID | Cryptographic Identity",
-    desc: "Thư viện xác thực danh tính phi tập trung dựa trên mật mã học blockchain, hỗ trợ ký khóa số, ví Web3 và cơ chế xác thực không mật khẩu FIDO2.",
-    image: "/IMG/decentralized.png",
-    role: "Cryptographic Engineer",
-    client: "Identity Decentralized Labs",
-    year: "2025",
+    id: "KNN",
+    category: "MACHINE LEARNING",
+    shortName: "KNN ELBOW",
+    title: "KNN | Elbow Method",
+    desc: "Bài tập môn Trí tuệ Nhân tạo: phân cụm K-Means và tối ưu số cụm K bằng phương pháp Elbow (Python / Jupyter).",
+    image: projectImage("KNN"),
+    role: "ML / Data",
+    client: "Dự án học thuật",
+    year: "2026",
+    link: `https://github.com/${GITHUB_USER}/KNN`,
   },
   {
-    id: "aura",
-    category: "UX/UI WELLNESS",
-    shortName: "AURA SYSTEM",
-    title: "AURA | Digital Wellness Platform",
-    desc: "Thiết kế ứng dụng di động toàn diện hỗ trợ thiền định, lối sống chánh niệm và theo dõi hành trình sức khỏe. Tập trung tối đa vào UX tĩnh lặng và giao diện tối giản.",
-    image: "/IMG/aura.png",
-    role: "Lead UX/UI Designer",
-    client: "Aura Health Inc.",
-    year: "2024",
+    id: "Portfolio",
+    category: "WEB & 3D",
+    shortName: "PORTFOLIO",
+    title: "Portfolio | Trang cá nhân",
+    desc: "Trang portfolio cá nhân với hero 3D, hoạt ảnh chuyển động và CMS phía client — chính là website này.",
+    image: projectImage("Portfolio"),
+    role: "Frontend Developer",
+    client: "Dự án cá nhân",
+    year: "2026",
+    link: `https://github.com/${GITHUB_USER}/Portfolio`,
   },
 ];
 
+// Danh sách link mạng xã hội mặc định (dùng khi localStorage chưa có "contact_socials")
 const DEFAULT_SOCIALS = [
-  { type: "GitHub", url: "https://github.com", handle: "@tranthanh", visible: true, large: true },
-  { type: "Facebook", url: "https://facebook.com", handle: "Trần Trung Thành", visible: true, large: false },
-  { type: "Zalo", url: "https://zalo.me", handle: "Trần Trung Thành", visible: true, large: false },
+  { type: "GitHub", url: "https://github.com/Tthanh2k6", handle: "@Tthanh2k6", visible: true, large: true },
+  { type: "Facebook", url: "https://www.facebook.com/tran.trung.thanh.239362", handle: "Trần Trung Thành", visible: true, large: false },
+  { type: "Zalo", url: "https://zaloapp.com/qr/p/rmo5prbvj5ul", handle: "Trần Trung Thành", visible: true, large: false },
 ];
 
 function AdminPanel() {
@@ -160,7 +169,7 @@ function AdminPanel() {
   const [activeTab, setActiveTab] = useState("home");
   const [saveStatus, setSaveStatus] = useState("");
 
-  // Home states
+  // State của Trang Chủ
   const [homeCubePink, setHomeCubePink] = useState("");
   const [homeCubePurple, setHomeCubePurple] = useState("");
   const [homeCubeCyan, setHomeCubeCyan] = useState("");
@@ -170,7 +179,7 @@ function AdminPanel() {
   const [homeLine2, setHomeLine2] = useState("");
   const [homeTags, setHomeTags] = useState("");
 
-  // Scene physics settings states
+  // State cài đặt vật lý của Scene
   const [sceneVisibleGridSize, setSceneVisibleGridSize] = useState("");
   const [sceneGridSize, setSceneGridSize] = useState("");
   const [sceneCubeSize, setSceneCubeSize] = useState("");
@@ -192,7 +201,7 @@ function AdminPanel() {
   const [sceneIdleMs, setSceneIdleMs] = useState("");
   const [sceneCameraYOffset, setSceneCameraYOffset] = useState("");
 
-  // Cube state & Scene advanced settings states
+  // State của Cube & cài đặt nâng cao của Scene
   const [sceneCubeSolidColor, setSceneCubeSolidColor] = useState("");
   const [sceneCubeMetalness, setSceneCubeMetalness] = useState("");
   const [sceneCubeRoughness, setSceneCubeRoughness] = useState("");
@@ -210,7 +219,7 @@ function AdminPanel() {
   const [sceneIdleUpdateMin, setSceneIdleUpdateMin] = useState("");
   const [sceneIdleUpdateRand, setSceneIdleUpdateRand] = useState("");
 
-  // Info states
+  // State của trang Giới Thiệu
   const [infoStatus, setInfoStatus] = useState("");
   const [infoTitleTop, setInfoTitleTop] = useState("");
   const [infoTitleBottom, setInfoTitleBottom] = useState("");
@@ -222,7 +231,7 @@ function AdminPanel() {
   const [infoCardName, setInfoCardName] = useState("");
   const [infoCardTitle, setInfoCardTitle] = useState("");
 
-  // Skills states
+  // State của Kỹ Năng
   const [skillsSub, setSkillsSub] = useState("");
   const [skillsTitle1, setSkillsTitle1] = useState("");
   const [skillsTitle2, setSkillsTitle2] = useState("");
@@ -232,19 +241,23 @@ function AdminPanel() {
   const [skillsChartData, setSkillsChartData] = useState<any[]>([]);
   const [skillsTitleToChart, setSkillsTitleToChart] = useState<Record<string, string>>({});
 
-  // Keycap Edit Modal state
+  // State của Modal chỉnh sửa Keycap
   const [editingKeycap, setEditingKeycap] = useState<any | null>(null);
 
-  // Projects states
+  // State của Dự Án
   const [projectsList, setProjectsList] = useState<any[]>([]);
   const [editingProject, setEditingProject] = useState<any | null>(null);
 
-  // Contact states
+  // State của Liên Hệ
   const [socialsList, setSocialsList] = useState<any[]>([]);
   const [commentsList, setCommentsList] = useState<any[]>([]);
   const [contactReceiverEmail, setContactReceiverEmail] = useState("");
 
-  // Auth check
+  // Toàn bộ trang này là CMS phía client: không có backend, mọi nội dung được lưu/đọc qua localStorage.
+  // Admin chỉnh sửa ở đây rồi ghi vào các key (info_*, home_line_*, project_list, contact_socials...);
+  // các trang công khai (Home, Info, Skills, Projects, Contact) đọc lại đúng key đó để hiển thị.
+
+  // Kiểm tra xác thực: dùng sessionStorage nên phiên đăng nhập mất khi đóng tab (không lưu vĩnh viễn)
   useEffect(() => {
     const auth = sessionStorage.getItem("admin_authorized");
     if (auth === "true") {
@@ -252,11 +265,13 @@ function AdminPanel() {
     }
   }, []);
 
-  // Load all settings
+  // Tải toàn bộ cài đặt từ localStorage để đổ vào các form (chỉ chạy sau khi đã xác thực).
+  // Mẫu chung: localStorage.getItem(key) || DEFAULT -> nếu chưa từng lưu thì dùng giá trị mặc định.
+  // Với dữ liệu dạng mảng/đối tượng (keycaps, chart, projects, socials, comments) phải JSON.parse vì localStorage chỉ chứa chuỗi.
   useEffect(() => {
     if (!isAuthorized) return;
 
-    // Home
+    // Trang Chủ
     setHomeCubePink(localStorage.getItem("home_cube_pink") || DEFAULT_CUBES.pink);
     setHomeCubePurple(localStorage.getItem("home_cube_purple") || DEFAULT_CUBES.purple);
     setHomeCubeCyan(localStorage.getItem("home_cube_cyan") || DEFAULT_CUBES.cyan);
@@ -266,7 +281,7 @@ function AdminPanel() {
     setHomeLine2(localStorage.getItem("home_line_2") || DEFAULT_HOME.line2);
     setHomeTags(localStorage.getItem("home_line_3") || DEFAULT_HOME.tags);
 
-    // Scene Grid settings
+    // Cài đặt lưới Scene
     setSceneVisibleGridSize(localStorage.getItem("scene_visible_grid_size") || "20");
     setSceneGridSize(localStorage.getItem("scene_grid_size") || "38");
     setSceneCubeSize(localStorage.getItem("scene_cube_size") || "6.2");
@@ -288,7 +303,7 @@ function AdminPanel() {
     setSceneIdleMs(localStorage.getItem("scene_idle_ms") || "3000");
     setSceneCameraYOffset(localStorage.getItem("scene_camera_y_offset") || "20");
 
-    // Cube state & Scene advanced settings
+    // State của Cube & cài đặt nâng cao của Scene
     setSceneCubeSolidColor(localStorage.getItem("scene_cube_solid_color") || "#010101");
     setSceneCubeMetalness(localStorage.getItem("scene_cube_metalness") || "0.4");
     setSceneCubeRoughness(localStorage.getItem("scene_cube_roughness") || "0.5");
@@ -306,7 +321,7 @@ function AdminPanel() {
     setSceneIdleUpdateMin(localStorage.getItem("scene_idle_update_min") || "600");
     setSceneIdleUpdateRand(localStorage.getItem("scene_idle_update_rand") || "600");
 
-    // Info
+    // Giới Thiệu
     setInfoStatus(localStorage.getItem("info_status") || DEFAULT_INFO.status);
     setInfoTitleTop(localStorage.getItem("info_title_top") || DEFAULT_INFO.titleTop);
     setInfoTitleBottom(localStorage.getItem("info_title_bottom") || DEFAULT_INFO.titleBottom);
@@ -318,7 +333,7 @@ function AdminPanel() {
     setInfoCardName(localStorage.getItem("info_card_name") || DEFAULT_INFO.cardName);
     setInfoCardTitle(localStorage.getItem("info_card_title") || DEFAULT_INFO.cardTitle);
 
-    // Skills
+    // Kỹ Năng
     setSkillsSub(localStorage.getItem("skills_sub") || DEFAULT_SKILLS_TEXT.sub);
     setSkillsTitle1(localStorage.getItem("skills_title_1") || DEFAULT_SKILLS_TEXT.title1);
     setSkillsTitle2(localStorage.getItem("skills_title_2") || DEFAULT_SKILLS_TEXT.title2);
@@ -334,31 +349,53 @@ function AdminPanel() {
     const storedMap = localStorage.getItem("skills_title_to_chart");
     setSkillsTitleToChart(storedMap ? JSON.parse(storedMap) : DEFAULT_MAP);
 
-    // Projects
+    // Dự Án
     const storedProjects = localStorage.getItem("project_list");
     setProjectsList(storedProjects ? JSON.parse(storedProjects) : DEFAULT_PROJECTS);
 
-    // Contact
+    // Liên Hệ
     const storedSocials = localStorage.getItem("contact_socials");
     setSocialsList(storedSocials ? JSON.parse(storedSocials) : DEFAULT_SOCIALS);
     setContactReceiverEmail(localStorage.getItem("contact_receiver_email") || "ttrungthanh90@gmail.com");
 
-    // Load Guestbook Comments
+    // Tải các bình luận lưu bút (Guestbook)
     const storedComments = localStorage.getItem("contact_comments");
     if (storedComments) {
       setCommentsList(JSON.parse(storedComments));
     } else {
-      // Fallback initially to contact's current static comments
+      // Mặc định dùng comment chào mừng đã ghim của trang contact
       setCommentsList([
-        { id: 1, author: "Rifqi Muhammad A", text: "Terima kasih đã mampir", pinned: true, likes: 2, liked: false, image: null, initial: "R" },
-        { id: 3, author: "kyy", text: "hii", pinned: false, likes: 0, liked: false, image: null, initial: "K" }
+        { id: 1, author: "Trần Trung Thành", text: "Chào mừng bạn đến với portfolio của mình! Cảm ơn bạn đã ghé thăm — hãy để lại một lời nhắn hoặc cảm nghĩ nhé. 👋", pinned: true, likes: 0, liked: false, image: null, initial: "T" }
       ]);
     }
   }, [isAuthorized]);
 
-  const handleLogin = (e: React.FormEvent) => {
+  // Hash SHA-256 của mật khẩu quản trị. Chỉ lưu hash (không lưu mật khẩu plaintext)
+  // nên không ai đọc được mật khẩu từ bundle JS.
+  //
+  // ⚠️ Đây là cổng chặn phía client cho site tĩnh — chỉ ngăn truy cập tình cờ, KHÔNG
+  // phải bảo mật thực sự (người rành kỹ thuật vẫn có thể can thiệp localStorage).
+  // Điều này chấp nhận được vì admin chỉ sửa localStorage của trình duyệt đang mở,
+  // không ảnh hưởng nội dung deploy hay người dùng khác.
+  //
+  // Mật khẩu mặc định: "thanh-admin-2k6". ĐỔI MẬT KHẨU: chạy trong terminal
+  //   printf '%s' 'matkhaumoi' | sha256sum
+  // rồi dán giá trị hash thu được vào hằng ADMIN_PASSWORD_HASH dưới đây.
+  const ADMIN_PASSWORD_HASH =
+    "af53da2aa1c2a31137f4651a3abb165d5544f5e4867130abc7d7a756ea3efaeb";
+
+  // Băm chuỗi bằng Web Crypto (SHA-256) -> trả về chuỗi hex để so sánh với hash đã lưu
+  const sha256Hex = async (text: string) => {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+    return Array.from(new Uint8Array(buf))
+      .map((b) => b.toString(16).padStart(2, "0"))
+      .join("");
+  };
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === "admin") {
+    const hash = await sha256Hex(password);
+    if (hash === ADMIN_PASSWORD_HASH) {
       setIsAuthorized(true);
       sessionStorage.setItem("admin_authorized", "true");
     } else {
@@ -366,6 +403,7 @@ function AdminPanel() {
     }
   };
 
+  // Hiện banner "đã lưu" rồi tự ẩn sau 3s; gọi sau mỗi lần ghi localStorage thành công
   const flashSaveMessage = () => {
     setSaveStatus("Đã lưu cài đặt thành công!");
     setTimeout(() => setSaveStatus(""), 3000);
@@ -446,14 +484,14 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
-  // Manage Keycaps
+  // Quản lý Keycap (phím kỹ năng). Mỗi keycap được nhận dạng bằng "title" (dùng làm khóa).
   const deleteKeycap = (title: string) => {
     if (!window.confirm(`Bạn có chắc chắn muốn xóa keycap ${title}?`)) return;
     const updated = skillsKeycaps.filter(k => k.title !== title);
     setSkillsKeycaps(updated);
     localStorage.setItem("skills_keycaps", JSON.stringify(updated));
-    
-    // Clean up mapping
+
+    // Dọn dẹp ánh xạ keycap->chart: xóa keycap thì cũng gỡ liên kết tới biểu đồ để tránh ánh xạ "mồ côi"
     const newMap = { ...skillsTitleToChart };
     delete newMap[title];
     setSkillsTitleToChart(newMap);
@@ -461,6 +499,9 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
+  // Lưu keycap đang chỉnh trong modal. Cờ isNew phân biệt thêm mới hay sửa:
+  // - Thêm mới: nối vào cuối mảng, xóa cờ isNew trước khi lưu (không lưu cờ tạm vào localStorage)
+  // - Sửa: tìm theo originalTitle (title cũ trước khi sửa, vì title có thể bị đổi) rồi thay thế, xóa originalTitle
   const saveEditingKeycap = (e: React.FormEvent) => {
     e.preventDefault();
     let updated: any[];
@@ -472,7 +513,8 @@ function AdminPanel() {
     setSkillsKeycaps(updated);
     localStorage.setItem("skills_keycaps", JSON.stringify(updated));
 
-    // Update Mapping if mapped
+    // Nếu keycap được liên kết tới một danh mục biểu đồ, ghi vào bảng ánh xạ title -> tên chart
+    // (để trang Skills biết phần trăm tương ứng của keycap đó trên biểu đồ tròn)
     if (editingKeycap.chartName) {
       const newMap = { ...skillsTitleToChart, [editingKeycap.title]: editingKeycap.chartName };
       setSkillsTitleToChart(newMap);
@@ -483,7 +525,8 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
-  // Manage Donut Chart Data
+  // Quản lý dữ liệu biểu đồ tròn. updateChartItem ghi luôn vào localStorage mỗi lần đổi 1 ô
+  // (cập nhật tức thời), còn saveChartData chỉ dùng để hiện banner xác nhận đã lưu.
   const updateChartItem = (index: number, field: string, val: any) => {
     const updated = skillsChartData.map((c, idx) => {
       if (idx === index) {
@@ -500,7 +543,7 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
-  // Manage Projects
+  // Quản lý Dự Án
   const deleteProject = (id: string) => {
     if (!window.confirm("Bạn có chắc chắn muốn xóa dự án này?")) return;
     const updated = projectsList.filter(p => p.id !== id);
@@ -509,6 +552,8 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
+  // Lưu dự án (key "project_list" mà trang Projects công khai đọc). Cùng mẫu isNew/originalId như keycap:
+  // dự án nhận dạng bằng id; khi sửa dùng originalId để tìm vì id có thể bị thay đổi.
   const saveProject = (e: React.FormEvent) => {
     e.preventDefault();
     let updated: any[];
@@ -523,7 +568,8 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
-  // Manage Social Links
+  // Quản lý liên kết mạng xã hội. Ghi vào key "contact_socials" mà ContactSection.tsx đọc để render grid social.
+  // updateSocialItem cập nhật 1 trường (url/handle/large/visible) của dòng thứ index và lưu ngay xuống localStorage.
   const updateSocialItem = (index: number, field: string, val: any) => {
     const updated = socialsList.map((s, idx) => {
       if (idx === index) {
@@ -535,6 +581,7 @@ function AdminPanel() {
     localStorage.setItem("contact_socials", JSON.stringify(updated));
   };
 
+  // Lưu lại toàn bộ danh sách social hiện tại (dữ liệu thực ra đã được ghi ở updateSocialItem) và hiện banner xác nhận
   const saveSocialLinks = () => {
     localStorage.setItem("contact_socials", JSON.stringify(socialsList));
     flashSaveMessage();
@@ -546,6 +593,8 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
+  // Thêm liên kết mạng xã hội mới qua các hộp prompt; mặc định visible=true, large=false.
+  // Lưu ý: ContactSection chọn icon theo "type" (getSocialIcon), gõ sai tên sẽ ra icon link mặc định.
   const addNewSocial = () => {
     const type = window.prompt("Nhập tên mạng xã hội (ví dụ: TikTok, GitHub, LinkedIn):");
     if (!type) return;
@@ -560,7 +609,7 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
-  // Manage Comments
+  // Quản lý bình luận
   const deleteComment = (id: number) => {
     if (!window.confirm("Bạn có chắc muốn xóa bình luận này?")) return;
     const updated = commentsList.filter(c => c.id !== id);
@@ -569,6 +618,8 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
+  // Ghim/bỏ ghim bình luận rồi sắp xếp lại để các bình luận đã ghim luôn nổi lên đầu danh sách
+  // (cùng quy ước hiển thị với ContactSection: pinned ở trên cùng)
   const togglePinComment = (id: number) => {
     const updated = commentsList.map(c => {
       if (c.id === id) {
@@ -585,9 +636,10 @@ function AdminPanel() {
     flashSaveMessage();
   };
 
-  // RESET ALL SETTINGS TO DEFAULT
+  // KHÔI PHỤC TẤT CẢ CÀI ĐẶT VỀ MẶC ĐỊNH
   const handleResetAll = () => {
     if (!window.confirm("CẢNH BÁO: Hành động này sẽ xóa tất cả chỉnh sửa của bạn và khôi phục giao diện mặc định. Bạn chắc chắn chứ?")) return;
+    // Xóa sạch localStorage -> mọi trang quay về giá trị DEFAULT_*; xóa sessionStorage -> đăng xuất admin; reload để áp dụng
     localStorage.clear();
     sessionStorage.clear();
     window.location.reload();
@@ -674,7 +726,7 @@ function AdminPanel() {
             <input
               type="password"
               className="input-pass"
-              placeholder="Mật khẩu (Mặc định: admin)"
+              placeholder="Nhập mật khẩu quản trị"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
@@ -867,7 +919,7 @@ function AdminPanel() {
           border-color: #f43f5e;
         }
 
-        /* Tables & Lists */
+        /* Bảng & Danh sách */
         .admin-table {
           width: 100%;
           border-collapse: collapse;
@@ -920,7 +972,7 @@ function AdminPanel() {
           padding: 2px;
         }
 
-        /* Save Flash banner */
+        /* Banner thông báo lưu */
         .admin-flash-banner {
           position: fixed;
           top: 30px;
@@ -978,7 +1030,7 @@ function AdminPanel() {
           <button onClick={handleResetAll} className="admin-btn-reset">KHÔI PHỤC MẶC ĐỊNH</button>
         </div>
 
-        {/* TAB CONTROLS */}
+        {/* ĐIỀU KHIỂN TAB */}
         <div className="admin-tabs">
           <button className={`admin-tab-btn ${activeTab === "home" ? "active" : ""}`} onClick={() => setActiveTab("home")}>Trang Chủ</button>
           <button className={`admin-tab-btn ${activeTab === "info" ? "active" : ""}`} onClick={() => setActiveTab("info")}>Giới Thiệu (Info)</button>
@@ -987,7 +1039,7 @@ function AdminPanel() {
           <button className={`admin-tab-btn ${activeTab === "contact" ? "active" : ""}`} onClick={() => setActiveTab("contact")}>Liên Hệ & Bình Luận</button>
         </div>
 
-        {/* 1. HOME TAB */}
+        {/* 1. TAB TRANG CHỦ */}
         {activeTab === "home" && (
           <form onSubmit={handleSaveHome}>
             <h3 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "20px" }}>Cài Đặt Trang Chủ</h3>
@@ -1297,7 +1349,7 @@ function AdminPanel() {
           </form>
         )}
 
-        {/* 2. INFO TAB */}
+        {/* 2. TAB GIỚI THIỆU */}
         {activeTab === "info" && (
           <form onSubmit={handleSaveInfo}>
             <h3 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "20px" }}>Cài Đặt Trang Giới Thiệu (Information)</h3>
@@ -1362,7 +1414,7 @@ function AdminPanel() {
           </form>
         )}
 
-        {/* 3. SKILLS TAB */}
+        {/* 3. TAB KỸ NĂNG */}
         {activeTab === "skills" && (
           <div>
             <form onSubmit={handleSaveSkillsText} style={{ marginBottom: "40px" }}>
@@ -1489,7 +1541,7 @@ function AdminPanel() {
           </div>
         )}
 
-        {/* 4. PROJECTS TAB */}
+        {/* 4. TAB DỰ ÁN */}
         {activeTab === "projects" && (
           <div>
             <h3 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "15px" }}>Quản Lý Dự Án (Projects Showcase)</h3>
@@ -1542,7 +1594,7 @@ function AdminPanel() {
           </div>
         )}
 
-        {/* 5. CONTACT TAB */}
+        {/* 5. TAB LIÊN HỆ */}
         {activeTab === "contact" && (
           <div>
             <h3 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "15px" }}>Quản Lý Mạng Xã Hội (Connect With Me)</h3>
@@ -1700,7 +1752,7 @@ function AdminPanel() {
         )}
       </div>
 
-      {/* KEYCAP EDIT MODAL */}
+      {/* MODAL CHỈNH SỬA KEYCAP */}
       {editingKeycap && (
         <div className="admin-modal-backdrop">
           <div className="admin-modal-card">
@@ -1753,7 +1805,7 @@ function AdminPanel() {
         </div>
       )}
 
-      {/* PROJECT EDIT MODAL */}
+      {/* MODAL CHỈNH SỬA DỰ ÁN */}
       {editingProject && (
         <div className="admin-modal-backdrop">
           <div className="admin-modal-card">
@@ -1764,6 +1816,7 @@ function AdminPanel() {
               <div className="admin-row-grid">
                 <div className="admin-form-group">
                   <label className="admin-label">Mã ID (Duy nhất, viết liền)</label>
+                  {/* Chỉ cho sửa ID khi tạo mới; khi sửa thì khóa lại để không phá vỡ liên kết/originalId */}
                   <input type="text" className="admin-input" required disabled={!editingProject.isNew} value={editingProject.id} onChange={e => setEditingProject({ ...editingProject, id: e.target.value })} />
                 </div>
                 <div className="admin-form-group">

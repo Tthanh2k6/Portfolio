@@ -6,17 +6,17 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
+ * Định nghĩa design system.
  *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
+ * Khối @theme inline ánh xạ các CSS custom property sang các class tiện ích
+ * của Tailwind (ví dụ: --color-primary -> bg-primary, text-primary).
  *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
+ * Các khối :root và .dark định nghĩa giá trị màu thực tế bằng oklch.
+ * Mọi màu BẮT BUỘC phải dùng định dạng oklch.
  *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * Để thêm một màu ngữ nghĩa mới:
+ * 1. Thêm biến vào :root (giá trị sáng) và .dark (giá trị tối)
+ * 2. Đăng ký nó trong @theme inline dưới dạng --color-<name>: var(--<name>)
  */
 
 @theme inline {
@@ -165,12 +165,12 @@ html, body, * { cursor: none !important; }
 @keyframes skillsFadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
 @keyframes skillsFadeInText { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
 @keyframes skillsBlinkCursor { 0%,100%{opacity:0} 50%{opacity:1} }
-/* Slide OUT to the right — transform only, no opacity/filter → preserve-3d intact */
+/* Trượt RA phía phải — chỉ transform, không opacity/filter → giữ nguyên preserve-3d */
 @keyframes skills3DSlideOut {
   0%   { transform: translateZ(60px) translateX(0)    scaleX(1);   }
   100% { transform: translateZ(60px) translateX(90px) scaleX(1.5); }
 }
-/* Slide IN from the left */
+/* Trượt VÀO từ phía trái */
 @keyframes skills3DSlideIn {
   0%   { transform: translateZ(60px) translateX(-60px) scaleX(1.4); }
   100% { transform: translateZ(60px) translateX(0)     scaleX(1);   }
@@ -213,14 +213,14 @@ html, body, * { cursor: none !important; }
   filter: brightness(0.95);
 }
 
-/* ── Idle keypress (auto-press animation) ─────────────────────────── */
+/* ── Nhấn phím khi rảnh (hoạt ảnh tự nhấn) ─────────────────────────── */
 .keycap-idle-press {
   transform: translateZ(6px) translateX(-3px) translateY(3px) !important;
   filter: brightness(0.92) !important;
   transition: transform 0.07s ease-in, filter 0.07s ease-in !important;
 }
 
-/* ── Keyboard floating ────────────────────────────────────────────── */
+/* ── Bàn phím lơ lửng ────────────────────────────────────────────── */
 @keyframes keyboardFloat {
   0%   { transform: translateY(0px)   rotateZ(0deg); }
   30%  { transform: translateY(-10px) rotateZ(0.4deg); }

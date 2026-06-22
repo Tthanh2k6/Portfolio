@@ -30,7 +30,7 @@ const KEYCAPS = [
   { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "Build, OTA update & phát hành app React Native đa nền tảng." },
 ] as const;
 
-// Skill usage percentages (shown in donut chart) — chỉ vài mục chính
+// Phần trăm sử dụng kỹ năng (hiển thị trong biểu đồ tròn) — chỉ vài mục chính
 const CHART_DATA = [
   { name: "HTML/CSS",   pct: 22, color: "#FB923C" },
   { name: "JavaScript", pct: 16, color: "#FCD34D" },
@@ -42,7 +42,7 @@ const CHART_DATA = [
   { name: "Git",        pct:  7, color: "#F87171" },
 ];
 
-// Map keycap title → chart entry name. Chỉ các phím chính được map;
+// Ánh xạ title của keycap → tên mục trong biểu đồ. Chỉ các phím chính được map;
 // các phím khác (Java, GitHub, VS Code, ChatGPT, Claude, Gemini, Expo) không có ở đây
 // nên hover chúng sẽ KHÔNG đổi biểu đồ (giữ mục gần nhất).
 const TITLE_TO_CHART: Record<string, string> = {
@@ -67,14 +67,14 @@ function DonutChart({
   titleToChart: Record<string, string>;
 }) {
   const R       = 86;
-  const EXPLODE = 10;     // px to push active segment outward
-  const GAP_RAD = 0.018;  // tiny gap between segments (≈1°)
+  const EXPLODE = 10;     // số px để đẩy segment active ra ngoài
+  const GAP_RAD = 0.018;  // khoảng hở nhỏ giữa các segment (≈1°)
 
   const activeChartName = activeKeycapTitle ? (titleToChart[activeKeycapTitle] ?? null) : null;
   const activeData      = chartData.find(d => d.name === activeChartName) ?? null;
   const total           = chartData.reduce((s, d) => s + d.pct, 0);
 
-  // Build filled path segments starting from top (-π/2)
+  // Tạo các segment path được tô màu, bắt đầu từ đỉnh (-π/2)
   let cumAngle = -Math.PI / 2;
   const segments = chartData.map(d => {
     const sweep      = total > 0 ? (d.pct / total) * 2 * Math.PI : 0;
@@ -83,12 +83,15 @@ function DonutChart({
     const midAngle   = cumAngle + sweep / 2;
     cumAngle += sweep;
 
+    // Toạ độ điểm đầu/cuối cung trên đường tròn bán kính R (gốc 0,0 là tâm)
     const x1 = R * Math.cos(startAngle);
     const y1 = R * Math.sin(startAngle);
     const x2 = R * Math.cos(endAngle);
     const y2 = R * Math.sin(endAngle);
+    // largeArc=1 khi cung > 180° để SVG vẽ đúng phần cung lớn thay vì cung nhỏ
     const largeArc = sweep - GAP_RAD > Math.PI ? 1 : 0;
 
+    // Path hình quạt: M tâm → L điểm đầu → A vẽ cung (sweep=1: chiều kim đồng hồ) tới điểm cuối → Z đóng về tâm
     const path = `M 0 0 L ${x1.toFixed(3)} ${y1.toFixed(3)} A ${R} ${R} 0 ${largeArc} 1 ${x2.toFixed(3)} ${y2.toFixed(3)} Z`;
 
     return { ...d, path, midAngle };
@@ -107,6 +110,7 @@ function DonutChart({
         {segments.map(seg => {
           const isActive  = seg.name === activeChartName;
           const hasActive = activeChartName !== null;
+          // Đẩy segment active ra ngoài theo hướng góc giữa (explode): dịch EXPLODE px dọc vector đơn vị (cos,sin) của midAngle
           const tx = isActive ? EXPLODE * Math.cos(seg.midAngle) : 0;
           const ty = isActive ? EXPLODE * Math.sin(seg.midAngle) : 0;
 
@@ -129,7 +133,7 @@ function DonutChart({
           );
         })}
 
-        {/* Centre label */}
+        {/* Nhãn ở giữa */}
         {activeData ? (
           <text
             textAnchor="middle" dominantBaseline="central"
@@ -150,7 +154,7 @@ function DonutChart({
         )}
       </svg>
 
-      {/* Label below chart */}
+      {/* Nhãn bên dưới biểu đồ */}
       <div style={{
         minHeight: "48px",
         display: "flex", flexDirection: "column",
@@ -209,10 +213,11 @@ function ExtrudedText({
         ...containerStyle,
       }}
     >
+      {/* Dựng chữ 3D: xếp chồng `depth` lớp text lùi dần theo trục Z để tạo độ dày (extrude) */}
       {Array.from({ length: depth }, (_, idx) => {
-        const i = depth - idx;
-        const t = i / depth;
-        const light = Math.round(58 - t * 28);
+        const i = depth - idx;       // vẽ từ lớp sâu nhất ra trước để lớp gần mặt nằm trên cùng
+        const t = i / depth;         // tỉ lệ độ sâu 0..1: càng sâu càng tối
+        const light = Math.round(58 - t * 28); // độ sáng HSL giảm dần theo độ sâu (tạo khối)
         const brightness = 1 - t * 0.5;
         return (
           <div
@@ -227,9 +232,9 @@ function ExtrudedText({
               whiteSpace: "pre-wrap",
               color: sideColor || `hsl(222,9%,${light}%)`,
               filter: `brightness(${brightness})`,
-              transform: `translateZ(${-i * step}px)`,
+              transform: `translateZ(${-i * step}px)`, // mỗi lớp lùi thêm `step` px theo Z
               userSelect: "none",
-              ...(i === depth ? { textShadow: "3px 4px 12px rgba(0,0,0,0.5)" } : {}),
+              ...(i === depth ? { textShadow: "3px 4px 12px rgba(0,0,0,0.5)" } : {}), // chỉ lớp sâu nhất đổ bóng nền
             }}
           >
             {text}
@@ -262,10 +267,10 @@ export function SkillsSection() {
   // hover phím khác sẽ giữ nguyên (mục gần nhất).
   const [chartTitle, setChartTitle]   = useState<string | null>(null);
   const [idlePressedKeys, setIdlePressedKeys] = useState<Set<string>>(new Set());
-  // 'idle' | 'exiting' | 'entering'
+  // 'idle' | 'exiting' | 'entering' (nghỉ | đang thoát | đang vào)
   const [phase, setPhase]             = useState<"idle"|"exiting"|"entering">("idle");
 
-  // Dynamic layout texts and data arrays from localStorage
+  // Các text layout động và mảng dữ liệu từ localStorage
   const [subText, setSubText] = useState("Always improving myself day by day");
   const [title1, setTitle1] = useState("Current");
   const [title2, setTitle2] = useState("skills");
@@ -280,11 +285,11 @@ export function SkillsSection() {
   const currentTitleRef = useRef<string | null>(null);
   const pendingKeyRef   = useRef<any | null>(null);
   const phaseTimerRef   = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Animation A gate: true after 2s with no mouse movement anywhere
+  // Cổng cho Animation A: true sau 2s không có chuyển động chuột ở bất cứ đâu
   const idleActiveRef = useRef(false);
   const idleTimerRef  = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Immediately stop idle and clear pressed keys
+  // Dừng ngay trạng thái idle và xóa các phím đang nhấn
   const stopIdle = () => {
     idleActiveRef.current = false;
     setIdlePressedKeys(new Set());
@@ -293,7 +298,7 @@ export function SkillsSection() {
   useEffect(() => {
     setMounted(true);
 
-    // Load configs from localStorage on client side
+    // Tải cấu hình từ localStorage ở phía client
     const storedSub = localStorage.getItem("skills_sub");
     setSubText(storedSub || "Always improving myself day by day");
 
@@ -351,10 +356,11 @@ export function SkillsSection() {
     };
   }, []);
 
-  // Typewriter
+  // Hiệu ứng đánh máy (typewriter)
   useEffect(() => {
     if (!mounted || !typewriterText) return;
     let i = 0;
+    // Đệ quy qua setTimeout: mỗi 45ms thêm 1 ký tự cho tới hết chuỗi (tốc độ gõ)
     const typeNext = () => {
       if (i < typewriterText.length) {
         setTypedText(typewriterText.slice(0, i + 1));
@@ -362,17 +368,17 @@ export function SkillsSection() {
         setTimeout(typeNext, 45);
       }
     };
-    const timer = setTimeout(typeNext, 1200);
+    const timer = setTimeout(typeNext, 1200); // delay 1.2s trước khi bắt đầu gõ (chờ hiệu ứng fade-in)
     return () => clearTimeout(timer);
   }, [mounted, typewriterText]);
 
-  // Random idle keypress — only fires after 2s of no mouse movement anywhere
+  // Nhấn phím ngẫu nhiên khi idle — chỉ kích hoạt sau 2s không có chuyển động chuột ở bất cứ đâu
   useEffect(() => {
     if (!mounted || keycaps.length === 0) return;
     let pressTimer:   ReturnType<typeof setTimeout>;
     let releaseTimer: ReturnType<typeof setTimeout>;
 
-    // Any mouse movement resets the 2s countdown
+    // Bất kỳ chuyển động chuột nào cũng reset bộ đếm ngược 2s
     const onMouseMove = () => {
       idleActiveRef.current = false;
       if (idleTimerRef.current) clearTimeout(idleTimerRef.current);
@@ -381,16 +387,17 @@ export function SkillsSection() {
       }, 2000);
     };
     window.addEventListener("mousemove", onMouseMove, { passive: true });
-    onMouseMove(); // start initial 2s countdown on mount
+    onMouseMove(); // khởi động bộ đếm ngược 2s ban đầu khi mount
 
     const scheduleNextPress = () => {
-      const delay = 500 + Math.random() * 700;
+      const delay = 500 + Math.random() * 700; // khoảng nghỉ ngẫu nhiên 0.5–1.2s giữa hai lần gõ
       pressTimer = setTimeout(() => {
         if (idleActiveRef.current && keycaps.length > 0) {
-          const shuffled = [...keycaps].sort(() => Math.random() - 0.5);
-          const count = Math.random() < 0.25 ? 2 : 1;
+          const shuffled = [...keycaps].sort(() => Math.random() - 0.5); // trộn ngẫu nhiên để chọn phím
+          const count = Math.random() < 0.25 ? 2 : 1; // 25% cơ hội nhấn 2 phím cùng lúc, còn lại 1 phím
           const titles = new Set(shuffled.slice(0, count).map(k => k.title));
           setIdlePressedKeys(titles);
+          // Nhả phím sau 100–250ms để mô phỏng một cú gõ ngắn
           releaseTimer = setTimeout(() => setIdlePressedKeys(new Set()), 100 + Math.random() * 150);
         }
         scheduleNextPress();
@@ -406,11 +413,11 @@ export function SkillsSection() {
     };
   }, [mounted, keycaps]);
 
-  // State machine: when phase changes drive the transition
+  // Máy trạng thái: khi phase thay đổi sẽ điều khiển transition
   useEffect(() => {
     if (phaseTimerRef.current) clearTimeout(phaseTimerRef.current);
     if (phase === "exiting") {
-      // After slide-out completes, update content and enter
+      // Sau khi slide-out hoàn tất, cập nhật nội dung và vào
       phaseTimerRef.current = setTimeout(() => {
         const key = pendingKeyRef.current;
         if (key) {
@@ -419,12 +426,12 @@ export function SkillsSection() {
           setActiveKey(key);
         }
         setPhase("entering");
-      }, 180); // matches slide-out duration
+      }, 180); // khớp với thời lượng slide-out
     } else if (phase === "entering") {
-      // After slide-in completes, go idle
+      // Sau khi slide-in hoàn tất, chuyển về idle
       phaseTimerRef.current = setTimeout(() => {
         setPhase("idle");
-      }, 220); // matches slide-in duration
+      }, 220); // khớp với thời lượng slide-in
     }
   }, [phase]);
 
@@ -433,7 +440,7 @@ export function SkillsSection() {
     currentTitleRef.current = key.title;
     pendingKeyRef.current = key;
 
-    // If first time showing, skip slide-out, go straight to entering
+    // Nếu là lần hiển thị đầu tiên, bỏ qua slide-out, vào thẳng entering
     if (!infoTitle) {
       setInfoTitle(key.title);
       setInfoDesc(key.desc);
@@ -449,7 +456,7 @@ export function SkillsSection() {
     phase === "entering" ? "skills-3d-slide-in"  : "";
 
   const onKeycapEnter = (key: any) => {
-    stopIdle(); // stop idle immediately on any interaction
+    stopIdle(); // dừng idle ngay lập tức khi có bất kỳ tương tác nào
     showInfo(key);
     // Chỉ cập nhật biểu đồ tròn khi phím thuộc nhóm chính; còn lại giữ nguyên mục gần nhất
     if (titleToChart[key.title]) setChartTitle(key.title);
@@ -458,14 +465,14 @@ export function SkillsSection() {
   };
 
   const onKeycapLeave = () => {
-    // mousemove listener handles the 2s countdown automatically
+    // listener mousemove tự động xử lý bộ đếm ngược 2s
     window.dispatchEvent(new CustomEvent("cursorHoverLeave"));
   };
 
   return (
     <>
 
-      {/* Nav */}
+      {/* Thanh điều hướng */}
       <NavBar className="mix-blend-difference" />
 
 
@@ -473,11 +480,11 @@ export function SkillsSection() {
         className="skills-section"
         style={{
           perspective: "1000px",
-          background: "#06070d url(/IMG/Background.jpeg) no-repeat center center fixed",
+          background: "#06070d url(/IMG/background.jpeg) no-repeat center center fixed",
           backgroundSize: "cover",
         }}
       >
-        {/* Tech pulse overlay (body::before equivalent) */}
+        {/* Lớp phủ tech pulse (tương đương body::before) */}
         <div
           style={{
             position: "absolute", inset: 0,
@@ -487,7 +494,7 @@ export function SkillsSection() {
           }}
         />
 
-        {/* Left section */}
+        {/* Phần bên trái */}
         {mounted && (
           <div
             style={{
@@ -541,7 +548,7 @@ export function SkillsSection() {
           </div>
         )}
 
-        {/* Right section — Donut chart */}
+        {/* Phần bên phải — Biểu đồ tròn */}
         {mounted && (
           <div style={{
             position: "absolute", right: "60px", top: "50%",
@@ -557,7 +564,7 @@ export function SkillsSection() {
           </div>
         )}
 
-        {/* Main 3D scene */}
+        {/* Cảnh 3D chính */}
         <div
           style={{
             position: "relative", display: "flex", flexDirection: "column",
@@ -566,7 +573,7 @@ export function SkillsSection() {
             paddingTop: "220px", zIndex: 2,
           }}
         >
-          {/* Info panel: entire preserve-3d block slides in/out as one unit */}
+          {/* Panel thông tin: toàn bộ khối preserve-3d trượt vào/ra như một khối thống nhất */}
           <div
             ref={infoPanelRef}
             className={panelClass}
@@ -607,7 +614,7 @@ export function SkillsSection() {
             </div>
           </div>
 
-          {/* Keyboard case — keyboard-float drives the idle floating animation */}
+          {/* Vỏ bàn phím — keyboard-float điều khiển hoạt ảnh trôi nổi khi idle */}
           <div
             className="keyboard-float"
             style={{
@@ -636,7 +643,7 @@ export function SkillsSection() {
                   display: "flex", justifyContent: "center", alignItems: "center",
                 }}
               >
-                {/* Gloss sheen */}
+                {/* Hiệu ứng bóng loáng */}
                 <div style={{
                   position: "absolute", top: "2px", left: "2px", right: "2px", bottom: "2px",
                   borderRadius: "11px",
@@ -659,7 +666,7 @@ export function SkillsSection() {
                     }}
                   />
                 ) : null}
-                {/* Text overlay fallback when image fails or is omitted */}
+                {/* Text dự phòng hiển thị khi ảnh lỗi hoặc bị bỏ qua */}
                 <span
                   style={{
                     position: "absolute",
@@ -670,7 +677,7 @@ export function SkillsSection() {
                     padding: "0 4px",
                     lineHeight: 1.1,
                     pointerEvents: "none",
-                    opacity: key.img ? 0 : 1, // Only show if no image or image hidden
+                    opacity: key.img ? 0 : 1, // Chỉ hiển thị khi không có ảnh hoặc ảnh bị ẩn
                   }}
                   className="keycap-label-fallback"
                 >

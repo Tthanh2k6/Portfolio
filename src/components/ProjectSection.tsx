@@ -1,69 +1,100 @@
 import { useEffect, useRef, useState } from "react";
 import { NavBar } from "./NavBar";
 
-// Danh sách dự án mẫu
+// Tài khoản GitHub dùng để lấy danh sách dự án
+const GITHUB_USER = "Tthanh2k6";
+
+// Ảnh OpenGraph tự sinh của GitHub cho từng repo (card xã hội đẹp, luôn có sẵn)
+const ghImage = (repo: string) =>
+  `https://opengraph.githubassets.com/1/${GITHUB_USER}/${repo}`;
+
+// Ảnh chụp màn hình thật của từng dự án (đặt trong thư mục public IMG/).
+// Được ưu tiên hơn ảnh OpenGraph; nếu thiếu file, <img onError> sẽ tự rơi về ảnh GitHub.
+const REPO_IMAGES: Record<string, string> = {
+  DiemDanhQR: "/IMG/project-diemdanhqr.jpg",
+  AI_Lab: "/IMG/project-ailab.png",
+  KNN: "/IMG/project-knn.png",
+  Portfolio: "/IMG/project-portfolio.png",
+};
+// Ảnh dùng cho card: ưu tiên ảnh chụp local, không có thì dùng ảnh OpenGraph của GitHub
+const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
+
+// Danh sách dự án tĩnh = các repo công khai thật trên GitHub.
+// Dùng để hiển thị tức thì khi mở trang và làm phương án dự phòng khi không gọi được API
+// (offline / vượt giới hạn request). Bản fetch động bên dưới sẽ ghi đè khi lấy được dữ liệu mới.
 const projects = [
   {
-    id: "neoswap",
-    category: "WEB3 & FINTECH",
-    shortName: "NEXUS SWAP",
-    title: "NEXUS | Swap & Exchange",
-    desc: "Hệ thống giao dịch phi tập trung tối ưu hóa trượt giá và thanh khoản. Cung cấp bảng điều khiển trực quan hiển thị hoạt động giao dịch của các ví Web3.",
-    image: "/IMG/neoswap.png",
-    role: "Lead Frontend Developer",
-    client: "Nexus Finance Corp.",
-    year: "2025",
-    yearRole: "2025 • Lead Frontend"
-  },
-  {
-    id: "cognitive",
-    category: "AI & COGNITION",
-    shortName: "COGNITIVE AI",
-    title: "COGNITIVE | Neural Thought Tree",
-    desc: "Hệ thống AI trực quan hóa các tầng suy luận và gỡ lỗi logic cho mô hình ngôn ngữ lớn (LLM). Cung cấp giao diện tương tác dạng cây tư duy thời gian thực.",
-    image: "/IMG/cognitive.png",
-    role: "Fullstack AI Engineer",
-    client: "Cognitive Intelligence Labs",
+    id: "DiemDanhQR",
+    category: "JAVASCRIPT",
+    shortName: "QR ATTENDANCE",
+    title: "DiemDanhQR | Điểm danh QR",
+    desc: "Công cụ điểm danh bằng mã QR: quét QR trên điện thoại, tự ghi vào Google Sheets qua Google Apps Script — chạy dạng PWA, không cần server riêng.",
+    image: projectImage("DiemDanhQR"),
+    role: "JavaScript Developer",
+    client: "Dự án cá nhân",
     year: "2026",
-    yearRole: "2026 • AI Engineer"
+    yearRole: "2026 • JavaScript",
+    link: `https://github.com/${GITHUB_USER}/DiemDanhQR`,
   },
   {
-    id: "vortex",
-    category: "3D & MOTION DESIGN",
-    shortName: "VORTEX MOTION",
-    title: "VORTEX | 3D Motion Library",
-    desc: "Thư viện hoạt ảnh mô phỏng động lực học chất lỏng 3D bóng bẩy. Thiết kế hoàn hảo cho các màn hình trình diễn tương tác hiệu năng cao trên trình duyệt.",
-    image: "/IMG/vortex.png",
-    role: "3D Generalist & Designer",
-    client: "Vortex Media Studios",
-    year: "2024",
-    yearRole: "2024 • 3D Generalist"
+    id: "AI_Lab",
+    category: "TYPESCRIPT & AI",
+    shortName: "AI LAB",
+    title: "AI_Lab | Thử nghiệm AI",
+    desc: "AI Game Arena — ứng dụng Electron cho AI tự học, tiến hóa và thi đấu game thời gian thực (Minimax, MCTS, mạng nơ-ron, giải thuật di truyền).",
+    image: projectImage("AI_Lab"),
+    role: "TypeScript Developer",
+    client: "Dự án cá nhân",
+    year: "2026",
+    yearRole: "2026 • TypeScript",
+    link: `https://github.com/${GITHUB_USER}/AI_Lab`,
   },
   {
-    id: "decentralized",
-    category: "BLOCKCHAIN & DID",
-    shortName: "IDENTITY SDK",
-    title: "DID | Cryptographic Identity",
-    desc: "Thư viện xác thực danh tính phi tập trung dựa trên mật mã học blockchain, hỗ trợ ký khóa số, ví Web3 và cơ chế xác thực không mật khẩu FIDO2.",
-    image: "/IMG/decentralized.png",
-    role: "Cryptographic Engineer",
-    client: "Identity Decentralized Labs",
-    year: "2025",
-    yearRole: "2025 • Crypto Eng"
+    id: "KNN",
+    category: "MACHINE LEARNING",
+    shortName: "KNN ELBOW",
+    title: "KNN | Elbow Method",
+    desc: "Bài tập môn Trí tuệ Nhân tạo: phân cụm K-Means và tối ưu số cụm K bằng phương pháp Elbow (Python / Jupyter).",
+    image: projectImage("KNN"),
+    role: "ML / Data",
+    client: "Dự án học thuật",
+    year: "2026",
+    yearRole: "2026 • Machine Learning",
+    link: `https://github.com/${GITHUB_USER}/KNN`,
   },
   {
-    id: "aura",
-    category: "UX/UI WELLNESS",
-    shortName: "AURA SYSTEM",
-    title: "AURA | Digital Wellness Platform",
-    desc: "Thiết kế ứng dụng di động toàn diện hỗ trợ thiền định, lối sống chánh niệm và theo dõi hành trình sức khỏe. Tập trung tối đa vào UX tĩnh lặng và giao diện tối giản.",
-    image: "/IMG/aura.png",
-    role: "Lead UX/UI Designer",
-    client: "Aura Health Inc.",
-    year: "2024",
-    yearRole: "2024 • Lead UX/UI"
-  }
+    id: "Portfolio",
+    category: "WEB & 3D",
+    shortName: "PORTFOLIO",
+    title: "Portfolio | Trang cá nhân",
+    desc: "Trang portfolio cá nhân với hero 3D, hoạt ảnh chuyển động và CMS phía client — chính là website này.",
+    image: projectImage("Portfolio"),
+    role: "Frontend Developer",
+    client: "Dự án cá nhân",
+    year: "2026",
+    yearRole: "2026 • Web & 3D",
+    link: `https://github.com/${GITHUB_USER}/Portfolio`,
+  },
 ];
+
+// Chuyển một repo trả về từ GitHub API sang đúng cấu trúc card dự án
+function mapRepoToProject(repo: any) {
+  const lang = repo.language || "Code";
+  const year = (repo.updated_at || "").slice(0, 4);
+  return {
+    id: repo.name,
+    category: (repo.language || "PROJECT").toUpperCase(),
+    shortName: repo.name,
+    title: repo.name,
+    desc: repo.description || "Dự án mã nguồn trên GitHub — bấm để xem chi tiết.",
+    image: projectImage(repo.name),
+    role: `${lang} Developer`,
+    client: "Dự án cá nhân",
+    year,
+    yearRole: `${year} • ${lang}`,
+    link: repo.html_url,
+  };
+}
 
 export function ProjectSection() {
   const [projectList, setProjectList] = useState<any[]>(projects);
@@ -78,7 +109,7 @@ export function ProjectSection() {
   const isTransitioningRef = useRef(false);
   const autoplayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // Sync state refs to avoid stale closure issues in window events/timeouts
+  // Đồng bộ state refs để tránh lỗi stale closure trong window events/timeouts
   useEffect(() => {
     activeIndexRef.current = activeIndex;
   }, [activeIndex]);
@@ -87,37 +118,59 @@ export function ProjectSection() {
     isTransitioningRef.current = isTransitioning;
   }, [isTransitioning]);
 
-  // Load dynamic projects from localStorage on client side mount
+  // Tải danh sách dự án (chỉ chạy phía client). Thứ tự ưu tiên:
+  //   1. localStorage "project_list" (do admin chỉnh) — nếu có thì dùng luôn, không gọi API.
+  //   2. Hiển thị ngay danh sách tĩnh, rồi fetch repo công khai từ GitHub để cập nhật.
+  //   3. Nếu fetch lỗi (offline / vượt giới hạn request) thì giữ nguyên danh sách tĩnh.
   useEffect(() => {
+    // Gán danh sách + canh activeIndex về giữa dải nhân bản (5 bộ) để cuộn vòng mượt
+    const applyList = (raw: any[]) => {
+      const list = raw.map((item: any) =>
+        item.yearRole ? item : { ...item, yearRole: `${item.year} • ${item.role}` }
+      );
+      setProjectList(list);
+      const N = list.length;
+      // Bộ thứ 3 (floor(5/2)=2 -> 2*N) + phần tử giữa của bộ (floor(N/2)), để dư bộ ở cả 2 phía.
+      const initialIndex = Math.floor(5 / 2) * N + Math.floor(N / 2);
+      setActiveIndex(initialIndex);
+      activeIndexRef.current = initialIndex;
+    };
+
+    // 1. Ưu tiên danh sách do admin quản lý
     const stored = localStorage.getItem("project_list");
-    let list = [];
     if (stored) {
       try {
-        list = JSON.parse(stored);
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          applyList(parsed);
+          return;
+        }
       } catch (e) {
         console.error("Failed to parse project_list", e);
       }
     }
-    if (!list || list.length === 0) {
-      list = [...projects];
-    }
 
-    list = list.map((item: any) => {
-      if (!item.yearRole) {
-        item.yearRole = `${item.year} • ${item.role}`;
-      }
-      return item;
-    });
+    // 2. Hiển thị ngay danh sách tĩnh (4 repo thật) làm nội dung tức thì + dự phòng
+    applyList(projects);
 
-    setProjectList(list);
+    // 3. Lấy repo công khai mới nhất từ GitHub (tự cập nhật khi thêm repo mới)
+    let cancelled = false;
+    fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
+      .then((repos) => {
+        if (cancelled || !Array.isArray(repos)) return;
+        // Bỏ các repo fork, chỉ giữ dự án của chính mình
+        const mapped = repos.filter((r: any) => !r.fork).map(mapRepoToProject);
+        if (mapped.length > 0) applyList(mapped);
+      })
+      .catch((err) => console.error("Không lấy được repo GitHub:", err));
 
-    const N = list.length;
-    const initialIndex = Math.floor(5 / 2) * N + Math.floor(N / 2);
-    setActiveIndex(initialIndex);
-    activeIndexRef.current = initialIndex;
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  // Center calculation effect
+  // Effect tính toán căn giữa
   const calculateTranslation = () => {
     if (!trackRef.current) return;
     const activeCard = trackRef.current.querySelector(
@@ -138,7 +191,7 @@ export function ProjectSection() {
     return () => window.removeEventListener("resize", calculateTranslation);
   }, [activeIndex, projectList]);
 
-  // Autoplay delay setup
+  // Thiết lập độ trễ autoplay
   const AUTOPLAY_DELAY = 3000;
 
   const resetAutoplayTimer = () => {
@@ -146,7 +199,7 @@ export function ProjectSection() {
       clearTimeout(autoplayTimeoutRef.current);
     }
 
-    // Pause autoplay completely if hover active card
+    // Tạm dừng hoàn toàn autoplay nếu đang hover card active
     if (trackRef.current) {
       const activeCard = trackRef.current.querySelector(
         ".project-card.active"
@@ -164,11 +217,16 @@ export function ProjectSection() {
     }, AUTOPLAY_DELAY);
   };
 
+  // Tìm index đích gần nhất theo vòng tròn (modular): từ vị trí hiện tại đi tới logic đích
+  // theo hướng ngắn nhất, thay vì luôn đi tiến. Nhờ vậy chuyển từ card cuối -> card đầu
+  // sẽ trượt sang phải 1 bước thay vì lùi qua cả danh sách.
   const getShortestPath = (fromIndex: number, targetLogical: number) => {
     const len = projectList.length;
     if (len === 0) return fromIndex;
     const currentLogical = fromIndex % len;
     let diff = targetLogical - currentLogical;
+    // Chuẩn hóa diff về khoảng [-len/2, len/2] (ở đây ngưỡng 2 = floor(5/2)) để chọn chiều ngắn nhất:
+    // nếu đi tiến quá nửa vòng thì đổi sang đi lùi (và ngược lại).
     if (diff > 2) diff -= len;
     if (diff < -2) diff += len;
     return fromIndex + diff;
@@ -182,23 +240,32 @@ export function ProjectSection() {
     const N = projectList.length;
     if (N === 0) return;
 
+    // Vùng an toàn = bộ nhân bản ở giữa [2*N .. 3*N-1]. Nếu đích gần nhất vẫn nằm
+    // trong vùng này thì chỉ cần transition mượt bình thường (còn dư bộ 2 phía nên không lo hết card).
     if (closestTarget >= 2 * N && closestTarget <= 3 * N - 1) {
       setIsTransitioning(true);
       setActiveIndex(closestTarget);
     } else {
+      // Đích bị trôi ra ngoài vùng an toàn -> phải "tái định vị" về giữa để còn chỗ cuộn tiếp.
       setIsTransitioning(true);
+      // safeTarget: cùng logic đích nhưng đặt trong bộ giữa.
       const safeTarget = 2 * N + targetLogical;
+      // start: lùi safeTarget lại đúng quãng đường (closestTarget - currentIdx) cần trượt,
+      // để khi trượt từ start -> safeTarget mắt thấy đúng hướng/khoảng cách như đi tới closestTarget.
       const start = safeTarget - (closestTarget - currentIdx);
 
-      // Jump instantly to start with no transition
+      // Thủ thuật chống nhấp nháy: nhảy tức thì (tắt transition) về 'start' tương đương,
+      // người dùng không thấy vì vị trí hiển thị giống hệt vị trí cũ.
       setIsNoTransitions(true);
       setActiveIndex(start);
 
-      // Flush synchronous layout jump state before resetting flag
+      // 35ms: chờ React commit DOM + browser áp layout của bước nhảy (đang tắt transition) xong
+      // mới bật lại transition, tránh trình duyệt gộp 2 lần đổi index thành 1 animation giật.
       setTimeout(() => {
         setIsNoTransitions(false);
 
-        // Run smooth transition to safe target
+        // 20ms: thêm 1 frame đệm sau khi bật lại transition rồi mới đổi tới safeTarget,
+        // đảm bảo cú trượt cuối chạy mượt thay vì bị nhảy cóc.
         setTimeout(() => {
           setActiveIndex(safeTarget);
         }, 20);
@@ -213,7 +280,7 @@ export function ProjectSection() {
     }
   };
 
-  // Card click triggers
+  // Xử lý khi click vào card
   const handleCardClick = (idx: number) => {
     if (isTransitioningRef.current) return;
     if (projectList.length === 0) return;
@@ -223,7 +290,7 @@ export function ProjectSection() {
     resetAutoplayTimer();
   };
 
-  // Mouse cursor hover signals
+  // Tín hiệu hover của con trỏ chuột
   const triggerCursorHover = (enter: boolean) => {
     const eventName = enter ? "cursorHoverEnter" : "cursorHoverLeave";
     window.dispatchEvent(new CustomEvent(eventName));
@@ -243,7 +310,7 @@ export function ProjectSection() {
     resetAutoplayTimer();
   };
 
-  // Autoplay timers & listeners
+  // Timers & listeners của autoplay
   useEffect(() => {
     resetAutoplayTimer();
     return () => {
@@ -273,7 +340,8 @@ export function ProjectSection() {
     };
   }, [projectList]);
 
-  // Multiplied list rendering (5 sets = 25 cards)
+  // Nhân bản danh sách 5 lần (vd 5 dự án -> 25 card) để tạo ảo giác cuộn vô hạn:
+  // luôn còn card đệm ở 2 đầu, kết hợp cú nhảy "tái định vị" trong goToProject.
   const repeatCount = 5;
   const cardsData = Array.from(
     { length: repeatCount * projectList.length },
@@ -287,7 +355,7 @@ export function ProjectSection() {
 
   return (
     <>
-      {/* Scope encapsulation style block */}
+      {/* Khối style đóng gói phạm vi */}
       <style>{`
         *, *::before, *::after { box-sizing: border-box; }
 
@@ -296,7 +364,7 @@ export function ProjectSection() {
           min-height: 100vh;
           width: 100%;
           background-color: #06070d;
-          background-image: url('/IMG/Background.jpeg');
+          background-image: url('/IMG/background.jpeg');
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
@@ -321,7 +389,7 @@ export function ProjectSection() {
         }
         @keyframes techPulse { 0%{opacity:.5} 100%{opacity:1} }
 
-        /* ===== SCROLL HINT ===== */
+        /* ===== GỢI Ý CUỘN ===== */
         .scroll-hint {
           border: 1px solid rgba(255,255,255,0.18);
           border-radius: 100px;
@@ -334,7 +402,7 @@ export function ProjectSection() {
           background: rgba(255,255,255,0.04);
         }
 
-        /* ===== MAIN GALLERY TITLE ===== */
+        /* ===== TIÊU ĐỀ GALLERY CHÍNH ===== */
         .gallery-title-wrapper {
           text-align: center;
           margin-top: 120px;
@@ -367,7 +435,7 @@ export function ProjectSection() {
           filter: drop-shadow(0 2px 8px rgba(0, 162, 255, 0.15));
         }
 
-        /* ===== FILMSTRIP CONTAINER ===== */
+        /* ===== CONTAINER CUỘN PHIM ===== */
         .filmstrip-container {
           position: relative;
           width: 100%;
@@ -405,7 +473,7 @@ export function ProjectSection() {
         .filmstrip-bg-ribbon::before { top: 6px; }
         .filmstrip-bg-ribbon::after { bottom: 6px; }
 
-        /* Moving track */
+        /* Track di chuyển */
         .filmstrip-track {
           display: flex;
           align-items: center;
@@ -426,7 +494,7 @@ export function ProjectSection() {
           transition-duration: 0.28s !important;
         }
 
-        /* ===== PROJECT CARD ===== */
+        /* ===== CARD DỰ ÁN ===== */
         .project-card {
           position: relative;
           width: 360px;
@@ -465,7 +533,7 @@ export function ProjectSection() {
           padding: 16px;
         }
 
-        /* SHARED IMAGE BOX */
+        /* KHUNG ẢNH DÙNG CHUNG */
         .card-img-box {
           width: 100%;
           height: 120px;
@@ -481,7 +549,7 @@ export function ProjectSection() {
           border-radius: 14px;
         }
 
-        /* Image transitions */
+        /* Transition của ảnh */
         .project-card-img {
           width: 100%;
           height: 100%;
@@ -504,7 +572,21 @@ export function ProjectSection() {
           transform: scale(1.03);
         }
 
-        /* --- COLLAPSED INFO STYLE --- */
+        /* Canh phần trên của ảnh (hữu ích cho ảnh dọc như DiemDanhQR -> lộ header app) */
+        .project-card-img.fit-top {
+          object-position: center top;
+        }
+
+        /* Phóng to ảnh có nhiều lề trống (AI_Lab) để nội dung lấp đầy khung, canh phần trên */
+        .project-card-img.zoom {
+          transform: scale(1.5);
+          object-position: center top;
+        }
+        .project-card:hover .project-card-img.zoom {
+          transform: scale(1.55);
+        }
+
+        /* --- STYLE THÔNG TIN THU GỌN --- */
         .info-collapsed {
           display: flex;
           flex-direction: column;
@@ -548,7 +630,7 @@ export function ProjectSection() {
           display: inline-block;
         }
 
-        /* --- EXPANDED INFO STYLE --- */
+        /* --- STYLE THÔNG TIN MỞ RỘNG --- */
         .info-expanded {
           display: flex;
           flex-direction: column;
@@ -632,7 +714,7 @@ export function ProjectSection() {
           color: #000000;
         }
 
-        /* ===== BOTTOM CONTROLS ===== */
+        /* ===== ĐIỀU KHIỂN PHÍA DƯỚI ===== */
         .bottom-controls {
           display: flex;
           justify-content: center;
@@ -643,7 +725,7 @@ export function ProjectSection() {
           animation: fadeIn 0.9s ease 0.5s forwards;
         }
 
-        /* Slide indicators */
+        /* Indicator slide */
         .indicators-wrapper {
           display: flex;
           gap: 12px;
@@ -662,7 +744,7 @@ export function ProjectSection() {
           width: 48px;
         }
 
-        /* Animations */
+        /* Hoạt ảnh */
         @keyframes fadeIn {
           from { opacity: 0; }
           to   { opacity: 1; }
@@ -684,10 +766,10 @@ export function ProjectSection() {
       `}</style>
 
       <div className="project-section-wrapper">
-        {/* Navigation Bar */}
+        {/* Thanh điều hướng */}
         <NavBar className="mix-blend-difference" />
 
-        {/* Title Block */}
+        {/* Khối tiêu đề */}
         <div className="gallery-title-wrapper">
           <h1 className="gallery-title">
             <span className="word-project">Project</span>
@@ -695,7 +777,7 @@ export function ProjectSection() {
           </h1>
         </div>
 
-        {/* Filmstrip Slider */}
+        {/* Slider cuộn phim */}
         <main className="filmstrip-container" id="filmstripContainer">
           <div className="filmstrip-bg-ribbon" />
           <div
@@ -723,23 +805,32 @@ export function ProjectSection() {
                   onMouseEnter={() => handleCardMouseEnter(idx)}
                   onMouseLeave={handleCardMouseLeave}
                 >
-                  {/* Shared Image Box */}
+                  {/* Khung ảnh dùng chung */}
                   <div className="card-img-box">
                     <img
                       src={proj.image}
                       alt={proj.title}
-                      className="project-card-img"
+                      className={`project-card-img ${
+                        proj.id === "AI_Lab" ? "zoom" : ""
+                      } ${proj.id === "DiemDanhQR" ? "fit-top" : ""}`}
                       draggable="false"
                       onError={(e) => {
                         const target = e.currentTarget;
-                        target.src = `https://placehold.co/600x338/111219/ffffff?text=${encodeURIComponent(
-                          proj.shortName
-                        )}`;
+                        const og = ghImage(proj.id);
+                        // Thiếu ảnh local -> thử ảnh OpenGraph GitHub; nếu vẫn lỗi -> placeholder
+                        if (!target.dataset.fallback && proj.id) {
+                          target.dataset.fallback = "og";
+                          target.src = og;
+                        } else {
+                          target.src = `https://placehold.co/600x338/111219/ffffff?text=${encodeURIComponent(
+                            proj.shortName
+                          )}`;
+                        }
                       }}
                     />
                   </div>
 
-                  {/* Collapsed Info */}
+                  {/* Thông tin thu gọn */}
                   <div className="info-collapsed">
                     <span className="collapsed-num">{proj.category}</span>
                     <h3 className="collapsed-title">{proj.shortName}</h3>
@@ -748,7 +839,7 @@ export function ProjectSection() {
                     </span>
                   </div>
 
-                  {/* Expanded Info */}
+                  {/* Thông tin mở rộng */}
                   <div className="info-expanded">
                     <h2 className="expanded-title">{proj.title}</h2>
                     <p className="expanded-desc">{proj.desc}</p>
@@ -767,13 +858,17 @@ export function ProjectSection() {
                       </div>
                     </div>
                     <a
-                      href="#"
+                      href={proj.link || "#"}
+                      target={proj.link ? "_blank" : undefined}
+                      rel={proj.link ? "noopener noreferrer" : undefined}
                       className="expanded-btn"
                       onMouseEnter={() => triggerCursorHover(true)}
                       onMouseLeave={() => triggerCursorHover(false)}
-                      onClick={(e) => e.preventDefault()}
+                      onClick={(e) => {
+                        if (!proj.link) e.preventDefault();
+                      }}
                     >
-                      View Case Study
+                      {proj.link ? "Xem trên GitHub" : "View Case Study"}
                     </a>
                   </div>
                 </div>
@@ -782,7 +877,7 @@ export function ProjectSection() {
           </div>
         </main>
 
-        {/* Footer Indicators */}
+        {/* Indicator ở footer */}
         <footer className="bottom-controls">
           <div className="indicators-wrapper" id="indicatorsWrapper">
             {projectList.map((proj, idx) => (

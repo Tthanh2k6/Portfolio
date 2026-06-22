@@ -1,5 +1,5 @@
-// Captures the original Error out-of-band so server.ts can recover the stack
-// when h3 has already swallowed the throw into a generic 500 Response.
+// Bắt Error gốc ở ngoài luồng để server.ts có thể khôi phục stack
+// khi h3 đã nuốt mất throw và biến thành một Response 500 chung chung.
 
 let lastCapturedError: { error: unknown; at: number } | undefined;
 const TTL_MS = 5_000;

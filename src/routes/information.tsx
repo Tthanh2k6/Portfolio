@@ -320,7 +320,7 @@ function Information() {
   const [cardTitle, setCardTitle] = useState("Industrial University \nof Ho Chi Minh City");
 
   useEffect(() => {
-    // Load local settings
+    // Tải cài đặt cục bộ
     const storedStatus = localStorage.getItem("info_status");
     const storedTitleTop = localStorage.getItem("info_title_top");
     const storedTitleBottom = localStorage.getItem("info_title_bottom");

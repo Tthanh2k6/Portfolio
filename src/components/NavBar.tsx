@@ -22,8 +22,18 @@ export function NavBar({ className = "" }: { className?: string }) {
 
   const [bubbleRect, setBubbleRect] = useState<BubbleRect | null>(null);
   const [visible, setVisible]       = useState(false);
+  // Đã cuộn khỏi đầu trang chưa — dùng để hiện nền mờ cho navbar, tránh chữ trang
+  // (vd header "Get In Touch") trượt lên dưới navbar trong suốt gây chồng chữ.
+  const [scrolled, setScrolled]     = useState(false);
 
-  // Get the rect of a nav <li> relative to the <nav>
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Lấy rect của một <li> trong nav, tương đối so với <nav>
   const getRectOf = useCallback((el: HTMLLIElement | null): BubbleRect | null => {
     if (!el || !navRef.current) return null;
     const navBox  = navRef.current.getBoundingClientRect();
@@ -36,7 +46,7 @@ export function NavBar({ className = "" }: { className?: string }) {
     };
   }, []);
 
-  // Move bubble to the active page item on mount / route change
+  // Di chuyển bubble tới mục trang đang active khi mount / khi đổi route
   useEffect(() => {
     const activeIdx = navItems.findIndex(item => {
       if (item.to === "/") return currentPath === "/";
@@ -66,7 +76,7 @@ export function NavBar({ className = "" }: { className?: string }) {
   };
 
   const onNavLeave = () => {
-    // Return bubble to active page after a brief delay
+    // Đưa bubble về trang đang active sau một khoảng trễ ngắn
     if (returnTimerRef.current) clearTimeout(returnTimerRef.current);
     returnTimerRef.current = setTimeout(() => {
       const activeIdx = navItems.findIndex(item => {
@@ -86,10 +96,22 @@ export function NavBar({ className = "" }: { className?: string }) {
     <nav
       ref={navRef}
       className={`fixed left-0 top-0 z-50 flex w-full items-center justify-center px-8 py-7 ${className}`}
+      style={{
+        transition:
+          "background-color 0.3s ease, backdrop-filter 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease",
+        // Phong cách glass (đồng bộ với bubble indicator): trắng trong mờ + blur mạnh
+        backgroundColor: scrolled ? "rgba(255,255,255,0.06)" : "transparent",
+        backdropFilter: scrolled ? "blur(16px) saturate(140%)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(16px) saturate(140%)" : "none",
+        borderBottom: scrolled
+          ? "1px solid rgba(255,255,255,0.12)"
+          : "1px solid transparent",
+        boxShadow: scrolled ? "0 4px 24px rgba(0,0,0,0.18)" : "none",
+      }}
       onMouseEnter={onNavEnter}
       onMouseLeave={onNavLeave}
     >
-      {/* Bubble indicator — absolutely positioned inside nav */}
+      {/* Chỉ báo bubble — định vị absolute bên trong nav */}
       {visible && bubbleRect && (
         <div
           ref={bubbleRef}

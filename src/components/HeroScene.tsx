@@ -8,7 +8,7 @@ import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 
 // ═══════════════════════════════════════════════════════════════════
-// CẤU HÌNH — giữ nguyên giá trị từ neon-grid-demo.html
+// CẤU HÌNH — giữ nguyên giá trị từ Idea Demo/Home.html
 // ═══════════════════════════════════════════════════════════════════
 const VISIBLE_GRID_SIZE = 20;
 const GRID_SIZE         = 38;
@@ -55,7 +55,7 @@ export function HeroScene() {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    // Load custom colors from localStorage or fallback to defaults
+    // Nạp màu tùy chỉnh từ localStorage hoặc dùng giá trị mặc định
     const pinkHex = localStorage.getItem("home_cube_pink") || "#FF00FF";
     const purpleHex = localStorage.getItem("home_cube_purple") || "#9900FF";
     const cyanHex = localStorage.getItem("home_cube_cyan") || "#00FFFF";
@@ -68,7 +68,7 @@ export function HeroScene() {
     const cOrange = new THREE.Color(orangeHex);
     const cYellow = new THREE.Color(yellowHex);
 
-    // Load custom scene variables from localStorage or fallback to defaults
+    // Nạp các biến scene tùy chỉnh từ localStorage hoặc dùng giá trị mặc định
     const visibleGridSize = parseFloat(localStorage.getItem("scene_visible_grid_size") || "20");
     const gridSize         = parseInt(localStorage.getItem("scene_grid_size") || "38");
     const cubeSize         = parseFloat(localStorage.getItem("scene_cube_size") || "6.2");
@@ -90,7 +90,7 @@ export function HeroScene() {
     const idleMs           = parseFloat(localStorage.getItem("scene_idle_ms") || "3000");
     const cameraYOffset    = parseFloat(localStorage.getItem("scene_camera_y_offset") || "20");
 
-    // Cube state & Scene advanced settings
+    // Trạng thái cube & cài đặt nâng cao của scene
     const cubeSolidColor    = localStorage.getItem("scene_cube_solid_color") || "#010101";
     const cubeMetalness     = parseFloat(localStorage.getItem("scene_cube_metalness") || "0.4");
     const cubeRoughness     = parseFloat(localStorage.getItem("scene_cube_roughness") || "0.5");
@@ -340,7 +340,7 @@ export function HeroScene() {
     let rafId: number;
     const lerpFn = (a: number, b: number, t: number) => a + (b - a) * t;
 
-    // Nav-hover activation: when cursor is on navbar, simulate mouse at grid centre
+    // Kích hoạt khi hover navbar: khi con trỏ ở trên navbar, giả lập chuột ở tâm lưới
     let navHovered = false;
     const onNavEnter = () => { navHovered = true; };
     const onNavLeave = () => { navHovered = false; };
@@ -351,7 +351,7 @@ export function HeroScene() {
       if (!canvas) return;
       rafId = requestAnimationFrame(animate);
 
-      // When navbar is hovered: pretend mouse is at grid centre, all cubes react
+      // Khi navbar được hover: coi như chuột ở tâm lưới, tất cả cube đều phản ứng
       if (navHovered) {
         mouse3D.set(0, 0, 0);
         isActive     = true;
@@ -421,21 +421,21 @@ export function HeroScene() {
       window.removeEventListener("navHoverEnter", onNavEnter);
       window.removeEventListener("navHoverLeave", onNavLeave);
 
-      // Geometries
+      // Các geometry
       bgGeom.dispose();
       edgesGeom.dispose();
       boxGeom.dispose();
       baseGeom.dispose();
       platformGeom.dispose();
 
-      // Materials
+      // Các material
       bgMat.dispose();
       platformMat.dispose();
       solidMats.forEach(m => m.dispose());
       edgeMats.forEach(m => m.dispose());
       baseMeshMats.forEach(m => m.dispose());
 
-      // Render pipeline
+      // Pipeline dựng hình
       composer.dispose();
       renderer.dispose();
     };

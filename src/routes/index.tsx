@@ -56,10 +56,10 @@ function Index() {
 
   return (
     <main className="relative w-full overflow-x-hidden bg-black text-white">
-      {/* Hero — full viewport */}
+      {/* Hero — toàn màn hình */}
       <div className="relative min-h-screen w-full overflow-hidden">
 
-      {/* R3F 3D background */}
+      {/* Nền 3D R3F */}
       <div className="absolute inset-0 z-0 h-screen w-full">
         <HeroScene />
         {/* Gradient bottom fade cho text */}
