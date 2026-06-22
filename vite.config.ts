@@ -7,6 +7,9 @@
 import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
 export default defineConfig({
+  // Build deploy cho Vercel: nitro xuất định dạng .vercel/output (Build Output API).
+  // Lovable chỉ ép preset cloudflare khi chạy trong sandbox; ở đây ta chỉ định rõ vercel.
+  nitro: { preset: "vercel" },
   tanstackStart: {
     // Chuyển hướng server entry đóng gói của TanStack Start sang src/server.ts (lớp bọc xử lý lỗi SSR của chúng ta).
     // nitro/vite build dựa trên cái này
