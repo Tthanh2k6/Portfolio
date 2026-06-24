@@ -15,14 +15,49 @@ const REPO_IMAGES: Record<string, string> = {
   AI_Lab: "/IMG/project-ailab.png",
   KNN: "/IMG/project-knn.png",
   Portfolio: "/IMG/project-portfolio.png",
+  // Dự án private (không công khai code) — chỉ hiển thị ảnh demo, thả file vào public/IMG/
+  AutoTool: "/IMG/project-autotool.png",
+  WorkFlowAI: "/IMG/project-workflowai.png",
 };
 // Ảnh dùng cho card: ưu tiên ảnh chụp local, không có thì dùng ảnh OpenGraph của GitHub
 const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
 
-// Danh sách dự án tĩnh = các repo công khai thật trên GitHub.
+// Dự án PRIVATE (tool cá nhân, không công khai mã nguồn).
+// Không có repo trên GitHub nên KHÔNG đặt link và phải gộp thủ công vào danh sách —
+// bản fetch GitHub bên dưới chỉ trả về repo công khai, sẽ không bao gồm các tool này.
+const privateProjects = [
+  {
+    id: "AutoTool",
+    category: "PYTHON • AUTOMATION",
+    shortName: "AUTOTOOL",
+    title: "AutoTool | Tự động hoá web",
+    desc: "Tool desktop (Tkinter + Selenium) tự đăng nhập trang quản trị, cập nhật số liệu sản phẩm hàng loạt và xuất báo cáo Excel — chạy nền đa luồng.",
+    image: projectImage("AutoTool"),
+    role: "Python Developer",
+    client: "Dự án cá nhân (private)",
+    year: "2026",
+    yearRole: "2026 • Python",
+    link: undefined as string | undefined,
+  },
+  {
+    id: "WorkFlowAI",
+    category: "PYTHON & AI",
+    shortName: "WORKFLOW AI",
+    title: "WorkFlow AI | Sản xuất video AI",
+    desc: "Tool all-in-one sản xuất video AI theo pipeline: kịch bản → chia cảnh → tạo ảnh/video trên Google Flow (tự động hoá trình duyệt qua Playwright/CDP) → ghép phim. Backend FastAPI.",
+    image: projectImage("WorkFlowAI"),
+    role: "Python / AI Developer",
+    client: "Dự án cá nhân (private)",
+    year: "2026",
+    yearRole: "2026 • Python & AI",
+    link: undefined as string | undefined,
+  },
+];
+
+// Danh sách dự án tĩnh = dự án private + các repo công khai thật trên GitHub.
 // Dùng để hiển thị tức thì khi mở trang và làm phương án dự phòng khi không gọi được API
-// (offline / vượt giới hạn request). Bản fetch động bên dưới sẽ ghi đè khi lấy được dữ liệu mới.
-const projects = [
+// (offline / vượt giới hạn request). Bản fetch động bên dưới sẽ ghi đè phần repo công khai.
+const publicProjects = [
   {
     id: "DiemDanhQR",
     category: "JAVASCRIPT",
@@ -77,6 +112,9 @@ const projects = [
   },
 ];
 
+// Danh sách hiển thị mặc định: tool private luôn đứng trước, rồi tới repo công khai.
+const projects = [...privateProjects, ...publicProjects];
+
 // Chuyển một repo trả về từ GitHub API sang đúng cấu trúc card dự án
 function mapRepoToProject(repo: any) {
   const lang = repo.language || "Code";
@@ -116,6 +154,17 @@ export function ProjectSection() {
 
   useEffect(() => {
     isTransitioningRef.current = isTransitioning;
+  }, [isTransitioning]);
+
+  // Lưới an toàn: nếu đang transition mà sau ~1.2s vẫn chưa nhận được 'transitionend'
+  // (vd: tab bị ẩn, transition bị huỷ giữa chừng) thì tự gỡ khoá để không kẹt cứng slider.
+  useEffect(() => {
+    if (!isTransitioning) return;
+    const failSafe = setTimeout(() => {
+      setIsTransitioning(false);
+      setIsFastTransitions(false);
+    }, 1200);
+    return () => clearTimeout(failSafe);
   }, [isTransitioning]);
 
   // Tải danh sách dự án (chỉ chạy phía client). Thứ tự ưu tiên:
@@ -161,7 +210,8 @@ export function ProjectSection() {
         if (cancelled || !Array.isArray(repos)) return;
         // Bỏ các repo fork, chỉ giữ dự án của chính mình
         const mapped = repos.filter((r: any) => !r.fork).map(mapRepoToProject);
-        if (mapped.length > 0) applyList(mapped);
+        // Luôn giữ dự án private (tool) ở đầu — GitHub API không trả về chúng
+        if (mapped.length > 0) applyList([...privateProjects, ...mapped]);
       })
       .catch((err) => console.error("Không lấy được repo GitHub:", err));
 
@@ -239,6 +289,15 @@ export function ProjectSection() {
     const closestTarget = getShortestPath(currentIdx, targetLogical);
     const N = projectList.length;
     if (N === 0) return;
+
+    // Đích trùng vị trí hiện tại (vd: bấm vào chính card active ở giữa) -> không có
+    // chuyển động nào -> sự kiện 'transitionend' của transform sẽ KHÔNG bao giờ bắn.
+    // Phải thoát sớm, nếu không setIsTransitioning(true) bên dưới sẽ kẹt true mãi mãi
+    // và khoá toàn bộ thao tác cuộn/click sau đó.
+    if (closestTarget === currentIdx) {
+      setIsFastTransitions(false);
+      return;
+    }
 
     // Vùng an toàn = bộ nhân bản ở giữa [2*N .. 3*N-1]. Nếu đích gần nhất vẫn nằm
     // trong vùng này thì chỉ cần transition mượt bình thường (còn dư bộ 2 phía nên không lo hết card).
@@ -868,7 +927,7 @@ export function ProjectSection() {
                         if (!proj.link) e.preventDefault();
                       }}
                     >
-                      {proj.link ? "Xem trên GitHub" : "View Case Study"}
+                      {proj.link ? "Xem trên GitHub" : "Private • mã nguồn không công khai"}
                     </a>
                   </div>
                 </div>
