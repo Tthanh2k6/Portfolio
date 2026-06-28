@@ -22,6 +22,47 @@ const REPO_IMAGES: Record<string, string> = {
 // Ảnh dùng cho card: ưu tiên ảnh chụp local, không có thì dùng ảnh OpenGraph của GitHub
 const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
 
+// Ghi đè thông tin (tên, mô tả, vai trò) cho từng repo GitHub.
+// Bản fetch GitHub chỉ trả về tên + mô tả thô của repo; map này dùng để hiển thị
+// đúng vai trò và mức độ dùng AI trên từng dự án — áp cho cả danh sách tĩnh lẫn bản fetch.
+// Lưu ý: key phải trùng TÊN REPO thật trên GitHub (vd AI-ML nằm ở repo "H-c-AI-ML").
+const REPO_META: Record<string, any> = {
+  DiemDanhQR: {
+    desc: "Công cụ điểm danh bằng mã QR: quét QR trên điện thoại, tự ghi vào Google Sheets qua Google Apps Script — chạy dạng PWA, không cần server riêng. Tự phát triển với sự hỗ trợ của AI.",
+    role: "JavaScript Developer",
+    client: "Dự án cá nhân",
+  },
+  AI_Lab: {
+    desc: "AI Game Arena — ứng dụng Electron cho AI tự học, tiến hóa và thi đấu game thời gian thực (Minimax, MCTS, mạng nơ-ron, giải thuật di truyền). Tự phát triển với sự hỗ trợ của AI.",
+    role: "TypeScript Developer",
+    client: "Dự án cá nhân",
+  },
+  KNN: {
+    category: "MACHINE LEARNING",
+    shortName: "KNN ELBOW",
+    title: "KNN | Elbow Method",
+    desc: "Bài tập nhóm môn Trí tuệ Nhân tạo: phân cụm K-Means và tối ưu số cụm K bằng phương pháp Elbow (Python / Jupyter). Vai trò Project Manager — quản lý source code và lập trình thuật toán K-Means cho nhóm 9 thành viên.",
+    role: "Project Manager",
+    client: "Dự án học thuật (nhóm 9 người)",
+    yearRole: "2026 • Project Manager",
+  },
+  Portfolio: {
+    desc: "Trang portfolio cá nhân với hero 3D, hoạt ảnh chuyển động và CMS phía client — chính là website này. Tự phát triển với sự hỗ trợ của AI.",
+    role: "Frontend Developer",
+    client: "Dự án cá nhân",
+  },
+  // AI-ML nằm ở repo GitHub tên "H-c-AI-ML" — dự án tự làm 100%, không dùng AI.
+  "H-c-AI-ML": {
+    category: "MACHINE LEARNING",
+    shortName: "AI / ML",
+    title: "AI-ML | Học Máy & Học Sâu",
+    desc: "Tổng hợp bài thực hành Machine Learning & Deep Learning: tiền xử lý dữ liệu, K-Means, Decision Tree, KNN, MLP, CNN và phân loại MNIST (scikit-learn / TensorFlow). Tự code 100%, không dùng AI hỗ trợ.",
+    role: "ML / AI Developer",
+    client: "Dự án tự học",
+    yearRole: "2026 • Machine Learning",
+  },
+};
+
 // Dự án PRIVATE (tool cá nhân, không công khai mã nguồn).
 // Không có repo trên GitHub nên KHÔNG đặt link và phải gộp thủ công vào danh sách —
 // bản fetch GitHub bên dưới chỉ trả về repo công khai, sẽ không bao gồm các tool này.
@@ -31,7 +72,7 @@ const privateProjects = [
     category: "PYTHON • AUTOMATION",
     shortName: "AUTOTOOL",
     title: "AutoTool | Tự động hoá web",
-    desc: "Tool desktop (Tkinter + Selenium) tự đăng nhập trang quản trị, cập nhật số liệu sản phẩm hàng loạt và xuất báo cáo Excel — chạy nền đa luồng.",
+    desc: "Tool desktop (Tkinter + Selenium) tự đăng nhập trang quản trị, cập nhật số liệu sản phẩm hàng loạt và xuất báo cáo Excel — chạy nền đa luồng. Tự phát triển với sự hỗ trợ của AI.",
     image: projectImage("AutoTool"),
     role: "Python Developer",
     client: "Dự án cá nhân (private)",
@@ -44,7 +85,7 @@ const privateProjects = [
     category: "PYTHON & AI",
     shortName: "WORKFLOW AI",
     title: "WorkFlow AI | Sản xuất video AI",
-    desc: "Tool all-in-one sản xuất video AI theo pipeline: kịch bản → chia cảnh → tạo ảnh/video trên Google Flow (tự động hoá trình duyệt qua Playwright/CDP) → ghép phim. Backend FastAPI.",
+    desc: "Tool all-in-one sản xuất video AI theo pipeline: kịch bản → chia cảnh → tạo ảnh/video trên Google Flow (tự động hoá trình duyệt qua Playwright/CDP) → ghép phim. Backend FastAPI. Tự phát triển với sự hỗ trợ của AI.",
     image: projectImage("WorkFlowAI"),
     role: "Python / AI Developer",
     client: "Dự án cá nhân (private)",
@@ -63,10 +104,8 @@ const publicProjects = [
     category: "JAVASCRIPT",
     shortName: "QR ATTENDANCE",
     title: "DiemDanhQR | Điểm danh QR",
-    desc: "Công cụ điểm danh bằng mã QR: quét QR trên điện thoại, tự ghi vào Google Sheets qua Google Apps Script — chạy dạng PWA, không cần server riêng.",
+    ...REPO_META.DiemDanhQR,
     image: projectImage("DiemDanhQR"),
-    role: "JavaScript Developer",
-    client: "Dự án cá nhân",
     year: "2026",
     yearRole: "2026 • JavaScript",
     link: `https://github.com/${GITHUB_USER}/DiemDanhQR`,
@@ -76,36 +115,33 @@ const publicProjects = [
     category: "TYPESCRIPT & AI",
     shortName: "AI LAB",
     title: "AI_Lab | Thử nghiệm AI",
-    desc: "AI Game Arena — ứng dụng Electron cho AI tự học, tiến hóa và thi đấu game thời gian thực (Minimax, MCTS, mạng nơ-ron, giải thuật di truyền).",
+    ...REPO_META.AI_Lab,
     image: projectImage("AI_Lab"),
-    role: "TypeScript Developer",
-    client: "Dự án cá nhân",
     year: "2026",
     yearRole: "2026 • TypeScript",
     link: `https://github.com/${GITHUB_USER}/AI_Lab`,
   },
   {
     id: "KNN",
-    category: "MACHINE LEARNING",
-    shortName: "KNN ELBOW",
-    title: "KNN | Elbow Method",
-    desc: "Bài tập môn Trí tuệ Nhân tạo: phân cụm K-Means và tối ưu số cụm K bằng phương pháp Elbow (Python / Jupyter).",
+    ...REPO_META.KNN,
     image: projectImage("KNN"),
-    role: "ML / Data",
-    client: "Dự án học thuật",
     year: "2026",
-    yearRole: "2026 • Machine Learning",
     link: `https://github.com/${GITHUB_USER}/KNN`,
+  },
+  {
+    id: "H-c-AI-ML",
+    ...REPO_META["H-c-AI-ML"],
+    image: projectImage("H-c-AI-ML"),
+    year: "2026",
+    link: `https://github.com/${GITHUB_USER}/H-c-AI-ML`,
   },
   {
     id: "Portfolio",
     category: "WEB & 3D",
     shortName: "PORTFOLIO",
     title: "Portfolio | Trang cá nhân",
-    desc: "Trang portfolio cá nhân với hero 3D, hoạt ảnh chuyển động và CMS phía client — chính là website này.",
+    ...REPO_META.Portfolio,
     image: projectImage("Portfolio"),
-    role: "Frontend Developer",
-    client: "Dự án cá nhân",
     year: "2026",
     yearRole: "2026 • Web & 3D",
     link: `https://github.com/${GITHUB_USER}/Portfolio`,
@@ -119,7 +155,7 @@ const projects = [...privateProjects, ...publicProjects];
 function mapRepoToProject(repo: any) {
   const lang = repo.language || "Code";
   const year = (repo.updated_at || "").slice(0, 4);
-  return {
+  const base = {
     id: repo.name,
     category: (repo.language || "PROJECT").toUpperCase(),
     shortName: repo.name,
@@ -132,6 +168,8 @@ function mapRepoToProject(repo: any) {
     yearRole: `${year} • ${lang}`,
     link: repo.html_url,
   };
+  // Ghi đè bằng thông tin tự soạn (vai trò, mức độ dùng AI...) nếu repo có trong REPO_META
+  return { ...base, ...(REPO_META[repo.name] || {}) };
 }
 
 export function ProjectSection() {

@@ -116,11 +116,11 @@ Tuy vậy, để tránh trang quản trị bị lộ công khai, dự án giới
 
 ## 🌐 Triển khai
 
-Nội dung trang render được ở phía client nên có thể deploy dưới dạng tĩnh (GitHub Pages,
-Netlify, Vercel, Cloudflare Pages...).
+Dự án hiện được cấu hình deploy lên **Vercel**: `vite.config.ts` đặt `nitro: { preset: "vercel" }`,
+khi `npm run build` sẽ xuất ra định dạng `.vercel/output` (Build Output API) để Vercel chạy SSR.
 
-> Lưu ý: TanStack Start mặc định build cho môi trường có server (SSR). Để host trên
-> GitHub Pages (chỉ phục vụ file tĩnh) cần xuất bản dạng SPA/tĩnh và cấu hình base path
+> Lưu ý: TanStack Start mặc định build cho môi trường có server (SSR). Muốn host tĩnh thuần
+> (GitHub Pages, Netlify static...) thì cần đổi sang preset xuất SPA/tĩnh và cấu hình base path
 > phù hợp với tên repository.
 
 ---
