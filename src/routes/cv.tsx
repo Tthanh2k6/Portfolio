@@ -16,12 +16,9 @@ export const Route = createFileRoute("/cv")({
   component: CvPage,
 });
 
-/* ────────────────────────────────────────────────────────────────────────────
-   CHỖ CẦN TỰ ĐIỀN — mấy trường này không suy ra được từ mã nguồn.
-   Điền xong thì xoá luôn dấu 〈 〉 đi.
-   ──────────────────────────────────────────────────────────────────────────── */
-const PHONE = "〈điền số điện thoại〉";
-const GPA = "〈điền GPA nếu muốn khoe, không thì xoá dòng này〉";
+// Thông tin liên hệ hiển thị trên CV. Số điện thoại viết cách nhóm 4-3-3 cho dễ
+// đọc; dán vào máy vẫn gọi được. Cố ý KHÔNG có GPA — chủ ý của tác giả.
+const PHONE = "0372 131 320";
 
 const EMAIL = "ttrungthanh90@gmail.com";
 const GITHUB = "github.com/Tthanh2k6";
@@ -266,11 +263,7 @@ function CvPage() {
               <strong>{t.eduSchool}</strong>
               <span>{t.eduTime}</span>
             </div>
-            <p>
-              {t.eduMajor}
-              <br />
-              {GPA}
-            </p>
+            <p>{t.eduMajor}</p>
           </article>
         </section>
       </main>
