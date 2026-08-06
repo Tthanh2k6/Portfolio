@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { NavBar } from "./NavBar";
+import { useLang } from "@/lib/i18n";
 
 interface Comment {
   id: number;
@@ -76,12 +77,19 @@ function getSocialIcon(type: string) {
   );
 }
 
-// Comment mặc định: lời chào của chủ trang, được ghim (pinned) lên đầu sổ lưu bút
-const initialComments: Comment[] = [
+// Comment mặc định: lời chào của chủ trang, được ghim (pinned) lên đầu sổ lưu bút.
+// Đây là chữ do trang tự sinh (không phải khách viết) nên phải đổi theo ngôn ngữ —
+// hàm nhận lang thay vì hằng số cố định.
+const WELCOME_VI =
+  "Chào mừng bạn đến với portfolio của mình! Cảm ơn bạn đã ghé thăm — hãy để lại một lời nhắn hoặc cảm nghĩ nhé. 👋";
+const WELCOME_EN =
+  "Welcome to my portfolio! Thanks for stopping by — feel free to leave a note or a thought. 👋";
+
+const makeInitialComments = (lang: "vi" | "en"): Comment[] => [
   {
     id: 1,
     author: "Trần Trung Thành",
-    text: "Chào mừng bạn đến với portfolio của mình! Cảm ơn bạn đã ghé thăm — hãy để lại một lời nhắn hoặc cảm nghĩ nhé. 👋",
+    text: lang === "en" ? WELCOME_EN : WELCOME_VI,
     pinned: true,
     likes: 0,
     liked: false,
@@ -122,7 +130,10 @@ function ToastItem({ toast }: { toast: Toast }) {
 }
 
 export function ContactSection() {
-  const [comments, setComments] = useState<Comment[]>(initialComments);
+  const { lang } = useLang();
+  // Khởi tạo bằng bản tiếng Việt cho khớp HTML server dựng (không lệch hydrate);
+  // đổi ngôn ngữ sau đó sẽ được effort bên dưới cập nhật lại lời chào.
+  const [comments, setComments] = useState<Comment[]>(() => makeInitialComments("vi"));
   const [socials, setSocials] = useState<any[]>(DEFAULT_SOCIALS);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
@@ -180,6 +191,20 @@ export function ContactSection() {
       }
     }
   }, []);
+
+  // Đổi ngôn ngữ -> dịch lại LỜI CHÀO GHIM (chữ do trang tự sinh). Chỉ thay khi nội
+  // dung vẫn đúng bằng một trong hai bản mặc định; khách để lại lời nhắn thật thì
+  // giữ nguyên, không được dịch đè lời của người ta.
+  useEffect(() => {
+    const wanted = lang === "en" ? WELCOME_EN : WELCOME_VI;
+    setComments((prev) =>
+      prev.map((c) =>
+        c.pinned && (c.text === WELCOME_VI || c.text === WELCOME_EN)
+          ? { ...c, text: wanted }
+          : c
+      )
+    );
+  }, [lang]);
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

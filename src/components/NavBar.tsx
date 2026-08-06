@@ -1,6 +1,8 @@
 import { useRef, useState, useEffect, useCallback } from "react";
 import { Link, useRouterState } from "@tanstack/react-router";
+import { useLang } from "@/lib/i18n";
 
+// Nhãn menu vốn đã là tiếng Anh nên giữ nguyên cho cả hai ngôn ngữ.
 const navItems = [
   { label: "Home",        to: "/" },
   { label: "Information", to: "/information" },
@@ -15,6 +17,7 @@ interface BubbleRect { left: number; width: number; height: number; top: number 
 export function NavBar({ className = "" }: { className?: string }) {
   const router        = useRouterState();
   const currentPath   = router.location.pathname;
+  const { lang, setLang } = useLang();
 
   const navRef        = useRef<HTMLElement>(null);
   const itemRefs      = useRef<(HTMLLIElement | null)[]>([]);
@@ -156,6 +159,35 @@ export function NavBar({ className = "" }: { className?: string }) {
             </Link>
           </li>
         ))}
+
+        {/* Đổi ngôn ngữ — nằm ngoài vòng lặp navItems vì nó không phải một trang,
+            và cũng không được tính vào bubble indicator của trang đang mở. */}
+        <li style={{ position: "relative", zIndex: 1 }}>
+          <button
+            type="button"
+            onClick={() => setLang(lang === "vi" ? "en" : "vi")}
+            aria-label={lang === "vi" ? "Switch to English" : "Chuyển sang tiếng Việt"}
+            title={lang === "vi" ? "Switch to English" : "Chuyển sang tiếng Việt"}
+            className="ml-2 inline-block rounded-full border px-3 py-1 text-sm font-semibold transition-colors duration-300"
+            style={{
+              fontFamily: "inherit",
+              cursor: "pointer",
+              borderColor: "rgba(255,255,255,0.22)",
+              color: "rgba(255,255,255,0.72)",
+              backgroundColor: "rgba(255,255,255,0.05)",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = "#fff";
+              e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.14)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = "rgba(255,255,255,0.72)";
+              e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.05)";
+            }}
+          >
+            {lang === "vi" ? "EN" : "VI"}
+          </button>
+        </li>
       </ul>
     </nav>
   );

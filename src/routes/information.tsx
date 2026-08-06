@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { NavBar } from "@/components/NavBar";
+import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/information")({
   head: () => ({
@@ -308,11 +309,22 @@ const INFO_CSS = `
 }
 `;
 
+// Đoạn giới thiệu mặc định — phần duy nhất của trang này còn tiếng Việt, các chuỗi
+// khác vốn đã là tiếng Anh. Người dùng chỉnh qua /admin thì bản chỉnh tay được ưu
+// tiên và giữ nguyên khi đổi ngôn ngữ (đó là nội dung họ cố ý viết).
+const DESC_VI =
+  "Sức mạnh của ngôn ngữ: Kết nối ý tưởng và trí tuệ nhân tạo.\nTối ưu hóa Prompts: Nghệ thuật điều khiển AI.\nTriết lý: Hiểu, Thử nghiệm, Tinh chỉnh.";
+const DESC_EN =
+  "The power of language: connecting ideas to artificial intelligence.\nPrompt optimisation: the craft of steering AI.\nPhilosophy: understand, experiment, refine.";
+
 function Information() {
+  const { t } = useLang();
   const [status, setStatus] = useState("+ AVAILABLE FOR WORK");
   const [titleTop, setTitleTop] = useState("Prompt");
   const [titleBottom, setTitleBottom] = useState("Engineering");
-  const [description, setDescription] = useState("Sức mạnh của ngôn ngữ: Kết nối ý tưởng và trí tuệ nhân tạo.\nTối ưu hóa Prompts: Nghệ thuật điều khiển AI.\nTriết lý: Hiểu, Thử nghiệm, Tinh chỉnh.");
+  // null = chưa có bản chỉnh tay -> lấy theo ngôn ngữ đang chọn
+  const [customDesc, setCustomDesc] = useState<string | null>(null);
+  const description = customDesc ?? t(DESC_VI, DESC_EN);
   const [tags, setTags] = useState(["Python", "JavaScript", "React"]);
   const [explore1, setExplore1] = useState("↓ explore my skills above");
   const [explore2, setExplore2] = useState("↗ explore portfolio & contact details below");
@@ -334,7 +346,7 @@ function Information() {
     if (storedStatus) setStatus(storedStatus);
     if (storedTitleTop) setTitleTop(storedTitleTop);
     if (storedTitleBottom) setTitleBottom(storedTitleBottom);
-    if (storedDesc) setDescription(storedDesc);
+    if (storedDesc) setCustomDesc(storedDesc);
     if (storedTags) setTags(storedTags.split(",").map(t => t.trim()).filter(Boolean));
     if (storedExplore1) setExplore1(storedExplore1);
     if (storedExplore2) setExplore2(storedExplore2);

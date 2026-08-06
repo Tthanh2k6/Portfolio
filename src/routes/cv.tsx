@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { NavBar } from "@/components/NavBar";
+import { useLang } from "@/lib/i18n";
 
 export const Route = createFileRoute("/cv")({
   head: () => ({
@@ -26,10 +26,13 @@ const SITE = "portfolio-tthanh2006.vercel.app";
 const LOCATION_VI = "TP. Hồ Chí Minh, Việt Nam";
 const LOCATION_EN = "Ho Chi Minh City, Vietnam";
 
+// Khoá ngôn ngữ dùng cho bảng chữ T bên dưới — khớp với kiểu Lang của lib/i18n.
 type Lang = "vi" | "en";
 
 const T = {
   vi: {
+    // langBtn không còn dùng (nút đổi ngôn ngữ đã dời lên NavBar), giữ lại để
+    // bảng T của hai ngôn ngữ vẫn cùng hình dạng.
     langBtn: "English",
     print: "Tải CV (PDF)",
     role: "Full-stack & Mobile Developer",
@@ -181,7 +184,10 @@ const T = {
 } as const;
 
 function CvPage() {
-  const [lang, setLang] = useState<Lang>("vi");
+  // Dùng chung ngôn ngữ với toàn site (nút EN/VI trên NavBar) thay vì giữ nút riêng —
+  // trước đây CV có công tắc riêng nên đổi ngôn ngữ ở đây không ảnh hưởng các trang khác
+  // và ngược lại, gây lệch.
+  const { lang } = useLang();
   const t = T[lang];
 
   return (
@@ -190,9 +196,6 @@ function CvPage() {
 
       {/* Thanh điều khiển — không in ra giấy */}
       <div className="cv-toolbar cv-noprint">
-        <button onClick={() => setLang(lang === "vi" ? "en" : "vi")}>
-          {t.langBtn}
-        </button>
         <button className="cv-primary" onClick={() => window.print()}>
           {t.print}
         </button>
