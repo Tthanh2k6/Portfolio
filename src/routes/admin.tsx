@@ -1,6 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { NavBar } from "@/components/NavBar";
+// Dùng CHUNG danh sách mặc định với trang công khai. Tuyệt đối không chép lại các mảng
+// này vào đây: trước kia admin giữ bản sao riêng, bị bỏ quên khi thêm dự án/kỹ năng mới,
+// nên chỉ cần sửa 1 dự án trong admin là danh sách thiếu bị ghi đè xuống localStorage
+// và các dự án vắng mặt biến mất khỏi trang Project.
+import { projects as DEFAULT_PROJECTS } from "@/components/ProjectSection";
+import {
+  KEYCAPS as DEFAULT_KEYCAPS,
+  CHART_DATA as DEFAULT_CHART,
+  TITLE_TO_CHART as DEFAULT_MAP,
+} from "@/components/SkillsSection";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -48,113 +58,12 @@ const DEFAULT_SKILLS_TEXT = {
   desc: "Transforming complex development challenges into smooth, fluid user experiences. Focusing on optimized performance, responsive layouts, and scalable codebases.",
 };
 
-const DEFAULT_KEYCAPS = [
-  { bg: "#ff5722", shadow: "#b73209", color: "#fff", img: "/IMG/HTML.png", title: "HTML5", desc: "Cấu trúc web ngữ nghĩa, chuẩn truy cập & SEO." },
-  { bg: "#2196f3", shadow: "#0d6aad", color: "#fff", img: "/IMG/CSS.png", title: "CSS3", desc: "Giao diện responsive với Flexbox, Grid và animation mượt mà." },
-  { bg: "#ffeb3b", shadow: "#bfa500", color: "#000", img: "/IMG/JavaScript.png", title: "JavaScript / TS", desc: "Frontend tương tác, API Node.js và app di động." },
-  { bg: "#007acc", shadow: "#005187", color: "#fff", img: "/IMG/C++.png", title: "C / C++", desc: "Xử lý hiệu năng cao, quản lý bộ nhớ thủ công, đệ quy tối ưu." },
-  { bg: "#e76f51", shadow: "#a73e25", color: "#fff", img: "/IMG/Java.jpg", title: "Java", desc: "Backend doanh nghiệp và ứng dụng Android trên nền JVM." },
-  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff", img: "/IMG/PHP-logo.png", title: "PHP", desc: "Web động & ứng dụng MVC: ORM, routing, bảo mật." },
-  { bg: "#3875a6", shadow: "#204969", color: "#fff", img: "/IMG/Python.png", title: "Python", desc: "Tự động hóa, API bất đồng bộ và mọi thử nghiệm ML/AI." },
-  { bg: "#00a8cc", shadow: "#006b82", color: "#fff", img: "/IMG/MySQL-Photoroom.png", title: "MySQL", desc: "Lược đồ quan hệ xử lý logic phân hạng nhiều tầng." },
-  { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png", title: "React", desc: "Giao diện hiện đại: component, hook, RSC, Tailwind." },
-  { bg: "#f4511e", shadow: "#b02600", color: "#fff", img: "/IMG/Git.png", title: "Git", desc: "Quản lý phiên bản chi tiết cho codebase phức tạp." },
-  { bg: "#33353f", shadow: "#1a1b21", color: "#fff", img: "/IMG/GitHub.png", title: "GitHub", desc: "Quản lý phiên bản, nhánh và cộng tác nhóm." },
-  { bg: "#00a2ff", shadow: "#006bb3", color: "#fff", img: "/IMG/Visual_Studio_Code.png", title: "VS Code", desc: "Buồng lái phát triển nhanh, tối ưu cho tự động hóa." },
-  { bg: "#10a37f", shadow: "#0a664f", color: "#fff", img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "ChatGPT", desc: "Trợ thủ lập trình cặp và tự động hóa hằng ngày." },
-  { bg: "#e08260", shadow: "#a64f31", color: "#fff", img: "/IMG/Claude.png", title: "Claude", desc: "Suy luận sâu và kiểm chứng logic code hóc búa." },
-  { bg: "#4c75f2", shadow: "#2143b3", color: "#fff", img: "/IMG/Gemini.png", title: "Gemini", desc: "Suy luận đa phương thức ngay trong quy trình code." },
-  { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo", desc: "Build, OTA update & phát hành app React Native đa nền tảng." },
-];
+// DEFAULT_KEYCAPS / DEFAULT_CHART / DEFAULT_MAP: xem phần import ở đầu file —
+// lấy thẳng từ SkillsSection để admin và trang công khai không bao giờ lệch nhau.
 
-const DEFAULT_CHART = [
-  { name: "HTML/CSS", pct: 22, color: "#FB923C" },
-  { name: "JavaScript", pct: 16, color: "#FCD34D" },
-  { name: "Python", pct: 16, color: "#60A5FA" },
-  { name: "React", pct: 12, color: "#67E8F9" },
-  { name: "C++", pct: 11, color: "#C084FC" },
-  { name: "PHP", pct: 8, color: "#818CF8" },
-  { name: "MySQL", pct: 8, color: "#34D399" },
-  { name: "Git", pct: 7, color: "#F87171" },
-];
-
-const DEFAULT_MAP = {
-  "HTML5": "HTML/CSS",
-  "CSS3": "HTML/CSS",
-  "JavaScript / TS": "JavaScript",
-  "C / C++": "C++",
-  "PHP": "PHP",
-  "Python": "Python",
-  "MySQL": "MySQL",
-  "React": "React",
-  "Git": "Git",
-};
-
-// Danh sách dự án mặc định = các repo công khai thật trên GitHub (đồng bộ với ProjectSection).
-// Chỉ hiện trong trình sửa admin khi localStorage "project_list" còn trống.
-const GITHUB_USER = "Tthanh2k6";
-const ghImage = (repo: string) =>
-  `https://opengraph.githubassets.com/1/${GITHUB_USER}/${repo}`;
-
-// Ảnh chụp màn hình thật của từng dự án (trong public IMG/), ưu tiên hơn ảnh OpenGraph
-const REPO_IMAGES: Record<string, string> = {
-  DiemDanhQR: "/IMG/project-diemdanhqr.jpg",
-  AI_Lab: "/IMG/project-ailab.png",
-  KNN: "/IMG/project-knn.png",
-  Portfolio: "/IMG/project-portfolio.png",
-};
-const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
-
-const DEFAULT_PROJECTS = [
-  {
-    id: "DiemDanhQR",
-    category: "JAVASCRIPT",
-    shortName: "QR ATTENDANCE",
-    title: "DiemDanhQR | Điểm danh QR",
-    desc: "Công cụ điểm danh bằng mã QR: quét QR trên điện thoại, tự ghi vào Google Sheets qua Google Apps Script — chạy dạng PWA, không cần server riêng.",
-    image: projectImage("DiemDanhQR"),
-    role: "JavaScript Developer",
-    client: "Dự án cá nhân",
-    year: "2026",
-    link: `https://github.com/${GITHUB_USER}/DiemDanhQR`,
-  },
-  {
-    id: "AI_Lab",
-    category: "TYPESCRIPT & AI",
-    shortName: "AI LAB",
-    title: "AI_Lab | Thử nghiệm AI",
-    desc: "AI Game Arena — ứng dụng Electron cho AI tự học, tiến hóa và thi đấu game thời gian thực (Minimax, MCTS, mạng nơ-ron, giải thuật di truyền).",
-    image: projectImage("AI_Lab"),
-    role: "TypeScript Developer",
-    client: "Dự án cá nhân",
-    year: "2026",
-    link: `https://github.com/${GITHUB_USER}/AI_Lab`,
-  },
-  {
-    id: "KNN",
-    category: "MACHINE LEARNING",
-    shortName: "KNN ELBOW",
-    title: "KNN | Elbow Method",
-    desc: "Bài tập môn Trí tuệ Nhân tạo: phân cụm K-Means và tối ưu số cụm K bằng phương pháp Elbow (Python / Jupyter).",
-    image: projectImage("KNN"),
-    role: "ML / Data",
-    client: "Dự án học thuật",
-    year: "2026",
-    link: `https://github.com/${GITHUB_USER}/KNN`,
-  },
-  {
-    id: "Portfolio",
-    category: "WEB & 3D",
-    shortName: "PORTFOLIO",
-    title: "Portfolio | Trang cá nhân",
-    desc: "Trang portfolio cá nhân với hero 3D, hoạt ảnh chuyển động và CMS phía client — chính là website này.",
-    image: projectImage("Portfolio"),
-    role: "Frontend Developer",
-    client: "Dự án cá nhân",
-    year: "2026",
-    link: `https://github.com/${GITHUB_USER}/Portfolio`,
-  },
-];
+// DEFAULT_PROJECTS: xem phần import ở đầu file — dùng chung mảng `projects` của
+// ProjectSection (dự án không công khai mã nguồn + repo công khai), nên admin luôn thấy
+// đủ danh sách như trang Project.
 
 // Danh sách link mạng xã hội mặc định (dùng khi localStorage chưa có "contact_socials")
 const DEFAULT_SOCIALS = [
@@ -340,18 +249,20 @@ function AdminPanel() {
     setSkillsTypewriter(localStorage.getItem("skills_typewriter") || DEFAULT_SKILLS_TEXT.typewriter);
     setSkillsDesc(localStorage.getItem("skills_desc") || DEFAULT_SKILLS_TEXT.desc);
 
+    // Luôn nhân bản (spread) trước khi đưa vào state: các mảng mặc định giờ là đối tượng
+    // dùng chung với trang công khai, sửa thẳng sẽ làm hỏng cả trang Skills.
     const storedKeycaps = localStorage.getItem("skills_keycaps");
-    setSkillsKeycaps(storedKeycaps ? JSON.parse(storedKeycaps) : DEFAULT_KEYCAPS);
+    setSkillsKeycaps(storedKeycaps ? JSON.parse(storedKeycaps) : DEFAULT_KEYCAPS.map(k => ({ ...k })));
 
     const storedChart = localStorage.getItem("skills_chart_data");
-    setSkillsChartData(storedChart ? JSON.parse(storedChart) : DEFAULT_CHART);
+    setSkillsChartData(storedChart ? JSON.parse(storedChart) : DEFAULT_CHART.map(c => ({ ...c })));
 
     const storedMap = localStorage.getItem("skills_title_to_chart");
-    setSkillsTitleToChart(storedMap ? JSON.parse(storedMap) : DEFAULT_MAP);
+    setSkillsTitleToChart(storedMap ? JSON.parse(storedMap) : { ...DEFAULT_MAP });
 
     // Dự Án
     const storedProjects = localStorage.getItem("project_list");
-    setProjectsList(storedProjects ? JSON.parse(storedProjects) : DEFAULT_PROJECTS);
+    setProjectsList(storedProjects ? JSON.parse(storedProjects) : DEFAULT_PROJECTS.map(p => ({ ...p })));
 
     // Liên Hệ
     const storedSocials = localStorage.getItem("contact_socials");

@@ -11,50 +11,73 @@ const navItems = [
   { label: "Contact", to: "/contact" },
 ];
 
-const KEYCAPS = [
+// Bàn phím kỹ năng — 24 phím = 6 hàng × 4 cột (lưới grid bên dưới là repeat(4, 78px),
+// nên giữ số phím chia hết cho 4 thì hàng cuối mới không bị lẻ).
+//
+// Thứ tự = thứ tự hiển thị: kỹ năng có sản phẩm thật chứng minh đứng trước.
+// Phím nào chưa có logo trong public/IMG thì để img: "" — keycap sẽ tự hiện chữ
+// (xem span.keycap-label-fallback ở phần render). Có logo thì thả file vào
+// public/IMG/ rồi điền đường dẫn vào đây.
+export const KEYCAPS = [
+  { bg: "#7f52ff", shadow: "#5433b0", color: "#fff",    img: "",                         title: "Kotlin",          desc: "Ngôn ngữ chính cho Android: app Lịch IUH và code tiêm vào bản mod Ghi chú." },
+  { bg: "#2aa06a", shadow: "#186a45", color: "#fff",    img: "",                         title: "Android",         desc: "Widget Jetpack Glance, WorkManager chạy nền, lưu dữ liệu mã hoá, dịch ngược APK." },
+  { bg: "#3178c6", shadow: "#1f4e80", color: "#fff",    img: "",                         title: "TypeScript",      desc: "App di động Expo Router, portfolio TanStack Start và AI Game Arena." },
+  { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png",           title: "React",           desc: "Giao diện hiện đại: component, hook, RSC, Tailwind." },
+  { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "App React Native chạy thật trên iOS + Android: push, camera QR, cập nhật OTA." },
+  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "Tự động hóa, API bất đồng bộ và mọi thử nghiệm ML/AI." },
+  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "REST API cho app khách hàng: JWT, phân quyền, chống brute-force, cron; và tính năng web công ty." },
+  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Cơ sở dữ liệu vận hành thật: lược đồ, migration, truy vấn doanh thu và tối ưu." },
+  { bg: "#ffeb3b", shadow: "#bfa500", color: "#000",    img: "/IMG/JavaScript.png",      title: "JavaScript",      desc: "Frontend tương tác, PWA và ứng dụng chạy thẳng trên trình duyệt." },
   { bg: "#ff5722", shadow: "#b73209", color: "#fff",    img: "/IMG/HTML.png",            title: "HTML5",           desc: "Cấu trúc web ngữ nghĩa, chuẩn truy cập & SEO." },
   { bg: "#2196f3", shadow: "#0d6aad", color: "#fff",    img: "/IMG/CSS.png",             title: "CSS3",            desc: "Giao diện responsive với Flexbox, Grid và animation mượt mà." },
-  { bg: "#ffeb3b", shadow: "#bfa500", color: "#000",    img: "/IMG/JavaScript.png",      title: "JavaScript / TS", desc: "Frontend tương tác, API Node.js và app di động." },
-  { bg: "#007acc", shadow: "#005187", color: "#fff",    img: "/IMG/C++.png",             title: "C / C++",         desc: "Xử lý hiệu năng cao, quản lý bộ nhớ thủ công, đệ quy tối ưu." },
+  { bg: "#1a1a1a", shadow: "#000000", color: "#fff",    img: "",                         title: "Three.js",        desc: "Dựng cảnh WebGL: lưới neon isometric, hiệu ứng bloom, bàn phím 3D tương tác." },
+  { bg: "#009688", shadow: "#00635a", color: "#fff",    img: "",                         title: "FastAPI",         desc: "Backend bất đồng bộ cho tool sản xuất video AI, kèm license server bán theo credit." },
+  { bg: "#2d8a4e", shadow: "#1b5730", color: "#fff",    img: "",                         title: "Playwright",      desc: "Điều khiển Chrome thật qua CDP để tự động hoá trang không có API công khai." },
+  { bg: "#43b02a", shadow: "#2b731b", color: "#fff",    img: "",                         title: "Selenium",        desc: "Tự động đăng nhập, nhập liệu hàng loạt và xuất báo cáo trên trang quản trị." },
+  { bg: "#ff6f00", shadow: "#b34e00", color: "#fff",    img: "",                         title: "TensorFlow",      desc: "Mạng nơ-ron MLP/CNN, phân loại MNIST và các mô hình học sâu tự huấn luyện." },
   { bg: "#e76f51", shadow: "#a73e25", color: "#fff",    img: "/IMG/Java.jpg",            title: "Java",            desc: "Backend doanh nghiệp và ứng dụng Android trên nền JVM." },
-  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "Phát triển tính năng cho web công ty: routing, xử lý form & bảo mật trên nền MVC." },
-  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "Tự động hóa, API bất đồng bộ và mọi thử nghiệm ML/AI." },
-  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Cơ sở dữ liệu quan hệ cho web công ty: truy vấn, lược đồ và tối ưu." },
-  { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png",           title: "React",           desc: "Giao diện hiện đại: component, hook, RSC, Tailwind." },
+  { bg: "#007acc", shadow: "#005187", color: "#fff",    img: "/IMG/C++.png",             title: "C / C++",         desc: "Xử lý hiệu năng cao, quản lý bộ nhớ thủ công, đệ quy tối ưu." },
   { bg: "#f4511e", shadow: "#b02600", color: "#fff",    img: "/IMG/Git.png",             title: "Git",             desc: "Quản lý phiên bản chi tiết cho codebase phức tạp." },
   { bg: "#33353f", shadow: "#1a1b21", color: "#fff",    img: "/IMG/GitHub.png",          title: "GitHub",          desc: "Quản lý phiên bản, nhánh và cộng tác nhóm." },
   { bg: "#00a2ff", shadow: "#006bb3", color: "#fff",    img: "/IMG/Visual_Studio_Code.png", title: "VS Code",      desc: "Buồng lái phát triển nhanh, tối ưu cho tự động hóa." },
   { bg: "#10a37f", shadow: "#0a664f", color: "#fff",    img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "ChatGPT", desc: "Công cụ AI hỗ trợ lập trình cặp & tự động hóa công việc hằng ngày." },
   { bg: "#e08260", shadow: "#a64f31", color: "#fff",    img: "/IMG/Claude.png",          title: "Claude",          desc: "Công cụ AI hỗ trợ: suy luận sâu, kiểm chứng và refactor code hóc búa." },
   { bg: "#4c75f2", shadow: "#2143b3", color: "#fff",    img: "/IMG/Gemini.png",          title: "Gemini",          desc: "Công cụ AI hỗ trợ suy luận đa phương thức trong quy trình code." },
-  { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "Build, OTA update & phát hành app React Native đa nền tảng." },
 ] as const;
 
-// Phần trăm sử dụng kỹ năng (hiển thị trong biểu đồ tròn) — chỉ vài mục chính
-const CHART_DATA = [
-  { name: "HTML/CSS",   pct: 22, color: "#FB923C" },
-  { name: "JavaScript", pct: 16, color: "#FCD34D" },
-  { name: "Python",     pct: 16, color: "#60A5FA" },
-  { name: "React",      pct: 12, color: "#67E8F9" },
-  { name: "C++",        pct: 11, color: "#C084FC" },
-  { name: "PHP",        pct:  8, color: "#818CF8" },
-  { name: "MySQL",      pct:  8, color: "#34D399" },
-  { name: "Git",        pct:  7, color: "#F87171" },
+// Tỉ trọng sử dụng kỹ năng (biểu đồ tròn) — gom theo nhóm, tổng = 100.
+// Số liệu bám theo khối lượng code thật trong các dự án đang chạy, không phải tự chấm điểm.
+export const CHART_DATA = [
+  { name: "Python",               pct: 20, color: "#60A5FA" },
+  { name: "React / React Native", pct: 18, color: "#67E8F9" },
+  { name: "PHP / MySQL",          pct: 16, color: "#818CF8" },
+  { name: "Kotlin / Android",     pct: 14, color: "#A78BFA" },
+  { name: "JavaScript / TS",      pct: 12, color: "#FCD34D" },
+  { name: "HTML / CSS",           pct:  8, color: "#FB923C" },
+  { name: "Automation",           pct:  7, color: "#34D399" },
+  { name: "ML / AI",              pct:  5, color: "#F87171" },
 ];
 
-// Ánh xạ title của keycap → tên mục trong biểu đồ. Chỉ các phím chính được map;
-// các phím khác (Java, GitHub, VS Code, ChatGPT, Claude, Gemini, Expo) không có ở đây
-// nên hover chúng sẽ KHÔNG đổi biểu đồ (giữ mục gần nhất).
-const TITLE_TO_CHART: Record<string, string> = {
-  "HTML5": "HTML/CSS",
-  "CSS3": "HTML/CSS",
-  "JavaScript / TS": "JavaScript",
-  "C / C++": "C++",
-  "PHP": "PHP",
+// Ánh xạ title của keycap → tên mục trong biểu đồ (hover phím thì lát tương ứng bật ra).
+// Các phím công cụ (Java, C/C++, Git, GitHub, VS Code, ChatGPT, Claude, Gemini) cố ý
+// KHÔNG map — hover chúng sẽ giữ nguyên biểu đồ.
+export const TITLE_TO_CHART: Record<string, string> = {
+  "Kotlin": "Kotlin / Android",
+  "Android": "Kotlin / Android",
+  "TypeScript": "JavaScript / TS",
+  "JavaScript": "JavaScript / TS",
+  "Three.js": "JavaScript / TS",
+  "React": "React / React Native",
+  "Expo": "React / React Native",
   "Python": "Python",
-  "MySQL": "MySQL",
-  "React": "React",
-  "Git": "Git",
+  "FastAPI": "Python",
+  "PHP": "PHP / MySQL",
+  "MySQL": "PHP / MySQL",
+  "HTML5": "HTML / CSS",
+  "CSS3": "HTML / CSS",
+  "Playwright": "Automation",
+  "Selenium": "Automation",
+  "TensorFlow": "ML / AI",
 };
 
 function DonutChart({
@@ -277,9 +300,13 @@ export function SkillsSection() {
   const [typewriterText, setTypewriterText] = useState("Experience gained through projects and school");
   const [descText, setDescText] = useState("Transforming complex development challenges into smooth, fluid user experiences. Focusing on optimized performance, responsive layouts, and scalable codebases.");
   
-  const [keycaps, setKeycaps] = useState<any[]>([]);
-  const [chartData, setChartData] = useState<any[]>([]);
-  const [titleToChart, setTitleToChart] = useState<Record<string, string>>({});
+  // Khởi tạo bằng chính giá trị mặc định (không phải mảng rỗng) để HTML do server dựng
+  // đã có sẵn tên kỹ năng — trước đây trang này trả về khung trống, Google và công cụ
+  // quét CV không đọc được gì. useEffect bên dưới vẫn ghi đè bằng bản admin đã lưu.
+  // Server và lần render đầu ở client dùng chung dữ liệu này nên không lệch hydrate.
+  const [keycaps, setKeycaps] = useState<any[]>(() => KEYCAPS.map(k => ({ ...k })));
+  const [chartData, setChartData] = useState<any[]>(() => CHART_DATA.map(c => ({ ...c })));
+  const [titleToChart, setTitleToChart] = useState<Record<string, string>>(() => ({ ...TITLE_TO_CHART }));
 
   const infoPanelRef    = useRef<HTMLDivElement>(null);
   const currentTitleRef = useRef<string | null>(null);

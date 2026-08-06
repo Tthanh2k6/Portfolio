@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as ProjectRouteImport } from './routes/project'
 import { Route as InformationRouteImport } from './routes/information'
+import { Route as CvRouteImport } from './routes/cv'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
@@ -29,6 +30,11 @@ const ProjectRoute = ProjectRouteImport.update({
 const InformationRoute = InformationRouteImport.update({
   id: '/information',
   path: '/information',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CvRoute = CvRouteImport.update({
+  id: '/cv',
+  path: '/cv',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ContactRoute = ContactRouteImport.update({
@@ -51,6 +57,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
+  '/cv': typeof CvRoute
   '/information': typeof InformationRoute
   '/project': typeof ProjectRoute
   '/skills': typeof SkillsRoute
@@ -59,6 +66,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
+  '/cv': typeof CvRoute
   '/information': typeof InformationRoute
   '/project': typeof ProjectRoute
   '/skills': typeof SkillsRoute
@@ -68,6 +76,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/admin': typeof AdminRoute
   '/contact': typeof ContactRoute
+  '/cv': typeof CvRoute
   '/information': typeof InformationRoute
   '/project': typeof ProjectRoute
   '/skills': typeof SkillsRoute
@@ -78,16 +87,25 @@ export interface FileRouteTypes {
     | '/'
     | '/admin'
     | '/contact'
+    | '/cv'
     | '/information'
     | '/project'
     | '/skills'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/contact' | '/information' | '/project' | '/skills'
+  to:
+    | '/'
+    | '/admin'
+    | '/contact'
+    | '/cv'
+    | '/information'
+    | '/project'
+    | '/skills'
   id:
     | '__root__'
     | '/'
     | '/admin'
     | '/contact'
+    | '/cv'
     | '/information'
     | '/project'
     | '/skills'
@@ -97,6 +115,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRoute
   ContactRoute: typeof ContactRoute
+  CvRoute: typeof CvRoute
   InformationRoute: typeof InformationRoute
   ProjectRoute: typeof ProjectRoute
   SkillsRoute: typeof SkillsRoute
@@ -123,6 +142,13 @@ declare module '@tanstack/react-router' {
       path: '/information'
       fullPath: '/information'
       preLoaderRoute: typeof InformationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cv': {
+      id: '/cv'
+      path: '/cv'
+      fullPath: '/cv'
+      preLoaderRoute: typeof CvRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/contact': {
@@ -153,6 +179,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRoute,
   ContactRoute: ContactRoute,
+  CvRoute: CvRoute,
   InformationRoute: InformationRoute,
   ProjectRoute: ProjectRoute,
   SkillsRoute: SkillsRoute,

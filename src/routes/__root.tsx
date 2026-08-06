@@ -115,8 +115,36 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+// Nội dung do /admin chỉnh nằm trong localStorage và LUÔN được ưu tiên hơn giá trị mặc
+// định trong code. Hệ quả: sửa danh sách dự án / kỹ năng trong code xong deploy thì
+// trình duyệt nào từng vào /admin vẫn hiện bản cũ, tưởng là deploy hỏng.
+//
+// Cách xử lý: tăng CONTENT_VERSION mỗi khi đổi các mặc định trong code. Trình duyệt thấy
+// phiên bản lệch sẽ xoá đúng các khoá nội dung cũ để rơi về mặc định mới.
+// Các khoá KHÔNG liên quan tới nội dung (vd sổ lưu bút) được giữ nguyên.
+const CONTENT_VERSION = "2026-08-06-1";
+const VERSIONED_CONTENT_KEYS = [
+  "project_list",
+  "skills_keycaps",
+  "skills_chart_data",
+  "skills_title_to_chart",
+];
+
+function useResetStaleContent() {
+  useEffect(() => {
+    try {
+      if (localStorage.getItem("content_version") === CONTENT_VERSION) return;
+      VERSIONED_CONTENT_KEYS.forEach((k) => localStorage.removeItem(k));
+      localStorage.setItem("content_version", CONTENT_VERSION);
+    } catch {
+      // Trình duyệt chặn localStorage (chế độ riêng tư) — bỏ qua, trang vẫn dùng mặc định.
+    }
+  }, []);
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  useResetStaleContent();
 
   return (
     <QueryClientProvider client={queryClient}>
