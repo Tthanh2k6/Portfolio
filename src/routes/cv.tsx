@@ -34,14 +34,14 @@ const T = {
     print: "Tải CV (PDF)",
     role: "Full-stack & Mobile Developer",
     tagline:
-      "Sinh viên năm 3 ngành CNTT, đã tự làm trọn gói một ứng dụng di động đang chạy thật cho doanh nghiệp — từ app React Native tới REST API và cơ sở dữ liệu.",
+      "Sinh viên năm 3 ngành Khoa học Máy tính, đã tự làm trọn gói một ứng dụng di động đang chạy thật cho doanh nghiệp — từ app React Native tới REST API và cơ sở dữ liệu.",
     hExp: "Kinh nghiệm",
     hProjects: "Dự án tiêu biểu",
     hSkills: "Kỹ năng",
     hEdu: "Học vấn",
     hContact: "Liên hệ",
     eduSchool: "Đại học Công nghiệp TP.HCM (IUH)",
-    eduMajor: "Công nghệ Thông tin · MSSV 24731801",
+    eduMajor: "Khoa học Máy tính · MSSV 24731801",
     eduTime: "2024 — 2028 (dự kiến)",
     present: "nay",
     skills: [
@@ -116,7 +116,7 @@ const T = {
     hEdu: "Education",
     hContact: "Contact",
     eduSchool: "Industrial University of Ho Chi Minh City (IUH)",
-    eduMajor: "Information Technology · Student ID 24731801",
+    eduMajor: "Computer Science · Student ID 24731801",
     eduTime: "2024 — 2028 (expected)",
     present: "Present",
     skills: [

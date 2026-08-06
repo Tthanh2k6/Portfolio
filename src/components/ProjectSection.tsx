@@ -30,16 +30,31 @@ const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
 
 // Ghi đè thông tin (tên, mô tả, vai trò) cho từng repo GitHub.
 // Bản fetch GitHub chỉ trả về tên + mô tả thô của repo; map này dùng để hiển thị
-// đúng vai trò và mức độ dùng AI trên từng dự án — áp cho cả danh sách tĩnh lẫn bản fetch.
+// đúng vai trò trên từng dự án — áp cho cả danh sách tĩnh lẫn bản fetch.
 // Lưu ý: key phải trùng TÊN REPO thật trên GitHub (vd AI-ML nằm ở repo "H-c-AI-ML").
+//
+// Mỗi dự án có HAI mức mô tả, đừng gộp làm một:
+//   desc   — câu ngắn hiện trên card. Viết cho NGƯỜI KHÔNG RÀNH KỸ THUẬT: nói dự án
+//            làm được gì cho người dùng, tránh tên công nghệ và từ chuyên ngành.
+//            Card bị -webkit-line-clamp: 3 nên viết dài là bị cắt ngang kèm "…".
+//            Giữ dưới ~130 ký tự.
+//   detail  — bản đầy đủ trong modal "Xem chi tiết", viết cho NHÀ TUYỂN DỤNG: đi sâu
+//            vào cách giải quyết vấn đề, quyết định kỹ thuật và kết quả đạt được.
+//   tech    — danh sách công nghệ, hiện dạng chip trong modal.
 const REPO_META: Record<string, any> = {
   DiemDanhQR: {
-    desc: "Công cụ điểm danh bằng mã QR: quét QR trên điện thoại, tự ghi vào Google Sheets qua Google Apps Script — chạy dạng PWA, cài được lên màn hình chính, không cần server riêng.",
+    desc: "Điểm danh bằng cách quét mã QR trên điện thoại, tên người có mặt tự chạy thẳng vào Google Sheets.",
+    detail:
+      "Công cụ điểm danh bằng mã QR cho một cộng đồng nhỏ. Mở trên điện thoại, bật camera quét mã của từng thành viên là tự động ghi vào Google Sheets qua Google Apps Script — không dựng máy chủ, không cài app từ store.\n\nCó hai chế độ quét: liên tục (không cần xác nhận) và từng người (chờ xác nhận). Quét xong phát âm thanh và đọc tên tiếng Việt để người cầm máy biết đã nhận, kèm lịch sử quét ngay trên màn hình. Chọn được ống kính cụ thể (góc rộng, camera trước/sau) vì camera mặc định trên nhiều máy lấy nét kém ở cự ly gần.\n\nCài lên màn hình chính như app thường nhờ PWA, có chế độ sáng/tối.",
+    tech: ["JavaScript", "PWA", "Google Apps Script", "Google Sheets"],
     role: "JavaScript Developer",
     client: "Dự án cá nhân",
   },
   AI_Lab: {
-    desc: "AI Game Arena — ứng dụng Electron mô phỏng 8 trò chơi cho AI tự học và đối kháng: Minimax + cắt tỉa Alpha-Beta, MCTS/UCT, Q-Learning, mạng nơ-ron kết hợp giải thuật di truyền, mô phỏng 3D thời gian thực.",
+    desc: "8 trò chơi để xem máy tính tự học chơi từ con số 0 — từ Flappy Bird tới cờ caro và đá bóng 3D.",
+    detail:
+      "AI Game Arena — ứng dụng desktop (Electron) trực quan hoá cách các giải thuật AI từ cổ điển tới hiện đại học hỏi và ra quyết định. Người dùng tự chỉnh tham số huấn luyện, cấu trúc mạng nơ-ron hoặc hàm heuristic rồi xem AI tự học từ con số 0, hoặc cho hai AI đấu nhau.\n\nTám môi trường, mỗi cái một họ giải thuật khác nhau:\n• Flappy Bird và Đua xe — mạng nơ-ron kết hợp tiến hoá di truyền, xe dùng cảm biến raycast; có sẵn trình tự vẽ đường đua.\n• Mê cung — Q-Learning, hiển thị bản đồ nhiệt của Q-Table sáng dần theo thời gian học.\n• 2048 — tìm kiếm Expectimax với heuristic độ mượt, tính đơn điệu, ô lớn ở góc.\n• Connect Four và Cờ Caro 20×20 — Minimax kèm cắt tỉa Alpha-Beta, bảng chuyển vị mã hoá Zobrist, và một bản MCTS/UCT để so sánh hiệu năng trực tiếp.\n• Bóng đá 3D và Đuổi bắt 3D — tiến hoá song song đối kháng, vật lý nảy sân và raycast 8 hướng.",
+    tech: ["TypeScript", "Electron", "Three.js", "Minimax", "MCTS", "Q-Learning"],
     role: "TypeScript Developer",
     client: "Dự án cá nhân",
   },
@@ -47,22 +62,31 @@ const REPO_META: Record<string, any> = {
     category: "MACHINE LEARNING",
     shortName: "KNN ELBOW",
     title: "KNN | Elbow Method",
-    desc: "Bài tập nhóm môn Trí tuệ Nhân tạo: phân cụm K-Means và tối ưu số cụm K bằng phương pháp Elbow (Python / Jupyter). Vai trò Project Manager — quản lý source code và lập trình thuật toán K-Means cho nhóm 9 thành viên.",
+    desc: "Bài tập nhóm về cách máy tự chia dữ liệu thành từng nhóm. Tôi làm nhóm trưởng, quản lý code cho 9 người.",
+    detail:
+      "Bài tập nhóm môn Trí tuệ Nhân tạo: phân tích ảnh hưởng của số cụm K tới thuật toán phân cụm và triển khai phương pháp Elbow để tìm K tối ưu.\n\nVai trò của tôi là Project Manager: chia 9 đầu việc cho 9 thành viên, quản lý toàn bộ source code trên GitHub, và trực tiếp lập trình thuật toán K-Means cùng phần kiểm tra biến động của điểm gãy Elbow.\n\nNội dung gồm tiền xử lý và chuẩn hoá dữ liệu, tính WCSS/Inertia cho từng giá trị K, vẽ biểu đồ tìm điểm khuỷu tay, và đối chiếu chéo với Silhouette Score để xác nhận kết luận.",
+    tech: ["Python", "scikit-learn", "pandas", "Matplotlib", "Jupyter"],
     role: "Project Manager",
     client: "Dự án học thuật (nhóm 9 người)",
     yearRole: "2026 • Project Manager",
   },
   Portfolio: {
-    desc: "Trang portfolio cá nhân: hero 3D lưới neon dựng bằng Three.js (WebGL + UnrealBloom), bàn phím cơ 3D tương tác, SSR bằng TanStack Start và CMS phía client — chính là website này.",
+    desc: "Chính là trang web bạn đang xem: hiệu ứng 3D, bàn phím tương tác và các trang giới thiệu bản thân.",
+    detail:
+      "Trang portfolio cá nhân, cũng chính là website bạn đang xem.\n\nTrang chủ là lưới neon isometric dựng bằng Three.js (WebGL + UnrealBloom), con trỏ chuột tuỳ biến kiểu giọt nước. Trang Skills có bàn phím cơ 3D tương tác: rê chuột lên từng phím thì biểu đồ tròn kỹ năng bật lát tương ứng ra ngoài. Trang Project là băng phim cuộn vô hạn, tự chạy, bấm vào xem chi tiết.\n\nDựng trên TanStack Start (SSR) + React 19 + TailwindCSS v4, deploy lên Vercel. Nội dung động (danh sách dự án, kỹ năng, màu sắc 3D) chỉnh được qua trang admin phía client mà không cần build lại.",
+    tech: ["React 19", "TypeScript", "TanStack Start", "Three.js", "TailwindCSS", "Vercel"],
     role: "Frontend Developer",
     client: "Dự án cá nhân",
   },
-  // AI-ML nằm ở repo GitHub tên "H-c-AI-ML" — dự án tự làm 100%, không dùng AI.
+  // AI-ML nằm ở repo GitHub tên "H-c-AI-ML".
   "H-c-AI-ML": {
     category: "MACHINE LEARNING",
     shortName: "AI / ML",
     title: "AI-ML | Học Máy & Học Sâu",
-    desc: "Tổng hợp bài thực hành Machine Learning & Deep Learning: tiền xử lý dữ liệu, K-Means, Decision Tree, KNN, MLP, CNN và phân loại MNIST (scikit-learn / TensorFlow). Viết tay từng bước để nắm rõ toán học phía sau mỗi thuật toán.",
+    desc: "Bộ bài tập tôi tự làm để học về trí tuệ nhân tạo, viết tay từng bước thay vì gọi thư viện cho xong.",
+    detail:
+      "Tổng hợp bài học và bài tập tự thực hành về Machine Learning và Deep Learning, mỗi file là một chủ đề độc lập chạy được riêng.\n\nPhần cơ bản (scikit-learn): làm sạch và tiền xử lý dữ liệu, chuẩn hoá đặc trưng, KNN, Decision Tree, phân loại nhiều lớp, ma trận nhầm lẫn và các chỉ số đánh giá, kiểm định chéo, gộp bằng Pipeline, vector hoá văn bản TF-IDF kèm Naive Bayes.\n\nPhần học sâu (TensorFlow/Keras): mạng perceptron nhiều lớp, mạng nơ-ron tích chập, và phân loại chữ số viết tay MNIST.\n\nViết tay từng bước thay vì gọi thư viện cho xong, để nắm rõ toán học phía sau mỗi thuật toán.",
+    tech: ["Python", "scikit-learn", "TensorFlow", "Keras", "NumPy", "pandas"],
     role: "ML / AI Developer",
     client: "Dự án tự học",
     yearRole: "2026 • Machine Learning",
@@ -79,7 +103,10 @@ const privateProjects = [
     category: "REACT NATIVE • PHP API",
     shortName: "MADALENA APP",
     title: "Madalena | App khách hàng thân thiết",
-    desc: "App di động ĐÃ PHÁT HÀNH trên Google Play cho chuỗi Madalena: hạng thành viên theo doanh thu, mã QR định danh khách, flash sale theo khung giờ và chiến dịch chúc mừng sinh nhật tự động. Tự làm trọn gói cả app lẫn backend — React Native (Expo Router, TypeScript) + REST API PHP/MySQL với JWT HS256, phân quyền admin đọc thẳng từ DB, chặn brute-force đăng nhập, cron gửi push qua Expo. Đã tự port backend từ Node/Express (Render + Aiven) sang PHP gộp chung hạ tầng với website để cắt chi phí máy chủ.",
+    desc: "App tích điểm cho khách của một chuỗi mỹ phẩm, đã có trên Google Play. Tôi làm một mình từ app tới máy chủ.",
+    detail:
+      "Ứng dụng khách hàng thân thiết cho chuỗi mỹ phẩm Madalena, đã phát hành trên Google Play và đang phục vụ khách thật. Tôi làm một mình toàn bộ: app di động, REST API, cơ sở dữ liệu và các công cụ vận hành cho quản trị viên.\n\nPhía khách hàng: hạng thành viên tự xếp theo doanh thu tích luỹ (GOLDEN → VIP → VIP PRO → VIP PROMAX → VIP BLACK), mã QR định danh để nhân viên quét tại quầy, màn hình tra cứu chi tiêu từng năm, và bảng đặc quyền riêng cho mỗi hạng.\n\nFlash sale chạy theo khung giờ do quản trị viên hẹn trước. Thời gian còn lại do máy chủ tính chứ không tin đồng hồ máy khách, nên đổi giờ điện thoại cũng không lách được. Khách được nhắc ba lần: lúc đặt lịch, trước 15 phút và đúng giờ mở — mỗi mốc có cờ chống gửi trùng.\n\nChiến dịch chúc mừng sinh nhật gửi tự động bằng cron. Bảo mật: xác thực JWT HS256, quyền admin kiểm tra thẳng từ cơ sở dữ liệu thay vì tin token, và chặn brute-force đăng nhập theo cặp IP + số điện thoại.\n\nBackend ban đầu chạy Node/Express trên Render kèm database Aiven. Tôi tự port toàn bộ sang PHP để gộp chung hạ tầng với website công ty, cắt hẳn chi phí máy chủ hằng tháng. Kèm theo là bộ công cụ chạy từ máy Windows để nhập doanh thu hàng tháng và xuất danh sách khách, không cần SSH vào hosting.",
+    tech: ["React Native", "Expo", "TypeScript", "PHP", "MySQL", "JWT", "Expo Push"],
     image: projectImage("MadalenaApp"),
     role: "Full-stack Developer (một mình toàn bộ)",
     client: "Madalena — dự án công ty",
@@ -94,7 +121,10 @@ const privateProjects = [
     category: "PHP • WEB",
     shortName: "MADALENA WEB",
     title: "Madalena | Website thương mại điện tử",
-    desc: "Website bán hàng của Madalena chạy trên nền PHP tự viết (AltoRouter + PDO, giỏ hàng, SEO, cache file, trang quản trị riêng). Tham gia với vai trò lập trình viên tính năng trong đội — phát triển và bảo trì một số tính năng trên hệ thống đang vận hành thật, không phải người dựng toàn bộ site.",
+    desc: "Website bán mỹ phẩm đang hoạt động thật. Tôi làm phần mã giảm giá, quản lý đơn hàng và tìm kiếm sản phẩm.",
+    detail:
+      "Website bán hàng của Madalena, chạy thật và có khách đặt hàng mỗi ngày. Tôi vào dự án khi site đã tồn tại, với vai trò lập trình viên tính năng trong đội — không phải người dựng toàn bộ site, nhưng phần tôi làm là những mảng nghiệp vụ chính bên dưới.\n\nHệ thống mã giảm giá làm từ đầu: quản trị viên tạo mã, gắn mã vào từng sản phẩm, giới hạn số lần mỗi số điện thoại được dùng, lưu trữ và thống kê mức tiêu thụ của từng mã. Phía khách thì nhập mã ngay lúc thanh toán.\n\nQuản lý đơn hàng: khách xem lại đơn cũ và tự huỷ đơn, thông tin thanh toán được nhớ cho lần mua sau. Phía cửa hàng nhận email báo mỗi khi có đơn mới, và toàn bộ đơn tự đồng bộ sang Google Sheets kèm địa chỉ, mã giảm giá, mức giảm — nhờ vậy bộ phận bán hàng theo dõi ngay trên bảng tính quen thuộc thay vì phải vào trang quản trị.\n\nNgoài ra: tìm kiếm sản phẩm, trạng thái \"Tạm hết hàng\" kèm việc tự đẩy hàng hết xuống cuối danh sách, nhãn miễn phí vận chuyển, và sửa lại cách nhập giảm giá — quản trị viên nhập thẳng giá sau giảm rồi hệ thống tự tính ra phần trăm chiết khấu, thay vì phải tự nhẩm.\n\nNền tảng là PHP tự viết của đơn vị làm web (AltoRouter, PDO, giỏ hàng, SEO, cache file, trang quản trị riêng) nên phải đọc hiểu codebase có sẵn rồi mới chèn tính năng vào.",
+    tech: ["PHP", "MySQL", "JavaScript", "Google Sheets API", "AltoRouter", "PDO"],
     image: projectImage("MadalenaWeb"),
     role: "PHP Developer (phát triển tính năng)",
     client: "Madalena — dự án công ty",
@@ -110,7 +140,10 @@ const privateProjects = [
     category: "KOTLIN • ANDROID",
     shortName: "LỊCH IUH",
     title: "Lịch IUH | Widget lịch học",
-    desc: "App Android cho sinh viên IUH, ra đời vì app chính thức của trường không có widget: 3 widget Jetpack Glance (lịch 7 ngày, lịch hôm nay, đếm ngược lịch thi), đăng nhập OAuth2, tự đồng bộ nền 6h/18h bằng WorkManager và cache offline nên widget hiện tức thì. Mật khẩu lưu bằng EncryptedSharedPreferences; tự xử lý cả lỗi máy chủ trường thiếu cert trung gian bằng cách nhúng cert vào network security config.",
+    desc: "Xem lịch học ngay ngoài màn hình điện thoại, không cần mở app — làm cho sinh viên trường tôi.",
+    detail:
+      "App Android cho sinh viên Đại học Công nghiệp TP.HCM. Ra đời vì app chính thức của trường bắt phải mở app rồi đăng nhập mới xem được lịch, trong khi thứ sinh viên cần chỉ là liếc một cái biết tiết sau học phòng nào.\n\nBa widget đặt thẳng ngoài màn hình chính: lịch 7 ngày tới gom theo từng ngày, lịch học hôm nay, và đếm ngược tới ngày thi. Mỗi buổi hiện tiết, tên môn và phòng, ghi rõ \"Trực tuyến\" nếu học online, đánh dấu buổi dạy bù và ẩn buổi tạm ngưng.\n\nDữ liệu lấy qua API chính thức của trường bằng đăng nhập OAuth2, tự đồng bộ nền hai lần mỗi ngày (6h sáng và 6h tối). Kết quả được lưu lại nên mở màn hình là widget hiện ngay, không phải chờ mạng. Mật khẩu lưu mã hoá bằng EncryptedSharedPreferences vì token của trường chỉ sống 30 phút, phải tự đăng nhập lại ngầm.\n\nMáy chủ của trường gửi thiếu chứng chỉ trung gian nên Android từ chối kết nối. Tôi nhúng thẳng chứng chỉ đó vào app và khai báo trong network security config để đi qua được, thay vì tắt kiểm tra chứng chỉ — cách làm tắt đó dễ nhưng mở toang cửa cho tấn công chen giữa.",
+    tech: ["Kotlin", "Jetpack Glance", "WorkManager", "OAuth2", "EncryptedSharedPreferences"],
     image: projectImage("LichIUH"),
     role: "Android Developer",
     client: "Sản phẩm cá nhân — người dùng thật",
@@ -123,7 +156,10 @@ const privateProjects = [
     category: "PYTHON & AI",
     shortName: "WORKFLOW AI",
     title: "WorkFlow AI | Sản xuất video AI",
-    desc: "Tool all-in-one sản xuất video AI theo pipeline: kịch bản → chia cảnh → tạo ảnh/video trên Google Flow → ghép phim bằng ffmpeg. Google Flow không có API công khai nên tool điều khiển Chrome thật qua remote-debugging (CDP) + Playwright. Backend FastAPI, kèm license server riêng bán theo credit và bản đóng gói cho khách.",
+    desc: "Công cụ làm video bằng AI: nhập ý tưởng, máy tự viết kịch bản, tạo hình ảnh rồi ghép thành phim.",
+    detail:
+      "Công cụ làm video bằng AI theo một dây chuyền khép kín: nhập ý tưởng → AI viết kịch bản → chia thành từng cảnh → sinh ảnh và video cho mỗi cảnh → ghép lại thành phim hoàn chỉnh bằng ffmpeg. Mục tiêu là làm trọn quy trình trong một tool, không phải nhảy qua lại giữa năm sáu trang web.\n\nKhó nhất là khâu sinh hình ảnh: nền tảng đích không mở API công khai, nên tool gắn vào một cửa sổ Chrome thật qua giao thức gỡ lỗi từ xa (CDP) và điều khiển bằng Playwright, dùng chính tài khoản của người dùng. Vì giao diện web có thể đổi bất cứ lúc nào, mọi bước đều có phương án dự phòng dán tay để tool không chết cứng khi nhà cung cấp cập nhật.\n\nPhần hỏi AI cho kịch bản có bốn chế độ để người dùng chọn theo túi tiền: gọi API trả phí, điều khiển trình duyệt để dùng tài khoản sẵn có, dán tay, hoặc mua credit qua license server riêng.\n\nLicense server đó là phần hạ tầng để bán tool: khoá API và mẫu câu lệnh nằm trên máy chủ chứ không nằm trong bản giao cho khách, khách nạp credit bằng mã. Mỗi lần hỏi AI trừ đúng một lượt bất kể model đắt hay rẻ, và nếu AI trả về sai định dạng thì tự hoàn lại credit.",
+    tech: ["Python", "FastAPI", "Playwright", "CDP", "ffmpeg", "SQLite"],
     image: projectImage("WorkFlowAI"),
     role: "Python / AI Developer",
     client: "Sản phẩm cá nhân (private)",
@@ -136,7 +172,10 @@ const privateProjects = [
     category: "ANDROID • REVERSE ENGINEERING",
     shortName: "NOTE MOD",
     title: "Ghi chú Mod | Dịch ngược app Xiaomi",
-    desc: "Thêm tính năng vào thẳng app Ghi chú gốc của Xiaomi mà giữ nguyên toàn bộ chức năng cũ: dịch ngược 15.386 file Java, tiêm code Kotlin biên dịch xuống smali, đổi tên gói (13 authority · 88 URI) để cài song song bản gốc. Đã thêm màn Lịch trình dạng lịch tuần, đồng bộ Supabase thay Mi Cloud và trợ lý Gemini. Xử lý được cả những chỗ khó: nạp khung tài nguyên miui.system, dựng module lớp giả vì không có jar API của Xiaomi.",
+    desc: "Thêm tính năng vào app Ghi chú có sẵn của điện thoại Xiaomi mà không làm mất chức năng cũ nào.",
+    detail:
+      "App Ghi chú của Xiaomi thiếu vài thứ tôi cần, nhưng viết lại từ đầu thì mất những tính năng chỉ hãng mới làm được: vẽ tay, viết bút cảm ứng, bản đồ tư duy — chúng chạy trên thư viện native riêng. Nên thay vì viết lại, tôi sửa thẳng vào app gốc.\n\nQuy trình: dịch ngược app ra 15.386 file, viết tính năng mới bằng Kotlin, biên dịch xuống smali rồi tiêm vào đúng chỗ, ký lại và cài. Đổi luôn tên gói (13 authority, 88 URI) để bản sửa cài song song bản gốc, lỡ hỏng vẫn còn đường lùi.\n\nĐã thêm được: màn Lịch trình dạng lịch tuần (chụm ngón phóng to, vạch đỏ chỉ giờ hiện tại, sự kiện lặp và nhắc trước), đồng bộ qua Supabase thay cho Mi Cloud, và trợ lý Gemini.\n\nHai chỗ tốn nhiều thời gian nhất: công cụ dịch ngược không đọc nổi tài nguyên nếu chưa nạp khung miui.system lấy từ máy thật — chỗ này tôi từng kết luận nhầm là không làm được; và vì Xiaomi không phát hành thư viện API, tôi phải dựng một module khai lớp giả để biên dịch được, chữ ký phải khớp tuyệt đối tới từng kiểu trả về.\n\nĐánh đổi phải chấp nhận: bản sửa thiếu 29 quyền cấp chữ ký nên mất đồng bộ Mi Cloud và mở khoá ghi chú riêng tư bằng vân tay — không sửa được vì cần khoá ký của hãng.",
+    tech: ["Kotlin", "smali", "apktool", "Supabase", "Gemini API", "Android"],
     image: projectImage("NoteMod"),
     role: "Android / Reverse Engineering",
     client: "Sản phẩm cá nhân (private)",
@@ -149,7 +188,10 @@ const privateProjects = [
     category: "PYTHON • AUTOMATION",
     shortName: "AUTOTOOL",
     title: "AutoTool | Tự động hoá web",
-    desc: "Tool desktop (Tkinter + Selenium) tự đăng nhập trang quản trị, cập nhật số liệu sản phẩm hàng loạt và xuất báo cáo Excel — chạy nền đa luồng để không treo giao diện.",
+    desc: "Phần mềm máy tính làm thay việc nhập liệu tay: sửa giá hàng loạt và xuất báo cáo Excel.",
+    detail:
+      "Công cụ nội bộ sinh ra để bỏ một việc thủ công lặp đi lặp lại: mỗi đợt khuyến mãi phải mở trang quản trị, sửa giá từng sản phẩm một, hàng trăm lần. Tool tự đăng nhập rồi làm hàng loạt.\n\nNgười dùng tick chọn sản phẩm rồi chọn cách chỉnh: nhập phần trăm chiết khấu áp cho cả loạt, hoặc đặt đồng giá một mức cho tất cả. Có kiểm tra dữ liệu nhập ngay tại chỗ (chiết khấu phải là số 0–100, tự bỏ số 0 thừa) để không lỡ tay đẩy giá sai lên sàn.\n\nNgoài chỉnh giá còn trích xuất được đơn hàng kèm địa chỉ và xuất ra Excel để đối chiếu.\n\nToàn bộ tác vụ nặng chạy ở luồng nền nên cửa sổ không bị treo trắng khi đang xử lý — đây là lỗi kinh điển của ứng dụng Tkinter viết vội, và cũng là lý do người dùng hay tưởng phần mềm hỏng rồi tắt ngang giữa chừng.",
+    tech: ["Python", "Tkinter", "Selenium", "openpyxl", "threading"],
     image: projectImage("AutoTool"),
     role: "Python Developer",
     client: "Công cụ nội bộ (private)",
@@ -229,6 +271,127 @@ function primaryLinkLabel(link?: string) {
   return link.includes("github.com") ? "Xem trên GitHub" : "Xem website";
 }
 
+// Modal "Xem chi tiết": card chỉ đủ chỗ cho 3 dòng mô tả nên phần viết sâu cho nhà
+// tuyển dụng (cách giải quyết vấn đề, quyết định kỹ thuật, đánh đổi) để hết ở đây.
+function ProjectDetailModal({
+  proj,
+  onClose,
+}: {
+  proj: any;
+  onClose: () => void;
+}) {
+  // Esc để đóng + khoá cuộn nền, tránh cuộn xuyên qua modal xuống carousel bên dưới
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose]);
+
+  // detail có thể xuống dòng bằng \n\n -> tách thành từng đoạn cho dễ đọc
+  const paragraphs = String(proj.detail || proj.desc || "")
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  return (
+    <div
+      className="pd-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-label={proj.title}
+      onClick={onClose}
+    >
+      {/* Chặn nổi bọt để bấm bên trong panel không đóng modal */}
+      <div className="pd-panel" onClick={(e) => e.stopPropagation()}>
+        <button className="pd-close" onClick={onClose} aria-label="Đóng">
+          ✕
+        </button>
+
+        <div className="pd-banner">
+          <img
+            src={proj.image}
+            alt={proj.title}
+            onError={(e) => {
+              const t = e.currentTarget;
+              t.src = `https://placehold.co/1440x880/111219/ffffff?text=${encodeURIComponent(
+                proj.shortName || proj.title
+              )}`;
+            }}
+          />
+        </div>
+
+        <div className="pd-body">
+          <span className="pd-category">{proj.category}</span>
+          <h2 className="pd-title">{proj.title}</h2>
+
+          <div className="pd-meta">
+            <div>
+              <span>Vai trò</span>
+              <strong>{proj.role}</strong>
+            </div>
+            <div>
+              <span>Bối cảnh</span>
+              <strong>{proj.client}</strong>
+            </div>
+            <div>
+              <span>Năm</span>
+              <strong>{proj.year}</strong>
+            </div>
+          </div>
+
+          {proj.tech?.length ? (
+            <div className="pd-tech">
+              {proj.tech.map((t: string) => (
+                <span key={t}>{t}</span>
+              ))}
+            </div>
+          ) : null}
+
+          <div className="pd-text">
+            {paragraphs.map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+
+          <div className="pd-actions">
+            {proj.demo ? (
+              <a
+                href={proj.demo}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pd-btn pd-btn-primary"
+              >
+                {proj.demoLabel || "Xem bản chạy thật"}
+              </a>
+            ) : null}
+            {proj.link ? (
+              <a
+                href={proj.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="pd-btn"
+              >
+                {primaryLinkLabel(proj.link)}
+              </a>
+            ) : (
+              <span className="pd-btn pd-btn-private">
+                {primaryLinkLabel(undefined)}
+              </span>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // Chuyển một repo trả về từ GitHub API sang đúng cấu trúc card dự án
 function mapRepoToProject(repo: any) {
   const lang = repo.language || "Code";
@@ -260,10 +423,28 @@ export function ProjectSection() {
   const [isNoTransitions, setIsNoTransitions] = useState(false);
   const [isFastTransitions, setIsFastTransitions] = useState(false);
 
+  // Dự án đang mở trong modal chi tiết (null = đang đóng)
+  const [detailProj, setDetailProj] = useState<any | null>(null);
+
   const trackRef = useRef<HTMLDivElement>(null);
   const activeIndexRef = useRef(12);
   const isTransitioningRef = useRef(false);
   const autoplayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Bản ref của trạng thái modal: resetAutoplayTimer chạy trong setTimeout nên đọc
+  // state trực tiếp sẽ dính giá trị cũ (stale closure).
+  const detailOpenRef = useRef(false);
+
+  // Mở modal thì dừng hẳn autoplay, đóng thì chạy lại — không thì carousel vẫn
+  // trượt sau lưng modal, đóng ra đã lạc sang dự án khác.
+  useEffect(() => {
+    detailOpenRef.current = detailProj !== null;
+    if (detailProj) {
+      if (autoplayTimeoutRef.current) clearTimeout(autoplayTimeoutRef.current);
+    } else {
+      resetAutoplayTimer();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [detailProj]);
 
   // Đồng bộ state refs để tránh lỗi stale closure trong window events/timeouts
   useEffect(() => {
@@ -366,6 +547,9 @@ export function ProjectSection() {
     if (autoplayTimeoutRef.current) {
       clearTimeout(autoplayTimeoutRef.current);
     }
+
+    // Đang đọc chi tiết thì không tự chuyển card
+    if (detailOpenRef.current) return;
 
     // Tạm dừng hoàn toàn autoplay nếu đang hover card active
     if (trackRef.current) {
@@ -928,6 +1112,218 @@ export function ProjectSection() {
           color: rgba(255, 255, 255, 0.55);
         }
 
+        /* Nút chi tiết là <button> chứ không phải <a>, nên phải trả lại font và
+           con trỏ mặc định của trình duyệt cho khớp các nút dạng link còn lại. */
+        button.expanded-btn {
+          font-family: inherit;
+          cursor: pointer;
+        }
+
+        /* Dòng chú thích nhỏ dưới nút: cho biết dự án có công khai mã nguồn không */
+        .expanded-note {
+          font-size: 0.68rem;
+          letter-spacing: 0.6px;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.38);
+          text-align: center;
+        }
+
+        /* ===== MODAL CHI TIẾT DỰ ÁN ===== */
+        .pd-overlay {
+          position: fixed;
+          inset: 0;
+          z-index: 200;
+          background: rgba(4, 5, 9, 0.78);
+          backdrop-filter: blur(8px);
+          -webkit-backdrop-filter: blur(8px);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 32px 20px;
+          animation: pdFade 0.25s ease;
+        }
+
+        @keyframes pdFade {
+          from { opacity: 0; }
+          to   { opacity: 1; }
+        }
+
+        .pd-panel {
+          position: relative;
+          width: min(880px, 100%);
+          max-height: 88vh;
+          overflow-y: auto;
+          background: #12131a;
+          border: 1px solid rgba(255, 255, 255, 0.09);
+          border-radius: 20px;
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65);
+          animation: pdRise 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        @keyframes pdRise {
+          from { transform: translateY(18px); opacity: 0; }
+          to   { transform: translateY(0);    opacity: 1; }
+        }
+
+        .pd-close {
+          position: absolute;
+          top: 14px;
+          right: 14px;
+          z-index: 2;
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          background: rgba(10, 11, 16, 0.72);
+          backdrop-filter: blur(6px);
+          color: #fff;
+          font-size: 0.9rem;
+          cursor: pointer;
+          transition: background 0.25s ease, transform 0.25s ease;
+        }
+
+        .pd-close:hover {
+          background: #ffffff;
+          color: #000000;
+          transform: rotate(90deg);
+        }
+
+        .pd-banner {
+          width: 100%;
+          aspect-ratio: 1440 / 880;
+          overflow: hidden;
+          border-radius: 20px 20px 0 0;
+          background: #0c0d12;
+        }
+
+        .pd-banner img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .pd-body { padding: 26px 32px 32px; }
+
+        .pd-category {
+          font-size: 0.7rem;
+          font-weight: 700;
+          letter-spacing: 2px;
+          color: #8ea2ff;
+        }
+
+        .pd-title {
+          font-size: 1.6rem;
+          font-weight: 800;
+          color: #fff;
+          margin: 6px 0 18px;
+          letter-spacing: -0.5px;
+        }
+
+        .pd-meta {
+          display: grid;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 14px;
+          padding: 16px 0;
+          border-top: 1px solid rgba(255, 255, 255, 0.07);
+          border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+        }
+
+        .pd-meta div { display: flex; flex-direction: column; gap: 3px; }
+
+        .pd-meta span {
+          font-size: 0.68rem;
+          letter-spacing: 1.2px;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.4);
+        }
+
+        .pd-meta strong {
+          font-size: 0.88rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.92);
+        }
+
+        .pd-tech {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          margin: 18px 0 4px;
+        }
+
+        .pd-tech span {
+          font-size: 0.74rem;
+          font-weight: 600;
+          padding: 5px 11px;
+          border-radius: 999px;
+          background: rgba(142, 162, 255, 0.11);
+          border: 1px solid rgba(142, 162, 255, 0.22);
+          color: #c3cdff;
+        }
+
+        .pd-text {
+          margin-top: 18px;
+          font-size: 0.92rem;
+          line-height: 1.72;
+          color: rgba(255, 255, 255, 0.74);
+        }
+
+        .pd-text p { margin: 0 0 13px; }
+        .pd-text p:last-child { margin-bottom: 0; }
+
+        .pd-actions {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 26px;
+        }
+
+        .pd-btn {
+          flex: 1 1 200px;
+          text-align: center;
+          padding: 12px 18px;
+          border-radius: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          background: #252e42;
+          color: #fff;
+          font-size: 0.8rem;
+          font-weight: 700;
+          letter-spacing: 1.2px;
+          text-transform: uppercase;
+          text-decoration: none;
+          transition: all 0.3s ease;
+        }
+
+        .pd-btn:hover { background: #fff; color: #000; }
+
+        .pd-btn-primary {
+          background: #fff;
+          color: #000;
+          border-color: #fff;
+        }
+
+        .pd-btn-primary:hover { background: #c9d4ff; border-color: #c9d4ff; }
+
+        .pd-btn-private {
+          background: transparent;
+          border-style: dashed;
+          border-color: rgba(255, 255, 255, 0.2);
+          color: rgba(255, 255, 255, 0.5);
+          cursor: default;
+        }
+
+        .pd-btn-private:hover {
+          background: transparent;
+          color: rgba(255, 255, 255, 0.5);
+        }
+
+        @media (max-width: 640px) {
+          .pd-overlay { padding: 16px 12px; }
+          .pd-body { padding: 20px 20px 24px; }
+          .pd-title { font-size: 1.3rem; }
+          .pd-meta { grid-template-columns: 1fr; gap: 10px; }
+        }
+
         /* ===== ĐIỀU KHIỂN PHÍA DƯỚI ===== */
         .bottom-controls {
           display: flex;
@@ -1071,35 +1467,27 @@ export function ProjectSection() {
                         <span>{proj.year}</span>
                       </div>
                     </div>
+                    {/* Card chỉ giữ MỘT hành động cho gọn; link bản chạy thật và mã
+                        nguồn chuyển hết vào modal cùng với mô tả đầy đủ. */}
                     <div className="expanded-actions">
-                      {/* Nút phụ: bản chạy thật. Ưu tiên đứng trên vì khách quan tâm
-                          sản phẩm chạy được hơn là mã nguồn. */}
-                      {proj.demo ? (
-                        <a
-                          href={proj.demo}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="expanded-btn primary-cta"
-                          onMouseEnter={() => triggerCursorHover(true)}
-                          onMouseLeave={() => triggerCursorHover(false)}
-                        >
-                          {proj.demoLabel || "Xem bản chạy thật"}
-                        </a>
-                      ) : null}
-                      <a
-                        href={proj.link || "#"}
-                        target={proj.link ? "_blank" : undefined}
-                        rel={proj.link ? "noopener noreferrer" : undefined}
-                        className={`expanded-btn${proj.link ? "" : " is-private"}`}
-                        aria-disabled={proj.link ? undefined : true}
+                      <button
+                        type="button"
+                        className="expanded-btn primary-cta"
                         onMouseEnter={() => triggerCursorHover(true)}
                         onMouseLeave={() => triggerCursorHover(false)}
                         onClick={(e) => {
-                          if (!proj.link) e.preventDefault();
+                          e.stopPropagation();
+                          setDetailProj(proj);
                         }}
                       >
-                        {primaryLinkLabel(proj.link)}
-                      </a>
+                        Xem chi tiết
+                      </button>
+                      <span className="expanded-note">
+                        {proj.link
+                          ? "Mã nguồn công khai"
+                          : "Mã nguồn không công khai"}
+                        {proj.demo ? " • có bản chạy thật" : ""}
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -1107,6 +1495,13 @@ export function ProjectSection() {
             })}
           </div>
         </main>
+
+        {detailProj ? (
+          <ProjectDetailModal
+            proj={detailProj}
+            onClose={() => setDetailProj(null)}
+          />
+        ) : null}
 
         {/* Indicator ở footer */}
         <footer className="bottom-controls">
