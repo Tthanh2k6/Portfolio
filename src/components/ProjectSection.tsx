@@ -18,6 +18,12 @@ const REPO_IMAGES: Record<string, string> = {
   // Dự án private (không công khai code) — chỉ hiển thị ảnh demo, thả file vào public/IMG/
   AutoTool: "/IMG/project-autotool.png",
   WorkFlowAI: "/IMG/project-workflowai.png",
+  // CHƯA CÓ ẢNH — thả ảnh chụp màn hình vào public/IMG/ đúng tên dưới đây.
+  // Thiếu file thì <img onError> tự rơi về ảnh placeholder có tên dự án, không vỡ layout.
+  MadalenaApp: "/IMG/project-madalena-app.png",
+  MadalenaWeb: "/IMG/project-madalena-web.png",
+  LichIUH: "/IMG/project-lichiuh.png",
+  NoteMod: "/IMG/project-notemod.png",
 };
 // Ảnh dùng cho card: ưu tiên ảnh chụp local, không có thì dùng ảnh OpenGraph của GitHub
 const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
@@ -28,12 +34,12 @@ const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
 // Lưu ý: key phải trùng TÊN REPO thật trên GitHub (vd AI-ML nằm ở repo "H-c-AI-ML").
 const REPO_META: Record<string, any> = {
   DiemDanhQR: {
-    desc: "Công cụ điểm danh bằng mã QR: quét QR trên điện thoại, tự ghi vào Google Sheets qua Google Apps Script — chạy dạng PWA, không cần server riêng. Tự phát triển với sự hỗ trợ của AI.",
+    desc: "Công cụ điểm danh bằng mã QR: quét QR trên điện thoại, tự ghi vào Google Sheets qua Google Apps Script — chạy dạng PWA, cài được lên màn hình chính, không cần server riêng.",
     role: "JavaScript Developer",
     client: "Dự án cá nhân",
   },
   AI_Lab: {
-    desc: "AI Game Arena — ứng dụng Electron cho AI tự học, tiến hóa và thi đấu game thời gian thực (Minimax, MCTS, mạng nơ-ron, giải thuật di truyền). Tự phát triển với sự hỗ trợ của AI.",
+    desc: "AI Game Arena — ứng dụng Electron mô phỏng 8 trò chơi cho AI tự học và đối kháng: Minimax + cắt tỉa Alpha-Beta, MCTS/UCT, Q-Learning, mạng nơ-ron kết hợp giải thuật di truyền, mô phỏng 3D thời gian thực.",
     role: "TypeScript Developer",
     client: "Dự án cá nhân",
   },
@@ -47,7 +53,7 @@ const REPO_META: Record<string, any> = {
     yearRole: "2026 • Project Manager",
   },
   Portfolio: {
-    desc: "Trang portfolio cá nhân với hero 3D, hoạt ảnh chuyển động và CMS phía client — chính là website này. Tự phát triển với sự hỗ trợ của AI.",
+    desc: "Trang portfolio cá nhân: hero 3D lưới neon dựng bằng Three.js (WebGL + UnrealBloom), bàn phím cơ 3D tương tác, SSR bằng TanStack Start và CMS phía client — chính là website này.",
     role: "Frontend Developer",
     client: "Dự án cá nhân",
   },
@@ -56,28 +62,58 @@ const REPO_META: Record<string, any> = {
     category: "MACHINE LEARNING",
     shortName: "AI / ML",
     title: "AI-ML | Học Máy & Học Sâu",
-    desc: "Tổng hợp bài thực hành Machine Learning & Deep Learning: tiền xử lý dữ liệu, K-Means, Decision Tree, KNN, MLP, CNN và phân loại MNIST (scikit-learn / TensorFlow). Tự code 100%, không dùng AI hỗ trợ.",
+    desc: "Tổng hợp bài thực hành Machine Learning & Deep Learning: tiền xử lý dữ liệu, K-Means, Decision Tree, KNN, MLP, CNN và phân loại MNIST (scikit-learn / TensorFlow). Viết tay từng bước để nắm rõ toán học phía sau mỗi thuật toán.",
     role: "ML / AI Developer",
     client: "Dự án tự học",
     yearRole: "2026 • Machine Learning",
   },
 };
 
-// Dự án PRIVATE (tool cá nhân, không công khai mã nguồn).
-// Không có repo trên GitHub nên KHÔNG đặt link và phải gộp thủ công vào danh sách —
-// bản fetch GitHub bên dưới chỉ trả về repo công khai, sẽ không bao gồm các tool này.
+// Dự án KHÔNG CÔNG KHAI MÃ NGUỒN: sản phẩm cho doanh nghiệp + tool cá nhân.
+// GitHub API chỉ trả về repo công khai nên các mục này phải gộp thủ công và KHÔNG đặt
+// `link` tới GitHub. Thứ tự ở đây = thứ tự hiển thị: việc làm thật cho doanh nghiệp
+// đứng trước, rồi tới sản phẩm có người dùng thật, cuối cùng là tool cá nhân.
 const privateProjects = [
   {
-    id: "AutoTool",
-    category: "PYTHON • AUTOMATION",
-    shortName: "AUTOTOOL",
-    title: "AutoTool | Tự động hoá web",
-    desc: "Tool desktop (Tkinter + Selenium) tự đăng nhập trang quản trị, cập nhật số liệu sản phẩm hàng loạt và xuất báo cáo Excel — chạy nền đa luồng. Tự phát triển với sự hỗ trợ của AI.",
-    image: projectImage("AutoTool"),
-    role: "Python Developer",
-    client: "Dự án cá nhân (private)",
+    id: "MadalenaApp",
+    category: "REACT NATIVE • PHP API",
+    shortName: "MADALENA APP",
+    title: "Madalena | App khách hàng thân thiết",
+    desc: "App di động iOS + Android cho chuỗi Madalena: hạng thành viên theo doanh thu, mã QR định danh khách, flash sale theo khung giờ và chiến dịch chúc mừng sinh nhật tự động. Tự làm trọn gói cả app lẫn backend — React Native (Expo Router, TypeScript) + REST API PHP/MySQL với JWT HS256, phân quyền admin đọc thẳng từ DB, chặn brute-force đăng nhập, cron gửi push qua Expo. Đã tự port backend từ Node/Express (Render + Aiven) sang PHP gộp chung hạ tầng với website để cắt chi phí máy chủ.",
+    image: projectImage("MadalenaApp"),
+    role: "Full-stack Developer (một mình toàn bộ)",
+    client: "Madalena — dự án công ty",
     year: "2026",
-    yearRole: "2026 • Python",
+    yearRole: "2026 • React Native & PHP",
+    link: undefined as string | undefined,
+  },
+  {
+    id: "MadalenaWeb",
+    category: "PHP • WEB",
+    shortName: "MADALENA WEB",
+    title: "Madalena | Website thương mại điện tử",
+    desc: "Website bán hàng của Madalena chạy trên nền PHP tự viết (AltoRouter + PDO, giỏ hàng, SEO, cache file, trang quản trị riêng). Tham gia với vai trò lập trình viên tính năng trong đội — phát triển và bảo trì một số tính năng trên hệ thống đang vận hành thật, không phải người dựng toàn bộ site.",
+    image: projectImage("MadalenaWeb"),
+    role: "PHP Developer (phát triển tính năng)",
+    client: "Madalena — dự án công ty",
+    year: "2026",
+    yearRole: "2026 • PHP",
+    // Mã nguồn là tài sản của công ty nên không công khai, nhưng site chạy thật thì
+    // công khai → chỉ đưa link bản chạy thật, giữ nhãn "private" cho phần mã nguồn.
+    link: undefined as string | undefined,
+    demo: "https://madalena.vn",
+  },
+  {
+    id: "LichIUH",
+    category: "KOTLIN • ANDROID",
+    shortName: "LỊCH IUH",
+    title: "Lịch IUH | Widget lịch học",
+    desc: "App Android cho sinh viên IUH, ra đời vì app chính thức của trường không có widget: 3 widget Jetpack Glance (lịch 7 ngày, lịch hôm nay, đếm ngược lịch thi), đăng nhập OAuth2, tự đồng bộ nền 6h/18h bằng WorkManager và cache offline nên widget hiện tức thì. Mật khẩu lưu bằng EncryptedSharedPreferences; tự xử lý cả lỗi máy chủ trường thiếu cert trung gian bằng cách nhúng cert vào network security config.",
+    image: projectImage("LichIUH"),
+    role: "Android Developer",
+    client: "Sản phẩm cá nhân — người dùng thật",
+    year: "2026",
+    yearRole: "2026 • Kotlin & Android",
     link: undefined as string | undefined,
   },
   {
@@ -85,12 +121,38 @@ const privateProjects = [
     category: "PYTHON & AI",
     shortName: "WORKFLOW AI",
     title: "WorkFlow AI | Sản xuất video AI",
-    desc: "Tool all-in-one sản xuất video AI theo pipeline: kịch bản → chia cảnh → tạo ảnh/video trên Google Flow (tự động hoá trình duyệt qua Playwright/CDP) → ghép phim. Backend FastAPI. Tự phát triển với sự hỗ trợ của AI.",
+    desc: "Tool all-in-one sản xuất video AI theo pipeline: kịch bản → chia cảnh → tạo ảnh/video trên Google Flow → ghép phim bằng ffmpeg. Google Flow không có API công khai nên tool điều khiển Chrome thật qua remote-debugging (CDP) + Playwright. Backend FastAPI, kèm license server riêng bán theo credit và bản đóng gói cho khách.",
     image: projectImage("WorkFlowAI"),
     role: "Python / AI Developer",
-    client: "Dự án cá nhân (private)",
+    client: "Sản phẩm cá nhân (private)",
     year: "2026",
     yearRole: "2026 • Python & AI",
+    link: undefined as string | undefined,
+  },
+  {
+    id: "NoteMod",
+    category: "ANDROID • REVERSE ENGINEERING",
+    shortName: "NOTE MOD",
+    title: "Ghi chú Mod | Dịch ngược app Xiaomi",
+    desc: "Thêm tính năng vào thẳng app Ghi chú gốc của Xiaomi mà giữ nguyên toàn bộ chức năng cũ: dịch ngược 15.386 file Java, tiêm code Kotlin biên dịch xuống smali, đổi tên gói (13 authority · 88 URI) để cài song song bản gốc. Đã thêm màn Lịch trình dạng lịch tuần, đồng bộ Supabase thay Mi Cloud và trợ lý Gemini. Xử lý được cả những chỗ khó: nạp khung tài nguyên miui.system, dựng module lớp giả vì không có jar API của Xiaomi.",
+    image: projectImage("NoteMod"),
+    role: "Android / Reverse Engineering",
+    client: "Sản phẩm cá nhân (private)",
+    year: "2026",
+    yearRole: "2026 • Reverse Engineering",
+    link: undefined as string | undefined,
+  },
+  {
+    id: "AutoTool",
+    category: "PYTHON • AUTOMATION",
+    shortName: "AUTOTOOL",
+    title: "AutoTool | Tự động hoá web",
+    desc: "Tool desktop (Tkinter + Selenium) tự đăng nhập trang quản trị, cập nhật số liệu sản phẩm hàng loạt và xuất báo cáo Excel — chạy nền đa luồng để không treo giao diện.",
+    image: projectImage("AutoTool"),
+    role: "Python Developer",
+    client: "Công cụ nội bộ (private)",
+    year: "2026",
+    yearRole: "2026 • Python",
     link: undefined as string | undefined,
   },
 ];
@@ -109,6 +171,7 @@ const publicProjects = [
     year: "2026",
     yearRole: "2026 • JavaScript",
     link: `https://github.com/${GITHUB_USER}/DiemDanhQR`,
+    demo: "https://tthanh2k6.github.io/DiemDanhQR/",
   },
   {
     id: "AI_Lab",
@@ -120,6 +183,7 @@ const publicProjects = [
     year: "2026",
     yearRole: "2026 • TypeScript",
     link: `https://github.com/${GITHUB_USER}/AI_Lab`,
+    demo: "https://ai-lab-tthanh2006.vercel.app",
   },
   {
     id: "KNN",
@@ -145,11 +209,23 @@ const publicProjects = [
     year: "2026",
     yearRole: "2026 • Web & 3D",
     link: `https://github.com/${GITHUB_USER}/Portfolio`,
+    demo: "https://portfolio-tthanh2006.vercel.app/",
   },
 ];
 
-// Danh sách hiển thị mặc định: tool private luôn đứng trước, rồi tới repo công khai.
-const projects = [...privateProjects, ...publicProjects];
+// Danh sách hiển thị mặc định: dự án không công khai mã nguồn đứng trước, rồi tới repo công khai.
+// Được export để trang /admin dùng CHUNG một nguồn — trước đây admin tự chép lại danh sách
+// riêng nên bị lệch, và mỗi lần bấm lưu là ghi đè danh sách thiếu dự án xuống localStorage.
+export const projects = [...privateProjects, ...publicProjects];
+
+// Nhãn cho nút chính của card, tuỳ theo dự án có công khai mã nguồn hay không:
+//  - không có link  -> dự án private, nút trơ (không bấm được)
+//  - link GitHub    -> mở mã nguồn
+//  - link khác      -> website chạy thật của khách hàng
+function primaryLinkLabel(link?: string) {
+  if (!link) return "Private • mã nguồn không công khai";
+  return link.includes("github.com") ? "Xem trên GitHub" : "Xem website";
+}
 
 // Chuyển một repo trả về từ GitHub API sang đúng cấu trúc card dự án
 function mapRepoToProject(repo: any) {
@@ -167,6 +243,8 @@ function mapRepoToProject(repo: any) {
     year,
     yearRole: `${year} • ${lang}`,
     link: repo.html_url,
+    // Trường "Website" của repo trên GitHub = bản deploy chạy thật, dùng làm nút phụ.
+    demo: repo.homepage || undefined,
   };
   // Ghi đè bằng thông tin tự soạn (vai trò, mức độ dùng AI...) nếu repo có trong REPO_META
   return { ...base, ...(REPO_META[repo.name] || {}) };
@@ -789,6 +867,16 @@ export function ProjectSection() {
           font-weight: 500;
         }
 
+        /* Cụm nút cuối card: gom nút "bản chạy thật" + nút mã nguồn vào một khối,
+           khối này mới là thứ bị đẩy xuống đáy (thay cho margin-top:auto của từng nút). */
+        .expanded-actions {
+          margin-top: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          width: 100%;
+        }
+
         .expanded-btn {
           background: #252e42;
           border: 1px solid rgba(255, 255, 255, 0.1);
@@ -803,12 +891,39 @@ export function ProjectSection() {
           text-decoration: none;
           width: 100%;
           transition: all 0.3s ease;
-          margin-top: auto; 
+          margin-top: 0;
         }
 
         .expanded-btn:hover {
           background: #ffffff;
           color: #000000;
+        }
+
+        /* Nút chính (bản chạy thật) — nổi bật hơn nút xem mã nguồn */
+        .expanded-btn.primary-cta {
+          background: #ffffff;
+          color: #000000;
+          border-color: #ffffff;
+        }
+
+        .expanded-btn.primary-cta:hover {
+          background: #c9d4ff;
+          border-color: #c9d4ff;
+        }
+
+        /* Dự án không công khai mã nguồn: nút chỉ để thông báo, không bấm được */
+        .expanded-btn.is-private {
+          background: transparent;
+          border-style: dashed;
+          border-color: rgba(255, 255, 255, 0.22);
+          color: rgba(255, 255, 255, 0.55);
+          cursor: default;
+          letter-spacing: 1px;
+        }
+
+        .expanded-btn.is-private:hover {
+          background: transparent;
+          color: rgba(255, 255, 255, 0.55);
         }
 
         /* ===== ĐIỀU KHIỂN PHÍA DƯỚI ===== */
@@ -954,19 +1069,36 @@ export function ProjectSection() {
                         <span>{proj.year}</span>
                       </div>
                     </div>
-                    <a
-                      href={proj.link || "#"}
-                      target={proj.link ? "_blank" : undefined}
-                      rel={proj.link ? "noopener noreferrer" : undefined}
-                      className="expanded-btn"
-                      onMouseEnter={() => triggerCursorHover(true)}
-                      onMouseLeave={() => triggerCursorHover(false)}
-                      onClick={(e) => {
-                        if (!proj.link) e.preventDefault();
-                      }}
-                    >
-                      {proj.link ? "Xem trên GitHub" : "Private • mã nguồn không công khai"}
-                    </a>
+                    <div className="expanded-actions">
+                      {/* Nút phụ: bản chạy thật. Ưu tiên đứng trên vì khách quan tâm
+                          sản phẩm chạy được hơn là mã nguồn. */}
+                      {proj.demo ? (
+                        <a
+                          href={proj.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="expanded-btn primary-cta"
+                          onMouseEnter={() => triggerCursorHover(true)}
+                          onMouseLeave={() => triggerCursorHover(false)}
+                        >
+                          Xem bản chạy thật
+                        </a>
+                      ) : null}
+                      <a
+                        href={proj.link || "#"}
+                        target={proj.link ? "_blank" : undefined}
+                        rel={proj.link ? "noopener noreferrer" : undefined}
+                        className={`expanded-btn${proj.link ? "" : " is-private"}`}
+                        aria-disabled={proj.link ? undefined : true}
+                        onMouseEnter={() => triggerCursorHover(true)}
+                        onMouseLeave={() => triggerCursorHover(false)}
+                        onClick={(e) => {
+                          if (!proj.link) e.preventDefault();
+                        }}
+                      >
+                        {primaryLinkLabel(proj.link)}
+                      </a>
+                    </div>
                   </div>
                 </div>
               );
