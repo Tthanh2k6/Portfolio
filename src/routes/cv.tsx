@@ -61,7 +61,7 @@ const T = {
         org: "Madalena",
         time: "2026 — nay",
         bullets: [
-          "Tự làm một mình trọn bộ ứng dụng khách hàng thân thiết cho iOS + Android: app React Native (TypeScript, Expo Router) và REST API PHP/MySQL.",
+          "Tự làm một mình trọn bộ ứng dụng khách hàng thân thiết cho iOS + Android: app React Native (TypeScript, Expo Router) và REST API PHP/MySQL. Đã phát hành trên Google Play (com.madalena.app).",
           "Xây hệ thống hạng thành viên theo doanh thu, mã QR định danh khách, flash sale theo khung giờ do máy chủ kiểm soát thời gian, và chiến dịch chúc mừng sinh nhật chạy tự động bằng cron.",
           "Bảo mật: xác thực JWT HS256, kiểm tra quyền admin đọc thẳng từ cơ sở dữ liệu thay vì tin token, chặn brute-force đăng nhập theo IP + số điện thoại.",
           "Chủ động port backend từ Node/Express (Render + Aiven) sang PHP để gộp chung hạ tầng với website công ty, cắt được chi phí máy chủ hằng tháng.",
@@ -136,7 +136,7 @@ const T = {
         org: "Madalena",
         time: "2026 — Present",
         bullets: [
-          "Sole developer of a customer loyalty app for iOS and Android: React Native client (TypeScript, Expo Router) plus a PHP/MySQL REST API.",
+          "Sole developer of a customer loyalty app for iOS and Android, shipped on Google Play (com.madalena.app): React Native client (TypeScript, Expo Router) plus a PHP/MySQL REST API.",
           "Built revenue-based membership tiers, QR customer identification, server-timed flash sales, and an automated birthday campaign driven by cron jobs.",
           "Security: JWT HS256 authentication, admin authorisation resolved from the database rather than trusting the token, and login brute-force protection keyed on IP + phone number.",
           "Independently ported the backend from Node/Express (Render + Aiven) to PHP so it shares infrastructure with the company website, cutting recurring server costs.",
