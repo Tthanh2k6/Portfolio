@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link } from "@tanstack/react-router";
 import { NavBar } from "./NavBar";
+import { useLang } from "@/lib/i18n";
 
 const navItems = [
   { label: "Home", to: "/" },
@@ -30,30 +31,30 @@ const KEY_ICON     = 36;   // cạnh logo trong phím (px)
 // (xem span.keycap-label-fallback ở phần render). Có logo thì thả file vào
 // public/IMG/ rồi điền đường dẫn vào đây.
 export const KEYCAPS = [
-  { bg: "#7f52ff", shadow: "#5433b0", color: "#fff",    img: "",                         title: "Kotlin",          desc: "Ngôn ngữ chính cho Android: app Lịch IUH và code tiêm vào bản mod Ghi chú." },
-  { bg: "#2aa06a", shadow: "#186a45", color: "#fff",    img: "",                         title: "Android",         desc: "Widget Jetpack Glance, WorkManager chạy nền, lưu dữ liệu mã hoá, dịch ngược APK." },
-  { bg: "#3178c6", shadow: "#1f4e80", color: "#fff",    img: "",                         title: "TypeScript",      desc: "App di động Expo Router, portfolio TanStack Start và AI Game Arena." },
-  { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png",           title: "React",           desc: "Giao diện hiện đại: component, hook, RSC, Tailwind." },
-  { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "App React Native chạy thật trên iOS + Android: push, camera QR, cập nhật OTA." },
-  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "Tự động hóa, API bất đồng bộ và mọi thử nghiệm ML/AI." },
-  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "REST API cho app khách hàng: JWT, phân quyền, chống brute-force, cron; và tính năng web công ty." },
-  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Cơ sở dữ liệu vận hành thật: lược đồ, migration, truy vấn doanh thu và tối ưu." },
-  { bg: "#ffeb3b", shadow: "#bfa500", color: "#000",    img: "/IMG/JavaScript.png",      title: "JavaScript",      desc: "Frontend tương tác, PWA và ứng dụng chạy thẳng trên trình duyệt." },
-  { bg: "#ff5722", shadow: "#b73209", color: "#fff",    img: "/IMG/HTML.png",            title: "HTML5",           desc: "Cấu trúc web ngữ nghĩa, chuẩn truy cập & SEO." },
-  { bg: "#2196f3", shadow: "#0d6aad", color: "#fff",    img: "/IMG/CSS.png",             title: "CSS3",            desc: "Giao diện responsive với Flexbox, Grid và animation mượt mà." },
-  { bg: "#1a1a1a", shadow: "#000000", color: "#fff",    img: "",                         title: "Three.js",        desc: "Dựng cảnh WebGL: lưới neon isometric, hiệu ứng bloom, bàn phím 3D tương tác." },
-  { bg: "#009688", shadow: "#00635a", color: "#fff",    img: "",                         title: "FastAPI",         desc: "Backend bất đồng bộ cho tool sản xuất video AI, kèm license server bán theo credit." },
-  { bg: "#2d8a4e", shadow: "#1b5730", color: "#fff",    img: "",                         title: "Playwright",      desc: "Điều khiển Chrome thật qua CDP để tự động hoá trang không có API công khai." },
-  { bg: "#43b02a", shadow: "#2b731b", color: "#fff",    img: "",                         title: "Selenium",        desc: "Tự động đăng nhập, nhập liệu hàng loạt và xuất báo cáo trên trang quản trị." },
-  { bg: "#ff6f00", shadow: "#b34e00", color: "#fff",    img: "",                         title: "TensorFlow",      desc: "Mạng nơ-ron MLP/CNN, phân loại MNIST và các mô hình học sâu tự huấn luyện." },
-  { bg: "#e76f51", shadow: "#a73e25", color: "#fff",    img: "/IMG/Java.jpg",            title: "Java",            desc: "Backend doanh nghiệp và ứng dụng Android trên nền JVM." },
-  { bg: "#007acc", shadow: "#005187", color: "#fff",    img: "/IMG/C++.png",             title: "C / C++",         desc: "Xử lý hiệu năng cao, quản lý bộ nhớ thủ công, đệ quy tối ưu." },
-  { bg: "#f4511e", shadow: "#b02600", color: "#fff",    img: "/IMG/Git.png",             title: "Git",             desc: "Quản lý phiên bản chi tiết cho codebase phức tạp." },
-  { bg: "#33353f", shadow: "#1a1b21", color: "#fff",    img: "/IMG/GitHub.png",          title: "GitHub",          desc: "Quản lý phiên bản, nhánh và cộng tác nhóm." },
-  { bg: "#00a2ff", shadow: "#006bb3", color: "#fff",    img: "/IMG/Visual_Studio_Code.png", title: "VS Code",      desc: "Buồng lái phát triển nhanh, tối ưu cho tự động hóa." },
-  { bg: "#10a37f", shadow: "#0a664f", color: "#fff",    img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "ChatGPT", desc: "Công cụ AI hỗ trợ lập trình cặp & tự động hóa công việc hằng ngày." },
-  { bg: "#e08260", shadow: "#a64f31", color: "#fff",    img: "/IMG/Claude.png",          title: "Claude",          desc: "Công cụ AI hỗ trợ: suy luận sâu, kiểm chứng và refactor code hóc búa." },
-  { bg: "#4c75f2", shadow: "#2143b3", color: "#fff",    img: "/IMG/Gemini.png",          title: "Gemini",          desc: "Công cụ AI hỗ trợ suy luận đa phương thức trong quy trình code." },
+  { bg: "#7f52ff", shadow: "#5433b0", color: "#fff",    img: "",                         title: "Kotlin",          desc: "Ngôn ngữ chính cho Android: app Lịch IUH và code tiêm vào bản mod Ghi chú.", descEn: "My main Android language: the Lich IUH app and the code injected into the Notes mod." },
+  { bg: "#2aa06a", shadow: "#186a45", color: "#fff",    img: "",                         title: "Android",         desc: "Widget Jetpack Glance, WorkManager chạy nền, lưu dữ liệu mã hoá, dịch ngược APK.", descEn: "Jetpack Glance widgets, WorkManager background sync, encrypted storage, APK reverse engineering." },
+  { bg: "#3178c6", shadow: "#1f4e80", color: "#fff",    img: "",                         title: "TypeScript",      desc: "App di động Expo Router, portfolio TanStack Start và AI Game Arena.", descEn: "The Expo Router mobile app, this TanStack Start portfolio, and AI Game Arena." },
+  { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png",           title: "React",           desc: "Giao diện hiện đại: component, hook, RSC, Tailwind.", descEn: "Modern interfaces: components, hooks, RSC, Tailwind." },
+  { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "App React Native chạy thật trên iOS + Android: push, camera QR, cập nhật OTA.", descEn: "A shipped React Native app on iOS and Android: push, QR camera, OTA updates." },
+  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "Tự động hóa, API bất đồng bộ và mọi thử nghiệm ML/AI.", descEn: "Automation, async APIs, and every ML/AI experiment I run." },
+  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "REST API cho app khách hàng: JWT, phân quyền, chống brute-force, cron; và tính năng web công ty.", descEn: "The customer app's REST API — JWT, authorisation, brute-force protection, cron — plus company web features." },
+  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Cơ sở dữ liệu vận hành thật: lược đồ, migration, truy vấn doanh thu và tối ưu.", descEn: "A database in production: schema, migrations, revenue queries and tuning." },
+  { bg: "#ffeb3b", shadow: "#bfa500", color: "#000",    img: "/IMG/JavaScript.png",      title: "JavaScript",      desc: "Frontend tương tác, PWA và ứng dụng chạy thẳng trên trình duyệt.", descEn: "Interactive frontends, PWAs, and apps that run straight in the browser." },
+  { bg: "#ff5722", shadow: "#b73209", color: "#fff",    img: "/IMG/HTML.png",            title: "HTML5",           desc: "Cấu trúc web ngữ nghĩa, chuẩn truy cập & SEO.", descEn: "Semantic markup, accessibility standards and SEO." },
+  { bg: "#2196f3", shadow: "#0d6aad", color: "#fff",    img: "/IMG/CSS.png",             title: "CSS3",            desc: "Giao diện responsive với Flexbox, Grid và animation mượt mà.", descEn: "Responsive layouts with Flexbox, Grid and smooth animation." },
+  { bg: "#1a1a1a", shadow: "#000000", color: "#fff",    img: "",                         title: "Three.js",        desc: "Dựng cảnh WebGL: lưới neon isometric, hiệu ứng bloom, bàn phím 3D tương tác.", descEn: "WebGL scenes: isometric neon grids, bloom post-processing, an interactive 3D keyboard." },
+  { bg: "#009688", shadow: "#00635a", color: "#fff",    img: "",                         title: "FastAPI",         desc: "Backend bất đồng bộ cho tool sản xuất video AI, kèm license server bán theo credit.", descEn: "The async backend behind my AI video tool, plus a credit-based licence server." },
+  { bg: "#2d8a4e", shadow: "#1b5730", color: "#fff",    img: "",                         title: "Playwright",      desc: "Điều khiển Chrome thật qua CDP để tự động hoá trang không có API công khai.", descEn: "Driving a real Chrome over CDP to automate sites that expose no public API." },
+  { bg: "#43b02a", shadow: "#2b731b", color: "#fff",    img: "",                         title: "Selenium",        desc: "Tự động đăng nhập, nhập liệu hàng loạt và xuất báo cáo trên trang quản trị.", descEn: "Automated logins, bulk data entry and report exports across admin panels." },
+  { bg: "#ff6f00", shadow: "#b34e00", color: "#fff",    img: "",                         title: "TensorFlow",      desc: "Mạng nơ-ron MLP/CNN, phân loại MNIST và các mô hình học sâu tự huấn luyện.", descEn: "MLP and CNN networks, MNIST classification, and deep models trained from scratch." },
+  { bg: "#e76f51", shadow: "#a73e25", color: "#fff",    img: "/IMG/Java.jpg",            title: "Java",            desc: "Backend doanh nghiệp và ứng dụng Android trên nền JVM.", descEn: "Enterprise backends and Android applications on the JVM." },
+  { bg: "#007acc", shadow: "#005187", color: "#fff",    img: "/IMG/C++.png",             title: "C / C++",         desc: "Xử lý hiệu năng cao, quản lý bộ nhớ thủ công, đệ quy tối ưu.", descEn: "High-performance work, manual memory management, optimised recursion." },
+  { bg: "#f4511e", shadow: "#b02600", color: "#fff",    img: "/IMG/Git.png",             title: "Git",             desc: "Quản lý phiên bản chi tiết cho codebase phức tạp.", descEn: "Fine-grained version control across complex codebases." },
+  { bg: "#33353f", shadow: "#1a1b21", color: "#fff",    img: "/IMG/GitHub.png",          title: "GitHub",          desc: "Quản lý phiên bản, nhánh và cộng tác nhóm.", descEn: "Version control, branching and team collaboration." },
+  { bg: "#00a2ff", shadow: "#006bb3", color: "#fff",    img: "/IMG/Visual_Studio_Code.png", title: "VS Code",      desc: "Buồng lái phát triển nhanh, tối ưu cho tự động hóa.", descEn: "My cockpit for fast development, tuned for automation." },
+  { bg: "#10a37f", shadow: "#0a664f", color: "#fff",    img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "ChatGPT", desc: "Công cụ AI hỗ trợ lập trình cặp & tự động hóa công việc hằng ngày.", descEn: "An AI pair-programming aid and everyday task automation." },
+  { bg: "#e08260", shadow: "#a64f31", color: "#fff",    img: "/IMG/Claude.png",          title: "Claude",          desc: "Công cụ AI hỗ trợ: suy luận sâu, kiểm chứng và refactor code hóc búa.", descEn: "An AI aid for deep reasoning, verification and refactoring gnarly code." },
+  { bg: "#4c75f2", shadow: "#2143b3", color: "#fff",    img: "/IMG/Gemini.png",          title: "Gemini",          desc: "Công cụ AI hỗ trợ suy luận đa phương thức trong quy trình code.", descEn: "An AI aid for multimodal reasoning inside my coding workflow." },
 ] as const;
 
 // Tỉ trọng sử dụng kỹ năng (biểu đồ tròn) — gom theo nhóm, tổng = 100.
@@ -291,6 +292,7 @@ function ExtrudedText({
 }
 
 export function SkillsSection() {
+  const { t, pick } = useLang();
   const [mounted, setMounted]         = useState(false);
   const [typedText, setTypedText]     = useState("");
   const [infoTitle, setInfoTitle]     = useState("");
@@ -460,7 +462,7 @@ export function SkillsSection() {
         const key = pendingKeyRef.current;
         if (key) {
           setInfoTitle(key.title);
-          setInfoDesc(key.desc);
+          setInfoDesc(pick(key, "desc"));
           setActiveKey(key);
         }
         setPhase("entering");
@@ -481,7 +483,7 @@ export function SkillsSection() {
     // Nếu là lần hiển thị đầu tiên, bỏ qua slide-out, vào thẳng entering
     if (!infoTitle) {
       setInfoTitle(key.title);
-      setInfoDesc(key.desc);
+      setInfoDesc(pick(key, "desc"));
       setActiveKey(key);
       setPhase("entering");
     } else {

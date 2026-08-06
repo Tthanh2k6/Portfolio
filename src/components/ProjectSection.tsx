@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { NavBar } from "./NavBar";
+import { useLang } from "@/lib/i18n";
 
 // Tài khoản GitHub dùng để lấy danh sách dự án
 const GITHUB_USER = "Tthanh2k6";
@@ -44,51 +45,82 @@ const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
 const REPO_META: Record<string, any> = {
   DiemDanhQR: {
     desc: "Điểm danh bằng cách quét mã QR trên điện thoại, tên người có mặt tự chạy thẳng vào Google Sheets.",
+    descEn:
+      "Take attendance by scanning a QR code on your phone — names land straight in a Google Sheet.",
     detail:
       "Công cụ điểm danh bằng mã QR cho một cộng đồng nhỏ. Mở trên điện thoại, bật camera quét mã của từng thành viên là tự động ghi vào Google Sheets qua Google Apps Script — không dựng máy chủ, không cài app từ store.\n\nCó hai chế độ quét: liên tục (không cần xác nhận) và từng người (chờ xác nhận). Quét xong phát âm thanh và đọc tên tiếng Việt để người cầm máy biết đã nhận, kèm lịch sử quét ngay trên màn hình. Chọn được ống kính cụ thể (góc rộng, camera trước/sau) vì camera mặc định trên nhiều máy lấy nét kém ở cự ly gần.\n\nCài lên màn hình chính như app thường nhờ PWA, có chế độ sáng/tối.",
+    detailEn:
+      "A QR attendance tool built for a small community. Open it on a phone, point the camera at each member's code, and the entry is written to Google Sheets through Google Apps Script — no server to run, no app to install from a store.\n\nTwo scanning modes: continuous (no confirmation) and one-at-a-time (waits for confirmation). Each successful scan plays a sound and reads the person's name aloud in Vietnamese so whoever is holding the phone knows it registered without looking, and recent scans stay listed on screen. You can pick a specific lens (wide, front, rear) because the default camera on many phones focuses poorly at close range.\n\nInstalls to the home screen like a normal app via PWA, with light and dark themes.",
     tech: ["JavaScript", "PWA", "Google Apps Script", "Google Sheets"],
     role: "JavaScript Developer",
+    roleEn: "JavaScript Developer",
     client: "Dự án cá nhân",
+    clientEn: "Personal project",
   },
   AI_Lab: {
     desc: "8 trò chơi để xem máy tính tự học chơi từ con số 0 — từ Flappy Bird tới cờ caro và đá bóng 3D.",
+    descEn:
+      "Eight games where you watch a computer teach itself to play from scratch — Flappy Bird to 3D football.",
+    detailEn:
+      "AI Game Arena — a desktop app (Electron) that visualises how AI algorithms, classic and modern, learn and make decisions. You tune the training parameters, network shape or heuristic weights yourself, then watch an AI learn from nothing, or pit two of them against each other.\n\nEight environments, each built on a different family of algorithms:\n• Flappy Bird and AI Racing — neural networks evolved by a genetic algorithm; the cars sense their surroundings with raycasts, and a built-in track builder lets you draw your own circuit.\n• Maze robot — Q-Learning, with a heatmap of the Q-table brightening as the agent learns.\n• 2048 — Expectimax search with heuristics for smoothness, monotonicity and keeping the largest tile cornered.\n• Connect Four and 20×20 Gomoku — Minimax with alpha-beta pruning and a Zobrist-hashed transposition table, plus an MCTS/UCT implementation so the two can be compared head to head.\n• 3D Soccer and 3D Tag — competitive co-evolution with 8-direction raycast sensors and real ball physics.",
     detail:
       "AI Game Arena — ứng dụng desktop (Electron) trực quan hoá cách các giải thuật AI từ cổ điển tới hiện đại học hỏi và ra quyết định. Người dùng tự chỉnh tham số huấn luyện, cấu trúc mạng nơ-ron hoặc hàm heuristic rồi xem AI tự học từ con số 0, hoặc cho hai AI đấu nhau.\n\nTám môi trường, mỗi cái một họ giải thuật khác nhau:\n• Flappy Bird và Đua xe — mạng nơ-ron kết hợp tiến hoá di truyền, xe dùng cảm biến raycast; có sẵn trình tự vẽ đường đua.\n• Mê cung — Q-Learning, hiển thị bản đồ nhiệt của Q-Table sáng dần theo thời gian học.\n• 2048 — tìm kiếm Expectimax với heuristic độ mượt, tính đơn điệu, ô lớn ở góc.\n• Connect Four và Cờ Caro 20×20 — Minimax kèm cắt tỉa Alpha-Beta, bảng chuyển vị mã hoá Zobrist, và một bản MCTS/UCT để so sánh hiệu năng trực tiếp.\n• Bóng đá 3D và Đuổi bắt 3D — tiến hoá song song đối kháng, vật lý nảy sân và raycast 8 hướng.",
     tech: ["TypeScript", "Electron", "Three.js", "Minimax", "MCTS", "Q-Learning"],
     role: "TypeScript Developer",
+    roleEn: "TypeScript Developer",
     client: "Dự án cá nhân",
+    clientEn: "Personal project",
   },
   KNN: {
     category: "MACHINE LEARNING",
     shortName: "KNN ELBOW",
     title: "KNN | Elbow Method",
     desc: "Bài tập nhóm về cách máy tự chia dữ liệu thành từng nhóm. Tôi làm nhóm trưởng, quản lý code cho 9 người.",
+    descEn:
+      "A team assignment on how machines group data on their own. I led the team and owned the codebase for nine people.",
+    detailEn:
+      "A university AI course team project: analysing how the number of clusters K affects a clustering algorithm, and implementing the Elbow method to find the optimal K.\n\nMy role was project manager — splitting the work into nine assignments across nine members, owning the whole codebase on GitHub, and personally implementing the K-Means algorithm plus the analysis of how stable the elbow point is.\n\nThe work covers data cleaning and normalisation, computing WCSS/inertia across a range of K values, plotting to locate the elbow, and cross-checking the conclusion against Silhouette scores.",
     detail:
       "Bài tập nhóm môn Trí tuệ Nhân tạo: phân tích ảnh hưởng của số cụm K tới thuật toán phân cụm và triển khai phương pháp Elbow để tìm K tối ưu.\n\nVai trò của tôi là Project Manager: chia 9 đầu việc cho 9 thành viên, quản lý toàn bộ source code trên GitHub, và trực tiếp lập trình thuật toán K-Means cùng phần kiểm tra biến động của điểm gãy Elbow.\n\nNội dung gồm tiền xử lý và chuẩn hoá dữ liệu, tính WCSS/Inertia cho từng giá trị K, vẽ biểu đồ tìm điểm khuỷu tay, và đối chiếu chéo với Silhouette Score để xác nhận kết luận.",
     tech: ["Python", "scikit-learn", "pandas", "Matplotlib", "Jupyter"],
     role: "Project Manager",
+    roleEn: "Project Manager",
     client: "Dự án học thuật (nhóm 9 người)",
+    clientEn: "Academic project (team of 9)",
     yearRole: "2026 • Project Manager",
   },
   Portfolio: {
     desc: "Chính là trang web bạn đang xem: hiệu ứng 3D, bàn phím tương tác và các trang giới thiệu bản thân.",
+    descEn:
+      "The site you're looking at right now: 3D effects, an interactive keyboard and the pages introducing me.",
+    detailEn:
+      "My personal portfolio — the site you are currently browsing.\n\nThe home page is an isometric neon grid built with Three.js (WebGL + UnrealBloom), with a custom liquid-drop cursor. The Skills page has an interactive 3D mechanical keyboard: hovering a key pops the matching slice out of the skills donut chart. The Project page is an infinite film-strip carousel that autoplays and opens a detail view on click.\n\nBuilt on TanStack Start (SSR) + React 19 + TailwindCSS v4, deployed to Vercel. Dynamic content — project list, skills, 3D colours — is editable through a client-side admin page without rebuilding.",
     detail:
       "Trang portfolio cá nhân, cũng chính là website bạn đang xem.\n\nTrang chủ là lưới neon isometric dựng bằng Three.js (WebGL + UnrealBloom), con trỏ chuột tuỳ biến kiểu giọt nước. Trang Skills có bàn phím cơ 3D tương tác: rê chuột lên từng phím thì biểu đồ tròn kỹ năng bật lát tương ứng ra ngoài. Trang Project là băng phim cuộn vô hạn, tự chạy, bấm vào xem chi tiết.\n\nDựng trên TanStack Start (SSR) + React 19 + TailwindCSS v4, deploy lên Vercel. Nội dung động (danh sách dự án, kỹ năng, màu sắc 3D) chỉnh được qua trang admin phía client mà không cần build lại.",
     tech: ["React 19", "TypeScript", "TanStack Start", "Three.js", "TailwindCSS", "Vercel"],
     role: "Frontend Developer",
+    roleEn: "Frontend Developer",
     client: "Dự án cá nhân",
+    clientEn: "Personal project",
   },
   // AI-ML nằm ở repo GitHub tên "H-c-AI-ML".
   "H-c-AI-ML": {
     category: "MACHINE LEARNING",
     shortName: "AI / ML",
     title: "AI-ML | Học Máy & Học Sâu",
+    titleEn: "AI-ML | Machine & Deep Learning",
     desc: "Bộ bài tập tôi tự làm để học về trí tuệ nhân tạo, viết tay từng bước thay vì gọi thư viện cho xong.",
+    descEn:
+      "Exercises I worked through to learn AI, written out step by step instead of just calling a library.",
+    detailEn:
+      "A collection of self-study lessons and exercises in machine learning and deep learning. Each file is a standalone topic that runs on its own.\n\nThe fundamentals (scikit-learn): data cleaning and preprocessing, feature scaling, KNN, decision trees, multiclass classification, confusion matrices and evaluation metrics, cross-validation, combining steps with Pipeline, and TF-IDF text vectorisation with Naive Bayes.\n\nThe deep learning half (TensorFlow/Keras): multilayer perceptrons, convolutional networks, and handwritten digit classification on MNIST.\n\nWritten out by hand rather than calling a library and moving on, so the maths behind each algorithm actually sticks.",
     detail:
       "Tổng hợp bài học và bài tập tự thực hành về Machine Learning và Deep Learning, mỗi file là một chủ đề độc lập chạy được riêng.\n\nPhần cơ bản (scikit-learn): làm sạch và tiền xử lý dữ liệu, chuẩn hoá đặc trưng, KNN, Decision Tree, phân loại nhiều lớp, ma trận nhầm lẫn và các chỉ số đánh giá, kiểm định chéo, gộp bằng Pipeline, vector hoá văn bản TF-IDF kèm Naive Bayes.\n\nPhần học sâu (TensorFlow/Keras): mạng perceptron nhiều lớp, mạng nơ-ron tích chập, và phân loại chữ số viết tay MNIST.\n\nViết tay từng bước thay vì gọi thư viện cho xong, để nắm rõ toán học phía sau mỗi thuật toán.",
     tech: ["Python", "scikit-learn", "TensorFlow", "Keras", "NumPy", "pandas"],
     role: "ML / AI Developer",
+    roleEn: "ML / AI Developer",
     client: "Dự án tự học",
+    clientEn: "Self-study project",
     yearRole: "2026 • Machine Learning",
   },
 };
@@ -103,31 +135,46 @@ const privateProjects = [
     category: "REACT NATIVE • PHP API",
     shortName: "MADALENA APP",
     title: "Madalena | App khách hàng thân thiết",
+    titleEn: "Madalena | Customer Loyalty App",
     desc: "App tích điểm cho khách của một chuỗi mỹ phẩm, đã có trên Google Play. Tôi làm một mình từ app tới máy chủ.",
+    descEn:
+      "A loyalty app for a cosmetics chain, live on Google Play. I built all of it alone, app through server.",
+    detailEn:
+      "A customer loyalty app for the Madalena cosmetics chain, published on Google Play and serving real customers. I built the whole thing on my own: the mobile app, the REST API, the database, and the operational tooling for staff.\n\nFor customers: membership tiers assigned automatically from accumulated spend (GOLDEN → VIP → VIP PRO → VIP PROMAX → VIP BLACK), a QR code staff scan at the counter to identify them, a screen to look up their spend year by year, and a benefits table per tier.\n\nFlash sales run inside a window an admin schedules ahead of time. The remaining time is computed by the server rather than trusting the device clock, so changing your phone's time gets you nowhere. Customers are reminded three times — when it's scheduled, 15 minutes before, and at the opening bell — each with an idempotency flag so nobody gets a duplicate.\n\nBirthday campaigns go out automatically on a cron job. On security: JWT HS256 authentication, admin rights resolved from the database instead of trusting the token, and login brute-force protection keyed on IP plus phone number.\n\nThe backend originally ran on Node/Express hosted on Render with an Aiven database. I ported all of it to PHP so it shares infrastructure with the company website, removing the recurring server bill entirely. It ships with Windows tooling to import monthly revenue and export the customer list without needing SSH access to the host.",
     detail:
       "Ứng dụng khách hàng thân thiết cho chuỗi mỹ phẩm Madalena, đã phát hành trên Google Play và đang phục vụ khách thật. Tôi làm một mình toàn bộ: app di động, REST API, cơ sở dữ liệu và các công cụ vận hành cho quản trị viên.\n\nPhía khách hàng: hạng thành viên tự xếp theo doanh thu tích luỹ (GOLDEN → VIP → VIP PRO → VIP PROMAX → VIP BLACK), mã QR định danh để nhân viên quét tại quầy, màn hình tra cứu chi tiêu từng năm, và bảng đặc quyền riêng cho mỗi hạng.\n\nFlash sale chạy theo khung giờ do quản trị viên hẹn trước. Thời gian còn lại do máy chủ tính chứ không tin đồng hồ máy khách, nên đổi giờ điện thoại cũng không lách được. Khách được nhắc ba lần: lúc đặt lịch, trước 15 phút và đúng giờ mở — mỗi mốc có cờ chống gửi trùng.\n\nChiến dịch chúc mừng sinh nhật gửi tự động bằng cron. Bảo mật: xác thực JWT HS256, quyền admin kiểm tra thẳng từ cơ sở dữ liệu thay vì tin token, và chặn brute-force đăng nhập theo cặp IP + số điện thoại.\n\nBackend ban đầu chạy Node/Express trên Render kèm database Aiven. Tôi tự port toàn bộ sang PHP để gộp chung hạ tầng với website công ty, cắt hẳn chi phí máy chủ hằng tháng. Kèm theo là bộ công cụ chạy từ máy Windows để nhập doanh thu hàng tháng và xuất danh sách khách, không cần SSH vào hosting.",
     tech: ["React Native", "Expo", "TypeScript", "PHP", "MySQL", "JWT", "Expo Push"],
     image: projectImage("MadalenaApp"),
     role: "Full-stack Developer (một mình toàn bộ)",
+    roleEn: "Full-stack Developer (sole developer)",
     client: "Madalena — dự án công ty",
+    clientEn: "Madalena — commercial project",
     year: "2026",
     yearRole: "2026 • React Native & PHP",
     link: undefined as string | undefined,
     demo: "https://play.google.com/store/apps/details?id=com.madalena.app",
     demoLabel: "Tải trên Google Play",
+    demoLabelEn: "Get it on Google Play",
   },
   {
     id: "MadalenaWeb",
     category: "PHP • WEB",
     shortName: "MADALENA WEB",
     title: "Madalena | Website thương mại điện tử",
+    titleEn: "Madalena | E-commerce Website",
     desc: "Website bán mỹ phẩm đang hoạt động thật. Tôi làm phần mã giảm giá, quản lý đơn hàng và tìm kiếm sản phẩm.",
+    descEn:
+      "A live cosmetics storefront. I built the discount-code system, order management and product search.",
+    detailEn:
+      "Madalena's online store — live, with real orders coming in daily. I joined when the site already existed, as a feature developer on the team. I did not build the whole site, but the areas below are core business functionality I owned.\n\nThe discount-code system, built from scratch: admins create codes, attach them to specific products, cap how many times each phone number may redeem one, and track storage and usage statistics per code. On the customer side, codes are entered at checkout.\n\nOrder management: customers review past orders and cancel their own, and payment details are remembered for next time. The shop gets an email on every new order, and all orders sync automatically into Google Sheets along with address, discount code and amount discounted — so the sales team follows everything in the spreadsheet they already live in, instead of logging into an admin panel.\n\nAlso: product search, an \"out of stock\" state that automatically pushes sold-out items to the bottom of listings, free-shipping tags, and a rework of how discounts are entered — the admin now types the final post-discount price and the system derives the percentage, rather than making them do the arithmetic.\n\nThe stack is the web agency's own PHP codebase (AltoRouter, PDO, cart, SEO, file caching, custom admin), so every feature meant reading and understanding existing code before adding to it.",
     detail:
       "Website bán hàng của Madalena, chạy thật và có khách đặt hàng mỗi ngày. Tôi vào dự án khi site đã tồn tại, với vai trò lập trình viên tính năng trong đội — không phải người dựng toàn bộ site, nhưng phần tôi làm là những mảng nghiệp vụ chính bên dưới.\n\nHệ thống mã giảm giá làm từ đầu: quản trị viên tạo mã, gắn mã vào từng sản phẩm, giới hạn số lần mỗi số điện thoại được dùng, lưu trữ và thống kê mức tiêu thụ của từng mã. Phía khách thì nhập mã ngay lúc thanh toán.\n\nQuản lý đơn hàng: khách xem lại đơn cũ và tự huỷ đơn, thông tin thanh toán được nhớ cho lần mua sau. Phía cửa hàng nhận email báo mỗi khi có đơn mới, và toàn bộ đơn tự đồng bộ sang Google Sheets kèm địa chỉ, mã giảm giá, mức giảm — nhờ vậy bộ phận bán hàng theo dõi ngay trên bảng tính quen thuộc thay vì phải vào trang quản trị.\n\nNgoài ra: tìm kiếm sản phẩm, trạng thái \"Tạm hết hàng\" kèm việc tự đẩy hàng hết xuống cuối danh sách, nhãn miễn phí vận chuyển, và sửa lại cách nhập giảm giá — quản trị viên nhập thẳng giá sau giảm rồi hệ thống tự tính ra phần trăm chiết khấu, thay vì phải tự nhẩm.\n\nNền tảng là PHP tự viết của đơn vị làm web (AltoRouter, PDO, giỏ hàng, SEO, cache file, trang quản trị riêng) nên phải đọc hiểu codebase có sẵn rồi mới chèn tính năng vào.",
     tech: ["PHP", "MySQL", "JavaScript", "Google Sheets API", "AltoRouter", "PDO"],
     image: projectImage("MadalenaWeb"),
     role: "PHP Developer (phát triển tính năng)",
+    roleEn: "PHP Developer (feature work)",
     client: "Madalena — dự án công ty",
+    clientEn: "Madalena — commercial project",
     year: "2026",
     yearRole: "2026 • PHP",
     // Mã nguồn là tài sản của công ty nên không công khai, nhưng site chạy thật thì
@@ -139,14 +186,23 @@ const privateProjects = [
     id: "LichIUH",
     category: "KOTLIN • ANDROID",
     shortName: "LỊCH IUH",
+    // Bản tiếng Anh bỏ dấu cho khách nước ngoài đọc được, khớp với titleEn.
+    shortNameEn: "LICH IUH",
     title: "Lịch IUH | Widget lịch học",
+    titleEn: "Lich IUH | Class Schedule Widget",
     desc: "Xem lịch học ngay ngoài màn hình điện thoại, không cần mở app — làm cho sinh viên trường tôi.",
+    descEn:
+      "See your class schedule right on the phone's home screen without opening an app — built for my university.",
+    detailEn:
+      "An Android app for students at Industrial University of Ho Chi Minh City. It exists because the official university app makes you open it and log in before you can see anything, when all a student actually wants is a glance to know which room the next class is in.\n\nThree widgets sit on the home screen: the next 7 days grouped by day, today's classes, and a countdown to exams. Each entry shows the period, subject and room, marks online sessions explicitly, flags make-up classes, and hides suspended ones.\n\nData comes from the university's official API via OAuth2 login, syncing in the background twice a day (6am and 6pm). Results are cached, so the widget is populated the instant the screen lights up rather than waiting on the network. The password is stored encrypted with EncryptedSharedPreferences because the university's tokens expire after 30 minutes and the app has to silently re-authenticate.\n\nThe university's server omits its intermediate certificate, so Android refuses the connection outright. I embedded that certificate in the app and declared it in the network security config, rather than disabling certificate validation — the lazy fix, and one that would leave the app wide open to man-in-the-middle attacks.",
     detail:
       "App Android cho sinh viên Đại học Công nghiệp TP.HCM. Ra đời vì app chính thức của trường bắt phải mở app rồi đăng nhập mới xem được lịch, trong khi thứ sinh viên cần chỉ là liếc một cái biết tiết sau học phòng nào.\n\nBa widget đặt thẳng ngoài màn hình chính: lịch 7 ngày tới gom theo từng ngày, lịch học hôm nay, và đếm ngược tới ngày thi. Mỗi buổi hiện tiết, tên môn và phòng, ghi rõ \"Trực tuyến\" nếu học online, đánh dấu buổi dạy bù và ẩn buổi tạm ngưng.\n\nDữ liệu lấy qua API chính thức của trường bằng đăng nhập OAuth2, tự đồng bộ nền hai lần mỗi ngày (6h sáng và 6h tối). Kết quả được lưu lại nên mở màn hình là widget hiện ngay, không phải chờ mạng. Mật khẩu lưu mã hoá bằng EncryptedSharedPreferences vì token của trường chỉ sống 30 phút, phải tự đăng nhập lại ngầm.\n\nMáy chủ của trường gửi thiếu chứng chỉ trung gian nên Android từ chối kết nối. Tôi nhúng thẳng chứng chỉ đó vào app và khai báo trong network security config để đi qua được, thay vì tắt kiểm tra chứng chỉ — cách làm tắt đó dễ nhưng mở toang cửa cho tấn công chen giữa.",
     tech: ["Kotlin", "Jetpack Glance", "WorkManager", "OAuth2", "EncryptedSharedPreferences"],
     image: projectImage("LichIUH"),
     role: "Android Developer",
+    roleEn: "Android Developer",
     client: "Sản phẩm cá nhân — người dùng thật",
+    clientEn: "Personal product — real users",
     year: "2026",
     yearRole: "2026 • Kotlin & Android",
     link: undefined as string | undefined,
@@ -156,13 +212,20 @@ const privateProjects = [
     category: "PYTHON & AI",
     shortName: "WORKFLOW AI",
     title: "WorkFlow AI | Sản xuất video AI",
+    titleEn: "WorkFlow AI | AI Video Production",
     desc: "Công cụ làm video bằng AI: nhập ý tưởng, máy tự viết kịch bản, tạo hình ảnh rồi ghép thành phim.",
+    descEn:
+      "An AI video tool: type an idea, it writes the script, generates the visuals and cuts the film together.",
+    detailEn:
+      "A tool that produces AI video through one closed pipeline: enter an idea → the AI writes a script → it's split into scenes → images and video are generated per scene → everything is assembled into a finished film with ffmpeg. The point is to do the whole job in one place instead of hopping between five or six websites.\n\nThe hardest part is generation: the target platform exposes no public API, so the tool attaches to a real Chrome window over the remote debugging protocol (CDP) and drives it with Playwright using the user's own account. Because that web UI can change at any time, every step has a manual paste fallback so the tool degrades instead of dying whenever the provider ships an update.\n\nScript generation offers four modes to suit different budgets: a paid API, browser automation against an existing account, manual paste, or buying credits through a dedicated licence server.\n\nThat licence server is the infrastructure for selling the tool: API keys and prompt templates live on the server rather than in the customer's copy, and customers top up credits with a code. Each AI request costs exactly one credit regardless of how expensive the model is, and if the AI returns malformed output the credit is refunded automatically.",
     detail:
       "Công cụ làm video bằng AI theo một dây chuyền khép kín: nhập ý tưởng → AI viết kịch bản → chia thành từng cảnh → sinh ảnh và video cho mỗi cảnh → ghép lại thành phim hoàn chỉnh bằng ffmpeg. Mục tiêu là làm trọn quy trình trong một tool, không phải nhảy qua lại giữa năm sáu trang web.\n\nKhó nhất là khâu sinh hình ảnh: nền tảng đích không mở API công khai, nên tool gắn vào một cửa sổ Chrome thật qua giao thức gỡ lỗi từ xa (CDP) và điều khiển bằng Playwright, dùng chính tài khoản của người dùng. Vì giao diện web có thể đổi bất cứ lúc nào, mọi bước đều có phương án dự phòng dán tay để tool không chết cứng khi nhà cung cấp cập nhật.\n\nPhần hỏi AI cho kịch bản có bốn chế độ để người dùng chọn theo túi tiền: gọi API trả phí, điều khiển trình duyệt để dùng tài khoản sẵn có, dán tay, hoặc mua credit qua license server riêng.\n\nLicense server đó là phần hạ tầng để bán tool: khoá API và mẫu câu lệnh nằm trên máy chủ chứ không nằm trong bản giao cho khách, khách nạp credit bằng mã. Mỗi lần hỏi AI trừ đúng một lượt bất kể model đắt hay rẻ, và nếu AI trả về sai định dạng thì tự hoàn lại credit.",
     tech: ["Python", "FastAPI", "Playwright", "CDP", "ffmpeg", "SQLite"],
     image: projectImage("WorkFlowAI"),
     role: "Python / AI Developer",
+    roleEn: "Python / AI Developer",
     client: "Sản phẩm cá nhân (private)",
+    clientEn: "Personal product (private)",
     year: "2026",
     yearRole: "2026 • Python & AI",
     link: undefined as string | undefined,
@@ -172,13 +235,20 @@ const privateProjects = [
     category: "ANDROID • REVERSE ENGINEERING",
     shortName: "NOTE MOD",
     title: "Ghi chú Mod | Dịch ngược app Xiaomi",
+    titleEn: "Notes Mod | Xiaomi App Reverse Engineering",
     desc: "Thêm tính năng vào app Ghi chú có sẵn của điện thoại Xiaomi mà không làm mất chức năng cũ nào.",
+    descEn:
+      "Adding features to the Notes app that ships on Xiaomi phones, without losing a single original function.",
+    detailEn:
+      "Xiaomi's Notes app was missing a few things I wanted, but rewriting it from scratch would have cost the features only the manufacturer can ship: freehand drawing, stylus input, mind maps — all running on proprietary native libraries. So instead of rewriting, I modified the original app directly.\n\nThe process: decompile the app into 15,386 files, write the new features in Kotlin, compile them down to smali and inject them at the right call sites, then re-sign and install. I also renamed the package (13 authorities, 88 URIs) so the modified build installs alongside the original — if it breaks, there's a way back.\n\nWhat's in so far: a Schedule screen laid out as a week calendar (pinch to zoom, a red line marking the current time, repeating events and advance reminders), sync through Supabase in place of Mi Cloud, and a Gemini assistant.\n\nThe two things that ate the most time: the decompiler can't read resources until you load the miui.system framework pulled off a real device — I wrongly concluded this route was a dead end because of it; and since Xiaomi ships no API jar, I had to build a stub module declaring fake classes just to compile against, where signatures must match exactly down to the return type.\n\nThe trade-off I had to accept: the modified build lacks 29 signature-level permissions, so it loses Mi Cloud sync and fingerprint unlock for private notes — unfixable without the manufacturer's signing key.",
     detail:
       "App Ghi chú của Xiaomi thiếu vài thứ tôi cần, nhưng viết lại từ đầu thì mất những tính năng chỉ hãng mới làm được: vẽ tay, viết bút cảm ứng, bản đồ tư duy — chúng chạy trên thư viện native riêng. Nên thay vì viết lại, tôi sửa thẳng vào app gốc.\n\nQuy trình: dịch ngược app ra 15.386 file, viết tính năng mới bằng Kotlin, biên dịch xuống smali rồi tiêm vào đúng chỗ, ký lại và cài. Đổi luôn tên gói (13 authority, 88 URI) để bản sửa cài song song bản gốc, lỡ hỏng vẫn còn đường lùi.\n\nĐã thêm được: màn Lịch trình dạng lịch tuần (chụm ngón phóng to, vạch đỏ chỉ giờ hiện tại, sự kiện lặp và nhắc trước), đồng bộ qua Supabase thay cho Mi Cloud, và trợ lý Gemini.\n\nHai chỗ tốn nhiều thời gian nhất: công cụ dịch ngược không đọc nổi tài nguyên nếu chưa nạp khung miui.system lấy từ máy thật — chỗ này tôi từng kết luận nhầm là không làm được; và vì Xiaomi không phát hành thư viện API, tôi phải dựng một module khai lớp giả để biên dịch được, chữ ký phải khớp tuyệt đối tới từng kiểu trả về.\n\nĐánh đổi phải chấp nhận: bản sửa thiếu 29 quyền cấp chữ ký nên mất đồng bộ Mi Cloud và mở khoá ghi chú riêng tư bằng vân tay — không sửa được vì cần khoá ký của hãng.",
     tech: ["Kotlin", "smali", "apktool", "Supabase", "Gemini API", "Android"],
     image: projectImage("NoteMod"),
     role: "Android / Reverse Engineering",
+    roleEn: "Android / Reverse Engineering",
     client: "Sản phẩm cá nhân (private)",
+    clientEn: "Personal product (private)",
     year: "2026",
     yearRole: "2026 • Reverse Engineering",
     link: undefined as string | undefined,
@@ -188,13 +258,20 @@ const privateProjects = [
     category: "PYTHON • AUTOMATION",
     shortName: "AUTOTOOL",
     title: "AutoTool | Tự động hoá web",
+    titleEn: "AutoTool | Web Automation",
     desc: "Phần mềm máy tính làm thay việc nhập liệu tay: sửa giá hàng loạt và xuất báo cáo Excel.",
+    descEn:
+      "A desktop tool that does the manual data entry for you: bulk price edits and Excel reports.",
+    detailEn:
+      "An internal tool built to kill one repetitive manual chore: every promotion meant opening the admin panel and editing prices one product at a time, hundreds of times over. The tool logs in on its own and does the whole batch.\n\nYou tick the products, then choose how to adjust them: enter a discount percentage applied across the batch, or set one flat price for everything. Input is validated on the spot (a discount must be a whole number 0–100, leading zeros are normalised away) so a slip of the finger can't push a wrong price live.\n\nBeyond pricing, it extracts orders with delivery addresses and exports them to Excel for reconciliation.\n\nAll heavy work runs on a background thread so the window never freezes mid-task — the classic failure of a hastily written Tkinter app, and the reason users assume it has crashed and kill it halfway through.",
     detail:
       "Công cụ nội bộ sinh ra để bỏ một việc thủ công lặp đi lặp lại: mỗi đợt khuyến mãi phải mở trang quản trị, sửa giá từng sản phẩm một, hàng trăm lần. Tool tự đăng nhập rồi làm hàng loạt.\n\nNgười dùng tick chọn sản phẩm rồi chọn cách chỉnh: nhập phần trăm chiết khấu áp cho cả loạt, hoặc đặt đồng giá một mức cho tất cả. Có kiểm tra dữ liệu nhập ngay tại chỗ (chiết khấu phải là số 0–100, tự bỏ số 0 thừa) để không lỡ tay đẩy giá sai lên sàn.\n\nNgoài chỉnh giá còn trích xuất được đơn hàng kèm địa chỉ và xuất ra Excel để đối chiếu.\n\nToàn bộ tác vụ nặng chạy ở luồng nền nên cửa sổ không bị treo trắng khi đang xử lý — đây là lỗi kinh điển của ứng dụng Tkinter viết vội, và cũng là lý do người dùng hay tưởng phần mềm hỏng rồi tắt ngang giữa chừng.",
     tech: ["Python", "Tkinter", "Selenium", "openpyxl", "threading"],
     image: projectImage("AutoTool"),
     role: "Python Developer",
+    roleEn: "Python Developer",
     client: "Công cụ nội bộ (private)",
+    clientEn: "Internal tool (private)",
     year: "2026",
     yearRole: "2026 • Python",
     link: undefined as string | undefined,
@@ -266,9 +343,16 @@ export const projects = [...privateProjects, ...publicProjects];
 //  - không có link  -> dự án private, nút trơ (không bấm được)
 //  - link GitHub    -> mở mã nguồn
 //  - link khác      -> website chạy thật của khách hàng
-function primaryLinkLabel(link?: string) {
-  if (!link) return "Private • mã nguồn không công khai";
-  return link.includes("github.com") ? "Xem trên GitHub" : "Xem website";
+function primaryLinkLabel(link: string | undefined, lang: "vi" | "en") {
+  if (!link) {
+    return lang === "en"
+      ? "Private • source not public"
+      : "Private • mã nguồn không công khai";
+  }
+  if (link.includes("github.com")) {
+    return lang === "en" ? "View on GitHub" : "Xem trên GitHub";
+  }
+  return lang === "en" ? "Visit website" : "Xem website";
 }
 
 // Modal "Xem chi tiết": card chỉ đủ chỗ cho 3 dòng mô tả nên phần viết sâu cho nhà
@@ -280,6 +364,8 @@ function ProjectDetailModal({
   proj: any;
   onClose: () => void;
 }) {
+  const { lang, t, pick } = useLang();
+
   // Esc để đóng + khoá cuộn nền, tránh cuộn xuyên qua modal xuống carousel bên dưới
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -295,7 +381,7 @@ function ProjectDetailModal({
   }, [onClose]);
 
   // detail có thể xuống dòng bằng \n\n -> tách thành từng đoạn cho dễ đọc
-  const paragraphs = String(proj.detail || proj.desc || "")
+  const paragraphs = String(pick(proj, "detail") || pick(proj, "desc") || "")
     .split("\n")
     .map((s) => s.trim())
     .filter(Boolean);
@@ -310,14 +396,18 @@ function ProjectDetailModal({
     >
       {/* Chặn nổi bọt để bấm bên trong panel không đóng modal */}
       <div className="pd-panel" onClick={(e) => e.stopPropagation()}>
-        <button className="pd-close" onClick={onClose} aria-label="Đóng">
+        <button
+          className="pd-close"
+          onClick={onClose}
+          aria-label={t("Đóng", "Close")}
+        >
           ✕
         </button>
 
         <div className="pd-banner">
           <img
             src={proj.image}
-            alt={proj.title}
+            alt={pick(proj, "title")}
             onError={(e) => {
               const t = e.currentTarget;
               t.src = `https://placehold.co/1440x880/111219/ffffff?text=${encodeURIComponent(
@@ -329,19 +419,19 @@ function ProjectDetailModal({
 
         <div className="pd-body">
           <span className="pd-category">{proj.category}</span>
-          <h2 className="pd-title">{proj.title}</h2>
+          <h2 className="pd-title">{pick(proj, "title")}</h2>
 
           <div className="pd-meta">
             <div>
-              <span>Vai trò</span>
-              <strong>{proj.role}</strong>
+              <span>{t("Vai trò", "Role")}</span>
+              <strong>{pick(proj, "role")}</strong>
             </div>
             <div>
-              <span>Bối cảnh</span>
-              <strong>{proj.client}</strong>
+              <span>{t("Bối cảnh", "Context")}</span>
+              <strong>{pick(proj, "client")}</strong>
             </div>
             <div>
-              <span>Năm</span>
+              <span>{t("Năm", "Year")}</span>
               <strong>{proj.year}</strong>
             </div>
           </div>
@@ -368,7 +458,7 @@ function ProjectDetailModal({
                 rel="noopener noreferrer"
                 className="pd-btn pd-btn-primary"
               >
-                {proj.demoLabel || "Xem bản chạy thật"}
+                {pick(proj, "demoLabel") || t("Xem bản chạy thật", "View it live")}
               </a>
             ) : null}
             {proj.link ? (
@@ -378,11 +468,11 @@ function ProjectDetailModal({
                 rel="noopener noreferrer"
                 className="pd-btn"
               >
-                {primaryLinkLabel(proj.link)}
+                {primaryLinkLabel(proj.link, lang)}
               </a>
             ) : (
               <span className="pd-btn pd-btn-private">
-                {primaryLinkLabel(undefined)}
+                {primaryLinkLabel(undefined, lang)}
               </span>
             )}
           </div>
@@ -416,6 +506,7 @@ function mapRepoToProject(repo: any) {
 }
 
 export function ProjectSection() {
+  const { t, pick } = useLang();
   const [projectList, setProjectList] = useState<any[]>(projects);
   const [activeIndex, setActiveIndex] = useState(12);
   const [translateX, setTranslateX] = useState(0);
@@ -1443,7 +1534,7 @@ export function ProjectSection() {
                   {/* Thông tin thu gọn */}
                   <div className="info-collapsed">
                     <span className="collapsed-num">{proj.category}</span>
-                    <h3 className="collapsed-title">{proj.shortName}</h3>
+                    <h3 className="collapsed-title">{pick(proj, "shortName")}</h3>
                     <span className="collapsed-preview-link">
                       {proj.yearRole}
                     </span>
@@ -1451,16 +1542,16 @@ export function ProjectSection() {
 
                   {/* Thông tin mở rộng */}
                   <div className="info-expanded">
-                    <h2 className="expanded-title">{proj.title}</h2>
-                    <p className="expanded-desc">{proj.desc}</p>
+                    <h2 className="expanded-title">{pick(proj, "title")}</h2>
+                    <p className="expanded-desc">{pick(proj, "desc")}</p>
                     <div className="expanded-details">
                       <div className="detail-row">
                         <span className="detail-label">Role:</span>
-                        <span>{proj.role}</span>
+                        <span>{pick(proj, "role")}</span>
                       </div>
                       <div className="detail-row">
                         <span className="detail-label">Client:</span>
-                        <span>{proj.client}</span>
+                        <span>{pick(proj, "client")}</span>
                       </div>
                       <div className="detail-row">
                         <span className="detail-label">Year:</span>
@@ -1480,13 +1571,13 @@ export function ProjectSection() {
                           setDetailProj(proj);
                         }}
                       >
-                        Xem chi tiết
+                        {t("Xem chi tiết", "View details")}
                       </button>
                       <span className="expanded-note">
                         {proj.link
-                          ? "Mã nguồn công khai"
-                          : "Mã nguồn không công khai"}
-                        {proj.demo ? " • có bản chạy thật" : ""}
+                          ? t("Mã nguồn công khai", "Source public")
+                          : t("Mã nguồn không công khai", "Source not public")}
+                        {proj.demo ? t(" • có bản chạy thật", " • live version") : ""}
                       </span>
                     </div>
                   </div>

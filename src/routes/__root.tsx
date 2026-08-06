@@ -13,6 +13,7 @@ import { AnimatePresence, motion } from "framer-motion";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { LangProvider } from "../lib/i18n";
 
 function NotFoundComponent() {
   return (
@@ -148,9 +149,11 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Bắt buộc: các route con render ở đây. Xóa <Outlet /> sẽ làm hỏng toàn bộ route con. */}
-      <Outlet />
-      <CustomCursor />
+      <LangProvider>
+        {/* Bắt buộc: các route con render ở đây. Xóa <Outlet /> sẽ làm hỏng toàn bộ route con. */}
+        <Outlet />
+        <CustomCursor />
+      </LangProvider>
     </QueryClientProvider>
   );
 }
