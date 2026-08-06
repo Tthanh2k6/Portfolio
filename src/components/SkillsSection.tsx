@@ -11,8 +11,19 @@ const navItems = [
   { label: "Contact", to: "/contact" },
 ];
 
-// Bàn phím kỹ năng — 24 phím = 6 hàng × 4 cột (lưới grid bên dưới là repeat(4, 78px),
-// nên giữ số phím chia hết cho 4 thì hàng cuối mới không bị lẻ).
+// Kích thước bàn phím kỹ năng. Để chung một chỗ vì lưới, ô phím và logo phải khớp nhau.
+//
+// 24 phím xếp 6 CỘT × 4 HÀNG. Trước đây là 4 cột × 6 hàng: bàn phím cao ~614px, cộng
+// với phần chữ phía trên thì tràn khỏi màn hình -> trang bị cuộn, mà hoạt ảnh trôi nổi
+// (keyboard-float) lại đẩy chiều cao lên xuống liên tục nên thanh cuộn hiện/ẩn theo,
+// gây giật. Xếp ngang lại còn ~346px nên vừa một màn hình, hết giật.
+// Đổi số cột thì nhớ giữ tổng số phím chia hết cho số cột để hàng cuối không lẻ.
+const KEYS_PER_ROW = 6;
+const KEY_SIZE     = 62;   // cạnh một phím (px)
+const KEY_GAP      = 14;   // khoảng cách giữa các phím (px)
+const KEY_ICON     = 36;   // cạnh logo trong phím (px)
+
+// Bàn phím kỹ năng — 24 phím.
 //
 // Thứ tự = thứ tự hiển thị: kỹ năng có sản phẩm thật chứng minh đứng trước.
 // Phím nào chưa có logo trong public/IMG thì để img: "" — keycap sẽ tự hiện chữ
@@ -649,10 +660,12 @@ export function SkillsSection() {
               backgroundColor: "rgba(26,27,35,0.85)",
               backdropFilter: "blur(4px)",
               border: "1px solid rgba(255,255,255,0.05)",
-              borderRadius: "24px", padding: "28px",
+              borderRadius: "24px", padding: "22px",
               transformStyle: "preserve-3d",
               boxShadow: "-1px 1px 0px #0e0f14, -2px 2px 0px #0e0f14, -3px 3px 0px #0e0f14, -15px 20px 35px rgba(0,0,0,0.9)",
-              display: "grid", gridTemplateColumns: "repeat(4, 78px)", gap: "18px",
+              display: "grid",
+              gridTemplateColumns: `repeat(${KEYS_PER_ROW}, ${KEY_SIZE}px)`,
+              gap: `${KEY_GAP}px`,
             }}
           >
             {keycaps.map((key) => (
@@ -662,8 +675,8 @@ export function SkillsSection() {
                 onMouseEnter={() => onKeycapEnter(key)}
                 onMouseLeave={onKeycapLeave}
                 style={{
-                  position: "relative", width: "78px", height: "78px",
-                  borderRadius: "16px",
+                  position: "relative", width: `${KEY_SIZE}px`, height: `${KEY_SIZE}px`,
+                  borderRadius: "13px",
                   backgroundColor: key.bg, color: key.color,
                   transformStyle: "preserve-3d",
                   boxShadow: `-1px 1px 0px ${key.shadow}, -2px 2px 0px ${key.shadow}, -3px 3px 1px ${key.shadow}, -4px 4px 1px rgba(0,0,0,0.3), -5px 5px 1px rgba(0,0,0,0.4), -8px 10px 15px rgba(0,0,0,0.5)`,
@@ -673,7 +686,7 @@ export function SkillsSection() {
                 {/* Hiệu ứng bóng loáng */}
                 <div style={{
                   position: "absolute", top: "2px", left: "2px", right: "2px", bottom: "2px",
-                  borderRadius: "11px",
+                  borderRadius: "9px",
                   background: "linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(0,0,0,0.15) 100%)",
                   pointerEvents: "none",
                 }} />
@@ -683,7 +696,7 @@ export function SkillsSection() {
                     alt={key.title}
                     draggable={false}
                     style={{
-                      width: "46px", height: "46px", objectFit: "contain",
+                      width: `${KEY_ICON}px`, height: `${KEY_ICON}px`, objectFit: "contain",
                       transform: "translateZ(3px)",
                       filter: "drop-shadow(-1px 2px 2px rgba(0,0,0,0.4))",
                       pointerEvents: "none",
@@ -698,11 +711,14 @@ export function SkillsSection() {
                   style={{
                     position: "absolute",
                     transform: "translateZ(3px)",
-                    fontSize: "0.78rem",
+                    // Phím nhỏ lại nên chữ dự phòng cũng phải nhỏ theo, không thì
+                    // các tên dài ("TensorFlow", "Playwright") tràn ra ngoài phím.
+                    fontSize: "0.58rem",
                     fontWeight: 800,
                     textAlign: "center",
-                    padding: "0 4px",
-                    lineHeight: 1.1,
+                    padding: "0 3px",
+                    lineHeight: 1.05,
+                    wordBreak: "break-word",
                     pointerEvents: "none",
                     opacity: key.img ? 0 : 1, // Chỉ hiển thị khi không có ảnh hoặc ảnh bị ẩn
                   }}

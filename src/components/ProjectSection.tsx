@@ -79,13 +79,15 @@ const privateProjects = [
     category: "REACT NATIVE • PHP API",
     shortName: "MADALENA APP",
     title: "Madalena | App khách hàng thân thiết",
-    desc: "App di động iOS + Android cho chuỗi Madalena: hạng thành viên theo doanh thu, mã QR định danh khách, flash sale theo khung giờ và chiến dịch chúc mừng sinh nhật tự động. Tự làm trọn gói cả app lẫn backend — React Native (Expo Router, TypeScript) + REST API PHP/MySQL với JWT HS256, phân quyền admin đọc thẳng từ DB, chặn brute-force đăng nhập, cron gửi push qua Expo. Đã tự port backend từ Node/Express (Render + Aiven) sang PHP gộp chung hạ tầng với website để cắt chi phí máy chủ.",
+    desc: "App di động ĐÃ PHÁT HÀNH trên Google Play cho chuỗi Madalena: hạng thành viên theo doanh thu, mã QR định danh khách, flash sale theo khung giờ và chiến dịch chúc mừng sinh nhật tự động. Tự làm trọn gói cả app lẫn backend — React Native (Expo Router, TypeScript) + REST API PHP/MySQL với JWT HS256, phân quyền admin đọc thẳng từ DB, chặn brute-force đăng nhập, cron gửi push qua Expo. Đã tự port backend từ Node/Express (Render + Aiven) sang PHP gộp chung hạ tầng với website để cắt chi phí máy chủ.",
     image: projectImage("MadalenaApp"),
     role: "Full-stack Developer (một mình toàn bộ)",
     client: "Madalena — dự án công ty",
     year: "2026",
     yearRole: "2026 • React Native & PHP",
     link: undefined as string | undefined,
+    demo: "https://play.google.com/store/apps/details?id=com.madalena.app",
+    demoLabel: "Tải trên Google Play",
   },
   {
     id: "MadalenaWeb",
@@ -1081,7 +1083,7 @@ export function ProjectSection() {
                           onMouseEnter={() => triggerCursorHover(true)}
                           onMouseLeave={() => triggerCursorHover(false)}
                         >
-                          Xem bản chạy thật
+                          {proj.demoLabel || "Xem bản chạy thật"}
                         </a>
                       ) : null}
                       <a

@@ -122,7 +122,7 @@ function RootShell({ children }: { children: ReactNode }) {
 // Cách xử lý: tăng CONTENT_VERSION mỗi khi đổi các mặc định trong code. Trình duyệt thấy
 // phiên bản lệch sẽ xoá đúng các khoá nội dung cũ để rơi về mặc định mới.
 // Các khoá KHÔNG liên quan tới nội dung (vd sổ lưu bút) được giữ nguyên.
-const CONTENT_VERSION = "2026-08-06-1";
+const CONTENT_VERSION = "2026-08-06-2";
 const VERSIONED_CONTENT_KEYS = [
   "project_list",
   "skills_keycaps",
