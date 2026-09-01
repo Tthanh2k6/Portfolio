@@ -25,6 +25,9 @@ const REPO_IMAGES: Record<string, string> = {
   MadalenaWeb: "/IMG/project-madalena-web.png",
   LichIUH: "/IMG/project-lichiuh.png",
   NoteMod: "/IMG/project-notemod.png",
+  ToolPhone: "/IMG/project-toolphone.png",
+  Sothuchi: "/IMG/project-sothuchi.png",
+  "NCKH-PeopleCount": "/IMG/project-peoplecount.png",
 };
 // Ảnh dùng cho card: ưu tiên ảnh chụp local, không có thì dùng ảnh OpenGraph của GitHub
 const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
@@ -231,6 +234,29 @@ const privateProjects = [
     link: undefined as string | undefined,
   },
   {
+    id: "ToolPhone",
+    category: "PYTHON • DATA",
+    shortName: "TOOLPHONE",
+    title: "ToolPhone | Phân tích giá điện thoại cũ",
+    titleEn: "ToolPhone | Used-Phone Price Analytics",
+    desc: "Tự dò giá điện thoại cũ trên các chợ mạng rồi chỉ ra máy nào đang rao rẻ hơn mặt bằng thị trường.",
+    descEn:
+      "Scans used-phone marketplaces and points out which listings are priced below the going rate.",
+    detailEn:
+      "A tool for buying and reselling used phones: it tracks 113 models (iPhone X→17, Galaxy S20→S26, Note, Z Fold/Flip, Xiaomi, Oppo, Vivo, Honor, Pixel) across four marketplaces, builds a reference price table, and surfaces the listings currently priced below the \"worth buying\" threshold.\n\nThe hard part was never the scraping — it was that the prices you collect are biased. A table built from listings that are still live suffers survivorship bias: the well-priced phones sell fast, so what remains is disproportionately overpriced. Measured across 27 groups with enough samples, listings that had disappeared were 17% cheaper than those still up. So the tool computes a separate \"clearing price\" from listings that have left the market and uses it as a ceiling, instead of trusting asking prices.\n\nFiltering out the noise takes several layers: shop listings, dealers posing as private sellers (caught by shop-style account names and by how many ads one account has live at once), red-flag listings (\"locked\", \"Face ID broken\", \"instalments\"), and boilerplate ads — the ones that just paste catalogue specs and say nothing about the actual handset.\n\nThe four sources are crawled in parallel, each on its own thread with its own rate limit, and never several pages of the same site at once, which is what gets your IP blocked. It ships with a local web UI (bound to 127.0.0.1 only) for the control panel, sortable and filterable reports, run history and CSV export. Raw responses are kept on disk so the analysis can be re-run offline.",
+    detail:
+      "Công cụ phục vụ việc mua đi bán lại điện thoại cũ: theo dõi 113 dòng máy (iPhone X→17, Galaxy S20→S26, Note, Z Fold/Flip, Xiaomi, Oppo, Vivo, Honor, Pixel) trên 4 chợ mạng, dựng bảng giá tham chiếu rồi chỉ ra tin nào đang rao dưới ngưỡng \"nên mua\".\n\nPhần khó chưa bao giờ là cào dữ liệu, mà là giá lấy về bị lệch. Bảng giá dựng từ tin còn đang rao mắc lỗi thiên lệch sống sót: tin giá tốt bị mua mất nhanh nên thứ còn lại toàn tin giá cao. Đo trên 27 nhóm đủ mẫu, tin đã biến mất rẻ hơn tin còn sống 17%. Vì vậy tool tính riêng \"giá thoát hàng\" từ những tin đã rời chợ và dùng nó làm trần, thay vì tin vào giá rao.\n\nLọc nhiễu phải làm nhiều tầng: loại tin shop, dân buôn đội lốt cá nhân (nhận ra qua tên tài khoản kiểu cửa hàng và số tin đang rao cùng lúc), tin có cờ đỏ (\"lock\", \"mất face\", \"trả góp\"), và tin chép mô tả rập khuôn — loại chỉ dán thông số catalogue chứ không nói gì về chính chiếc máy đó.\n\nBốn nguồn cào song song, mỗi nguồn một luồng và một hạn mức tốc độ riêng; không bao giờ cào nhiều trang cùng lúc trên cùng một site vì đó là cách nhanh nhất để bị chặn IP. Có giao diện web chạy nội bộ (chỉ mở được từ 127.0.0.1) gồm bảng điều khiển, báo cáo lọc và sắp xếp được, lịch sử các lần chạy, xuất CSV. Dữ liệu thô giữ lại trên đĩa để chạy lại phân tích mà không cần mạng.",
+    tech: ["Python", "Flask", "SQLite", "requests", "pytest", "YAML"],
+    image: projectImage("ToolPhone"),
+    role: "Python Developer",
+    roleEn: "Python Developer",
+    client: "Công cụ cá nhân (private)",
+    clientEn: "Personal tool (private)",
+    year: "2026",
+    yearRole: "2026 • Python & Data",
+    link: undefined as string | undefined,
+  },
+  {
     id: "NoteMod",
     category: "ANDROID • REVERSE ENGINEERING",
     shortName: "NOTE MOD",
@@ -254,6 +280,30 @@ const privateProjects = [
     link: undefined as string | undefined,
   },
   {
+    id: "Sothuchi",
+    category: "FLUTTER • ANDROID",
+    shortName: "SỔ THU CHI",
+    shortNameEn: "EXPENSE BOOK",
+    title: "Sổ thu chi | App quản lý chi tiêu",
+    titleEn: "Expense Book | Personal Finance App",
+    desc: "App ghi chi tiêu cho điện thoại: gõ \"ăn phở 45k\" hoặc chụp ảnh hoá đơn là tự vào sổ.",
+    descEn:
+      "A spending tracker for your phone: type \"lunch 45k\" or snap a receipt and it records itself.",
+    detailEn:
+      "A personal build derived from Cashew (GPL-3.0) by James Kokoska, reworked to revolve around wallet balance rather than budgets — which is how I actually use a spending app.\n\nThe largest piece of my own work is the Gemini-powered assistant: press and hold the plus button for half a second and it opens. It records transactions from plain sentences (\"lunch 45k\"), reads receipt photos, answers questions about your spending, and edits or deletes entries. Every action it proposes goes through a confirmation card before touching the database — an AI misreading an amount is routine, so it never writes directly.\n\nAlso added: a 4×4 home-screen widget (balance, 30-day income and expense, a line chart, and a pocket calculator for logging a transaction without opening the app), a Statistics tab merging budgets, spending charts, a pie chart and a heatmap into one place, and a Vietnamese category set with sub-categories. Removed: Google sign-in, Cashew Pro ads, and 47 unused languages.\n\nA constraint I had to live with: the project pins Flutter 3.19.6, because pubspec.lock pins intl 0.18.1 while newer SDKs' flutter_localizations demands intl 0.20.2, and six packages simply will not compile on Flutter 3.4x. Upgrading breaks the build, so I pinned the version and documented exactly why in the README instead of leaving the next person to rediscover it. 37 tests are kept passing and flutter analyze must stay clean.",
+    detail:
+      "Bản dùng riêng tách ra từ Cashew (GPL-3.0) của James Kokoska, viết lại để xoay quanh số dư ví thay vì ngân sách — đúng cách tôi thực sự dùng một app chi tiêu.\n\nPhần tự làm đáng kể nhất là trợ lý AI chạy trên Gemini: nhấn giữ nút cộng khoảng nửa giây là mở. Nó ghi giao dịch bằng câu chữ tự nhiên (\"ăn phở 45k\"), đọc ảnh hoá đơn, trả lời câu hỏi về chi tiêu và sửa hoặc xoá giao dịch. Mọi thao tác AI đề xuất đều phải qua một thẻ xác nhận trước khi ghi vào cơ sở dữ liệu — AI đọc sai số tiền là chuyện thường, không thể để nó ghi thẳng.\n\nNgoài ra: widget 4×4 ngoài màn hình chính (tổng tiền, thu chi 30 ngày, biểu đồ đường và một máy tính bỏ túi để ghi giao dịch không cần mở app), tab Thống kê gộp ngân sách, biểu đồ chi tiêu, biểu đồ tròn và bản đồ nhiệt vào một chỗ, và bộ danh mục tiếng Việt có danh mục con. Đã gỡ: đăng nhập Google, quảng cáo bản Pro và 47 ngôn ngữ không dùng.\n\nRàng buộc phải sống chung: dự án ghim Flutter 3.19.6, vì pubspec.lock ghim intl 0.18.1 trong khi flutter_localizations của SDK mới lại đòi intl 0.20.2, cộng thêm sáu gói không biên dịch nổi trên Flutter 3.4x. Nâng SDK là gãy build, nên tôi ghim phiên bản và ghi rõ lý do trong README thay vì để người sau tự dò lại. Giữ 37 test luôn xanh và flutter analyze phải sạch lỗi.",
+    tech: ["Flutter", "Dart", "Android", "SQLite", "Gemini API", "Home Widget"],
+    image: projectImage("Sothuchi"),
+    role: "Flutter Developer",
+    roleEn: "Flutter Developer",
+    client: "Dự án cá nhân (private)",
+    clientEn: "Personal project (private)",
+    year: "2026",
+    yearRole: "2026 • Flutter & Android",
+    link: undefined as string | undefined,
+  },
+  {
     id: "AutoTool",
     category: "PYTHON • AUTOMATION",
     shortName: "AUTOTOOL",
@@ -274,6 +324,29 @@ const privateProjects = [
     clientEn: "Internal tool (private)",
     year: "2026",
     yearRole: "2026 • Python",
+    link: undefined as string | undefined,
+  },
+  {
+    id: "NCKH-PeopleCount",
+    category: "COMPUTER VISION • NCKH",
+    shortName: "PEOPLECOUNT",
+    title: "PeopleCount | Đếm người bằng thị giác máy",
+    titleEn: "PeopleCount | Vision-Based People Counting",
+    desc: "Đề tài nghiên cứu khoa học: đếm số người trong video mà không đếm trùng một người hai lần.",
+    descEn:
+      "A student research project: counting people in video without counting the same person twice.",
+    detailEn:
+      "A third-year student research project in the Faculty of IT at Industrial University of Ho Chi Minh City (supervisor: Lê Thị Vĩnh Thanh). The goal is a system that detects and counts people in images and video using YOLOv8 combined with object tracking, evaluated on COCO 2017 (person class) plus footage filmed in the university's lobbies and classrooms.\n\nTargets set for the project: mAP@0.5 ≥ 0.85 on the person class, mean absolute counting error ≤ 2 people per frame on the test set, and measured FPS on live video (reference ≥ 25).\n\nStill early. What is built so far is the tracking layer, written by hand rather than pulled from a library: a BBox frozen dataclass with IoU, and a CentroidTracker that assigns a stable ID to each person across frames. The v2 handles temporary occlusion through an absence counter — without it, every time someone walks behind a pillar the system issues a fresh ID and counts them twice.\n\nRuns on Python 3.11 with CUDA 12.6 (RTX 3050 6GB), laid out as a proper research repository: source as an installable package, experiment configs, logs and checkpoints, and notebooks each kept separate, with datasets and the virtualenv deliberately out of version control.",
+    detail:
+      "Đề tài nghiên cứu khoa học sinh viên năm 3, khoa Công nghệ Thông tin — Đại học Công nghiệp TP.HCM (GVHD: Lê Thị Vĩnh Thanh). Mục tiêu là xây hệ thống phát hiện và đếm người trong ảnh/video bằng YOLOv8 kết hợp theo dõi đối tượng, đánh giá trên COCO 2017 (lớp person) cùng video tự quay ở sảnh và lớp học của trường.\n\nChỉ tiêu đặt ra: mAP@0.5 ≥ 0.85 trên lớp person, sai số đếm tuyệt đối trung bình ≤ 2 người/khung hình trên tập test, và đo FPS trên video thời gian thực (tham chiếu ≥ 25).\n\nDự án đang ở giai đoạn đầu. Phần đã dựng xong là tầng theo dõi đối tượng, tự viết chứ không lấy sẵn từ thư viện: lớp BBox dạng frozen dataclass kèm phép tính IoU, và CentroidTracker gán ID ổn định cho từng người qua các khung hình. Bản v2 xử lý được trường hợp bị che khuất tạm thời bằng bộ đếm số khung vắng mặt — không có nó thì mỗi lần một người đi khuất sau cây cột là hệ thống cấp ID mới và đếm trùng.\n\nChạy trên Python 3.11 với CUDA 12.6 (RTX 3050 6GB), tổ chức theo đúng cấu trúc một kho nghiên cứu: mã nguồn dạng package cài được, cấu hình thí nghiệm, log và checkpoint, notebook để riêng từng phần; dữ liệu và môi trường ảo cố ý không đưa vào quản lý phiên bản.",
+    tech: ["Python", "PyTorch", "YOLOv8", "OpenCV", "NumPy", "CUDA"],
+    image: projectImage("NCKH-PeopleCount"),
+    role: "Computer Vision Researcher",
+    roleEn: "Computer Vision Researcher",
+    client: "Đề tài NCKH — IUH",
+    clientEn: "Student research — IUH",
+    year: "2026",
+    yearRole: "2026 • Computer Vision",
     link: undefined as string | undefined,
   },
 ];
@@ -505,10 +578,18 @@ function mapRepoToProject(repo: any) {
   return { ...base, ...(REPO_META[repo.name] || {}) };
 }
 
+// Vị trí xuất phát của băng chuyền, dùng ĐÚNG công thức của applyList bên dưới:
+// giữa bộ nhân bản thứ 3 — cũng là "vùng an toàn" [2*N .. 3*N-1] mà goToProject dùng,
+// nên hai đầu luôn còn bộ đệm để cuộn. Phải suy ra từ số dự án chứ không ghim số:
+// trước đây ghim cứng 12, nên mỗi lần thêm/bớt dự án là điểm xuất phát lại trôi đi chỗ khác
+// (với 14 dự án thì 12 rơi hẳn vào bộ nhân bản đầu tiên, hết đệm bên trái).
+// Khớp với applyList để khung hình đầu tiên không bị nhảy một nhịp khi effect chạy.
+const START_INDEX = projects.length * 2 + Math.floor(projects.length / 2);
+
 export function ProjectSection() {
   const { t, pick } = useLang();
   const [projectList, setProjectList] = useState<any[]>(projects);
-  const [activeIndex, setActiveIndex] = useState(12);
+  const [activeIndex, setActiveIndex] = useState(START_INDEX);
   const [translateX, setTranslateX] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [isNoTransitions, setIsNoTransitions] = useState(false);
@@ -518,7 +599,7 @@ export function ProjectSection() {
   const [detailProj, setDetailProj] = useState<any | null>(null);
 
   const trackRef = useRef<HTMLDivElement>(null);
-  const activeIndexRef = useRef(12);
+  const activeIndexRef = useRef(START_INDEX);
   const isTransitioningRef = useRef(false);
   const autoplayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Bản ref của trạng thái modal: resetAutoplayTimer chạy trong setTimeout nên đọc
