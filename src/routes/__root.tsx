@@ -80,14 +80,24 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "Trung Thanh Tran — Full-Stack, Web Scraping & Automation Developer" },
+      {
+        name: "description",
+        content:
+          "Interactive 3D portfolio of Trung Thanh Tran — Web Scraping, Browser Automation, Full-Stack Web, Mobile & AI Integration.",
+      },
+      { name: "author", content: "Trung Thanh Tran" },
+      {
+        property: "og:title",
+        content: "Trung Thanh Tran — Full-Stack, Web Scraping & Automation Developer",
+      },
+      {
+        property: "og:description",
+        content:
+          "Interactive 3D portfolio featuring WebGL scenes, production web scrapers, mobile apps and AI automations.",
+      },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
       {
@@ -123,7 +133,7 @@ function RootShell({ children }: { children: ReactNode }) {
 // Cách xử lý: tăng CONTENT_VERSION mỗi khi đổi các mặc định trong code. Trình duyệt thấy
 // phiên bản lệch sẽ xoá đúng các khoá nội dung cũ để rơi về mặc định mới.
 // Các khoá KHÔNG liên quan tới nội dung (vd sổ lưu bút) được giữ nguyên.
-const CONTENT_VERSION = "2026-08-06-2";
+const CONTENT_VERSION = "2026-10-26-1";
 const VERSIONED_CONTENT_KEYS = [
   "project_list",
   "skills_keycaps",

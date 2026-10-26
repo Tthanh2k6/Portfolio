@@ -26,16 +26,17 @@ type LangValue = {
 };
 
 const LangContext = createContext<LangValue>({
-  lang: "vi",
+  lang: "en",
   setLang: () => {},
-  t: (vi) => vi,
-  pick: (obj, key) => obj?.[key],
+  t: (vi, en) => (en !== undefined ? en : vi),
+  pick: (obj, key) => obj?.[`${key}En`] || obj?.[key],
 });
 
 export function LangProvider({ children }: { children: ReactNode }) {
-  // LUÔN khởi tạo "vi" để HTML server dựng khớp lần render đầu ở client (không lệch
-  // hydrate). Ngôn ngữ đã lưu được áp ngay sau khi mount.
-  const [lang, setLangState] = useState<Lang>("vi");
+  // LUÔN khởi tạo "en" để HTML server dựng khớp lần render đầu ở client (không lệch
+  // hydrate) và mặc định hiển thị tiếng Anh cho khách quốc tế / Upwork.
+  // Ngôn ngữ đã lưu trong localStorage được áp ngay sau khi mount.
+  const [lang, setLangState] = useState<Lang>("en");
 
   useEffect(() => {
     try {

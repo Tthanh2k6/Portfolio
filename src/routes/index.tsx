@@ -3,18 +3,19 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { HeroScene } from "@/components/HeroScene";
 import { NavBar } from "@/components/NavBar";
+import { useLang } from "@/lib/i18n";
 
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Trần Trung Thành — AI / WEB3 / UI / 3D / MOTION / VIDEO" },
+      { title: "Trung Thanh Tran — Web Scraping, Automation, Full-Stack & AI Developer" },
       {
         name: "description",
-        content: "Portfolio of Trần Trung Thành — designer & developer working across AI, Web3, UI, 3D, motion and video.",
+        content: "Portfolio of Trung Thanh Tran (Trần Trung Thành) — Full-Stack, Web Scraping, Browser Automation, Mobile & AI Developer.",
       },
-      { property: "og:title", content: "Trần Trung Thành — Portfolio" },
-      { property: "og:description", content: "Just chill. The future is rendering." },
+      { property: "og:title", content: "Trung Thanh Tran — Developer Portfolio" },
+      { property: "og:description", content: "Web Scraping · Browser Automation · Full-Stack Web · Mobile · AI" },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -36,13 +37,14 @@ const navItems = [
   { label: "Contact", to: "/contact" },
 ];
 
-const tags = ["AI", "WEB3", "UI", "3D", "MOTION", "VIDEO"];
+const tags = ["WEB SCRAPING", "AUTOMATION", "FULL-STACK", "AI / ML", "MOBILE", "3D WEB"];
 
 function Index() {
+  const { lang } = useLang();
   const [mounted, setMounted] = useState(false);
-  const [line1, setLine1] = useState("Just chill. The future is rendering...");
-  const [line2, setLine2] = useState("Trần Trung Thành");
-  const [tagsList, setTagsList] = useState(["AI", "WEB3", "UI", "3D", "MOTION", "VIDEO"]);
+  const [line1, setLine1] = useState("Building scrapers, automations & full-stack products that ship.");
+  const [customLine2, setCustomLine2] = useState<string | null>(null);
+  const [tagsList, setTagsList] = useState(["WEB SCRAPING", "AUTOMATION", "FULL-STACK", "AI / ML", "MOBILE", "3D WEB"]);
 
   useEffect(() => {
     setMounted(true);
@@ -50,9 +52,11 @@ function Index() {
     const stored2 = localStorage.getItem("home_line_2");
     const stored3 = localStorage.getItem("home_line_3");
     if (stored1) setLine1(stored1);
-    if (stored2) setLine2(stored2);
+    if (stored2) setCustomLine2(stored2);
     if (stored3) setTagsList(stored3.split(",").map(t => t.trim()).filter(Boolean));
   }, []);
+
+  const line2 = customLine2 || (lang === "en" ? "Trung Thanh Tran" : "Trần Trung Thành");
 
   return (
     <main className="relative w-full overflow-x-hidden bg-black text-white">

@@ -12,15 +12,15 @@ const ghImage = (repo: string) =>
 // Ảnh chụp màn hình thật của từng dự án (đặt trong thư mục public IMG/).
 // Được ưu tiên hơn ảnh OpenGraph; nếu thiếu file, <img onError> sẽ tự rơi về ảnh GitHub.
 const REPO_IMAGES: Record<string, string> = {
+  "web-scraping-showcase": "/IMG/project-scraping.png",
   DiemDanhQR: "/IMG/project-diemdanhqr.jpg",
   AI_Lab: "/IMG/project-ailab.png",
   KNN: "/IMG/project-knn.png",
+  "H-c-AI-ML": "/IMG/project-aiml.png",
   Portfolio: "/IMG/project-portfolio.png",
   // Dự án private (không công khai code) — chỉ hiển thị ảnh demo, thả file vào public/IMG/
   AutoTool: "/IMG/project-autotool.png",
   WorkFlowAI: "/IMG/project-workflowai.png",
-  // CHƯA CÓ ẢNH — thả ảnh chụp màn hình vào public/IMG/ đúng tên dưới đây.
-  // Thiếu file thì <img onError> tự rơi về ảnh placeholder có tên dự án, không vỡ layout.
   MadalenaApp: "/IMG/project-madalena-app.png",
   MadalenaWeb: "/IMG/project-madalena-web.png",
   LichIUH: "/IMG/project-lichiuh.png",
@@ -46,7 +46,32 @@ const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
 //            vào cách giải quyết vấn đề, quyết định kỹ thuật và kết quả đạt được.
 //   tech    — danh sách công nghệ, hiện dạng chip trong modal.
 const REPO_META: Record<string, any> = {
+  "web-scraping-showcase": {
+    category: "PYTHON • PLAYWRIGHT • API",
+    shortName: "SCRAPING TOOLKIT",
+    shortNameEn: "SCRAPING TOOLKIT",
+    title: "Web Scraping | Cào dữ liệu & Dò API ẩn",
+    titleEn: "Web Scraping & Hidden API Extraction Toolkit",
+    desc: "Bộ công cụ Python cào dữ liệu song song, tự động dò API JSON ẩn phía sau trang web và xuất ra CSV, JSON, SQLite.",
+    descEn:
+      "Production-style Python scraping toolkit: async HTML crawler, Playwright vs. Hidden JSON API benchmark, and automatic XHR endpoint sniffer.",
+    detailEn:
+      "A production-oriented Python web data extraction toolkit demonstrating three core workflows on public sandbox targets:\n\n1. Polite Async HTML Scraper (`scrape-books`): Crawls 1,000+ paginated catalog and product detail pages using `httpx.AsyncClient`, bounded concurrency (`asyncio.Semaphore`), exponential backoff, and `Retry-After` header support. Exports simultaneously to CSV, pretty JSON, and an idempotent SQLite database (`INSERT OR REPLACE` upserts).\n\n2. Infinite Scroll vs. Direct Hidden JSON API (`compare-scroll`): Extracts the exact same dataset via headless Chromium (Playwright infinite scroll) and via the underlying JSON API, cutting memory usage from ~180 MB to <15 MB while speeding up extraction cleanly.\n\n3. Reusable Hidden-API Sniffer (`sniff-api`): Launches headless Chromium on any JavaScript-heavy page, scrolls automatically, intercepts XHR/Fetch responses returning JSON, and prints discovered endpoints with their top-level schema keys and item counts.",
+    detail:
+      "Bộ công cụ thu thập dữ liệu web chuẩn thực chiến bằng Python, trình diễn 3 quy trình cốt lõi:\n\n1. Cào HTML bất đồng bộ có kiểm soát (`scrape-books`): Quét hơn 1.000 trang danh mục và chi tiết sản phẩm bằng `httpx.AsyncClient`, giới hạn số luồng đồng thời (`asyncio.Semaphore`), tự động thử lại theo cấp số nhân (exponential backoff) và tôn trọng header `Retry-After`. Xuất đồng thời ra CSV, JSON và cơ sở dữ liệu SQLite chống trùng lặp (`INSERT OR REPLACE`).\n\n2. So sánh Cuộn vô tận Playwright và Hidden JSON API (`compare-scroll`): Thu thập cùng một tập dữ liệu bằng trình duyệt không đầu (Playwright) và gọi trực tiếp API JSON ẩn bên dưới, giúp giảm RAM từ ~180 MB xuống dưới 15 MB và tăng tốc độ rõ rệt.\n\n3. Công cụ dò API ẩn dùng lại được (`sniff-api`): Mở trang bất kỳ bằng Chromium, tự động cuộn trang, bắt mọi gói tin XHR/Fetch trả về JSON và liệt kê endpoint kèm cấu trúc khoá dữ liệu.",
+    tech: ["Python", "Playwright", "httpx", "Asyncio", "BeautifulSoup4", "SQLite"],
+    role: "Python / Scraping Developer",
+    roleEn: "Python / Scraping Developer",
+    client: "Dự án mã nguồn mở",
+    clientEn: "Open-source showcase",
+    yearRole: "2026 • Python & Playwright",
+  },
   DiemDanhQR: {
+    category: "JAVASCRIPT • PWA",
+    shortName: "QR ATTENDANCE",
+    shortNameEn: "QR ATTENDANCE",
+    title: "DiemDanhQR | Điểm danh QR",
+    titleEn: "QR Attendance | Serverless Check-In PWA",
     desc: "Điểm danh bằng cách quét mã QR trên điện thoại, tên người có mặt tự chạy thẳng vào Google Sheets.",
     descEn:
       "Take attendance by scanning a QR code on your phone — names land straight in a Google Sheet.",
@@ -61,9 +86,14 @@ const REPO_META: Record<string, any> = {
     clientEn: "Personal project",
   },
   AI_Lab: {
-    desc: "8 trò chơi để xem máy tính tự học chơi từ con số 0 — từ Flappy Bird tới cờ caro và đá bóng 3D.",
+    category: "TYPESCRIPT & AI",
+    shortName: "AI LAB",
+    shortNameEn: "AI LAB",
+    title: "AI_Lab | Phòng thí nghiệm AI",
+    titleEn: "AI Game Arena | Interactive AI & RL Lab",
+    desc: "9 đấu trường 2D/3D để xem máy tính tự học chơi từ con số 0 — từ đua xe thần kinh, cờ caro 20×20 tới đá bóng 3D.",
     descEn:
-      "Eight games where you watch a computer teach itself to play from scratch — Flappy Bird to 3D football.",
+      "Nine 2D & 3D arenas where you watch AI teach itself to play from scratch — raycast racing, 20×20 Gomoku, Q-Maze to 3D football.",
     detailEn:
       "AI Game Arena — a desktop app (Electron) that visualises how AI algorithms, classic and modern, learn and make decisions. You tune the training parameters, network shape or heuristic weights yourself, then watch an AI learn from nothing, or pit two of them against each other.\n\nEight environments, each built on a different family of algorithms:\n• Flappy Bird and AI Racing — neural networks evolved by a genetic algorithm; the cars sense their surroundings with raycasts, and a built-in track builder lets you draw your own circuit.\n• Maze robot — Q-Learning, with a heatmap of the Q-table brightening as the agent learns.\n• 2048 — Expectimax search with heuristics for smoothness, monotonicity and keeping the largest tile cornered.\n• Connect Four and 20×20 Gomoku — Minimax with alpha-beta pruning and a Zobrist-hashed transposition table, plus an MCTS/UCT implementation so the two can be compared head to head.\n• 3D Soccer and 3D Tag — competitive co-evolution with 8-direction raycast sensors and real ball physics.",
     detail:
@@ -93,6 +123,11 @@ const REPO_META: Record<string, any> = {
     yearRole: "2026 • Project Manager",
   },
   Portfolio: {
+    category: "WEB & 3D",
+    shortName: "PORTFOLIO",
+    shortNameEn: "PORTFOLIO",
+    title: "Portfolio | Trang cá nhân 3D",
+    titleEn: "Portfolio | Interactive 3D & SSR Showcase",
     desc: "Chính là trang web bạn đang xem: hiệu ứng 3D, bàn phím tương tác và các trang giới thiệu bản thân.",
     descEn:
       "The site you're looking at right now: 3D effects, an interactive keyboard and the pages introducing me.",
@@ -356,8 +391,15 @@ const privateProjects = [
 // (offline / vượt giới hạn request). Bản fetch động bên dưới sẽ ghi đè phần repo công khai.
 const publicProjects = [
   {
+    id: "web-scraping-showcase",
+    ...REPO_META["web-scraping-showcase"],
+    image: projectImage("web-scraping-showcase"),
+    year: "2026",
+    link: `https://github.com/${GITHUB_USER}/web-scraping-showcase`,
+  },
+  {
     id: "DiemDanhQR",
-    category: "JAVASCRIPT",
+    category: "JAVASCRIPT • PWA",
     shortName: "QR ATTENDANCE",
     title: "DiemDanhQR | Điểm danh QR",
     ...REPO_META.DiemDanhQR,
@@ -563,11 +605,16 @@ function mapRepoToProject(repo: any) {
     id: repo.name,
     category: (repo.language || "PROJECT").toUpperCase(),
     shortName: repo.name,
+    shortNameEn: repo.name,
     title: repo.name,
+    titleEn: repo.name,
     desc: repo.description || "Dự án mã nguồn trên GitHub — bấm để xem chi tiết.",
+    descEn: repo.description || "Open-source project on GitHub — click for details.",
     image: projectImage(repo.name),
     role: `${lang} Developer`,
+    roleEn: `${lang} Developer`,
     client: "Dự án cá nhân",
+    clientEn: "Personal project",
     year,
     yearRole: `${year} • ${lang}`,
     link: repo.html_url,
@@ -679,8 +726,11 @@ export function ProjectSection() {
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
       .then((repos) => {
         if (cancelled || !Array.isArray(repos)) return;
-        // Bỏ các repo fork, chỉ giữ dự án của chính mình
-        const mapped = repos.filter((r: any) => !r.fork).map(mapRepoToProject);
+        // Bỏ các repo fork và repo trùng với dự án đã có trong danh sách private (vd GhiChu trùng NoteMod)
+        const HIDDEN_REPOS = new Set(["GhiChu", "Tthanh2k6"]);
+        const mapped = repos
+          .filter((r: any) => !r.fork && !HIDDEN_REPOS.has(r.name))
+          .map(mapRepoToProject);
         // Luôn giữ dự án private (tool) ở đầu — GitHub API không trả về chúng
         if (mapped.length > 0) applyList([...privateProjects, ...mapped]);
       })

@@ -59,7 +59,7 @@ Khi chỉnh sửa mã nguồn của dự án này, bạn **BẮT BUỘC** tuân 
    - Mỗi khi sửa mảng `projects` (`src/components/ProjectSection.tsx`) hoặc `KEYCAPS` / `CHART_DATA` / `TITLE_TO_CHART` (`src/components/SkillsSection.tsx`), **phải đổi `CONTENT_VERSION` sang chuỗi ngày-phiên bản mới** (ví dụ `"2026-10-27-1"`). Nếu quên, trình duyệt đã có `localStorage` sẽ giữ mãi dữ liệu cũ và không bao giờ thấy thay đổi của bạn.
 2. **Bảo vệ tuyệt đối tính nhất quán SSR Hydration (Không đọc `window`/`localStorage` khi render lần đầu):**
    - Mọi trang đều chạy SSR trên Node.js trước khi hydrate trên trình duyệt. Tuyệt đối **không** gọi `localStorage`, `sessionStorage`, `window`, `document` trực tiếp ngoài `useEffect` hoặc event handler.
-   - Trong `src/lib/i18n.tsx`, `lang` **phải luôn khởi tạo mặc định là `"vi"`** để khớp giữa HTML máy chủ và lần render đầu tiên phía client; việc đọc `localStorage["site_lang"]` chỉ được diễn ra bên trong `useEffect`.
+   - Trong `src/lib/i18n.tsx`, `lang` **phải luôn khởi tạo mặc định là `"en"`** để khớp giữa HTML máy chủ và lần render đầu tiên phía client; việc đọc `localStorage["site_lang"]` chỉ được diễn ra bên trong `useEffect`.
 3. **Không làm phẳng (`flatten`) không gian 3D `preserve-3d` trên trang `/skills`:**
    - Trên các lớp bao ngoài bàn phím 3D và khối chữ nổi `ExtrudedText` (`.skills-stage`, `.skills-keyboard`, `.skills-info-3d`, `.skills-3d-slide-in`, `.skills-3d-slide-out`), **CHỈ được animate thuộc tính `transform`**.
    - **CẤM** thêm `opacity < 1`, `filter`, `backdrop-filter`, `overflow: hidden` hoặc `clip-path` lên các container mang `transform-style: preserve-3d`, vì trình duyệt sẽ lập tức ép phẳng toàn bộ các lát `translateZ` thành 2D bẹt.
