@@ -4,10 +4,18 @@ import { ContactSection } from "@/components/ContactSection";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Project Showcase & Contact — Trần Trung Thành" },
-      { name: "description", content: "Liên hệ và để lại lời nhắn cho Trần Trung Thành — AI / WEB3 / UI / 3D / MOTION / VIDEO" },
-      { property: "og:title", content: "Project Showcase & Contact — Trần Trung Thành" },
-      { property: "og:description", content: "Have something in mind? Send a message and let's connect." },
+      { title: "Contact & Engineering Channels — Trung Thanh Tran" },
+      {
+        name: "description",
+        content:
+          "Get in touch with Trung Thanh Tran for Python/Playwright web scraping, n8n & OpenAI workflow automation, API integration, and full-stack development.",
+      },
+      { property: "og:title", content: "Contact — Trung Thanh Tran" },
+      {
+        property: "og:description",
+        content:
+          "Available for fixed-price freelance milestones, white-label agency partnerships, and remote engineering contracts (UTC+7).",
+      },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

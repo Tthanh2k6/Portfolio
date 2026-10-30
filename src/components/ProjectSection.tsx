@@ -12,6 +12,12 @@ const ghImage = (repo: string) =>
 // Ảnh chụp màn hình thật của từng dự án (đặt trong thư mục public IMG/).
 // Được ưu tiên hơn ảnh OpenGraph; nếu thiếu file, <img onError> sẽ tự rơi về ảnh GitHub.
 const REPO_IMAGES: Record<string, string> = {
+  "ai-automation-and-rag-toolkit": "/IMG/project-rag-toolkit.png",
+  "apify-b2b-lead-and-contact-enricher": "/IMG/project-apify-b2b.png",
+  "apify-ecommerce-price-and-stock-monitor": "/IMG/project-apify-ecommerce.png",
+  "apify-us-healthcare-clinic-contact-enricher": "/IMG/project-apify-healthcare.png",
+  "apify-multi-stop-route-and-distance-optimizer": "/IMG/project-apify-route.png",
+  "burgershop-pod-tool": "/IMG/project-pod-extension.png",
   "web-scraping-showcase": "/IMG/project-scraping.png",
   DiemDanhQR: "/IMG/project-diemdanhqr.jpg",
   AI_Lab: "/IMG/project-ailab.png",
@@ -46,6 +52,267 @@ const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
 //            vào cách giải quyết vấn đề, quyết định kỹ thuật và kết quả đạt được.
 //   tech    — danh sách công nghệ, hiện dạng chip trong modal.
 const REPO_META: Record<string, any> = {
+  "ai-automation-and-rag-toolkit": {
+    category: "OPENAI • HYBRID RAG • FASTAPI",
+    shortName: "AI & RAG TOOLKIT",
+    shortNameEn: "AI & RAG TOOLKIT",
+    title: "AI Automation & Hybrid RAG | Kiến trúc AI chuẩn Schema",
+    titleEn: "AI Automation & Hybrid RAG Reference Architecture",
+    desc: "Bộ kiến trúc AI doanh nghiệp: tìm kiếm lai BM25 + Vector, ép kiểu JSON tuyệt đối 0% lỗi và kiểm thử bảo mật PostgreSQL.",
+    descEn:
+      "Production AI & automation toolkit: Hybrid BM25 + Vector RRF retrieval, 0.00% drift OpenAI Structured Outputs & FastAPI backpressure.",
+    detailEn:
+      "A production reference toolkit solving the three most common failure modes in enterprise AI and workflow engineering:\n\n1. Zero-Drift Structured LLM Router (FastAPI + Pydantic Strict JSON Schemas): Replaces brittle regex markdown parsing with deterministic OpenAI/Anthropic Structured Outputs, idempotency keys, dead-letter webhook routing, and async stream backpressure control.\n\n2. Hybrid RAG Engine (`BM25` + Dense Vector `Reciprocal Rank Fusion`): Combines exact SKU/part-number lexical recall with semantic dense embeddings so technical queries never miss exact identifiers.\n\n3. Multi-Tenant PostgreSQL RLS Auditing (`pgTAP`) & Apps Script Route Optimizer: Ships automated SQL security assertions verifying tenant isolation plus a zero-infrastructure Google Sheets route optimization module.",
+    detail:
+      "Bộ khung tham chiếu thực chiến giải quyết 3 điểm gãy phổ biến nhất khi đưa AI và tự động hoá vào vận hành doanh nghiệp:\n\n1. Cổng điều phối LLM ép kiểu chặt (FastAPI + Pydantic Strict JSON Schemas): Xoá bỏ hoàn toàn lỗi gãy JSON do AI trả về thừa chữ, tích hợp khoá chống xử lý trùng (idempotency), định tuyến webhook lỗi và kiểm soát nghẽn luồng (backpressure).\n\n2. Động cơ Hybrid RAG (`BM25` + Vector `Reciprocal Rank Fusion`): Kết hợp tìm kiếm từ khoá chính xác cho mã SKU/mã linh kiện với tìm kiếm ngữ nghĩa vector.\n\n3. Kiểm toán phân quyền PostgreSQL RLS tự động bằng `pgTAP` kèm module tối ưu lộ trình chạy thẳng trên Google Apps Script.",
+    tech: ["Python", "FastAPI", "OpenAI API", "Hybrid RAG", "PostgreSQL RLS", "pgTAP", "Apps Script"],
+    role: "AI & Backend Systems Engineer",
+    roleEn: "AI & Backend Systems Engineer",
+    client: "Mã nguồn mở thực chiến",
+    clientEn: "Production open-source toolkit",
+    yearRole: "2026 • FastAPI & OpenAI",
+    demo: "https://dev.to/tthanh2k6/eliminating-broken-llm-json-in-production-workflows-nodejs-fastapi-n8n-strict-schemas-3fli",
+    demoLabel: "Đọc bài phân tích kỹ thuật",
+    demoLabelEn: "Read Engineering Deep-Dive",
+  },
+  "apify-b2b-lead-and-contact-enricher": {
+    category: "APIFY STORE • RAPIDAPI • PYTHON",
+    shortName: "B2B LEAD ENRICHER",
+    shortNameEn: "B2B LEAD ENRICHER",
+    title: "B2B Contact & Tech Stack Enricher | Apify Actor",
+    titleEn: "B2B Email, Phone & Tech Stack Enricher (Apify & RapidAPI)",
+    desc: "Microservice thương mại trên Apify Store & RapidAPI: trích xuất email đã kiểm chứng tên miền, SĐT và công nghệ web siêu nhẹ.",
+    descEn:
+      "Commercial Apify Store Actor & RapidAPI service extracting DNS/MX-verified emails, phones, socials & tech stacks in <50MB RAM.",
+    detailEn:
+      "Published commercial Pay-Per-Event microservice on Apify Store (`thanh81646/apify-b2b-lead-and-contact-enricher`) and RapidAPI Hub, engineered to run inside ultra-lean `256 MB` serverless containers.\n\nInstead of spinning up heavy headless browsers, it uses bounded `httpx.AsyncClient` pools to crawl company homepages plus high-signal `/contact`, `/about`, and `/legal` paths in sub-second passes. Extracts de-obfuscated emails with cached `DNS/MX` verification, normalized phone numbers, social profiles, `Schema.org` Organization JSON-LD, and 30+ web technology fingerprints (Shopify, HubSpot, WordPress, Stripe, Intercom, GTM) ready for Clay, n8n, or HubSpot pipelines.",
+    detail:
+      "Microservice thương mại trả phí theo kết quả đang vận hành trên Apify Store (`thanh81646/apify-b2b-lead-and-contact-enricher`) và RapidAPI Hub, tối ưu để chạy gọn trong container serverless chỉ `256 MB RAM`.\n\nThay vì bật trình duyệt ngốn bộ nhớ, hệ thống dùng luồng bất đồng bộ `httpx.AsyncClient` quét trang chủ cùng các đường dẫn tín hiệu cao (`/contact`, `/about`, `/impressum`) dưới 1 giây. Trích xuất email giải mã chống ẩn kèm kiểm chứng bản ghi `DNS/MX`, chuẩn hoá số điện thoại, mạng xã hội, `Schema.org` JSON-LD và nhận diện hơn 30 công nghệ web để đẩy thẳng vào Clay, n8n hoặc CRM.",
+    tech: ["Python", "Async HTTPX", "BeautifulSoup4", "DNS/MX Check", "Apify SDK", "RapidAPI"],
+    role: "Creator & Data Engineer",
+    roleEn: "Creator & Data Engineer",
+    client: "Apify Store & RapidAPI (Thương mại)",
+    clientEn: "Apify Store & RapidAPI (Commercial)",
+    yearRole: "2026 • Commercial Microservice",
+    demo: "https://apify.com/thanh81646/apify-b2b-lead-and-contact-enricher",
+    demoLabel: "Chạy thử trên Apify Store",
+    demoLabelEn: "Run Live on Apify Store",
+  },
+  "apify-ecommerce-price-and-stock-monitor": {
+    category: "APIFY STORE • E-COMMERCE • PYTHON",
+    shortName: "PRICE & STOCK MONITOR",
+    shortNameEn: "PRICE & STOCK MONITOR",
+    title: "Shopify & WooCommerce Price Monitor | Apify Actor",
+    titleEn: "Shopify & WooCommerce Price, Stock & JSON-LD Monitor",
+    desc: "Theo dõi giá bán, tồn kho từng phân loại SKU và dữ liệu sản phẩm trên Shopify/WooCommerce nhanh gấp 51 lần cào giao diện.",
+    descEn:
+      "Commercial Apify Actor & RapidAPI monitoring SKU prices, stock states & Product JSON-LD across Shopify/WooCommerce — 51× faster than DOM.",
+    detailEn:
+      "Published commercial Actor on Apify Store and public REST API on RapidAPI Hub built for e-commerce dynamic pricing and competitor intelligence.\n\nAutomatically detects underlying Shopify `/products.json` endpoints, WooCommerce Store APIs, and `Schema.org/Product` JSON-LD blocks before falling back to OpenGraph/HTML selectors. Extracts exact variant-level prices, compare-at discounts, currency codes, SKUs, and live `in_stock` booleans at 51× the speed and <10% the memory footprint of headless browser scrapers.",
+    detail:
+      "Actor thương mại trên Apify Store và REST API trên RapidAPI Hub phục vụ bài toán theo dõi giá đối thủ và cảnh báo tồn kho thương mại điện tử.\n\nTự động phát hiện endpoint JSON gốc của Shopify (`/products.json`), WooCommerce Store API và khối dữ liệu chuẩn `Schema.org/Product` JSON-LD trước khi rơi về phân tích thẻ HTML. Thu thập chính xác giá bán từng biến thể, giá gốc trước giảm, đơn vị tiền tệ, mã SKU và trạng thái còn hàng với tốc độ nhanh gấp 51 lần so với cào bằng trình duyệt.",
+    tech: ["Python", "Async HTTPX", "JSON-LD", "Shopify API", "WooCommerce", "Apify SDK"],
+    role: "Creator & Data Engineer",
+    roleEn: "Creator & Data Engineer",
+    client: "Apify Store & RapidAPI (Thương mại)",
+    clientEn: "Apify Store & RapidAPI (Commercial)",
+    yearRole: "2026 • E-Commerce Data",
+    demo: "https://apify.com/thanh81646/apify-ecommerce-price-and-stock-monitor",
+    demoLabel: "Chạy thử trên Apify Store",
+    demoLabelEn: "Run Live on Apify Store",
+  },
+  "apify-us-healthcare-clinic-contact-enricher": {
+    category: "APIFY STORE • HEALTHCARE B2B",
+    shortName: "US CLINIC ENRICHER",
+    shortNameEn: "US CLINIC ENRICHER",
+    title: "US Healthcare Clinic & DSO Filter | Apify Actor",
+    titleEn: "US Healthcare Clinic Enricher & Corporate DSO Filter",
+    desc: "Làm giàu dữ liệu phòng khám nha khoa, y tế tại Mỹ và tự động lọc bỏ chuỗi tập đoàn lớn (DSO/MSO) với độ chính xác 96.4%.",
+    descEn:
+      "Enriches US dental, medical & vet clinics while screening out PE-backed corporate DSO/MSO chains at 96.4% precision.",
+    detailEn:
+      "Specialized B2B vertical enrichment Actor live on Apify Store for healthcare SaaS, medical device, and agency teams targeting independent US practices.\n\nCrawls dental, medical, audiology, and veterinary clinic websites to extract verified decision-maker/front-desk contacts, `MedicalOrganization` / `Dentist` JSON-LD schemas, online patient booking widgets (NexHealth, LocalMed, Zocdoc, Weave), and multi-signal corporate DSO/MSO footprints (Heartland Dental, Aspen, PDS, MB2, Banfield) so outbound teams stop wasting reps' time on locked corporate chains.",
+    detail:
+      "Actor chuyên biệt cho thị trường B2B Y tế Hoa Kỳ trên Apify Store, phục vụ các công ty SaaS nha khoa/y tế cần tiếp cận phòng khám tư nhân độc lập.\n\nQuét website phòng khám nha khoa, đa khoa, thính học và thú y để trích xuất thông tin liên hệ xác thực, dữ liệu `MedicalOrganization` JSON-LD, nền tảng đặt lịch khám trực tuyến (NexHealth, LocalMed, Zocdoc) và nhận diện dấu hiệu trực thuộc chuỗi tập đoàn đầu tư (DSO/MSO) với độ chính xác 96.4%.",
+    tech: ["Python", "Async HTTPX", "Healthcare Schema", "DSO Classifier", "DNS/MX", "Apify SDK"],
+    role: "Creator & Lead Data Engineer",
+    roleEn: "Creator & Lead Data Engineer",
+    client: "Apify Store (Thương mại)",
+    clientEn: "Apify Store (Commercial)",
+    yearRole: "2026 • Healthcare B2B Data",
+    demo: "https://apify.com/thanh81646/apify-us-healthcare-clinic-contact-enricher",
+    demoLabel: "Chạy thử trên Apify Store",
+    demoLabelEn: "Run Live on Apify Store",
+  },
+  "apify-thefork-restaurant-scraper": {
+    category: "APIFY STORE • HOSPITALITY EU",
+    shortName: "THEFORK EU SCRAPER",
+    shortNameEn: "THEFORK EU SCRAPER",
+    title: "TheFork Restaurant & Booking Scraper | Apify Actor",
+    titleEn: "TheFork EU Restaurant & Reservation System Extractor",
+    desc: "Thu thập dữ liệu nhà hàng châu Âu trên TheFork kèm nhận diện hệ thống đặt bàn đang dùng (SevenRooms, Zenchef, Formitable).",
+    descEn:
+      "Extracts European restaurant leads from TheFork alongside underlying table-booking widgets (Formitable, Zenchef, SevenRooms).",
+    detailEn:
+      "Commercial hospitality lead-generation Actor on Apify Store built for European POS, reservation-tech, and F&B suppliers.\n\nExtracts structured restaurant profiles, cuisine categories, average ticket prices, ratings, addresses, and cross-checks restaurant domains to fingerprint their active reservation widget (Formitable, Zenchef, Guestplan, Resengo, SevenRooms, OpenTable).",
+    detail:
+      "Actor thương mại trên Apify Store phục vụ nhóm khách hàng B2B ngành F&B và phần mềm quản lý nhà hàng tại thị trường châu Âu.\n\nTrích xuất hồ sơ nhà hàng trên TheFork (loại ẩm thực, mức giá trung bình, điểm đánh giá, địa chỉ) kết hợp quét website riêng của nhà hàng để nhận diện chính xác hệ thống đặt bàn họ đang sử dụng (Formitable, Zenchef, Guestplan, Resengo, SevenRooms).",
+    tech: ["Python", "Async HTTPX", "BeautifulSoup4", "JSON-LD", "Apify SDK"],
+    role: "Creator & Data Engineer",
+    roleEn: "Creator & Data Engineer",
+    client: "Apify Store (Thương mại)",
+    clientEn: "Apify Store (Commercial)",
+    yearRole: "2026 • EU Hospitality Data",
+    demo: "https://apify.com/thanh81646/thefork-restaurant-and-booking-system-scraper",
+    demoLabel: "Chạy thử trên Apify Store",
+    demoLabelEn: "Run Live on Apify Store",
+  },
+  "apify-malaysia-kpkt-teduh-property-scraper": {
+    category: "APIFY STORE • PROPTECH SEA",
+    shortName: "KPKT TEDUH SCRAPER",
+    shortNameEn: "KPKT TEDUH SCRAPER",
+    title: "Malaysia KPKT Property Registry | Apify Actor",
+    titleEn: "Malaysia KPKT TEDUH Property Developers & Projects Extractor",
+    desc: "Công cụ độc quyền trích xuất danh bạ chủ đầu tư bất động sản và dự án nhà ở được cấp phép từ cổng KPKT TEDUH Malaysia.",
+    descEn:
+      "First-on-market Apify Actor extracting licensed Malaysian property developers and housing projects from the official KPKT TEDUH portal.",
+    detailEn:
+      "Exclusive first-mover data extractor on Apify Store targeting Malaysia's official Ministry of Housing and Local Government (`teduh.kpkt.gov.my`) registry.\n\nNormalizes licensed private housing developers (`Pemaju Perumahan Swasta`), company registration numbers, contact details, compliance statuses, and housing project records into clean, flat JSON/CSV datasets for PropTech and construction B2B teams across Southeast Asia.",
+    detail:
+      "Actor độc quyền trên Apify Store chuyên trích xuất dữ liệu từ cổng thông tin chính thức của Bộ Phát triển Chính quyền Địa phương & Nhà ở Malaysia (`teduh.kpkt.gov.my`).\n\nChuẩn hoá danh sách chủ đầu tư bất động sản được cấp phép (`Pemaju Perumahan Swasta`), mã đăng ký doanh nghiệp, thông tin liên hệ, tình trạng pháp lý và danh mục dự án thành tập dữ liệu JSON/CSV sạch cho các đội ngũ PropTech Đông Nam Á.",
+    tech: ["Python", "Async HTTPX", "BeautifulSoup4", "Data Normalization", "Apify SDK"],
+    role: "Creator & Data Engineer",
+    roleEn: "Creator & Data Engineer",
+    client: "Apify Store (Thương mại)",
+    clientEn: "Apify Store (Commercial)",
+    yearRole: "2026 • SEA PropTech Data",
+    demo: "https://apify.com/thanh81646/malaysia-kpkt-teduh-property-developer-scraper",
+    demoLabel: "Chạy thử trên Apify Store",
+    demoLabelEn: "Run Live on Apify Store",
+  },
+  "apify-multi-stop-route-and-distance-optimizer": {
+    category: "PYTHON • ALGORITHMS • LOGISTICS",
+    shortName: "2-OPT ROUTE OPTIMIZER",
+    shortNameEn: "2-OPT ROUTE OPTIMIZER",
+    title: "Multi-Stop 2-Opt Route Optimizer | Tối ưu lộ trình",
+    titleEn: "Multi-Stop Geocoder & 2-Opt TSP Route Optimizer",
+    desc: "Tự động chuyển đổi địa chỉ sang toạ độ, sắp xếp thứ tự giao hàng ngắn nhất dưới 1 giây và xuất link Google Maps một chạm.",
+    descEn:
+      "Geocodes stop lists, solves multi-stop Travelling Salesperson routes via Nearest-Neighbor + 2-Opt in <1s & builds Google Maps links.",
+    detailEn:
+      "A logistics and field-service optimization microservice combining async OpenStreetMap Nominatim geocoding with a deterministic Nearest-Neighbor + `2-Opt` local-search Travelling Salesperson solver.\n\nValidates shift time windows, computes Haversine/road-adjusted leg durations, eliminates route crossovers in milliseconds, and outputs ready-to-tap multi-stop Google Maps navigation URLs for delivery drivers and field reps.",
+    detail:
+      "Microservice tối ưu lộ trình giao vận và đội ngũ thị trường: kết hợp giải mã toạ độ địa lý bất đồng bộ (OSM Nominatim) với thuật toán bài toán người du lịch Nearest-Neighbor + cải thiện cục bộ `2-Opt`.\n\nKiểm tra ràng buộc khung giờ ca làm việc, loại bỏ các đoạn đường cắt chéo chỉ trong vài mili-giây và sinh liên kết dẫn đường nhiều điểm trên Google Maps mở được ngay trên điện thoại tài xế.",
+    tech: ["Python", "2-Opt TSP", "Async HTTPX", "OSM Nominatim", "Apify SDK"],
+    role: "Algorithm & Python Engineer",
+    roleEn: "Algorithm & Python Engineer",
+    client: "Apify & Open-source",
+    clientEn: "Apify & Open-source",
+    yearRole: "2026 • Logistics Optimization",
+    demo: "https://dev.to/tthanh2k6/engineering-sub-second-b2b-lead-enrichment-2-opt-route-optimization-pipelines-in-python-1le8",
+    demoLabel: "Xem benchmark thuật toán",
+    demoLabelEn: "Read 2-Opt Benchmark",
+  },
+  "burgershop-pod-tool": {
+    category: "CHROME MV3 • BROWSER AUTOMATION",
+    shortName: "POD ADMIN EXTENSION",
+    shortNameEn: "POD ADMIN EXTENSION",
+    title: "BurgerShop POD Tool | Chrome Extension tự động đăng hàng",
+    titleEn: "BurgerShop POD Listing Automator (Chrome MV3 Extension)",
+    desc: "Tiện ích Chrome tự động điền form nhiều bước, bảng cuộn ảo PrimeNG và trình soạn thảo TinyMCE trên trang quản trị bán hàng.",
+    descEn:
+      "Manifest V3 Chrome Extension automating multi-step Angular/PrimeNG virtual-scroll variant tables & TinyMCE POD product listings.",
+    detailEn:
+      "A production Chrome Extension (Manifest V3) built to automate repetitive Print-on-Demand catalog uploads inside a complex Angular admin portal.\n\nStandard DOM scripts fail on Angular reactive forms, PrimeNG virtual-scroll variant pricing tables (where off-screen rows do not exist in the DOM), and sandboxed TinyMCE iframes. This extension dispatches native-equivalent input events synced with Angular's change detection, incrementally scrolls virtualized PrimeNG viewports to price every SKU variant accurately, and injects rich HTML descriptions cleanly.",
+    detail:
+      "Tiện ích mở rộng Chrome (Manifest V3) tự động hoá quy trình đăng sản phẩm Print-on-Demand nhiều bước trên cổng quản trị viết bằng Angular.\n\nGiải quyết ba bài toán khó khiến script thông thường gãy: kích hoạt đúng chu kỳ nhận diện thay đổi (change detection) của Reactive Forms trong Angular, cuộn từng nhịp qua bảng ảo hoá PrimeNG (nơi các dòng khuất màn hình bị xoá khỏi DOM) để điền giá chính xác cho từng biến thể SKU, và chèn mô tả HTML vào khung soạn thảo TinyMCE.",
+    tech: ["JavaScript", "Chrome Extension MV3", "Angular DOM", "PrimeNG", "TinyMCE"],
+    role: "Browser Automation Developer",
+    roleEn: "Browser Automation Developer",
+    client: "Công cụ vận hành TMĐT",
+    clientEn: "E-commerce ops automation",
+    yearRole: "2026 • Chrome Extension MV3",
+  },
+  "moto-nav": {
+    category: "C++17 • KOTLIN • ESP32 BLE",
+    shortName: "MOTO-NAV BLE HUD",
+    shortNameEn: "MOTO-NAV BLE HUD",
+    title: "Moto-Nav | Màn hình dẫn đường gắn ghi-đông xe máy",
+    titleEn: "Moto-Nav | BLE Turn-by-Turn Engine & ESP32 Handlebar HUD",
+    desc: "Hệ thống dẫn đường từng khúc cua kết nối điện thoại Android với màn hình nhỏ gắn trên tay lái xe máy qua Bluetooth tiết kiệm pin.",
+    descEn:
+      "Cross-platform BLE turn-by-turn navigation engine pairing an Android Kotlin app, bit-exact C++17 core & ESP32 handlebar HUD.",
+    detailEn:
+      "An end-to-end embedded + mobile navigation system designed so motorcyclists can see crisp turn-by-turn arrows and distance countdowns on a weatherproof handlebar HUD without mounting their phone in the sun.\n\nShares a deterministic, bit-exact C++17 geometry and off-route detection core across Android (via JNI + Kotlin) and ESP32 firmware over custom binary BLE GATT packets.",
+    detail:
+      "Hệ thống dẫn đường kết hợp phần cứng nhúng và di động giúp người đi xe máy xem mũi tên rẽ và khoảng cách đếm ngược ngay trên màn hình phụ gắn ghi-đông mà không phải phơi điện thoại ngoài nắng.\n\nDùng chung một nhân tính toán hình học và phát hiện lệch lộ trình viết bằng C++17 cho cả ứng dụng Android (qua JNI + Kotlin) và vi điều khiển ESP32 truyền gói tin nhị phân tối giản qua Bluetooth Low Energy (BLE).",
+    tech: ["C++17", "Kotlin", "Android JNI", "ESP32", "BLE GATT"],
+    role: "Systems & Mobile Developer",
+    roleEn: "Systems & Mobile Developer",
+    client: "Dự án phần cứng & di động",
+    clientEn: "Embedded & mobile project",
+    yearRole: "2026 • C++17, Kotlin & ESP32",
+  },
+  GiuThongBao: {
+    category: "KOTLIN • JETPACK COMPOSE",
+    shortName: "PUSH KEEP-ALIVE",
+    shortNameEn: "PUSH KEEP-ALIVE",
+    title: "GiuThongBao | Giữ kết nối thông báo trên máy Xiaomi",
+    titleEn: "GiuThongBao | OEM Push-Socket Keep-Alive Utility",
+    desc: "Ứng dụng Android siêu nhẹ giúp điện thoại Xiaomi/HyperOS nhận tin nhắn và thông báo tức thì, không bị trễ do hệ thống tự ngắt ngầm.",
+    descEn:
+      "Native Kotlin & Jetpack Compose Android utility keeping FCM/MCS push sockets alive on aggressive OEM ROMs (Xiaomi HyperOS/MIUI).",
+    detailEn:
+      "Aggressive battery killers on Chinese/OEM Android ROMs (Xiaomi HyperOS, MIUI) routinely drop idle FCM/MCS TCP heartbeats, delaying critical work notifications until the screen is unlocked. Built in pure Kotlin and Jetpack Compose, this utility maintains lightweight foreground/network heartbeat scheduling with near-zero battery impact.",
+    detail:
+      "Các bản ROM tuỳ biến mạnh về tiết kiệm pin như Xiaomi HyperOS / MIUI thường tự ngắt kết nối ngầm của FCM/MCS khiến thông báo công việc bị trễ cho tới khi bật sáng màn hình. Tiện ích viết thuần bằng Kotlin và Jetpack Compose này duy trì nhịp kết nối cực nhẹ giúp thông báo đến tức thì mà hầu như không hao pin.",
+    tech: ["Kotlin", "Jetpack Compose", "Android Services", "FCM"],
+    role: "Android Developer",
+    roleEn: "Android Developer",
+    client: "Tiện ích Android mã nguồn mở",
+    clientEn: "Open-source Android utility",
+    yearRole: "2026 • Kotlin & Compose",
+  },
+  DesktopCustom: {
+    category: "C++ • WINDOWS 11 • WEBVIEW2",
+    shortName: "WIN11 DESKTOP SUITE",
+    shortNameEn: "WIN11 DESKTOP SUITE",
+    title: "DesktopCustom | Bộ tuỳ biến màn hình Windows 11",
+    titleEn: "Windows 11 Interactive Wallpaper, DPAPI Sync & C++ Dock",
+    desc: "Bộ công cụ cá nhân hoá Windows 11: hình nền tương tác trực tiếp, tự đồng bộ lịch học mã hoá DPAPI và thanh dock C++ siêu nhẹ.",
+    descEn:
+      "Windows 11 desktop suite combining a Lively WebView2 interactive dashboard wallpaper, DPAPI timetable sync & Windhawk C++ dock.",
+    detailEn:
+      "A cohesive Windows 11 customization workspace: an interactive Lively WebView2 desktop HUD displaying live schedules and telemetry, a background timetable synchronizer protecting credentials via Windows DPAPI encryption, and a zero-overhead native C++ Windhawk taskbar/dock mod.",
+    detail:
+      "Bộ công cụ cá nhân hoá không gian làm việc trên Windows 11: hình nền tương tác chạy trên WebView2 hiển thị lịch học trực tiếp, tiến trình đồng bộ nền bảo vệ thông tin đăng nhập bằng mã hoá phần cứng Windows DPAPI, và bản độ thanh taskbar/dock viết bằng C++ chạy qua Windhawk.",
+    tech: ["C++", "Windows API", "DPAPI", "WebView2", "Windhawk"],
+    role: "C++ / Desktop Developer",
+    roleEn: "C++ / Desktop Developer",
+    client: "Công cụ cá nhân mã nguồn mở",
+    clientEn: "Open-source desktop suite",
+    yearRole: "2026 • C++ & Windows 11",
+  },
+  "fitness-app": {
+    category: "TYPESCRIPT • MEDIAPIPE • TF.JS",
+    shortName: "AI FITNESS COACH",
+    shortNameEn: "AI FITNESS COACH",
+    title: "AI Fitness App | Chấm tư thế tập & nhận diện món ăn",
+    titleEn: "AI Fitness Coach | Real-Time Pose & Food Vision Web App",
+    desc: "Ứng dụng web dùng camera chỉnh tư thế tập thể dục theo thời gian thực và chụp ảnh bữa ăn để ước tính dinh dưỡng ngay trên trình duyệt.",
+    descEn:
+      "Full-stack AI fitness web app with real-time MediaPipe Pose form correction & in-browser MobileNetV3 TensorFlow.js food classification.",
+    detailEn:
+      "A privacy-preserving AI fitness web app running computer vision inference directly in the client browser with zero GPU server costs: real-time skeletal joint angle tracking and rep counting via MediaPipe Pose, paired with an in-browser MobileNetV3 TensorFlow.js food classifier for instant meal logging.",
+    detail:
+      "Ứng dụng web hỗ trợ tập luyện chạy mô hình thị giác máy tính trực tiếp ngay trên trình duyệt người dùng (không tốn máy chủ GPU, không gửi video nhạy cảm lên mạng): theo dõi góc khớp xương và đếm nhịp tập thời gian thực bằng MediaPipe Pose, kết hợp nhận diện món ăn bằng MobileNetV3 trên TensorFlow.js.",
+    tech: ["TypeScript", "React", "MediaPipe Pose", "TensorFlow.js", "MobileNetV3"],
+    role: "Full-Stack & WebML Developer",
+    roleEn: "Full-Stack & WebML Developer",
+    client: "Dự án mã nguồn mở",
+    clientEn: "Open-source WebML app",
+    yearRole: "2026 • TypeScript & WebML",
+  },
   "web-scraping-showcase": {
     category: "PYTHON • PLAYWRIGHT • API",
     shortName: "SCRAPING TOOLKIT",
@@ -65,6 +332,9 @@ const REPO_META: Record<string, any> = {
     client: "Dự án mã nguồn mở",
     clientEn: "Open-source showcase",
     yearRole: "2026 • Python & Playwright",
+    demo: "https://dev.to/tthanh2k6/stop-scraping-doms-when-json-apis-are-hiding-in-plain-sight-benchmarks-with-async-python--5bia",
+    demoLabel: "Đọc benchmark 51x",
+    demoLabelEn: "Read 51x Benchmark",
   },
   DiemDanhQR: {
     category: "JAVASCRIPT • PWA",
@@ -386,67 +656,43 @@ const privateProjects = [
   },
 ];
 
-// Danh sách dự án tĩnh = dự án private + các repo công khai thật trên GitHub.
-// Dùng để hiển thị tức thì khi mở trang và làm phương án dự phòng khi không gọi được API
+// Danh sách dự án tĩnh = dự án private + các repo công khai chủ lực trên GitHub.
+// Dùng để hiển thị tức thì ngay trên SSR và làm phương án dự phòng khi không gọi được API
 // (offline / vượt giới hạn request). Bản fetch động bên dưới sẽ ghi đè phần repo công khai.
+const buildStaticPublic = (id: string) => ({
+  id,
+  ...REPO_META[id],
+  image: projectImage(id),
+  year: "2026",
+  link: `https://github.com/${GITHUB_USER}/${id}`,
+});
+
 const publicProjects = [
+  buildStaticPublic("ai-automation-and-rag-toolkit"),
+  buildStaticPublic("apify-b2b-lead-and-contact-enricher"),
+  buildStaticPublic("apify-ecommerce-price-and-stock-monitor"),
+  buildStaticPublic("apify-us-healthcare-clinic-contact-enricher"),
+  buildStaticPublic("apify-multi-stop-route-and-distance-optimizer"),
+  buildStaticPublic("web-scraping-showcase"),
+  buildStaticPublic("burgershop-pod-tool"),
+  buildStaticPublic("moto-nav"),
   {
-    id: "web-scraping-showcase",
-    ...REPO_META["web-scraping-showcase"],
-    image: projectImage("web-scraping-showcase"),
-    year: "2026",
-    link: `https://github.com/${GITHUB_USER}/web-scraping-showcase`,
-  },
-  {
-    id: "DiemDanhQR",
-    category: "JAVASCRIPT • PWA",
-    shortName: "QR ATTENDANCE",
-    title: "DiemDanhQR | Điểm danh QR",
-    ...REPO_META.DiemDanhQR,
-    image: projectImage("DiemDanhQR"),
-    year: "2026",
+    ...buildStaticPublic("DiemDanhQR"),
     yearRole: "2026 • JavaScript",
-    link: `https://github.com/${GITHUB_USER}/DiemDanhQR`,
     demo: "https://tthanh2k6.github.io/DiemDanhQR/",
   },
   {
-    id: "AI_Lab",
-    category: "TYPESCRIPT & AI",
-    shortName: "AI LAB",
-    title: "AI_Lab | Thử nghiệm AI",
-    ...REPO_META.AI_Lab,
-    image: projectImage("AI_Lab"),
-    year: "2026",
+    ...buildStaticPublic("AI_Lab"),
     yearRole: "2026 • TypeScript",
-    link: `https://github.com/${GITHUB_USER}/AI_Lab`,
     demo: "https://ai-lab-tthanh2006.vercel.app",
   },
   {
-    id: "KNN",
-    ...REPO_META.KNN,
-    image: projectImage("KNN"),
-    year: "2026",
-    link: `https://github.com/${GITHUB_USER}/KNN`,
-  },
-  {
-    id: "H-c-AI-ML",
-    ...REPO_META["H-c-AI-ML"],
-    image: projectImage("H-c-AI-ML"),
-    year: "2026",
-    link: `https://github.com/${GITHUB_USER}/H-c-AI-ML`,
-  },
-  {
-    id: "Portfolio",
-    category: "WEB & 3D",
-    shortName: "PORTFOLIO",
-    title: "Portfolio | Trang cá nhân",
-    ...REPO_META.Portfolio,
-    image: projectImage("Portfolio"),
-    year: "2026",
+    ...buildStaticPublic("Portfolio"),
     yearRole: "2026 • Web & 3D",
-    link: `https://github.com/${GITHUB_USER}/Portfolio`,
-    demo: "https://portfolio-tthanh2006.vercel.app/",
+    demo: "https://trungthanhtran.vercel.app/",
   },
+  buildStaticPublic("KNN"),
+  buildStaticPublic("H-c-AI-ML"),
 ];
 
 // Danh sách hiển thị mặc định: dự án không công khai mã nguồn đứng trước, rồi tới repo công khai.
@@ -619,9 +865,15 @@ function mapRepoToProject(repo: any) {
     yearRole: `${year} • ${lang}`,
     link: repo.html_url,
     // Trường "Website" của repo trên GitHub = bản deploy chạy thật, dùng làm nút phụ.
-    demo: repo.homepage || undefined,
+    // Tự động chuyển link vercel cũ sang domain chính thức trungthanhtran.vercel.app.
+    demo: repo.homepage
+      ? String(repo.homepage).replace(
+          /https?:\/\/(portfolio-red-theta-65|portfolio-tthanh2006)\.vercel\.app/,
+          "https://trungthanhtran.vercel.app"
+        )
+      : undefined,
   };
-  // Ghi đè bằng thông tin tự soạn (vai trò, mức độ dùng AI...) nếu repo có trong REPO_META
+  // Ghi đè bằng thông tin tự soạn (vai trò, bản chạy thử trên Apify Store...) nếu repo có trong REPO_META
   return { ...base, ...(REPO_META[repo.name] || {}) };
 }
 

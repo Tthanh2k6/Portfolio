@@ -11,6 +11,7 @@ import {
   CHART_DATA as DEFAULT_CHART,
   TITLE_TO_CHART as DEFAULT_MAP,
 } from "@/components/SkillsSection";
+import { DEFAULT_SOCIALS } from "@/components/ContactSection";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -32,45 +33,35 @@ const DEFAULT_CUBES = {
 };
 
 const DEFAULT_HOME = {
-  line1: "Just chill. The future is rendering...",
-  line2: "Trần Trung Thành",
-  tags: "AI, WEB3, UI, 3D, MOTION, VIDEO",
+  line1: "Shipping resilient web scrapers, AI workflow automations & full-stack products.",
+  line2: "Trung Thanh Tran",
+  tags: "PYTHON & PLAYWRIGHT, AI / N8N AUTOMATION, APIFY & REST APIS, FASTAPI & SUPABASE, REACT & MOBILE",
 };
 
 const DEFAULT_INFO = {
-  status: "+ AVAILABLE FOR WORK",
-  titleTop: "Prompt",
-  titleBottom: "Engineering",
-  typing: "Happy coding",
-  description: "Sức mạnh của ngôn ngữ: Kết nối ý tưởng và trí tuệ nhân tạo.\nTối ưu hóa Prompts: Nghệ thuật điều khiển AI.\nTriết lý: Hiểu, Thử nghiệm, Tinh chỉnh.",
-  tags: "Python, JavaScript, React",
-  explore1: "↓ explore my skills above",
-  explore2: "↗ explore portfolio & contact details below",
-  cardName: "TRAN TRUNG THANH",
-  cardTitle: "Industrial University \nof Ho Chi Minh City",
+  status: "+ AVAILABLE FOR FREELANCE & REMOTE CONTRACTS (UTC+7)",
+  titleTop: "Automation",
+  titleBottom: "& Full-Stack",
+  typing: "Shipping clean data & reliable systems",
+  description:
+    "Building high-concurrency Python & Playwright scrapers (<50MB RAM), strict-schema OpenAI & n8n workflows, and full-stack web/mobile products.\nPublished 6 commercial data Actors on Apify Store, 2 public REST APIs on RapidAPI, and a live customer loyalty app on Google Play.\nEngineering philosophy: working sample first — clean schemas, resilient retries, zero fluff.",
+  tags: "Python & Playwright, AI / n8n Workflows, FastAPI & Supabase, React & Expo, 6 Apify Store Actors",
+  explore1: "↗ inspect my interactive 3D tech stack under skills",
+  explore2: "→ browse shipped projects, 6 live Apify Actors & printable CV above",
+  cardName: "TRUNG THANH TRAN",
+  cardTitle: "AI Automation & Full-Stack\nHo Chi Minh City (UTC+7)",
 };
 
 const DEFAULT_SKILLS_TEXT = {
-  sub: "Always improving myself day by day",
-  title1: "Current",
-  title2: "skills",
-  typewriter: "Experience gained through projects and school",
-  desc: "Transforming complex development challenges into smooth, fluid user experiences. Focusing on optimized performance, responsive layouts, and scalable codebases.",
+  sub: "Battle-tested in production, refined every day",
+  title1: "Engineering",
+  title2: "stack",
+  typewriter: "Proven across Google Play, 6 Apify Store Actors & live client systems",
+  desc: "From <50MB RAM async Python scrapers and zero-drift OpenAI/n8n pipelines to shipped React Native apps and PHP/PostgreSQL backends — hover any keycap to inspect real production usage.",
 };
 
-// DEFAULT_KEYCAPS / DEFAULT_CHART / DEFAULT_MAP: xem phần import ở đầu file —
-// lấy thẳng từ SkillsSection để admin và trang công khai không bao giờ lệch nhau.
-
-// DEFAULT_PROJECTS: xem phần import ở đầu file — dùng chung mảng `projects` của
-// ProjectSection (dự án không công khai mã nguồn + repo công khai), nên admin luôn thấy
-// đủ danh sách như trang Project.
-
-// Danh sách link mạng xã hội mặc định (dùng khi localStorage chưa có "contact_socials")
-const DEFAULT_SOCIALS = [
-  { type: "GitHub", url: "https://github.com/Tthanh2k6", handle: "@Tthanh2k6", visible: true, large: true },
-  { type: "Facebook", url: "https://www.facebook.com/tran.trung.thanh.239362", handle: "Trần Trung Thành", visible: true, large: false },
-  { type: "Zalo", url: "https://zaloapp.com/qr/p/rmo5prbvj5ul", handle: "Trần Trung Thành", visible: true, large: false },
-];
+// DEFAULT_KEYCAPS / DEFAULT_CHART / DEFAULT_MAP / DEFAULT_SOCIALS / DEFAULT_PROJECTS:
+// lấy thẳng từ các component công khai để admin và trang ngoài không bao giờ lệch nhau.
 
 function AdminPanel() {
   const [password, setPassword] = useState("");

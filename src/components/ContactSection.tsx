@@ -18,11 +18,44 @@ interface Toast {
   message: string;
 }
 
-// Danh sách link mạng xã hội mặc định (dùng khi localStorage chưa có "contact_socials")
-const DEFAULT_SOCIALS = [
-  { type: "GitHub", url: "https://github.com/Tthanh2k6", handle: "@Tthanh2k6", visible: true, large: true },
-  { type: "Facebook", url: "https://www.facebook.com/tran.trung.thanh.239362", handle: "Trần Trung Thành", visible: true, large: false },
-  { type: "Zalo", url: "https://zaloapp.com/qr/p/rmo5prbvj5ul", handle: "Trần Trung Thành", visible: true, large: false },
+// Danh sách kênh chuyên môn mặc định cho khách hàng quốc tế & nhà tuyển dụng
+// (1 card lớn span 2 cột + 4 card đôi tạo bố cục đối xứng hoàn hảo)
+export const DEFAULT_SOCIALS = [
+  {
+    type: "GitHub",
+    url: "https://github.com/Tthanh2k6",
+    handle: "@Tthanh2k6 · 20 Public Repos",
+    visible: true,
+    large: true,
+  },
+  {
+    type: "Apify Store",
+    url: "https://apify.com/thanh81646",
+    handle: "6 Commercial Data Actors",
+    visible: true,
+    large: false,
+  },
+  {
+    type: "Upwork",
+    url: "https://www.upwork.com/freelancers/trungthanhtrandev",
+    handle: "Verified Freelancer · UTC+7",
+    visible: true,
+    large: false,
+  },
+  {
+    type: "Dev.to",
+    url: "https://dev.to/tthanh2k6",
+    handle: "Benchmarks & Deep-Dives",
+    visible: true,
+    large: false,
+  },
+  {
+    type: "RapidAPI",
+    url: "https://rapidapi.com/Tthanh2k6/api/b2b-website-email-phone-and-tech-stack-enricher",
+    handle: "2 Live Public REST APIs",
+    visible: true,
+    large: false,
+  },
 ];
 
 function getSocialIcon(type: string) {
@@ -31,6 +64,41 @@ function getSocialIcon(type: string) {
     return (
       <svg className="social-icon" viewBox="0 0 24 24">
         <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+      </svg>
+    );
+  }
+  if (t.includes("apify")) {
+    return (
+      <svg className="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="12 2 22 7.5 22 16.5 12 22 2 16.5 2 7.5 12 2" />
+        <polyline points="2 7.5 12 13 22 7.5" />
+        <line x1="12" y1="22" x2="12" y2="13" />
+      </svg>
+    );
+  }
+  if (t.includes("upwork")) {
+    return (
+      <svg className="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+        <path d="M12 12v4" />
+        <path d="M9 14h6" />
+      </svg>
+    );
+  }
+  if (t.includes("dev.to") || t === "dev") {
+    return (
+      <svg className="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="16 18 22 12 16 6" />
+        <polyline points="8 6 2 12 8 18" />
+        <line x1="14" y1="4" x2="10" y2="20" />
+      </svg>
+    );
+  }
+  if (t.includes("rapidapi") || t.includes("api")) {
+    return (
+      <svg className="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
+        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
       </svg>
     );
   }
@@ -81,14 +149,14 @@ function getSocialIcon(type: string) {
 // Đây là chữ do trang tự sinh (không phải khách viết) nên phải đổi theo ngôn ngữ —
 // hàm nhận lang thay vì hằng số cố định.
 const WELCOME_VI =
-  "Chào mừng bạn đến với portfolio của mình! Cảm ơn bạn đã ghé thăm — hãy để lại một lời nhắn hoặc cảm nghĩ nhé. 👋";
+  "Chào mừng bạn đến với portfolio của mình! Nếu bạn cần xây dựng bộ cào dữ liệu, tự động hoá quy trình AI/n8n hay phát triển ứng dụng web/mobile, cứ nhắn trực tiếp ở cột trái hoặc để lại đôi lời lưu bút tại đây nhé.";
 const WELCOME_EN =
-  "Welcome to my portfolio! Thanks for stopping by — feel free to leave a note or a thought. 👋";
+  "Thanks for visiting! Need a resilient Python/Playwright scraper, a strict-schema OpenAI/n8n workflow, or a full-stack build? Send a direct brief on the left — happy to share a working sample first.";
 
 const makeInitialComments = (lang: "vi" | "en"): Comment[] => [
   {
     id: 1,
-    author: "Trần Trung Thành",
+    author: "Trung Thanh Tran",
     text: lang === "en" ? WELCOME_EN : WELCOME_VI,
     pinned: true,
     likes: 0,
@@ -130,10 +198,10 @@ function ToastItem({ toast }: { toast: Toast }) {
 }
 
 export function ContactSection() {
-  const { lang } = useLang();
-  // Khởi tạo bằng bản tiếng Việt cho khớp HTML server dựng (không lệch hydrate);
-  // đổi ngôn ngữ sau đó sẽ được effort bên dưới cập nhật lại lời chào.
-  const [comments, setComments] = useState<Comment[]>(() => makeInitialComments("vi"));
+  const { lang, t } = useLang();
+  // Khởi tạo bằng bản tiếng Anh cho khớp HTML server dựng (LangProvider mặc định "en", không lệch hydrate);
+  // đổi ngôn ngữ sau đó sẽ được effect bên dưới cập nhật lại lời chào.
+  const [comments, setComments] = useState<Comment[]>(() => makeInitialComments("en"));
   const [socials, setSocials] = useState<any[]>(DEFAULT_SOCIALS);
   const [toasts, setToasts] = useState<Toast[]>([]);
 
@@ -877,11 +945,14 @@ export function ContactSection() {
       {/* TIÊU ĐỀ HEADER */}
       <div className="contact-header-wrapper">
         <h1 className="gallery-title" style={{ marginBottom: "12px" }}>
-          <span className="word-project">Get In</span>
-          <span className="word-showcase">Touch</span>
+          <span className="word-project">{t("Liên Hệ", "Get In")}</span>
+          <span className="word-showcase">{t("& Hợp Tác", "Touch")}</span>
         </h1>
         <p className="contact-subtitle">
-          Have something in mind? Send a message and let's connect.
+          {t(
+            "Sẵn sàng cho dự án freelance cố định giá, hợp tác agency quốc tế & vị trí kỹ sư từ xa (UTC+7).",
+            "Available for fixed-price milestones, white-label agency partnerships & remote contracts (UTC+7)."
+          )}
         </p>
       </div>
 
@@ -889,9 +960,12 @@ export function ContactSection() {
       <section className="contact-grid">
         {/* CỘT TRÁI: Form liên hệ + Grid mạng xã hội */}
         <div className="contact-column-card">
-          <h2 className="column-title">Contact Me</h2>
+          <h2 className="column-title">{t("Gửi Tin Nhắn", "Direct Inquiry")}</h2>
           <p className="column-subtitle">
-            Feel free to reach out if you want to collaborate, discuss ideas, or simply say hello.
+            {t(
+              "Gửi mô tả ngắn về bài toán dữ liệu, luồng tự động hoá hoặc sản phẩm bạn cần — mình thường phản hồi kèm phương án/mẫu thử trong vòng vài giờ.",
+              "Share your target URL, workflow bottleneck, or product scope — I typically reply within a few hours with a concrete technical plan or working sample."
+            )}
           </p>
 
           <form onSubmit={handleContactSubmit}>
@@ -971,7 +1045,9 @@ export function ContactSection() {
             </button>
           </form>
 
-          <h3 className="social-section-title">Connect With Me</h3>
+          <h3 className="social-section-title">
+            {t("Kênh Kỹ Thuật & Hồ Sơ Đã Xác Thực", "Verified Engineering Channels")}
+          </h3>
           <div className="social-grid">
             {socials
               .filter((s) => s.visible)

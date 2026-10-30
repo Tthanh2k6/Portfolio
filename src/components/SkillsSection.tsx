@@ -31,65 +31,63 @@ const KEY_ICON     = 36;   // cạnh logo trong phím (px)
 // (xem span.keycap-label-fallback ở phần render). Có logo thì thả file vào
 // public/IMG/ rồi điền đường dẫn vào đây.
 export const KEYCAPS = [
-  { bg: "#7f52ff", shadow: "#5433b0", color: "#fff",    img: "",                         title: "Kotlin",          desc: "Ngôn ngữ chính cho Android: app Lịch IUH và code tiêm vào bản mod Ghi chú.", descEn: "My main Android language: the Lich IUH app and the code injected into the Notes mod." },
-  { bg: "#2aa06a", shadow: "#186a45", color: "#fff",    img: "",                         title: "Android",         desc: "Widget Jetpack Glance, WorkManager chạy nền, lưu dữ liệu mã hoá, dịch ngược APK.", descEn: "Jetpack Glance widgets, WorkManager background sync, encrypted storage, APK reverse engineering." },
-  { bg: "#3178c6", shadow: "#1f4e80", color: "#fff",    img: "",                         title: "TypeScript",      desc: "App di động Expo Router, portfolio TanStack Start và AI Game Arena.", descEn: "The Expo Router mobile app, this TanStack Start portfolio, and AI Game Arena." },
-  { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png",           title: "React",           desc: "Giao diện hiện đại: component, hook, RSC, Tailwind.", descEn: "Modern interfaces: components, hooks, RSC, Tailwind." },
-  { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "App React Native chạy thật trên iOS + Android: push, camera QR, cập nhật OTA.", descEn: "A shipped React Native app on iOS and Android: push, QR camera, OTA updates." },
-  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "Tự động hóa, API bất đồng bộ và mọi thử nghiệm ML/AI.", descEn: "Automation, async APIs, and every ML/AI experiment I run." },
-  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "REST API cho app khách hàng: JWT, phân quyền, chống brute-force, cron; và tính năng web công ty.", descEn: "The customer app's REST API — JWT, authorisation, brute-force protection, cron — plus company web features." },
-  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Cơ sở dữ liệu vận hành thật: lược đồ, migration, truy vấn doanh thu và tối ưu.", descEn: "A database in production: schema, migrations, revenue queries and tuning." },
-  { bg: "#ffeb3b", shadow: "#bfa500", color: "#000",    img: "/IMG/JavaScript.png",      title: "JavaScript",      desc: "Frontend tương tác, PWA và ứng dụng chạy thẳng trên trình duyệt.", descEn: "Interactive frontends, PWAs, and apps that run straight in the browser." },
-  { bg: "#ff5722", shadow: "#b73209", color: "#fff",    img: "/IMG/HTML.png",            title: "HTML5",           desc: "Cấu trúc web ngữ nghĩa, chuẩn truy cập & SEO.", descEn: "Semantic markup, accessibility standards and SEO." },
-  { bg: "#2196f3", shadow: "#0d6aad", color: "#fff",    img: "/IMG/CSS.png",             title: "CSS3",            desc: "Giao diện responsive với Flexbox, Grid và animation mượt mà.", descEn: "Responsive layouts with Flexbox, Grid and smooth animation." },
-  { bg: "#1a1a1a", shadow: "#000000", color: "#fff",    img: "",                         title: "Three.js",        desc: "Dựng cảnh WebGL: lưới neon isometric, hiệu ứng bloom, bàn phím 3D tương tác.", descEn: "WebGL scenes: isometric neon grids, bloom post-processing, an interactive 3D keyboard." },
-  { bg: "#009688", shadow: "#00635a", color: "#fff",    img: "",                         title: "FastAPI",         desc: "Backend bất đồng bộ cho tool sản xuất video AI, kèm license server bán theo credit.", descEn: "The async backend behind my AI video tool, plus a credit-based licence server." },
-  { bg: "#2d8a4e", shadow: "#1b5730", color: "#fff",    img: "",                         title: "Playwright",      desc: "Điều khiển Chrome thật qua CDP để tự động hoá trang không có API công khai.", descEn: "Driving a real Chrome over CDP to automate sites that expose no public API." },
-  { bg: "#43b02a", shadow: "#2b731b", color: "#fff",    img: "",                         title: "Selenium",        desc: "Tự động đăng nhập, nhập liệu hàng loạt và xuất báo cáo trên trang quản trị.", descEn: "Automated logins, bulk data entry and report exports across admin panels." },
-  { bg: "#ff6f00", shadow: "#b34e00", color: "#fff",    img: "",                         title: "TensorFlow",      desc: "Mạng nơ-ron MLP/CNN, phân loại MNIST và các mô hình học sâu tự huấn luyện.", descEn: "MLP and CNN networks, MNIST classification, and deep models trained from scratch." },
-  { bg: "#e76f51", shadow: "#a73e25", color: "#fff",    img: "/IMG/Java.jpg",            title: "Java",            desc: "Backend doanh nghiệp và ứng dụng Android trên nền JVM.", descEn: "Enterprise backends and Android applications on the JVM." },
-  { bg: "#007acc", shadow: "#005187", color: "#fff",    img: "/IMG/C++.png",             title: "C / C++",         desc: "Xử lý hiệu năng cao, quản lý bộ nhớ thủ công, đệ quy tối ưu.", descEn: "High-performance work, manual memory management, optimised recursion." },
-  { bg: "#f4511e", shadow: "#b02600", color: "#fff",    img: "/IMG/Git.png",             title: "Git",             desc: "Quản lý phiên bản chi tiết cho codebase phức tạp.", descEn: "Fine-grained version control across complex codebases." },
-  { bg: "#33353f", shadow: "#1a1b21", color: "#fff",    img: "/IMG/GitHub.png",          title: "GitHub",          desc: "Quản lý phiên bản, nhánh và cộng tác nhóm.", descEn: "Version control, branching and team collaboration." },
-  { bg: "#00a2ff", shadow: "#006bb3", color: "#fff",    img: "/IMG/Visual_Studio_Code.png", title: "VS Code",      desc: "Buồng lái phát triển nhanh, tối ưu cho tự động hóa.", descEn: "My cockpit for fast development, tuned for automation." },
-  { bg: "#10a37f", shadow: "#0a664f", color: "#fff",    img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "ChatGPT", desc: "Công cụ AI hỗ trợ lập trình cặp & tự động hóa công việc hằng ngày.", descEn: "An AI pair-programming aid and everyday task automation." },
-  { bg: "#e08260", shadow: "#a64f31", color: "#fff",    img: "/IMG/Claude.png",          title: "Claude",          desc: "Công cụ AI hỗ trợ: suy luận sâu, kiểm chứng và refactor code hóc búa.", descEn: "An AI aid for deep reasoning, verification and refactoring gnarly code." },
-  { bg: "#4c75f2", shadow: "#2143b3", color: "#fff",    img: "/IMG/Gemini.png",          title: "Gemini",          desc: "Công cụ AI hỗ trợ suy luận đa phương thức trong quy trình code.", descEn: "An AI aid for multimodal reasoning inside my coding workflow." },
+  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "Asyncio, httpx, xử lý dữ liệu, 6 Actor thương mại trên Apify Store và các pipeline AI.", descEn: "Asyncio, httpx, ETL pipelines, 6 commercial Apify Store Actors, and ML/AI systems." },
+  { bg: "#2d8a4e", shadow: "#1b5730", color: "#fff",    img: "",                         title: "Playwright",      desc: "Tự động hoá trình duyệt vượt anti-bot, điều khiển Chrome qua CDP và dò Hidden JSON API.", descEn: "Anti-bot browser automation, Chrome CDP remote debugging, and hidden JSON API sniffing." },
+  { bg: "#009688", shadow: "#00635a", color: "#fff",    img: "",                         title: "FastAPI",         desc: "Backend bất đồng bộ hiệu năng cao, cổng OpenAI Structured Outputs, kiểm soát backpressure & license server.", descEn: "High-concurrency async microservices, OpenAI Structured Output routers, and credit licence servers." },
+  { bg: "#ea4b71", shadow: "#9c2b47", color: "#fff",    img: "",                         title: "n8n",             desc: "Điều phối luồng tự động hoá doanh nghiệp, webhook Make.com/Clay, đồng bộ CRM & hàng đợi thử lại.", descEn: "Production workflow orchestration, Make.com/Clay webhooks, CRM sync, and idempotent retry queues." },
+  { bg: "#10a37f", shadow: "#0a664f", color: "#fff",    img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "OpenAI API", desc: "Ép kiểu JSON Schema tuyệt đối (0% lệch cấu trúc), Hybrid RAG (BM25 + Vector RRF) và gọi hàm.", descEn: "Zero-drift Strict JSON Schema Structured Outputs, Hybrid BM25 + Vector RRF RAG, and tool calling." },
+  { bg: "#3178c6", shadow: "#1f4e80", color: "#fff",    img: "",                         title: "TypeScript",      desc: "Ứng dụng full-stack kiểm kiểu chặt: app di động Expo Router, portfolio TanStack Start SSR và AI Lab.", descEn: "Strictly typed full-stack apps: the Google Play Expo app, this TanStack Start SSR site, and AI Arena." },
+  { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png",           title: "React",           desc: "Giao diện web tương tác cao với React 19, custom hooks, SSR, TailwindCSS và CMS phía client.", descEn: "Interactive interfaces built with React 19, custom hooks, SSR, TailwindCSS, and client-side CMS." },
+  { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "Ứng dụng React Native chạy thật trên Google Play (com.madalena.app): thông báo đẩy, quét QR, cập nhật OTA.", descEn: "Shipped React Native loyalty app on Google Play (com.madalena.app): push, QR scan, and OTA updates." },
+  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "REST API sản xuất thật (JWT HS256, phân quyền DB, chống brute-force, cron) và tính năng web TMĐT.", descEn: "Production REST API (JWT HS256, DB-backed RBAC, brute-force protection, cron) and live storefront work." },
+  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Thiết kế lược đồ cơ sở dữ liệu vận hành thật, migration, truy vấn hạng doanh thu và tối ưu chỉ mục.", descEn: "Production relational schemas, migrations, cumulative revenue tier queries, and index tuning." },
+  { bg: "#24b47e", shadow: "#15734f", color: "#fff",    img: "",                         title: "Supabase",        desc: "PostgreSQL phân quyền từng dòng (RLS), kiểm thử bảo mật tự động bằng pgTAP và đồng bộ đám mây.", descEn: "PostgreSQL Row-Level Security (RLS), automated pgTAP policy auditing, and real-time cloud sync." },
+  { bg: "#ffeb3b", shadow: "#bfa500", color: "#000",    img: "/IMG/JavaScript.png",      title: "JavaScript",      desc: "Chrome Extension Manifest V3 tự động hoá Angular/PrimeNG, Google Apps Script và ứng dụng PWA.", descEn: "Manifest V3 Chrome Extensions automating Angular/PrimeNG portals, Google Apps Script, and PWAs." },
+  { bg: "#7f52ff", shadow: "#5433b0", color: "#fff",    img: "",                         title: "Kotlin",          desc: "Ngôn ngữ chính cho Android native: app widget Lịch IUH, GiuThongBao và mã tiêm smali cho Ghi chú Mod.", descEn: "Primary native Android language: Lich IUH widgets, push keep-alive utility, and smali-injected mods." },
+  { bg: "#2aa06a", shadow: "#186a45", color: "#fff",    img: "",                         title: "Android",         desc: "Jetpack Glance widget, WorkManager đồng bộ nền, ghim chứng chỉ TLS tuỳ chỉnh và dịch ngược APK.", descEn: "Jetpack Glance widgets, WorkManager background sync, custom TLS cert pinning, and APK reverse engineering." },
+  { bg: "#43b02a", shadow: "#2b731b", color: "#fff",    img: "",                         title: "Selenium",        desc: "Tự động đăng nhập trang quản trị, cập nhật giá hàng loạt và đối soát đơn hàng xuất ra Excel.", descEn: "Automated admin logins, validated batch price updates, and order reconciliation exports to Excel." },
+  { bg: "#1a1a1a", shadow: "#000000", color: "#fff",    img: "",                         title: "Three.js",        desc: "Dựng cảnh 3D WebGL thời gian thực: lưới neon isometric, hiệu ứng UnrealBloom và mô phỏng vật lý.", descEn: "Real-time WebGL scenes: isometric neon grids, UnrealBloom post-processing, and 3D AI simulations." },
+  { bg: "#ff6f00", shadow: "#b34e00", color: "#fff",    img: "",                         title: "TensorFlow",      desc: "Mạng nơ-ron CNN/MLP (99.14% MNIST), chỉnh tư thế tập bằng MediaPipe Pose và phân loại ảnh trên trình duyệt.", descEn: "CNN/MLP pipelines (99.14% MNIST), real-time MediaPipe Pose coaching, and in-browser TF.js classifiers." },
+  { bg: "#007acc", shadow: "#005187", color: "#fff",    img: "/IMG/C++.png",             title: "C / C++",         desc: "Nhân dẫn đường C++17 chính xác từng bit, firmware màn hình HUD ESP32 qua BLE và mod Windhawk Windows 11.", descEn: "Bit-exact C++17 turn-by-turn navigation core, ESP32 BLE HUD firmware, and native Windows 11 C++ mods." },
+  { bg: "#e76f51", shadow: "#a73e25", color: "#fff",    img: "/IMG/Java.jpg",            title: "Java",            desc: "Nền tảng lập trình hướng đối tượng trên JVM và kiến trúc hệ thống Android.", descEn: "Object-oriented backend foundations on the JVM and Android platform internals." },
+  { bg: "#f4511e", shadow: "#b02600", color: "#fff",    img: "/IMG/Git.png",             title: "Git",             desc: "Quản lý lịch sử phiên bản chặt chẽ, phân nhánh rõ ràng trên các codebase đa nền tảng.", descEn: "Clean version history, disciplined branching, and multi-repository release workflows." },
+  { bg: "#33353f", shadow: "#1a1b21", color: "#fff",    img: "/IMG/GitHub.png",          title: "GitHub",          desc: "20 kho mã nguồn mở công khai kèm tài liệu kiến trúc, kiểm thử tự động và benchmark tái lập được.", descEn: "20 public engineering repositories with architecture docs, automated tests, and reproducible benchmarks." },
+  { bg: "#00a2ff", shadow: "#006bb3", color: "#fff",    img: "/IMG/Visual_Studio_Code.png", title: "VS Code",      desc: "Môi trường phát triển tốc độ cao tối ưu cho Python, TypeScript, Docker và gỡ lỗi từ xa.", descEn: "High-velocity development cockpit tuned for async Python, TypeScript, and remote debugging." },
+  { bg: "#e08260", shadow: "#a64f31", color: "#fff",    img: "/IMG/Claude.png",          title: "Claude",          desc: "Tích hợp Anthropic Structured Outputs và đối tác suy luận sâu khi kiểm toán kiến trúc & refactor.", descEn: "Anthropic Structured Outputs integration and deep architectural reasoning for complex refactors." },
+  { bg: "#4c75f2", shadow: "#2143b3", color: "#fff",    img: "/IMG/Gemini.png",          title: "Gemini",          desc: "Tích hợp Gemini API đọc ảnh hoá đơn (OCR) và trợ lý ngôn ngữ tự nhiên trong ứng dụng di động thực tế.", descEn: "Multimodal Gemini API integration for receipt OCR and natural-language assistants in mobile apps." },
 ] as const;
 
-// Tỉ trọng sử dụng kỹ năng (biểu đồ tròn) — gom theo nhóm, tổng = 100.
-// Số liệu bám theo khối lượng code thật trong các dự án đang chạy, không phải tự chấm điểm.
+// Tỉ trọng sử dụng kỹ năng (biểu đồ tròn) — gom theo nhóm sản xuất thực tế, tổng = 100.
 export const CHART_DATA = [
-  { name: "Python",               pct: 20, color: "#60A5FA" },
-  { name: "React / React Native", pct: 18, color: "#67E8F9" },
-  { name: "PHP / MySQL",          pct: 16, color: "#818CF8" },
-  { name: "Kotlin / Android",     pct: 14, color: "#A78BFA" },
-  { name: "JavaScript / TS",      pct: 12, color: "#FCD34D" },
-  { name: "HTML / CSS",           pct:  8, color: "#FB923C" },
-  { name: "Automation",           pct:  7, color: "#34D399" },
-  { name: "ML / AI",              pct:  5, color: "#F87171" },
+  { name: "Python & FastAPI",       pct: 26, color: "#60A5FA" },
+  { name: "Scraping & Automation",  pct: 20, color: "#34D399" },
+  { name: "TypeScript & React",     pct: 18, color: "#67E8F9" },
+  { name: "Mobile (Expo / Kotlin)", pct: 14, color: "#A78BFA" },
+  { name: "Backend & Databases",    pct: 12, color: "#818CF8" },
+  { name: "LLM / RAG & ML",         pct: 10, color: "#FB923C" },
 ];
 
 // Ánh xạ title của keycap → tên mục trong biểu đồ (hover phím thì lát tương ứng bật ra).
-// Các phím công cụ (Java, C/C++, Git, GitHub, VS Code, ChatGPT, Claude, Gemini) cố ý
-// KHÔNG map — hover chúng sẽ giữ nguyên biểu đồ.
 export const TITLE_TO_CHART: Record<string, string> = {
-  "Kotlin": "Kotlin / Android",
-  "Android": "Kotlin / Android",
-  "TypeScript": "JavaScript / TS",
-  "JavaScript": "JavaScript / TS",
-  "Three.js": "JavaScript / TS",
-  "React": "React / React Native",
-  "Expo": "React / React Native",
-  "Python": "Python",
-  "FastAPI": "Python",
-  "PHP": "PHP / MySQL",
-  "MySQL": "PHP / MySQL",
-  "HTML5": "HTML / CSS",
-  "CSS3": "HTML / CSS",
-  "Playwright": "Automation",
-  "Selenium": "Automation",
-  "TensorFlow": "ML / AI",
+  "Python": "Python & FastAPI",
+  "FastAPI": "Python & FastAPI",
+  "Playwright": "Scraping & Automation",
+  "Selenium": "Scraping & Automation",
+  "n8n": "Scraping & Automation",
+  "TypeScript": "TypeScript & React",
+  "JavaScript": "TypeScript & React",
+  "React": "TypeScript & React",
+  "Three.js": "TypeScript & React",
+  "Expo": "Mobile (Expo / Kotlin)",
+  "Kotlin": "Mobile (Expo / Kotlin)",
+  "Android": "Mobile (Expo / Kotlin)",
+  "PHP": "Backend & Databases",
+  "MySQL": "Backend & Databases",
+  "Supabase": "Backend & Databases",
+  "OpenAI API": "LLM / RAG & ML",
+  "Claude": "LLM / RAG & ML",
+  "Gemini": "LLM / RAG & ML",
+  "TensorFlow": "LLM / RAG & ML",
 };
 
 function DonutChart({
@@ -307,11 +305,15 @@ export function SkillsSection() {
   const [phase, setPhase]             = useState<"idle"|"exiting"|"entering">("idle");
 
   // Các text layout động và mảng dữ liệu từ localStorage
-  const [subText, setSubText] = useState("Always improving myself day by day");
-  const [title1, setTitle1] = useState("Current");
-  const [title2, setTitle2] = useState("skills");
-  const [typewriterText, setTypewriterText] = useState("Experience gained through projects and school");
-  const [descText, setDescText] = useState("Transforming complex development challenges into smooth, fluid user experiences. Focusing on optimized performance, responsive layouts, and scalable codebases.");
+  const [subText, setSubText] = useState("Battle-tested in production, refined every day");
+  const [title1, setTitle1] = useState("Engineering");
+  const [title2, setTitle2] = useState("stack");
+  const [typewriterText, setTypewriterText] = useState(
+    "Proven across Google Play, 6 Apify Store Actors & live client systems"
+  );
+  const [descText, setDescText] = useState(
+    "From <50MB RAM async Python scrapers and zero-drift OpenAI/n8n pipelines to shipped React Native apps and PHP/PostgreSQL backends — hover any keycap to inspect real production usage."
+  );
   
   // Khởi tạo bằng chính giá trị mặc định (không phải mảng rỗng) để HTML do server dựng
   // đã có sẵn tên kỹ năng — trước đây trang này trả về khung trống, Google và công cụ
@@ -340,19 +342,24 @@ export function SkillsSection() {
 
     // Tải cấu hình từ localStorage ở phía client
     const storedSub = localStorage.getItem("skills_sub");
-    setSubText(storedSub || "Always improving myself day by day");
+    setSubText(storedSub || "Battle-tested in production, refined every day");
 
     const storedTitle1 = localStorage.getItem("skills_title_1");
-    setTitle1(storedTitle1 || "Current");
+    setTitle1(storedTitle1 || "Engineering");
 
     const storedTitle2 = localStorage.getItem("skills_title_2");
-    setTitle2(storedTitle2 || "skills");
+    setTitle2(storedTitle2 || "stack");
 
     const storedTypewriter = localStorage.getItem("skills_typewriter");
-    setTypewriterText(storedTypewriter || "Experience gained through projects and school");
+    setTypewriterText(
+      storedTypewriter || "Proven across Google Play, 6 Apify Store Actors & live client systems"
+    );
 
     const storedDesc = localStorage.getItem("skills_desc");
-    setDescText(storedDesc || "Transforming complex development challenges into smooth, fluid user experiences. Focusing on optimized performance, responsive layouts, and scalable codebases.");
+    setDescText(
+      storedDesc ||
+        "From <50MB RAM async Python scrapers and zero-drift OpenAI/n8n pipelines to shipped React Native apps and PHP/PostgreSQL backends — hover any keycap to inspect real production usage."
+    );
 
     const storedKeycaps = localStorage.getItem("skills_keycaps");
     if (storedKeycaps) {

@@ -4,10 +4,18 @@ import { SkillsSection } from "@/components/SkillsSection";
 export const Route = createFileRoute("/skills")({
   head: () => ({
     meta: [
-      { title: "Skills — Trần Trung Thành" },
-      { name: "description", content: "Kỹ năng chuyên môn của Trần Trung Thành — AI / WEB3 / UI / 3D / MOTION / VIDEO" },
-      { property: "og:title", content: "Skills — Trần Trung Thành" },
-      { property: "og:description", content: "Experience gained through projects and school." },
+      { title: "Skills & Tech Stack — Trung Thanh Tran" },
+      {
+        name: "description",
+        content:
+          "Interactive 3D tech stack of Trung Thanh Tran — Python, Playwright, FastAPI, n8n, OpenAI Structured Outputs, TypeScript, React, React Native, PHP & PostgreSQL/Supabase.",
+      },
+      { property: "og:title", content: "Skills & Tech Stack — Trung Thanh Tran" },
+      {
+        property: "og:description",
+        content:
+          "Production stack across Python, Anti-Bot Web Scraping, AI Workflow Automation, Backend APIs, Web & Mobile.",
+      },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

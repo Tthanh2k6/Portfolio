@@ -6,8 +6,12 @@ import { useLang } from "@/lib/i18n";
 export const Route = createFileRoute("/information")({
   head: () => ({
     meta: [
-      { title: "Information — Trần Trung Thành" },
-      { name: "description", content: "Thông tin về Trần Trung Thành — AI / WEB3 / UI / 3D / MOTION / VIDEO" },
+      { title: "Information — Trung Thanh Tran | AI Automation & Full-Stack Engineer" },
+      {
+        name: "description",
+        content:
+          "About Trung Thanh Tran (Trần Trung Thành) — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer in Ho Chi Minh City (UTC+7). Creator of 6 Apify Store Actors & production web/mobile systems.",
+      },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -21,8 +25,8 @@ export const Route = createFileRoute("/information")({
   component: Information,
 });
 
-// Chuỗi chữ chạy dọc theo dây đeo (4 nbsp đầu + "3D CARD" × 5, ngăn cách bởi 8 nbsp)
-const LANYARD_TEXT = "    " + Array(5).fill("3D CARD").join(" ".repeat(8));
+// Chuỗi chữ chạy dọc theo dây đeo (4 nbsp đầu + "ENGINEER" × 5, ngăn cách bởi 8 nbsp)
+const LANYARD_TEXT = "    " + Array(5).fill("ENGINEER").join(" ".repeat(8));
 
 // Toàn bộ CSS gốc của Info.html, đổi selector `body` -> `.info-page` và reset `*` thu hẹp phạm vi
 const INFO_CSS = `
@@ -145,6 +149,7 @@ const INFO_CSS = `
 /* DÒNG 8: TAGS HIỆU ỨNG GLASSMORPHISM TỐI GIẢN */
 .info-page .tags {
     display: flex;
+    flex-wrap: wrap;
     gap: 10.4px;
     margin-bottom: 2rem;
 }
@@ -245,7 +250,7 @@ const INFO_CSS = `
 }
 
 .info-page .id-card::before {
-    content: 'MEMBER CARD';
+    content: 'ENGINEER ID';
     position: absolute;
     left: 10.4px;
     top: 50%;
@@ -309,27 +314,52 @@ const INFO_CSS = `
 }
 `;
 
-// Đoạn giới thiệu mặc định — phần duy nhất của trang này còn tiếng Việt, các chuỗi
-// khác vốn đã là tiếng Anh. Người dùng chỉnh qua /admin thì bản chỉnh tay được ưu
-// tiên và giữ nguyên khi đổi ngôn ngữ (đó là nội dung họ cố ý viết).
+// Đoạn giới thiệu mặc định song ngữ — trình bày năng lực thực chiến cho khách quốc tế
+// và nhà tuyển dụng. Người dùng chỉnh qua /admin thì bản chỉnh tay được ưu tiên.
 const DESC_VI =
-  "Sức mạnh của ngôn ngữ: Kết nối ý tưởng và trí tuệ nhân tạo.\nTối ưu hóa Prompts: Nghệ thuật điều khiển AI.\nTriết lý: Hiểu, Thử nghiệm, Tinh chỉnh.";
+  "Xây dựng bộ cào dữ liệu Python & Playwright bất đồng bộ (<50MB RAM), luồng tự động hoá AI / n8n chuẩn schema và sản phẩm web/mobile trọn gói.\nĐã xuất bản 6 Actor thương mại trên Apify Store, 2 REST API công khai trên RapidAPI và ứng dụng khách hàng thực tế trên Google Play.\nTriết lý làm việc: Gửi mẫu chạy thật trước — dữ liệu sạch, tự động phục hồi lỗi, không màu mè.";
 const DESC_EN =
-  "The power of language: connecting ideas to artificial intelligence.\nPrompt optimisation: the craft of steering AI.\nPhilosophy: understand, experiment, refine.";
+  "Building high-concurrency Python & Playwright scrapers (<50MB RAM), strict-schema OpenAI & n8n workflows, and full-stack web/mobile products.\nPublished 6 commercial data Actors on Apify Store, 2 public REST APIs on RapidAPI, and a live customer loyalty app on Google Play.\nEngineering philosophy: working sample first — clean schemas, resilient retries, zero fluff.";
 
 function Information() {
   const { t } = useLang();
-  const [status, setStatus] = useState("+ AVAILABLE FOR WORK");
-  const [titleTop, setTitleTop] = useState("Prompt");
-  const [titleBottom, setTitleBottom] = useState("Engineering");
+  const [customStatus, setCustomStatus] = useState<string | null>(null);
+  const [titleTop, setTitleTop] = useState("Automation");
+  const [titleBottom, setTitleBottom] = useState("& Full-Stack");
   // null = chưa có bản chỉnh tay -> lấy theo ngôn ngữ đang chọn
   const [customDesc, setCustomDesc] = useState<string | null>(null);
   const description = customDesc ?? t(DESC_VI, DESC_EN);
-  const [tags, setTags] = useState(["Python", "JavaScript", "React"]);
-  const [explore1, setExplore1] = useState("↓ explore my skills above");
-  const [explore2, setExplore2] = useState("↗ explore portfolio & contact details below");
-  const [cardName, setCardName] = useState("TRAN TRUNG THANH");
-  const [cardTitle, setCardTitle] = useState("Industrial University \nof Ho Chi Minh City");
+  const status =
+    customStatus ??
+    t(
+      "+ SẴN SÀNG NHẬN DỰ ÁN & HỢP ĐỒNG TỪ XA (UTC+7)",
+      "+ AVAILABLE FOR FREELANCE & REMOTE CONTRACTS (UTC+7)"
+    );
+  const [tags, setTags] = useState([
+    "Python & Playwright",
+    "AI / n8n Workflows",
+    "FastAPI & Supabase",
+    "React & Expo",
+    "6 Apify Store Actors",
+  ]);
+  const [customExplore1, setCustomExplore1] = useState<string | null>(null);
+  const [customExplore2, setCustomExplore2] = useState<string | null>(null);
+  const explore1 =
+    customExplore1 ??
+    t(
+      "↗ khám phá 24 kỹ năng & biểu đồ công nghệ ở mục skills",
+      "↗ inspect my interactive 3D tech stack under skills"
+    );
+  const explore2 =
+    customExplore2 ??
+    t(
+      "→ xem dự án thực tế, 6 Apify Actors & CV chi tiết trên thanh điều hướng",
+      "→ browse shipped projects, 6 live Apify Actors & printable CV above"
+    );
+  const [cardName, setCardName] = useState("TRUNG THANH TRAN");
+  const [cardTitle, setCardTitle] = useState(
+    "AI Automation & Full-Stack\nHo Chi Minh City (UTC+7)"
+  );
 
   useEffect(() => {
     // Tải cài đặt cục bộ
@@ -343,13 +373,13 @@ function Information() {
     const storedCardName = localStorage.getItem("info_card_name");
     const storedCardTitle = localStorage.getItem("info_card_title");
 
-    if (storedStatus) setStatus(storedStatus);
+    if (storedStatus) setCustomStatus(storedStatus);
     if (storedTitleTop) setTitleTop(storedTitleTop);
     if (storedTitleBottom) setTitleBottom(storedTitleBottom);
     if (storedDesc) setCustomDesc(storedDesc);
     if (storedTags) setTags(storedTags.split(",").map(t => t.trim()).filter(Boolean));
-    if (storedExplore1) setExplore1(storedExplore1);
-    if (storedExplore2) setExplore2(storedExplore2);
+    if (storedExplore1) setCustomExplore1(storedExplore1);
+    if (storedExplore2) setCustomExplore2(storedExplore2);
     if (storedCardName) setCardName(storedCardName);
     if (storedCardTitle) setCardTitle(storedCardTitle);
 
@@ -495,7 +525,8 @@ function Information() {
     }
 
     // --- HIỆU ỨNG GÕ CHỮ ---
-    const textToType = localStorage.getItem("info_typing") || "Happy coding";
+    const textToType =
+      localStorage.getItem("info_typing") || "Shipping clean data & reliable systems";
     let charIndex = 0;
 
     function typeCharacter() {

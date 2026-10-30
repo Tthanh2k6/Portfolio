@@ -4,10 +4,18 @@ import { ProjectSection } from "@/components/ProjectSection";
 export const Route = createFileRoute("/project")({
   head: () => ({
     meta: [
-      { title: "Project Showcase — Trần Trung Thành" },
-      { name: "description", content: "Project Showcase của Trần Trung Thành — AI / WEB3 / UI / 3D / MOTION / VIDEO" },
-      { property: "og:title", content: "Project Showcase — Trần Trung Thành" },
-      { property: "og:description", content: "Featured digital products and case studies." },
+      { title: "Projects & Commercial Microservices — Trung Thanh Tran" },
+      {
+        name: "description",
+        content:
+          "Production case studies by Trung Thanh Tran — Google Play loyalty app, 6 commercial Apify Store Actors, Hybrid RAG & OpenAI pipelines, Hidden-API scrapers, and full-stack apps.",
+      },
+      { property: "og:title", content: "Projects & Case Studies — Trung Thanh Tran" },
+      {
+        property: "og:description",
+        content:
+          "Shipped commercial mobile/web systems, 6 live Apify Store Actors, async Python scrapers, and AI workflow engines.",
+      },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },

@@ -1,18 +1,21 @@
 # Trung Thanh Tran — Interactive 3D WebGL Portfolio & Client-Side CMS
 
 <div align="center">
-  <a href="https://portfolio-red-theta-65.vercel.app/">
-    <img src="./public/IMG/project-portfolio.png" alt="Interactive 3D WebGL Portfolio — Trung Thanh Tran" width="100%" />
+  <a href="https://trungthanhtran.vercel.app/">
+    <img src="./public/og-preview-1200x630.png" alt="Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer" width="100%" />
   </a>
 
   <br />
 
   <p align="center">
-    <a href="https://portfolio-red-theta-65.vercel.app/">
-      <img src="https://img.shields.io/badge/🌐_Live_Website-portfolio--red--theta--65.vercel.app-FF6B00?style=for-the-badge" alt="Live Demo" />
+    <a href="https://trungthanhtran.vercel.app/">
+      <img src="https://img.shields.io/badge/Live_Portfolio-trungthanhtran.vercel.app-F06428?style=for-the-badge" alt="Live Demo" />
     </a>
-    <a href="https://portfolio-red-theta-65.vercel.app/cv">
-      <img src="https://img.shields.io/badge/📄_Printable_A4_CV-/cv-10B981?style=for-the-badge" alt="Printable A4 CV" />
+    <a href="https://trungthanhtran.vercel.app/cv">
+      <img src="https://img.shields.io/badge/Printable_A4_CV-/cv-10B981?style=for-the-badge" alt="Printable A4 CV" />
+    </a>
+    <a href="https://apify.com/thanh81646">
+      <img src="https://img.shields.io/badge/Apify_Store-6_Live_Actors-0EA5E9?style=for-the-badge" alt="Apify Store" />
     </a>
   </p>
 
@@ -103,4 +106,4 @@ Portfolio/
 
 ---
 
-**Author:** **Trung Thanh Tran** (*Trần Trung Thành*) · [GitHub `@Tthanh2k6`](https://github.com/Tthanh2k6) · [Upwork Profile](https://www.upwork.com/freelancers/~01ee7c2348cb4b62fe)
+**Author:** **Trung Thanh Tran** (*Trần Trung Thành*) · [Portfolio](https://trungthanhtran.vercel.app) · [GitHub `@Tthanh2k6`](https://github.com/Tthanh2k6) · [Apify Store `@thanh81646`](https://apify.com/thanh81646) · [Dev.to `@tthanh2k6`](https://dev.to/tthanh2k6) · [Upwork Profile](https://www.upwork.com/freelancers/trungthanhtrandev)

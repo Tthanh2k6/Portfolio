@@ -9,13 +9,25 @@ import { useLang } from "@/lib/i18n";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Trung Thanh Tran — Web Scraping, Automation, Full-Stack & AI Developer" },
+      {
+        title:
+          "Trung Thanh Tran (Trần Trung Thành) — AI Automation, Web Scraping & Full-Stack Engineer",
+      },
       {
         name: "description",
-        content: "Portfolio of Trung Thanh Tran (Trần Trung Thành) — Full-Stack, Web Scraping, Browser Automation, Mobile & AI Developer.",
+        content:
+          "Portfolio of Trung Thanh Tran (Trần Trung Thành) — Python & Playwright Web Scraping, n8n / OpenAI Workflow Automation, FastAPI, Full-Stack Web & Mobile Developer.",
       },
-      { property: "og:title", content: "Trung Thanh Tran — Developer Portfolio" },
-      { property: "og:description", content: "Web Scraping · Browser Automation · Full-Stack Web · Mobile · AI" },
+      {
+        property: "og:title",
+        content:
+          "Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer",
+      },
+      {
+        property: "og:description",
+        content:
+          "6 Production Apify Actors • <50MB RAM Async Python & Hidden-API Scrapers • 0.00% Schema Drift LLM & n8n Pipelines • FastAPI, React & Mobile.",
+      },
     ],
     links: [
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -29,33 +41,36 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
-const navItems = [
-  { label: "Home", to: "/" },
-  { label: "Skills", to: "/skills" },
-  { label: "Information", to: "/information" },
-  { label: "Project", to: "/project" },
-  { label: "Contact", to: "/contact" },
+const DEFAULT_HERO_TAGS = [
+  "PYTHON & PLAYWRIGHT",
+  "AI / N8N AUTOMATION",
+  "APIFY & REST APIS",
+  "FASTAPI & SUPABASE",
+  "REACT & MOBILE",
 ];
-
-const tags = ["WEB SCRAPING", "AUTOMATION", "FULL-STACK", "AI / ML", "MOBILE", "3D WEB"];
 
 function Index() {
   const { lang } = useLang();
   const [mounted, setMounted] = useState(false);
-  const [line1, setLine1] = useState("Building scrapers, automations & full-stack products that ship.");
+  const [customLine1, setCustomLine1] = useState<string | null>(null);
   const [customLine2, setCustomLine2] = useState<string | null>(null);
-  const [tagsList, setTagsList] = useState(["WEB SCRAPING", "AUTOMATION", "FULL-STACK", "AI / ML", "MOBILE", "3D WEB"]);
+  const [tagsList, setTagsList] = useState(DEFAULT_HERO_TAGS);
 
   useEffect(() => {
     setMounted(true);
     const stored1 = localStorage.getItem("home_line_1");
     const stored2 = localStorage.getItem("home_line_2");
     const stored3 = localStorage.getItem("home_line_3");
-    if (stored1) setLine1(stored1);
+    if (stored1) setCustomLine1(stored1);
     if (stored2) setCustomLine2(stored2);
     if (stored3) setTagsList(stored3.split(",").map(t => t.trim()).filter(Boolean));
   }, []);
 
+  const line1 =
+    customLine1 ||
+    (lang === "en"
+      ? "Shipping resilient web scrapers, AI workflow automations & full-stack products."
+      : "Xây dựng hệ thống cào dữ liệu, tự động hoá AI & sản phẩm full-stack vận hành thật.");
   const line2 = customLine2 || (lang === "en" ? "Trung Thanh Tran" : "Trần Trung Thành");
 
   return (

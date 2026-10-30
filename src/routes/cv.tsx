@@ -5,11 +5,11 @@ import { useLang } from "@/lib/i18n";
 export const Route = createFileRoute("/cv")({
   head: () => ({
     meta: [
-      { title: "CV — Trần Trung Thành" },
+      { title: "CV — Trung Thanh Tran | AI Automation, Web Scraping & Full-Stack Engineer" },
       {
         name: "description",
         content:
-          "CV của Trần Trung Thành — Full-stack & Mobile Developer (React Native, Kotlin/Android, PHP, Python).",
+          "Curriculum Vitae of Trung Thanh Tran (Trần Trung Thành) — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer (Python, Playwright, FastAPI, n8n, OpenAI, React Native, PHP, PostgreSQL).",
       },
     ],
   }),
@@ -18,177 +18,187 @@ export const Route = createFileRoute("/cv")({
 
 // Thông tin liên hệ hiển thị trên CV. Số điện thoại viết cách nhóm 4-3-3 cho dễ
 // đọc; dán vào máy vẫn gọi được. Cố ý KHÔNG có GPA — chủ ý của tác giả.
-const PHONE = "0372 131 320";
+const PHONE = "+84 372 131 320";
+const PHONE_VI = "0372 131 320";
 
 const EMAIL = "ttrungthanh90@gmail.com";
 const GITHUB = "github.com/Tthanh2k6";
-const SITE = "portfolio-tthanh2006.vercel.app";
-const LOCATION_VI = "TP. Hồ Chí Minh, Việt Nam";
-const LOCATION_EN = "Ho Chi Minh City, Vietnam";
+const APIFY = "apify.com/thanh81646";
+const SITE = "trungthanhtran.vercel.app";
+const LOCATION_VI = "TP. Hồ Chí Minh, Việt Nam (UTC+7)";
+const LOCATION_EN = "Ho Chi Minh City, Vietnam (UTC+7)";
 
-// Khoá ngôn ngữ dùng cho bảng chữ T bên dưới — khớp với kiểu Lang của lib/i18n.
 type Lang = "vi" | "en";
 
 const T = {
   vi: {
-    // langBtn không còn dùng (nút đổi ngôn ngữ đã dời lên NavBar), giữ lại để
-    // bảng T của hai ngôn ngữ vẫn cùng hình dạng.
     langBtn: "English",
     print: "Tải CV (PDF)",
-    role: "Full-stack & Mobile Developer",
+    role: "Lập trình viên Tự động hoá AI, Web Scraping & Full-Stack",
     tagline:
-      "Sinh viên năm 3 ngành Khoa học Máy tính, đã tự làm trọn gói một ứng dụng di động đang chạy thật cho doanh nghiệp — từ app React Native tới REST API và cơ sở dữ liệu.",
-    hExp: "Kinh nghiệm",
-    hProjects: "Dự án tiêu biểu",
-    hSkills: "Kỹ năng",
+      "Kỹ sư phần mềm & tự động hoá chú trọng tính thực chiến: đã độc lập xây dựng và phát hành ứng dụng di động doanh nghiệp trên Google Play, xuất bản 6 microservice thu thập dữ liệu thương mại trên Apify Store (<50MB RAM), 2 REST API trên RapidAPI, cùng các luồng AI/n8n kiểm soát chặt cấu trúc dữ liệu.",
+    hExp: "Kinh nghiệm thực tế",
+    hProjects: "Dự án kỹ thuật tiêu biểu",
+    hSkills: "Kỹ năng chuyên môn",
+    hCerts: "Chứng chỉ xác thực",
     hEdu: "Học vấn",
     hContact: "Liên hệ",
     eduSchool: "Đại học Công nghiệp TP.HCM (IUH)",
-    eduMajor: "Khoa học Máy tính · MSSV 24731801",
+    eduMajor: "Cử nhân Khoa học Máy tính · MSSV 24731801",
     eduTime: "2024 — 2028 (dự kiến)",
     present: "nay",
     skills: [
-      ["Di động", "React Native (Expo Router, EAS Build, OTA update), Kotlin, Jetpack Glance, WorkManager"],
-      ["Backend", "PHP (REST API, JWT HS256, phân quyền, rate-limit, cron), FastAPI, MySQL"],
-      ["Web", "React 19, TypeScript, TanStack Start/Router, Three.js, TailwindCSS"],
-      ["Tự động hoá", "Playwright (CDP), Selenium, dịch ngược & tiêm mã Android (apktool, smali)"],
-      ["ML / AI", "scikit-learn, TensorFlow/Keras, YOLOv8, OpenCV"],
-      ["Khác", "Git, Linux, DirectAdmin, Supabase, Firebase Cloud Messaging"],
+      ["Scraping & ETL", "Python (asyncio, httpx, BeautifulSoup4), Playwright (CDP), Selenium, dò Hidden JSON/GraphQL API, xác thực DNS/MX, Apify SDK"],
+      ["AI & Tự động hoá", "OpenAI & Anthropic Structured Outputs (JSON Schema chặt), Hybrid RAG (BM25 + Vector RRF), n8n, Make.com, Google Apps Script"],
+      ["Backend & CSDL", "FastAPI, PHP (REST API, JWT HS256, phân quyền DB, rate-limit, cron), PostgreSQL / Supabase (RLS, pgTAP), MySQL, SQLite"],
+      ["Web & Extension", "React 19, TypeScript, TanStack Start (SSR), TailwindCSS, Three.js (WebGL), Chrome Extension (Manifest V3)"],
+      ["Mobile & Hệ thống", "React Native (Expo Router, EAS Build, OTA), Kotlin (Jetpack Glance/Compose, WorkManager), apktool/smali, C++17, ESP32 BLE"],
     ],
     exp: [
       {
-        role: "Lập trình viên Full-stack",
-        org: "Madalena",
+        role: "Lập trình viên Tự động hoá AI & Dữ liệu độc lập",
+        org: "Apify Store, RapidAPI & Khách hàng quốc tế",
         time: "2026 — nay",
         bullets: [
-          "Tự làm một mình trọn bộ ứng dụng khách hàng thân thiết cho iOS + Android: app React Native (TypeScript, Expo Router) và REST API PHP/MySQL. Đã phát hành trên Google Play (com.madalena.app).",
-          "Xây hệ thống hạng thành viên theo doanh thu, mã QR định danh khách, flash sale theo khung giờ do máy chủ kiểm soát thời gian, và chiến dịch chúc mừng sinh nhật chạy tự động bằng cron.",
-          "Bảo mật: xác thực JWT HS256, kiểm tra quyền admin đọc thẳng từ cơ sở dữ liệu thay vì tin token, chặn brute-force đăng nhập theo IP + số điện thoại.",
-          "Chủ động port backend từ Node/Express (Render + Aiven) sang PHP để gộp chung hạ tầng với website công ty, cắt được chi phí máy chủ hằng tháng.",
-          "Gửi thông báo đẩy tới khách qua Expo Push, kèm cờ chống gửi trùng cho các mốc nhắc trước giờ flash sale.",
+          "Thiết kế và xuất bản 6 Actor thương mại trả phí theo kết quả trên Apify Store (@thanh81646) cùng 2 REST API công khai trên RapidAPI Hub, tối ưu chạy gọn trong container serverless 256 MB (<50MB RAM thực tế).",
+          "Xây dựng các bộ làm giàu dữ liệu B2B (xác thực DNS/MX, lọc chuỗi phòng khám tập đoàn DSO Hoa Kỳ đạt độ chính xác 96.4%) và theo dõi giá/tồn kho Shopify & WooCommerce nhanh gấp 51 lần cào DOM bằng trình duyệt.",
+          "Phát triển kiến trúc tham chiếu AI doanh nghiệp kết hợp FastAPI, Pydantic Strict JSON Schemas (0% lỗi lệch định dạng JSON), kiểm soát nghẽn luồng (backpressure), Hybrid RAG và tự động hoá webhook n8n/CRM.",
         ],
       },
       {
-        role: "Lập trình viên PHP (phát triển tính năng)",
-        org: "Madalena — website thương mại điện tử",
+        role: "Lập trình viên Full-stack & Mobile",
+        org: "Madalena (Chuỗi mỹ phẩm & Thương mại điện tử)",
         time: "2026 — nay",
         bullets: [
-          "Phát triển và bảo trì một số tính năng trên website bán hàng đang vận hành thật (PHP tự viết: AltoRouter, PDO, giỏ hàng, SEO, cache).",
-          "Làm việc trên codebase có sẵn của đội, phối hợp cùng các thành viên khác.",
+          "Độc lập phát triển trọn bộ ứng dụng khách hàng thân thiết cho iOS + Android đã phát hành trên Google Play (com.madalena.app): React Native (TypeScript, Expo Router) + REST API PHP/MySQL.",
+          "Xây dựng hệ thống tự động xếp hạng thành viên theo doanh thu, mã QR định danh tại quầy, flash sale do máy chủ kiểm soát thời gian chống gian lận giờ máy, thông báo đẩy chống gửi trùng và cron chúc mừng sinh nhật.",
+          "Bảo mật & Tối ưu chi phí: xác thực JWT HS256, đối chiếu quyền admin trực tiếp từ CSDL, chặn brute-force theo cặp IP + SĐT; chủ động chuyển toàn bộ backend từ Node/Express (Render + Aiven) sang PHP dùng chung hạ tầng web công ty, cắt giảm 100% phí máy chủ phát sinh hàng tháng.",
+          "Phát triển các phân hệ nghiệp vụ trên website bán hàng đang vận hành thật (madalena.vn): hệ thống mã giảm giá giới hạn lượt theo SĐT, tự động đồng bộ đơn hàng sang Google Sheets cho đội sale và quản lý trạng thái tồn kho.",
         ],
       },
     ],
     projects: [
       {
-        name: "Lịch IUH — Widget lịch học Android",
-        tech: "Kotlin · Jetpack Glance · WorkManager",
-        desc: "App cho sinh viên IUH vì app chính thức của trường không có widget: 3 widget (lịch 7 ngày, hôm nay, đếm ngược lịch thi), đăng nhập OAuth2, tự đồng bộ nền 2 lần/ngày, cache offline. Tự xử lý lỗi máy chủ trường thiếu chứng chỉ trung gian bằng cách nhúng cert vào network security config.",
-      },
-      {
-        name: "WorkFlow AI — Tool sản xuất video AI",
+        name: "WorkFlow AI — Dây chuyền sản xuất video AI khép kín",
         tech: "Python · FastAPI · Playwright/CDP · ffmpeg",
-        desc: "Pipeline trọn gói: kịch bản → chia cảnh → tạo ảnh/video → ghép phim. Nền tảng đích không có API công khai nên tool điều khiển Chrome thật qua remote-debugging. Có license server riêng bán theo credit.",
+        desc: "Tự động hoá từ kịch bản → phân cảnh → sinh ảnh/video trên nền tảng không có API công khai (điều khiển Chrome thật qua giao thức CDP kèm cơ chế dự phòng) → dựng phim bằng ffmpeg; tích hợp license server quản lý và hoàn trả credit tự động.",
       },
       {
-        name: "Ghi chú Mod — Dịch ngược app Xiaomi",
-        tech: "Android · apktool · smali · Kotlin",
-        desc: "Thêm tính năng vào thẳng app hệ thống mà giữ nguyên toàn bộ chức năng gốc: dịch ngược 15.386 file, tiêm mã Kotlin biên dịch xuống smali, đổi tên gói (13 authority · 88 URI) để cài song song bản gốc.",
+        name: "BurgerShop POD Listing Automator — Tiện ích Chrome quản trị TMĐT",
+        tech: "JavaScript · Chrome MV3 · Angular/PrimeNG",
+        desc: "Tiện ích Manifest V3 tự động điền quy trình đăng sản phẩm nhiều bước trên cổng quản trị Angular: đồng bộ change detection của Reactive Forms, cuộn từng nhịp qua bảng ảo hoá PrimeNG để áp giá chính xác từng SKU và chèn mô tả vào TinyMCE.",
       },
       {
-        name: "AI Game Arena",
-        tech: "TypeScript · Electron · Three.js",
-        desc: "8 môi trường cho AI tự học và đối kháng: Minimax + cắt tỉa Alpha-Beta, MCTS/UCT, Q-Learning, mạng nơ-ron kết hợp giải thuật di truyền, mô phỏng 3D thời gian thực.",
+        name: "ToolPhone — Hệ thống phân tích chênh lệch giá điện thoại cũ",
+        tech: "Python · Flask · SQLite · pytest",
+        desc: "Theo dõi song song 113 dòng máy trên 4 sàn rao vặt; khắc phục sai số thiên lệch sống sót (tin tốt bán nhanh khiến giá còn lại cao hơn 17%) bằng cách tính 'giá thoát hàng' thực tế và lọc đa tầng dân buôn đội lốt cá nhân.",
       },
       {
-        name: "DiemDanhQR",
-        tech: "JavaScript · PWA · Google Apps Script",
-        desc: "Điểm danh bằng quét QR trên điện thoại, ghi thẳng vào Google Sheets, chạy dạng PWA không cần máy chủ riêng.",
+        name: "Lịch IUH & Ghi chú Mod — Hệ sinh thái tiện ích Android chuyên sâu",
+        tech: "Kotlin · Jetpack Glance · apktool/smali · Supabase",
+        desc: "Lịch IUH: 3 widget màn hình chính, OAuth2 đồng bộ nền và tự nhúng chứng chỉ TLS trung gian bị thiếu của máy chủ trường. Ghi chú Mod: dịch ngược 15.386 file app hệ thống Xiaomi, tiêm tính năng lịch tuần + trợ lý Gemini biên dịch xuống smali mà giữ nguyên 100% tính năng vẽ tay gốc.",
       },
+      {
+        name: "Moto-Nav BLE HUD & AI Game Arena — Nhúng C++17 & Mô phỏng 3D",
+        tech: "C++17 · ESP32 · Kotlin · TypeScript · Three.js",
+        desc: "Moto-Nav: nhân dẫn đường C++17 dùng chung cho Android (JNI) và màn hình ghi-đông ESP32 qua BLE GATT. AI Game Arena: 9 môi trường trực quan hoá giải thuật MCTS/UCT, Minimax Zobrist, Q-Learning và tiến hoá thần kinh 3D.",
+      },
+    ],
+    certs: [
+      ["HackerRank Software Engineer", "Chứng chỉ Kỹ sư Phần mềm xác thực — Mã ID: 3e14323f3998"],
+      ["HackerRank SQL (Advanced)", "Truy vấn phân tích nâng cao, tối ưu hoá & cửa sổ dữ liệu — Mã ID: f6214fbc9a7f"],
+      ["HackerRank REST API (Intermediate)", "Thiết kế, phân trang & tích hợp HTTP/JSON API — Mã ID: 0950402ec1b3"],
+      ["HackerRank Node.js & JS (Intermediate)", "Node.js (ID: aea6444671ab) · JavaScript (ID: 73f0cc9845c4)"],
+      ["HackerRank Problem Solving & IBM Python", "Problem Solving Intermediate (ID: 34ee18911edf) · IBM Python 101 for Data Science"],
     ],
   },
 
   en: {
     langBtn: "Tiếng Việt",
     print: "Download CV (PDF)",
-    role: "Full-stack & Mobile Developer",
+    role: "AI Automation, Web Scraping & Full-Stack Engineer",
     tagline:
-      "Third-year Computer Science student who single-handedly built and shipped a production mobile app for a business — from the React Native client through the REST API and database.",
+      "Production-focused software and automation engineer who single-handedly shipped a commercial loyalty app on Google Play, published 6 Pay-Per-Event data extraction microservices on Apify Store (<50MB RAM) plus 2 public REST APIs on RapidAPI, and builds zero-drift OpenAI/n8n/FastAPI pipelines.",
     hExp: "Experience",
-    hProjects: "Selected Projects",
-    hSkills: "Skills",
+    hProjects: "Selected Engineering Projects",
+    hSkills: "Technical Stack",
+    hCerts: "Verified Certifications",
     hEdu: "Education",
     hContact: "Contact",
     eduSchool: "Industrial University of Ho Chi Minh City (IUH)",
-    eduMajor: "Computer Science · Student ID 24731801",
+    eduMajor: "B.S. in Computer Science · Student ID 24731801",
     eduTime: "2024 — 2028 (expected)",
     present: "Present",
     skills: [
-      ["Mobile", "React Native (Expo Router, EAS Build, OTA updates), Kotlin, Jetpack Glance, WorkManager"],
-      ["Backend", "PHP (REST API, JWT HS256, RBAC, rate limiting, cron), FastAPI, MySQL"],
-      ["Web", "React 19, TypeScript, TanStack Start/Router, Three.js, TailwindCSS"],
-      ["Automation", "Playwright (CDP), Selenium, Android reverse engineering (apktool, smali injection)"],
-      ["ML / AI", "scikit-learn, TensorFlow/Keras, YOLOv8, OpenCV"],
-      ["Other", "Git, Linux, DirectAdmin, Supabase, Firebase Cloud Messaging"],
+      ["Scraping & ETL", "Python (asyncio, httpx, BeautifulSoup4), Playwright (CDP), Selenium, Hidden JSON/GraphQL API extraction, DNS/MX validation, Apify SDK"],
+      ["AI & Automation", "OpenAI & Anthropic Structured Outputs (Strict JSON Schema), Hybrid RAG (BM25 + Vector RRF), n8n, Make.com, Google Apps Script"],
+      ["Backend & Data", "FastAPI, PHP (REST API, JWT HS256, DB-backed RBAC, rate limiting, cron), PostgreSQL / Supabase (RLS, pgTAP), MySQL, SQLite"],
+      ["Web & Browser", "React 19, TypeScript, TanStack Start (SSR), TailwindCSS, Three.js (WebGL), Chrome Extensions (Manifest V3)"],
+      ["Mobile & Systems", "React Native (Expo Router, EAS Build, OTA), Kotlin (Jetpack Glance/Compose, WorkManager), apktool/smali, C++17, ESP32 BLE"],
     ],
     exp: [
       {
-        role: "Full-stack Developer",
-        org: "Madalena",
+        role: "Independent AI Automation & Data Extraction Engineer",
+        org: "Apify Store, RapidAPI & Global Clients",
         time: "2026 — Present",
         bullets: [
-          "Sole developer of a customer loyalty app for iOS and Android, shipped on Google Play (com.madalena.app): React Native client (TypeScript, Expo Router) plus a PHP/MySQL REST API.",
-          "Built revenue-based membership tiers, QR customer identification, server-timed flash sales, and an automated birthday campaign driven by cron jobs.",
-          "Security: JWT HS256 authentication, admin authorisation resolved from the database rather than trusting the token, and login brute-force protection keyed on IP + phone number.",
-          "Independently ported the backend from Node/Express (Render + Aiven) to PHP so it shares infrastructure with the company website, cutting recurring server costs.",
-          "Delivered push notifications through Expo Push, with idempotency flags preventing duplicate flash-sale reminders.",
+          "Engineered and published 6 commercial Pay-Per-Event microservices on Apify Store (@thanh81646) and 2 public REST APIs on RapidAPI Hub, optimized for 256 MB serverless containers (<50MB runtime RAM).",
+          "Built sub-second B2B contact & technographics enrichers (cached DNS/MX verification, 96.4%-precision US Healthcare corporate DSO/MSO chain filtering) and Shopify/WooCommerce SKU monitors running 51× faster than headless DOM scrapers.",
+          "Architected production LLM & workflow toolkits combining FastAPI, Pydantic Strict JSON Schemas (0.00% schema drift), stream backpressure, Hybrid BM25 + Vector RRF retrieval, and idempotent n8n/CRM webhook sync.",
         ],
       },
       {
-        role: "PHP Developer (feature work)",
-        org: "Madalena — e-commerce website",
+        role: "Full-Stack & Mobile Developer",
+        org: "Madalena (Retail Cosmetics & E-Commerce)",
         time: "2026 — Present",
         bullets: [
-          "Developed and maintained selected features on a live production storefront (custom PHP stack: AltoRouter, PDO, cart, SEO, file caching).",
-          "Worked inside an existing team codebase alongside other developers.",
+          "Sole developer of the customer loyalty app live on Google Play (com.madalena.app) for iOS and Android: React Native (TypeScript, Expo Router) paired with a custom PHP/MySQL REST API.",
+          "Implemented spend-based membership tiers, counter QR identification, server-authoritative flash sales immune to device-clock tampering, idempotent Expo Push reminders, and automated birthday cron campaigns.",
+          "Security & Cost Engineering: enforced JWT HS256 auth, database-resolved admin RBAC, and IP+phone brute-force throttling; migrated the backend from Node/Express (Render + Aiven) to shared PHP infrastructure, eliminating 100% of separate monthly cloud hosting bills.",
+          "Delivered core revenue features on the live production storefront (madalena.vn): per-phone-capped discount engine, real-time order sync to Google Sheets for sales operations, and inventory-aware catalog ranking.",
         ],
       },
     ],
     projects: [
       {
-        name: "Lich IUH — Android class-schedule widget",
-        tech: "Kotlin · Jetpack Glance · WorkManager",
-        desc: "Built for IUH students because the official university app ships no widget: three widgets (7-day schedule, today, exam countdown), OAuth2 login, twice-daily background sync and offline cache. Worked around the university server's missing intermediate certificate by bundling it into the network security config.",
-      },
-      {
-        name: "WorkFlow AI — AI video production tool",
+        name: "WorkFlow AI — Closed-Loop AI Video Production Pipeline",
         tech: "Python · FastAPI · Playwright/CDP · ffmpeg",
-        desc: "End-to-end pipeline: script → scene breakdown → image/video generation → final cut. The target platform exposes no public API, so the tool drives a real Chrome instance over remote debugging. Ships with its own credit-based licence server.",
+        desc: "Automates script generation → scene breakdown → visual synthesis on platforms with no public API (driving real Chrome over CDP with graceful manual fallbacks) → final ffmpeg cut; backed by a custom credit-based licence server with automatic failure refunds.",
       },
       {
-        name: "Notes Mod — Xiaomi app reverse engineering",
-        tech: "Android · apktool · smali · Kotlin",
-        desc: "Added features directly into a system app while preserving every original capability: decompiled 15,386 files, injected Kotlin compiled down to smali, and renamed the package (13 authorities · 88 URIs) so it installs alongside the original.",
+        name: "BurgerShop POD Listing Automator — Chrome MV3 Admin Extension",
+        tech: "JavaScript · Chrome MV3 · Angular/PrimeNG",
+        desc: "Automates multi-step Print-on-Demand catalog uploads inside an Angular admin portal: dispatches change-detection-safe reactive form events, incrementally scrolls virtualized PrimeNG SKU tables, and injects HTML into sandboxed TinyMCE editors.",
       },
       {
-        name: "AI Game Arena",
-        tech: "TypeScript · Electron · Three.js",
-        desc: "Eight environments where AI agents learn and compete: Minimax with alpha-beta pruning, MCTS/UCT, Q-Learning, and neural networks trained by genetic algorithms, with real-time 3D simulation.",
+        name: "ToolPhone — Multi-Marketplace Used-Phone Arbitrage Analytics",
+        tech: "Python · Flask · SQLite · pytest",
+        desc: "Tracks 113 phone models across 4 marketplaces in parallel; corrects a measured 17% survivorship-bias markup in live asking prices by computing historical clearing-price ceilings and multi-layer dealer/red-flag filters.",
       },
       {
-        name: "DiemDanhQR",
-        tech: "JavaScript · PWA · Google Apps Script",
-        desc: "QR-code attendance scanner running as a PWA on any phone, writing straight into Google Sheets with no dedicated server.",
+        name: "Lich IUH & Xiaomi Notes Mod — Native Android & Reverse Engineering",
+        tech: "Kotlin · Jetpack Glance · apktool/smali · Supabase",
+        desc: "Lich IUH: 3 home-screen schedule widgets with OAuth2 background sync and custom TLS intermediate-cert pinning. Notes Mod: decompiled 15,386 system app files, injecting Kotlin week-calendar & Gemini AI features compiled to smali while keeping proprietary stylus capabilities intact.",
       },
+      {
+        name: "Moto-Nav BLE HUD & AI Game Arena — C++17 Embedded & 3D RL",
+        tech: "C++17 · ESP32 · Kotlin · TypeScript · Three.js",
+        desc: "Moto-Nav: shared bit-exact C++17 turn-by-turn geometry core running across Android (JNI) and an ESP32 handlebar HUD over BLE GATT. AI Game Arena: 9 interactive 2D/3D environments showcasing MCTS/UCT, Zobrist Minimax, Q-Learning, and neuroevolution.",
+      },
+    ],
+    certs: [
+      ["HackerRank Software Engineer", "Verified Role Certification — Credential ID: 3e14323f3998"],
+      ["HackerRank SQL (Advanced)", "Complex joins, window functions, aggregations & query tuning — ID: f6214fbc9a7f"],
+      ["HackerRank REST API (Intermediate)", "HTTP pagination, filtering & JSON payload consumption — ID: 0950402ec1b3"],
+      ["HackerRank Node.js & JS (Intermediate)", "Node.js (ID: aea6444671ab) · JavaScript (ID: 73f0cc9845c4)"],
+      ["HackerRank Problem Solving & IBM Python", "Problem Solving Intermediate (ID: 34ee18911edf) · IBM Python 101 for Data Science"],
     ],
   },
 } as const;
 
 function CvPage() {
-  // Dùng chung ngôn ngữ với toàn site (nút EN/VI trên NavBar) thay vì giữ nút riêng —
-  // trước đây CV có công tắc riêng nên đổi ngôn ngữ ở đây không ảnh hưởng các trang khác
-  // và ngược lại, gây lệch.
   const { lang } = useLang();
-  const t = T[lang];
+  const t = T[lang as Lang];
 
   return (
     <div className="cv-page">
@@ -203,12 +213,12 @@ function CvPage() {
 
       <main className="cv-sheet">
         <header className="cv-head">
-          <h1>Trần Trung Thành</h1>
+          <h1>{lang === "vi" ? "Trần Trung Thành" : "Trung Thanh Tran (Trần Trung Thành)"}</h1>
           <p className="cv-role">{t.role}</p>
           <p className="cv-contact">
-            {lang === "vi" ? LOCATION_VI : LOCATION_EN} · {PHONE} · {EMAIL}
+            {lang === "vi" ? LOCATION_VI : LOCATION_EN} · {lang === "vi" ? PHONE_VI : PHONE} · {EMAIL}
             <br />
-            {GITHUB} · {SITE}
+            {SITE} · {GITHUB} · {APIFY}
           </p>
           <p className="cv-tagline">{t.tagline}</p>
         </header>
@@ -260,6 +270,20 @@ function CvPage() {
         </section>
 
         <section>
+          <h2>{t.hCerts}</h2>
+          <table className="cv-skills">
+            <tbody>
+              {t.certs.map(([certName, certDetail]) => (
+                <tr key={certName}>
+                  <th>{certName}</th>
+                  <td>{certDetail}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
+
+        <section>
           <h2>{t.hEdu}</h2>
           <article className="cv-item">
             <div className="cv-item-head">
@@ -280,7 +304,7 @@ function CvPage() {
         }
 
         .cv-toolbar {
-          max-width: 820px;
+          max-width: 840px;
           margin: 0 auto 16px;
           display: flex;
           justify-content: flex-end;
@@ -305,36 +329,36 @@ function CvPage() {
 
         /* Tờ CV: nền trắng ngay trên màn hình để thấy đúng bản sẽ in ra */
         .cv-sheet {
-          max-width: 820px;
+          max-width: 840px;
           margin: 0 auto;
           background: #ffffff;
           color: #14161c;
-          padding: 48px 54px;
+          padding: 44px 52px;
           border-radius: 6px;
           box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-          line-height: 1.55;
-          font-size: 0.93rem;
+          line-height: 1.5;
+          font-size: 0.91rem;
         }
 
-        .cv-head { border-bottom: 2px solid #14161c; padding-bottom: 16px; margin-bottom: 22px; }
-        .cv-head h1 { font-size: 2rem; font-weight: 800; letter-spacing: -0.5px; margin: 0; }
-        .cv-role { font-size: 1.02rem; font-weight: 600; color: #3b4256; margin: 2px 0 8px; }
-        .cv-contact { font-size: 0.85rem; color: #4c5566; margin: 0 0 10px; }
-        .cv-tagline { font-size: 0.9rem; margin: 0; }
+        .cv-head { border-bottom: 2px solid #14161c; padding-bottom: 14px; margin-bottom: 20px; }
+        .cv-head h1 { font-size: 1.85rem; font-weight: 800; letter-spacing: -0.5px; margin: 0; }
+        .cv-role { font-size: 1rem; font-weight: 600; color: #3b4256; margin: 2px 0 7px; }
+        .cv-contact { font-size: 0.84rem; color: #4c5566; margin: 0 0 9px; }
+        .cv-tagline { font-size: 0.88rem; margin: 0; color: #1f2430; }
 
-        .cv-sheet section { margin-bottom: 24px; }
+        .cv-sheet section { margin-bottom: 20px; }
         .cv-sheet h2 {
-          font-size: 0.82rem;
+          font-size: 0.8rem;
           font-weight: 800;
           text-transform: uppercase;
           letter-spacing: 1.6px;
           color: #6b7280;
           border-bottom: 1px solid #d7dbe3;
-          padding-bottom: 5px;
-          margin: 0 0 12px;
+          padding-bottom: 4px;
+          margin: 0 0 10px;
         }
 
-        .cv-item { margin-bottom: 14px; break-inside: avoid; }
+        .cv-item { margin-bottom: 12px; break-inside: avoid; }
         .cv-item-head {
           display: flex;
           justify-content: space-between;
@@ -342,8 +366,8 @@ function CvPage() {
           gap: 16px;
           margin-bottom: 3px;
         }
-        .cv-item-head strong { font-size: 0.96rem; }
-        .cv-item-head span { font-size: 0.8rem; color: #6b7280; white-space: nowrap; }
+        .cv-item-head strong { font-size: 0.94rem; }
+        .cv-item-head span { font-size: 0.79rem; color: #6b7280; white-space: nowrap; }
         .cv-item p { margin: 0; }
         .cv-item ul { margin: 4px 0 0; padding-left: 18px; }
         .cv-item li { margin-bottom: 3px; }
@@ -352,9 +376,9 @@ function CvPage() {
         .cv-skills th {
           text-align: left;
           vertical-align: top;
-          width: 116px;
-          padding: 4px 12px 4px 0;
-          font-size: 0.88rem;
+          width: 195px;
+          padding: 4px 14px 4px 0;
+          font-size: 0.85rem;
         }
         .cv-skills td { padding: 4px 0; }
 
@@ -369,7 +393,7 @@ function CvPage() {
 
         /* In ra giấy / xuất PDF: bỏ nền tối, bỏ thanh điều khiển, canh khổ A4 */
         @media print {
-          @page { size: A4; margin: 14mm; }
+          @page { size: A4; margin: 12mm 14mm; }
           .cv-noprint { display: none !important; }
           .cv-page { background: #fff; padding: 0; }
           .cv-sheet {
@@ -377,7 +401,8 @@ function CvPage() {
             box-shadow: none;
             border-radius: 0;
             padding: 0;
-            font-size: 10.2pt;
+            font-size: 9.6pt;
+            line-height: 1.44;
           }
           .cv-sheet section { break-inside: auto; }
         }

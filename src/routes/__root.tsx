@@ -75,34 +75,186 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   );
 }
 
+const SITE_URL = "https://trungthanhtran.vercel.app";
+const OG_IMAGE_URL = `${SITE_URL}/og-preview-1200x630.png`;
+
+const SCHEMA_ORG_GRAPH = JSON.stringify({
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `${SITE_URL}/#person`,
+      name: "Trung Thanh Tran",
+      alternateName: ["Trần Trung Thành", "Tthanh2k6", "thanh81646"],
+      jobTitle: "AI Automation, Web Scraping & Full-Stack Software Engineer",
+      url: `${SITE_URL}/`,
+      image: OG_IMAGE_URL,
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: "Ho Chi Minh City",
+        addressCountry: "VN",
+      },
+      knowsAbout: [
+        "Python Asyncio & Anti-Bot Web Scraping",
+        "Playwright Browser Automation",
+        "Hidden JSON & GraphQL API Extraction",
+        "n8n & Make.com Workflow Automation",
+        "OpenAI & Anthropic Structured Outputs",
+        "Hybrid RAG (BM25 + Vector RRF)",
+        "FastAPI, PHP & PostgreSQL / Supabase",
+        "React 19, TypeScript & React Native (Expo)",
+        "Google Apps Script & Chrome Extensions (MV3)",
+      ],
+      sameAs: [
+        "https://github.com/Tthanh2k6",
+        "https://apify.com/thanh81646",
+        "https://dev.to/tthanh2k6",
+        "https://www.upwork.com/freelancers/trungthanhtrandev",
+        "https://rapidapi.com/Tthanh2k6/api/b2b-website-email-phone-and-tech-stack-enricher",
+        "https://trungthanh16.gumroad.com",
+      ],
+    },
+    {
+      "@type": "ItemList",
+      "@id": `${SITE_URL}/#apify-actors`,
+      name: "Production Data Extraction & Optimization Microservices by Trung Thanh Tran",
+      itemListElement: [
+        {
+          "@type": "SoftwareApplication",
+          position: 1,
+          name: "B2B Website Email, Phone, Social Links & Tech Stack Scraper",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Cloud Serverless (Apify & RapidAPI)",
+          url: "https://apify.com/thanh81646/apify-b2b-lead-and-contact-enricher",
+          author: { "@id": `${SITE_URL}/#person` },
+          offers: { "@type": "Offer", price: "2.00", priceCurrency: "USD" },
+        },
+        {
+          "@type": "SoftwareApplication",
+          position: 2,
+          name: "Shopify & WooCommerce Product Price, Stock & JSON-LD Monitor",
+          applicationCategory: "DeveloperApplication",
+          operatingSystem: "Cloud Serverless (Apify & RapidAPI)",
+          url: "https://apify.com/thanh81646/apify-ecommerce-price-and-stock-monitor",
+          author: { "@id": `${SITE_URL}/#person` },
+          offers: { "@type": "Offer", price: "2.00", priceCurrency: "USD" },
+        },
+        {
+          "@type": "SoftwareApplication",
+          position: 3,
+          name: "US Healthcare Clinic Contact, Schema & Chain Detector",
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Cloud Serverless (Apify)",
+          url: "https://apify.com/thanh81646/apify-us-healthcare-clinic-contact-enricher",
+          author: { "@id": `${SITE_URL}/#person` },
+          offers: { "@type": "Offer", price: "2.00", priceCurrency: "USD" },
+        },
+        {
+          "@type": "SoftwareApplication",
+          position: 4,
+          name: "TheFork Restaurant & Reservation System Extractor (EU)",
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Cloud Serverless (Apify)",
+          url: "https://apify.com/thanh81646/thefork-restaurant-and-booking-system-scraper",
+          author: { "@id": `${SITE_URL}/#person` },
+          offers: { "@type": "Offer", price: "2.00", priceCurrency: "USD" },
+        },
+        {
+          "@type": "SoftwareApplication",
+          position: 5,
+          name: "Malaysia KPKT TEDUH Property Developers & Housing Projects",
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Cloud Serverless (Apify)",
+          url: "https://apify.com/thanh81646/malaysia-kpkt-teduh-property-developer-scraper",
+          author: { "@id": `${SITE_URL}/#person` },
+          offers: { "@type": "Offer", price: "2.00", priceCurrency: "USD" },
+        },
+        {
+          "@type": "SoftwareApplication",
+          position: 6,
+          name: "Multi-Stop Route, Geocoder & 2-Opt TSP Distance Optimizer",
+          applicationCategory: "BusinessApplication",
+          operatingSystem: "Cloud Serverless (Apify & Python)",
+          url: "https://github.com/Tthanh2k6/apify-multi-stop-route-and-distance-optimizer",
+          author: { "@id": `${SITE_URL}/#person` },
+          offers: { "@type": "Offer", price: "2.00", priceCurrency: "USD" },
+        },
+      ],
+    },
+  ],
+});
+
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Trung Thanh Tran — Full-Stack, Web Scraping & Automation Developer" },
+      {
+        title:
+          "Trung Thanh Tran (Trần Trung Thành) — AI Automation, Web Scraping & Full-Stack Engineer",
+      },
       {
         name: "description",
         content:
-          "Interactive 3D portfolio of Trung Thanh Tran — Web Scraping, Browser Automation, Full-Stack Web, Mobile & AI Integration.",
+          "Software & Automation Engineer building <50MB RAM async Python & Playwright web scrapers, deterministic OpenAI/n8n/FastAPI workflows, full-stack web/mobile apps, and 6 commercial Apify Store Actors.",
       },
       { name: "author", content: "Trung Thanh Tran" },
       {
+        name: "keywords",
+        content:
+          "Trung Thanh Tran, Trần Trung Thành, Python Web Scraping, Playwright Automation, n8n Workflow Engineer, FastAPI, OpenAI Structured Outputs, Apify Actor Developer, B2B Lead Enrichment, Full-Stack TypeScript React Native",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "Trung Thanh Tran — Engineering Portfolio" },
+      { property: "og:url", content: `${SITE_URL}/` },
+      {
         property: "og:title",
-        content: "Trung Thanh Tran — Full-Stack, Web Scraping & Automation Developer",
+        content:
+          "Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer",
       },
       {
         property: "og:description",
         content:
-          "Interactive 3D portfolio featuring WebGL scenes, production web scrapers, mobile apps and AI automations.",
+          "6 Production Apify Actors • <50MB RAM Async Python & Hidden-API Scrapers • 0.00% Schema Drift LLM & n8n Pipelines • FastAPI, React & Mobile.",
       },
-      { property: "og:type", content: "website" },
+      { property: "og:image", content: OG_IMAGE_URL },
+      { property: "og:image:secure_url", content: OG_IMAGE_URL },
+      { property: "og:image:type", content: "image/png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content:
+          "Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer (6 Live Apify Actors, Async Python, Playwright, n8n, FastAPI)",
+      },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:site", content: "@Tthanh2k6" },
+      { name: "twitter:creator", content: "@Tthanh2k6" },
+      {
+        name: "twitter:title",
+        content: "Trung Thanh Tran — AI Automation, Web Scraping & Full-Stack Engineer",
+      },
+      {
+        name: "twitter:description",
+        content:
+          "6 Commercial Apify Actors • Async Python/Playwright (<50MB RAM) • Strict-Schema OpenAI, n8n & FastAPI Pipelines.",
+      },
+      { name: "twitter:image", content: OG_IMAGE_URL },
     ],
     links: [
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      {
+        rel: "canonical",
+        href: `${SITE_URL}/`,
+      },
+      {
+        rel: "alternate",
+        type: "text/plain",
+        href: `${SITE_URL}/llms.txt`,
+        title: "LLM Context Summary",
       },
     ],
   }),
@@ -117,6 +269,10 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: SCHEMA_ORG_GRAPH }}
+        />
       </head>
       <body>
         {children}
@@ -127,18 +283,37 @@ function RootShell({ children }: { children: ReactNode }) {
 }
 
 // Nội dung do /admin chỉnh nằm trong localStorage và LUÔN được ưu tiên hơn giá trị mặc
-// định trong code. Hệ quả: sửa danh sách dự án / kỹ năng trong code xong deploy thì
-// trình duyệt nào từng vào /admin vẫn hiện bản cũ, tưởng là deploy hỏng.
+// định trong code. Hệ quả: sửa danh sách dự án / kỹ năng / giới thiệu trong code xong
+// deploy thì trình duyệt nào từng vào /admin vẫn hiện bản cũ, tưởng là deploy hỏng.
 //
 // Cách xử lý: tăng CONTENT_VERSION mỗi khi đổi các mặc định trong code. Trình duyệt thấy
 // phiên bản lệch sẽ xoá đúng các khoá nội dung cũ để rơi về mặc định mới.
-// Các khoá KHÔNG liên quan tới nội dung (vd sổ lưu bút) được giữ nguyên.
-const CONTENT_VERSION = "2026-10-26-1";
+// Các khoá KHÔNG liên quan tới nội dung mặc định (vd sổ lưu bút khách viết) được giữ nguyên.
+const CONTENT_VERSION = "2026-10-30-3";
 const VERSIONED_CONTENT_KEYS = [
   "project_list",
   "skills_keycaps",
   "skills_chart_data",
   "skills_title_to_chart",
+  "skills_sub",
+  "skills_title_1",
+  "skills_title_2",
+  "skills_typewriter",
+  "skills_desc",
+  "home_line_1",
+  "home_line_2",
+  "home_line_3",
+  "info_status",
+  "info_title_top",
+  "info_title_bottom",
+  "info_typing",
+  "info_description",
+  "info_tags",
+  "info_explore_1",
+  "info_explore_2",
+  "info_card_name",
+  "info_card_title",
+  "contact_socials",
 ];
 
 function useResetStaleContent() {

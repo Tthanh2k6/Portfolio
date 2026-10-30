@@ -1,0 +1,30 @@
+# Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer
+
+> Software and Automation Engineer based in Ho Chi Minh City, Vietnam (UTC+7). Creator of 6 commercial Pay-Per-Event data extraction & optimization Actors on Apify Store (`@thanh81646`), 2 public REST APIs on RapidAPI Hub, and production reference architectures for `<50MB` RAM async Python hidden-API scraping, deterministic OpenAI/Anthropic structured outputs (`0.00%` schema drift), and resilient `n8n` / FastAPI / Next.js / Supabase / Google Apps Script systems.
+
+## Core Engineering Capabilities & Availability
+- **Specialties:** Async Python (`httpx`, `asyncio`, `Playwright`, `FastAPI`, `Pydantic`), Anti-Bot & Hidden JSON/GraphQL API Extraction, B2B & US Healthcare DSO Lead Enrichment, Zero-Hallucination LLM Structured Outputs, `n8n` / `Make.com` / `Clay` Webhook Pipelines, Discord & Telegram Bot Automation, Google Apps Script, TypeScript, Node.js, React / Next.js, React Native (Expo), PHP, Supabase / PostgreSQL.
+- **Availability:** Available immediately (`30+ hrs/week`) for fixed-price freelance milestones, white-label B2B agency partnerships, scraper/workflow rescue sprints, and global remote engineering roles.
+- **Official Portfolio:** https://trungthanhtran.vercel.app
+- **GitHub (`17+` Public Repositories):** https://github.com/Tthanh2k6
+- **Apify Creator Store (`6` Commercial Actors):** https://apify.com/thanh81646
+- **Upwork Profile:** https://www.upwork.com/freelancers/trungthanhtrandev
+
+## Commercial Serverless Data Engines (`256 MB` Container Optimized, `$2.00 / 1,000` Results)
+- [B2B Website Email, Phone, Social Links & Tech Stack Scraper](https://apify.com/thanh81646/apify-b2b-lead-and-contact-enricher): Zero-browser async HTTP contact and web technographics enricher with cached `DNS/MX` verification.
+- [Shopify & WooCommerce Product Price, Stock & JSON-LD Monitor](https://apify.com/thanh81646/apify-ecommerce-price-and-stock-monitor): Real-time SKU variant price, discount, and `in_stock` monitor via structured JSON/Store APIs (`51x` faster than DOM scraping).
+- [US Healthcare Clinic Contact, Schema & Chain Detector](https://apify.com/thanh81646/apify-us-healthcare-clinic-contact-enricher): Enriches US dental, medical, audiology, and veterinary clinics while screening out PE-backed corporate DSO/MSO chains (`Heartland`, `Aspen`, `MB2`, `PDS`, `Banfield`) at `96.4%` precision.
+- [TheFork Restaurant & Reservation System Extractor (EU)](https://apify.com/thanh81646/thefork-restaurant-and-booking-system-scraper): European hospitality lead and booking platform extractor.
+- [Malaysia KPKT TEDUH Property Developers & Housing Projects](https://apify.com/thanh81646/malaysia-kpkt-teduh-property-developer-scraper): Exclusive structured extractor for Malaysia's official housing developer registry.
+- [Multi-Stop Route, Geocoder & 2-Opt TSP Distance Optimizer](https://github.com/Tthanh2k6/apify-multi-stop-route-and-distance-optimizer): Sub-second Nearest-Neighbor + `2-Opt` Travelling Salesperson route optimizer generating 1-click mobile Google Maps itineraries.
+
+## Public REST APIs & Downloadable Developer Toolkits
+- [RapidAPI — B2B Website Email, Phone & Tech Stack Enricher](https://rapidapi.com/Tthanh2k6/api/b2b-website-email-phone-and-tech-stack-enricher)
+- [RapidAPI — Shopify & WooCommerce Price and Stock Monitor](https://rapidapi.com/Tthanh2k6/api/shopify-and-woocommerce-price-and-stock-monitor)
+- [Python & Playwright Hidden-API Starter Kit Lite (`$0+` Free Open-Core)](https://trungthanh16.gumroad.com/l/python-hidden-api-starter-kit-lite)
+- [Python, AI & n8n Scraper Toolkit Pro (`$14.99` — 6 CLI Engines + 3 Workflow Blueprints)](https://trungthanh16.gumroad.com/l/python-ai-automation-n8n-scraper-toolkit-pro)
+
+## Engineering Deep-Dives & Reproducible Benchmarks (`Dev.to`)
+- [Stop Scraping DOMs When JSON APIs Are Hiding in Plain Sight (`51x` Async Python Benchmark)](https://dev.to/tthanh2k6/stop-scraping-doms-when-json-apis-are-hiding-in-plain-sight-benchmarks-with-async-python--5bia)
+- [Eliminating Broken LLM JSON in Production Workflows (Node.js, FastAPI & n8n Strict Schemas)](https://dev.to/tthanh2k6/eliminating-broken-llm-json-in-production-workflows-nodejs-fastapi-n8n-strict-schemas-3fli)
+- [Engineering Sub-Second B2B Lead Enrichment & 2-Opt Route Optimization Pipelines in Python](https://dev.to/tthanh2k6/engineering-sub-second-b2b-lead-enrichment-2-opt-route-optimization-pipelines-in-python-1le8)
