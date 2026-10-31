@@ -675,7 +675,7 @@ d:\Project\Portfolio\
 
 - **Cấu hình SEO an toàn:** Đặt thẻ `<meta name="robots" content="noindex, nofollow">` trong `Route.head` để công cụ tìm kiếm không lập chỉ mục trang quản trị.
 - **Cơ chế Xác thực Băm SHA-256 phía Client (`sha256Hex` & `handleLogin`):**
-  - Không lưu mật khẩu dạng văn bản thuần trong logic so sánh; sử dụng Web Crypto API `crypto.subtle.digest("SHA-256", new TextEncoder().encode(text))` chuyển mật khẩu nhập vào thành chuỗi hex 64 ký tự và đối chiếu với `ADMIN_PASSWORD_HASH = "af53da2aa1c2a31137f4651a3abb165d5544f5e4867130abc7d7a756ea3efaeb"`.
+  - Không lưu mật khẩu dạng văn bản thuần trong logic so sánh; sử dụng Web Crypto API `crypto.subtle.digest("SHA-256", new TextEncoder().encode(text))` chuyển mật khẩu nhập vào thành chuỗi hex 64 ký tự và đối chiếu với `ADMIN_PASSWORD_HASH = "<REDACTED_ADMIN_HASH>"`.
   - Khi khớp, ghi `sessionStorage.setItem("admin_authorized", "true")` (phiên làm việc chỉ tồn tại trong tab hiện tại, đóng tab tự khóa lại).
 - **5 Phân hệ Quản trị (Tabs) & Đồng bộ Nguồn Dữ liệu Đơn:**
   1. **Tab `Trang Chủ` (`activeTab === "home"`):** Chỉnh sửa 3 dòng chữ/tags trang chủ, 5 cực màu neon/đế cube, 20 thông số vật lý/sương mù/bloom của lưới 3D và 16 thông số vật liệu PBR/nguồn sáng/sóng rảnh (`handleSaveHome`).
