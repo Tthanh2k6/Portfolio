@@ -2,24 +2,31 @@ import { useState, useRef, useEffect } from "react";
 import { NavBar } from "./NavBar";
 import { useLang } from "@/lib/i18n";
 
-interface Comment {
-  id: number;
-  author: string;
-  text: string;
-  pinned: boolean;
-  likes: number;
-  liked: boolean;
-  image: string | null;
-  initial: string;
-}
-
 interface Toast {
   id: number;
   message: string;
+  tone?: "ok" | "warn";
 }
 
+interface EngagementTier {
+  id: string;
+  code: string;
+  titleEn: string;
+  titleVi: string;
+  badgeEn: string;
+  badgeVi: string;
+  descEn: string;
+  descVi: string;
+  deliverablesEn: string[];
+  deliverablesVi: string[];
+  prefillEn: string;
+  prefillVi: string;
+}
+
+const DIRECT_EMAIL = "ttrungthanh90@gmail.com";
+
 // Danh sách kênh chuyên môn mặc định cho khách hàng quốc tế & nhà tuyển dụng
-// (1 card lớn span 2 cột + 4 card đôi tạo bố cục đối xứng hoàn hảo)
+// (Giữ nguyên export DEFAULT_SOCIALS để tương thích 100% với src/routes/admin.tsx)
 export const DEFAULT_SOCIALS = [
   {
     type: "GitHub",
@@ -38,7 +45,7 @@ export const DEFAULT_SOCIALS = [
   {
     type: "Upwork",
     url: "https://www.upwork.com/freelancers/trungthanhtrandev",
-    handle: "Verified Freelancer · UTC+7",
+    handle: "Direct Contract (0% Fee) · UTC+7",
     visible: true,
     large: false,
   },
@@ -55,6 +62,81 @@ export const DEFAULT_SOCIALS = [
     handle: "2 Live Public REST APIs",
     visible: true,
     large: false,
+  },
+];
+
+const ENGAGEMENT_TIERS: EngagementTier[] = [
+  {
+    id: "rescue",
+    code: "01",
+    titleEn: "Emergency Storefront / API / Webhook Rescue",
+    titleVi: "Cứu Hộ Khẩn Cấp Website / API / Webhook",
+    badgeEn: "$120–$250 Fixed • 24–48h Turnaround",
+    badgeVi: "$120–$250 Trọn Gói • Giao Trong 24–48h",
+    descEn:
+      "Rapid root-cause isolation and hotfix deployment for broken n8n/Make scenarios, dropped Stripe/Shopify/CRM webhooks, broken mobile checkout/booking links, or blocked scrapers.",
+    descVi:
+      "Khoanh vùng nguyên nhân gốc và vá nóng các luồng n8n/Make đứt gãy, mất webhook thanh toán/CRM, hỏng nút đặt lịch trên di động hoặc scraper bị chặn anti-bot.",
+    deliverablesEn: [
+      "Idempotent retry guard + dead-letter error logging",
+      "Before/after diagnostic verification & clean PR/patch",
+    ],
+    deliverablesVi: [
+      "Khóa chống lặp dữ liệu (idempotent) + ghi log bắt lỗi tự động",
+      "Báo cáo đối chiếu trước/sau & bàn giao bản vá sạch",
+    ],
+    prefillEn:
+      "Scope: Emergency Storefront / API / Webhook Rescue ($120-$250 Fixed, 24-48h)\nTarget URL / Stack: \nCurrent bottleneck or error: ",
+    prefillVi:
+      "Gói đăng ký: Cứu hộ khẩn cấp Website / API / Webhook ($120-$250, 24-48h)\nURL hoặc hệ thống hiện tại: \nLỗi cần xử lý gấp: ",
+  },
+  {
+    id: "trial-sprint",
+    code: "02",
+    titleEn: "1-Week Paid Engineering Trial Sprint",
+    titleVi: "Sprint Kỹ Thuật Có Lương 1 Tuần (Paid Trial)",
+    badgeEn: "$300–$450 Fixed • 5–7 Days",
+    badgeVi: "$300–$450 Cố Định • 5–7 Ngày",
+    descEn:
+      "Designed for CTOs, SaaS founders, and white-label GTM/RevOps agencies evaluating long-term engineering velocity on a real production module with zero hiring overhead.",
+    descVi:
+      "Thiết kế riêng cho CTO, Founder SaaS và Agency quốc tế muốn kiểm chứng tốc độ code thực chiến trên một phân hệ thật trước khi hợp tác dài hạn.",
+    deliverablesEn: [
+      "Production FastAPI / Next.js / Supabase / MCP or LLM strict-JSON service",
+      "Daily async progress updates across US EST, UK/EU & APAC overlap",
+    ],
+    deliverablesVi: [
+      "Phân hệ FastAPI / Next.js / Supabase / MCP hoặc LLM chuẩn JSON Schema",
+      "Cập nhật tiến độ async hàng ngày khớp khung giờ Mỹ, Âu, Úc & Châu Á",
+    ],
+    prefillEn:
+      "Scope: 1-Week Paid Engineering Trial Sprint ($300-$450 Fixed)\nCompany / Team: \nSprint deliverable we want to ship this week: ",
+    prefillVi:
+      "Gói đăng ký: Sprint kỹ thuật dùng thử 1 tuần ($300-$450)\nĐơn vị / Dự án: \nHạng mục muốn hoàn thành trong tuần này: ",
+  },
+  {
+    id: "custom-pipeline",
+    code: "03",
+    titleEn: "Custom Cloud Scraper / ERP Reconciliation Pipeline",
+    titleVi: "Hệ Thống Cào Dữ Liệu Cloud & Đối Soát ERP/CRM",
+    badgeEn: "Scoped Milestone • <50 MB RAM",
+    badgeVi: "Theo Cột Mốc • Tối Ưu <50 MB RAM",
+    descEn:
+      "Deterministic async Python & Playwright extractors, private Apify Docker Actors, multi-store SKU price/stock monitors, and automated PostgreSQL/Sheets/ERP data sync.",
+    descVi:
+      "Bộ trích xuất dữ liệu Python bất đồng bộ & Playwright chống gãy, Docker Actor riêng tư, theo dõi giá/tồn kho đa sàn và đồng bộ đối soát ERP/PostgreSQL/Google Sheets.",
+    deliverablesEn: [
+      "Free 20–50 row live sample dataset delivered before kickoff",
+      "Containerized deployment + automated schema & completeness checks",
+    ],
+    deliverablesVi: [
+      "Gửi trước mẫu dữ liệu thật 20–50 dòng để kiểm duyệt trước khi mở cọc",
+      "Đóng gói Docker nhẹ (<50 MB RAM) kèm bộ kiểm tra toàn vẹn dữ liệu",
+    ],
+    prefillEn:
+      "Scope: Custom Cloud Scraper / ERP Reconciliation Pipeline\nTarget data source(s) & destination (CRM/ERP/DB): \nDesired schedule & fields: ",
+    prefillVi:
+      "Gói đăng ký: Hệ thống cào dữ liệu Cloud / Đối soát ERP-CRM\nNguồn dữ liệu & nơi nhận (CRM/ERP/Sheets): \nTrường dữ liệu & tần suất chạy: ",
   },
 ];
 
@@ -102,38 +184,10 @@ function getSocialIcon(type: string) {
       </svg>
     );
   }
-  if (t === "facebook") {
-    return (
-      <svg className="social-icon" viewBox="0 0 24 24">
-        <path d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" />
-      </svg>
-    );
-  }
-  if (t === "zalo") {
-    return (
-      <svg className="social-icon" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 2C6.48 2 2 5.58 2 10c0 1.69.64 3.24 1.72 4.54L2.08 20.3c-.22.68.42 1.32 1.1 1.1l5.76-1.64C10.24 20.64 11.11 21 12 21c5.52 0 10-4.48 10-10S17.52 2 12 2zm2.14 12.22h-3.4l2.5-3.5H10.1v-1.2h3.28l-2.43 3.5h3.19v1.2z" />
-      </svg>
-    );
-  }
   if (t === "linkedin") {
     return (
       <svg className="social-icon" viewBox="0 0 24 24">
         <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-      </svg>
-    );
-  }
-  if (t === "instagram") {
-    return (
-      <svg className="social-icon" viewBox="0 0 24 24">
-        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0 3.259.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
-      </svg>
-    );
-  }
-  if (t === "youtube") {
-    return (
-      <svg className="social-icon" viewBox="0 0 24 24">
-        <path d="M23.498 6.163c-.272-1.026-1.077-1.83-2.101-2.102C19.537 3.5 12 3.5 12 3.5s-7.537 0-9.397.561c-1.024.272-1.829 1.076-2.101 2.102C0 8.026 0 12 0 12s0 3.974.502 5.837c.272 1.026 1.077 1.83 2.101 2.102C4.463 20.5 12 20.5 12 20.5s7.537 0 9.397-.561c1.024-.272 1.83-1.076 2.101-2.102C24 15.974 24 12 24 12s0-3.974-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
       </svg>
     );
   }
@@ -145,35 +199,12 @@ function getSocialIcon(type: string) {
   );
 }
 
-// Comment mặc định: lời chào của chủ trang, được ghim (pinned) lên đầu sổ lưu bút.
-// Đây là chữ do trang tự sinh (không phải khách viết) nên phải đổi theo ngôn ngữ —
-// hàm nhận lang thay vì hằng số cố định.
-const WELCOME_VI =
-  "Chào mừng bạn đến với portfolio của mình! Nếu bạn cần xây dựng bộ cào dữ liệu, tự động hoá quy trình AI/n8n hay phát triển ứng dụng web/mobile, cứ nhắn trực tiếp ở cột trái hoặc để lại đôi lời lưu bút tại đây nhé.";
-const WELCOME_EN =
-  "Thanks for visiting! Need a resilient Python/Playwright scraper, a strict-schema OpenAI/n8n workflow, or a full-stack build? Send a direct brief on the left — happy to share a working sample first.";
-
-const makeInitialComments = (lang: "vi" | "en"): Comment[] => [
-  {
-    id: 1,
-    author: "Trung Thanh Tran",
-    text: lang === "en" ? WELCOME_EN : WELCOME_VI,
-    pinned: true,
-    likes: 0,
-    liked: false,
-    image: null,
-    initial: "T",
-  },
-];
-
 function ToastItem({ toast }: { toast: Toast }) {
   const [show, setShow] = useState(false);
 
-  // Trễ 10ms để bật class "show" sau khi mount -> kích hoạt transition trượt lên;
-  // sau 3500ms gỡ class để toast trượt ra (toast bị xóa hẳn khỏi state sau 4000ms ở showToast)
   useEffect(() => {
     const timerShow = setTimeout(() => setShow(true), 10);
-    const timerHide = setTimeout(() => setShow(false), 3500);
+    const timerHide = setTimeout(() => setShow(false), 3800);
     return () => {
       clearTimeout(timerShow);
       clearTimeout(timerHide);
@@ -181,7 +212,7 @@ function ToastItem({ toast }: { toast: Toast }) {
   }, []);
 
   return (
-    <div className={`toast ${show ? "show" : ""}`}>
+    <div className={`toast ${show ? "show" : ""} ${toast.tone === "warn" ? "toast-warn" : ""}`}>
       <svg
         className="toast-icon"
         viewBox="0 0 24 24"
@@ -199,26 +230,20 @@ function ToastItem({ toast }: { toast: Toast }) {
 
 export function ContactSection() {
   const { lang, t } = useLang();
-  // Khởi tạo bằng bản tiếng Anh cho khớp HTML server dựng (LangProvider mặc định "en", không lệch hydrate);
-  // đổi ngôn ngữ sau đó sẽ được effect bên dưới cập nhật lại lời chào.
-  const [comments, setComments] = useState<Comment[]>(() => makeInitialComments("en"));
   const [socials, setSocials] = useState<any[]>(DEFAULT_SOCIALS);
   const [toasts, setToasts] = useState<Toast[]>([]);
+  const [receiverEmail, setReceiverEmail] = useState<string>(DIRECT_EMAIL);
+  const [emailCopied, setEmailCopied] = useState(false);
 
-  // State của form liên hệ
+  // State của form liên hệ trực tiếp
   const [contactName, setContactName] = useState("");
   const [contactEmail, setContactEmail] = useState("");
   const [contactMessage, setContactMessage] = useState("");
   const [isSending, setIsSending] = useState(false);
 
-  // State của form sổ lưu bút
-  const [commentAuthor, setCommentAuthor] = useState("");
-  const [commentText, setCommentText] = useState("");
-  const [selectedImageBase64, setSelectedImageBase64] = useState<string | null>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const messageInputRef = useRef<HTMLTextAreaElement>(null);
 
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  // Phát CustomEvent toàn cục để con trỏ chuột tùy chỉnh (custom cursor) phóng to/thu nhỏ khi hover
   const triggerCursorHover = (enter: boolean) => {
     const eventName = enter ? "cursorHoverEnter" : "cursorHoverLeave";
     window.dispatchEvent(new CustomEvent(eventName));
@@ -229,162 +254,141 @@ export function ContactSection() {
     onMouseLeave: () => triggerCursorHover(false),
   };
 
-  const showToast = (message: string) => {
-    const id = Date.now();
-    setToasts((prev) => [...prev, { id, message }]);
+  const showToast = (message: string, tone: "ok" | "warn" = "ok") => {
+    const id = Date.now() + Math.floor(Math.random() * 1000);
+    setToasts((prev) => [...prev, { id, message, tone }]);
     setTimeout(() => {
-      setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 4000);
+      setToasts((prev) => prev.filter((item) => item.id !== id));
+    }, 4300);
   };
 
-  // CMS phía client (không cần backend): trang /admin ghi dữ liệu vào localStorage,
-  // còn trang công khai này đọc lại các key đó khi mount. Nếu chưa có dữ liệu thì giữ giá trị mặc định.
-  // Đọc trong useEffect (không phải lúc khởi tạo state) vì localStorage chỉ tồn tại ở client, tránh lỗi SSR.
   useEffect(() => {
-    const storedSocials = localStorage.getItem("contact_socials");
-    if (storedSocials) {
-      try {
+    try {
+      const storedSocials = localStorage.getItem("contact_socials");
+      if (storedSocials) {
         setSocials(JSON.parse(storedSocials));
-      } catch (e) {
-        console.error("Failed to parse contact_socials", e);
       }
-    }
-
-    const storedComments = localStorage.getItem("contact_comments");
-    if (storedComments) {
-      try {
-        setComments(JSON.parse(storedComments));
-      } catch (e) {
-        console.error("Failed to parse contact_comments", e);
+      const storedEmail = localStorage.getItem("contact_receiver_email");
+      if (storedEmail && storedEmail.includes("@")) {
+        setReceiverEmail(storedEmail.trim());
       }
+    } catch (e) {
+      console.error("Failed to read contact settings", e);
     }
   }, []);
 
-  // Đổi ngôn ngữ -> dịch lại LỜI CHÀO GHIM (chữ do trang tự sinh). Chỉ thay khi nội
-  // dung vẫn đúng bằng một trong hai bản mặc định; khách để lại lời nhắn thật thì
-  // giữ nguyên, không được dịch đè lời của người ta.
-  useEffect(() => {
-    const wanted = lang === "en" ? WELCOME_EN : WELCOME_VI;
-    setComments((prev) =>
-      prev.map((c) =>
-        c.pinned && (c.text === WELCOME_VI || c.text === WELCOME_EN)
-          ? { ...c, text: wanted }
-          : c
+  const handleCopyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(receiverEmail);
+      setEmailCopied(true);
+      showToast(
+        t(
+          `Đã sao chép ${receiverEmail} vào bộ nhớ tạm!`,
+          `Copied ${receiverEmail} to clipboard!`
+        )
+      );
+      setTimeout(() => setEmailCopied(false), 2200);
+    } catch {
+      window.location.href = `mailto:${receiverEmail}`;
+    }
+  };
+
+  const handleSelectScope = (tier: EngagementTier) => {
+    const template = lang === "en" ? tier.prefillEn : tier.prefillVi;
+    setContactMessage(template);
+    showToast(
+      t(
+        "Đã điền sẵn khung yêu cầu ở cột trái — bạn chỉ cần thêm URL/chi tiết!",
+        "Scope pre-filled on the left — just add your target URL or brief!"
       )
     );
-  }, [lang]);
+    if (!contactName.trim()) {
+      nameInputRef.current?.focus();
+    } else {
+      messageInputRef.current?.focus();
+    }
+  };
+
+  const openMailtoFallback = (targetEmail: string, name: string, senderEmail: string, bodyText: string) => {
+    const subject = encodeURIComponent(`Project Inquiry from ${name}`);
+    const body = encodeURIComponent(
+      `Name: ${name}\nReply-To Email: ${senderEmail}\n\nProject Brief:\n${bodyText}`
+    );
+    window.location.href = `mailto:${targetEmail}?subject=${subject}&body=${body}`;
+  };
 
   const handleContactSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!contactName.trim() || !contactEmail.trim() || !contactMessage.trim()) return;
+    const trimmedName = contactName.trim();
+    const trimmedEmail = contactEmail.trim();
+    const trimmedMsg = contactMessage.trim();
+    if (!trimmedName || !trimmedEmail || !trimmedMsg) return;
 
     setIsSending(true);
-    // Email người nhận do trang /admin cấu hình (key "contact_receiver_email"); nếu chưa có thì dùng mặc định
-    const receiverEmail = localStorage.getItem("contact_receiver_email") || "ttrungthanh90@gmail.com";
+    const targetEmail = receiverEmail || DIRECT_EMAIL;
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8500);
 
-    // Gửi mail qua dịch vụ FormSubmit (không cần backend riêng); _captcha=false để bỏ qua captcha
     try {
-      const response = await fetch(`https://formsubmit.co/ajax/${receiverEmail}`, {
+      const response = await fetch(`https://formsubmit.co/ajax/${targetEmail}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Accept": "application/json"
+          Accept: "application/json",
         },
+        signal: controller.signal,
         body: JSON.stringify({
-          _subject: `Contact from ${contactName}`,
+          name: trimmedName,
+          email: trimmedEmail,
+          _replyto: trimmedEmail,
+          _subject: `B2B Project Inquiry from ${trimmedName}`,
           _captcha: "false",
-          message: `hello, my name's ${contactName}\nmy email is ${contactEmail}\n\nmessage:\n${contactMessage}`
-        })
+          message: `From: ${trimmedName} (${trimmedEmail})\n\n${trimmedMsg}`,
+        }),
       });
 
-      if (response.ok) {
-        showToast("Message sent successfully!");
+      const data = await response.json().catch(() => null);
+      const isDelivered =
+        response.ok &&
+        data !== null &&
+        (data.success === "true" || data.success === true);
+
+      if (isDelivered) {
+        showToast(
+          t(
+            "Đã gửi yêu cầu thành công! Mình thường phản hồi trong vòng 2–4 giờ.",
+            "Inquiry delivered! I typically reply within 2–4 hours with a concrete plan."
+          )
+        );
         setContactName("");
         setContactEmail("");
         setContactMessage("");
       } else {
-        throw new Error("Failed to send email");
+        throw new Error(data?.message || "FormSubmit activation or gateway fallback triggered");
       }
     } catch (err) {
-      console.error("Error sending email:", err);
-      showToast("Error sending message. Please try again later.");
+      console.warn("Form gateway fallback -> opening direct mailto:", err);
+      try {
+        await navigator.clipboard.writeText(targetEmail);
+      } catch {
+        /* ignore clipboard permission failure */
+      }
+      showToast(
+        t(
+          `Đang mở trình gửi mail trực tiếp tới ${targetEmail} (đã copy sẵn email) để không thất lạc tin nhắn!`,
+          `Opening your mail client to ${targetEmail} (email also copied) so your brief is never lost!`
+        ),
+        "warn"
+      );
+      openMailtoFallback(targetEmail, trimmedName, trimmedEmail, trimmedMsg);
     } finally {
+      clearTimeout(timeoutId);
       setIsSending(false);
     }
   };
 
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
-  };
-
-  // Đọc ảnh người dùng chọn và chuyển sang chuỗi base64/dataURL để lưu thẳng vào localStorage cùng bình luận
-  // (vì không có server lưu file, ảnh được nhúng trực tiếp dưới dạng data URL)
-  const handleImageSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result && typeof event.target.result === "string") {
-          setSelectedImageBase64(event.target.result);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleCommentSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!commentAuthor.trim() || !commentText.trim()) return;
-
-    const initial = commentAuthor.trim().charAt(0).toUpperCase() || "?";
-    const newComment: Comment = {
-      id: Date.now(),
-      author: commentAuthor,
-      text: commentText,
-      pinned: false,
-      likes: 0,
-      liked: false,
-      image: selectedImageBase64,
-      initial,
-    };
-
-    // Chèn bình luận mới ngay sau các bình luận đã ghim (pinned luôn nằm trên đầu),
-    // rồi lưu lại "contact_comments" để trang /admin và lần tải sau đọc được
-    setComments((prev) => {
-      const pinned = prev.filter((c) => c.pinned);
-      const regular = prev.filter((c) => !c.pinned);
-      const updated = [...pinned, newComment, ...regular];
-      localStorage.setItem("contact_comments", JSON.stringify(updated));
-      return updated;
-    });
-
-    showToast("Comment posted successfully!");
-    setCommentAuthor("");
-    setCommentText("");
-    setSelectedImageBase64(null);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
-  };
-
-  const toggleLike = (id: number) => {
-    setComments((prev) => {
-      const updated = prev.map((c) => {
-        if (c.id === id) {
-          const liked = !c.liked;
-          const likes = liked ? c.likes + 1 : c.likes - 1;
-          return { ...c, liked, likes };
-        }
-        return c;
-      });
-      localStorage.setItem("contact_comments", JSON.stringify(updated));
-      return updated;
-    });
-  };
-
   return (
     <div className="contact-page-container">
-      {/* CSS TÙY CHỈNH CỤC BỘ */}
       <style>{`
         .contact-page-container {
           background-color: #0b0c10;
@@ -404,26 +408,26 @@ export function ContactSection() {
           padding-top: 100px;
         }
 
-
         .contact-header-wrapper {
           text-align: center;
-          margin-top: 50px;
-          margin-bottom: 30px;
+          margin-top: 44px;
+          margin-bottom: 28px;
           padding: 0 20px;
           z-index: 2;
           opacity: 0;
-          animation: contactFadeUp 0.9s ease 0.3s forwards;
+          animation: contactFadeUp 0.9s ease 0.25s forwards;
         }
 
         .gallery-title {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 2.6rem;
+          font-size: 2.5rem;
           font-weight: 800;
           letter-spacing: 2px;
           text-transform: uppercase;
           margin: 0;
           display: flex;
           justify-content: center;
+          flex-wrap: wrap;
           gap: 14px;
         }
 
@@ -433,73 +437,174 @@ export function ContactSection() {
         }
 
         .gallery-title .word-showcase {
-          color: #52525b;
-          text-shadow: 0 0 20px rgba(82, 82, 91, 0.05);
+          color: #71717a;
+          text-shadow: 0 0 20px rgba(113, 113, 122, 0.05);
         }
 
         .contact-subtitle {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 1.1rem;
+          font-size: 1.04rem;
           font-weight: 500;
-          color: rgba(255, 255, 255, 0.65);
-          margin: 12px 0 0 0;
-          letter-spacing: 0.5px;
+          color: rgba(255, 255, 255, 0.68);
+          margin: 12px auto 0 auto;
+          max-width: 780px;
+          letter-spacing: 0.3px;
+          line-height: 1.5;
         }
 
         .contact-grid {
           display: grid;
-          grid-template-columns: 1fr 1.1fr;
-          gap: 40px;
-          max-width: 1200px;
+          grid-template-columns: 1fr 1.12fr;
+          gap: 34px;
+          max-width: 1240px;
           width: 100%;
           margin: 0 auto;
-          padding: 0 40px 60px 40px;
+          padding: 0 36px 64px 36px;
           z-index: 2;
           opacity: 0;
-          animation: contactFadeIn 1.2s ease 0.4s forwards;
+          animation: contactFadeIn 1.1s ease 0.35s forwards;
         }
 
         .contact-column-card {
-          background: rgba(18, 20, 29, 0.55);
-          backdrop-filter: blur(16px);
-          -webkit-backdrop-filter: blur(16px);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 24px;
-          padding: 36px;
+          background: rgba(15, 18, 26, 0.68);
+          backdrop-filter: blur(18px);
+          -webkit-backdrop-filter: blur(18px);
+          border: 1px solid rgba(255, 255, 255, 0.07);
+          border-radius: 22px;
+          padding: 34px;
           display: flex;
           flex-direction: column;
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
           height: max-content;
         }
 
         .column-title {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 1.8rem;
+          font-size: 1.65rem;
           font-weight: 700;
           margin: 0 0 8px 0;
-          letter-spacing: -0.5px;
+          letter-spacing: -0.4px;
           color: #ffffff;
         }
 
         .column-subtitle {
           font-size: 0.88rem;
-          color: rgba(255, 255, 255, 0.55);
-          line-height: 1.5;
-          margin: 0 0 28px 0;
+          color: rgba(255, 255, 255, 0.6);
+          line-height: 1.55;
+          margin: 0 0 20px 0;
+        }
+
+        .direct-desk-box {
+          background: rgba(255, 255, 255, 0.025);
+          border: 1px solid rgba(0, 162, 255, 0.22);
+          border-radius: 14px;
+          padding: 15px 16px;
+          margin-bottom: 22px;
+          display: flex;
+          flex-direction: column;
+          gap: 11px;
+        }
+
+        .direct-email-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+
+        .direct-email-addr {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.88rem;
+          font-weight: 500;
+          color: #e4e4e7;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          word-break: break-all;
+        }
+
+        .direct-email-addr:hover {
+          color: #38bdf8;
+        }
+
+        .direct-email-addr svg {
+          width: 16px;
+          height: 16px;
+          color: #38bdf8;
+          flex-shrink: 0;
+        }
+
+        .copy-email-btn {
+          background: rgba(56, 189, 248, 0.12);
+          border: 1px solid rgba(56, 189, 248, 0.35);
+          border-radius: 9px;
+          color: #e0f2fe;
+          font-family: inherit;
+          font-size: 0.76rem;
+          font-weight: 700;
+          letter-spacing: 0.3px;
+          padding: 7px 12px;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: all 0.22s ease;
+        }
+
+        .copy-email-btn:hover {
+          background: #38bdf8;
+          color: #090d16;
+          border-color: #38bdf8;
+        }
+
+        .copy-email-btn svg {
+          width: 13px;
+          height: 13px;
+        }
+
+        .meta-pills-row {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+          padding-top: 8px;
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .meta-pill {
+          font-size: 0.73rem;
+          font-weight: 600;
+          color: rgba(255, 255, 255, 0.72);
+          background: rgba(255, 255, 255, 0.035);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 999px;
+          padding: 4px 10px;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+        }
+
+        .meta-pill-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #10b981;
+          box-shadow: 0 0 8px rgba(16, 185, 129, 0.8);
+          flex-shrink: 0;
         }
 
         .form-group {
           position: relative;
-          margin-bottom: 20px;
+          margin-bottom: 16px;
           display: flex;
           align-items: center;
         }
 
         .input-icon {
           position: absolute;
-          left: 18px;
-          width: 20px;
-          height: 20px;
+          left: 16px;
+          width: 18px;
+          height: 18px;
           color: rgba(255, 255, 255, 0.35);
           pointer-events: none;
           transition: color 0.3s ease;
@@ -507,57 +612,54 @@ export function ContactSection() {
 
         .form-input {
           width: 100%;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1.5px solid rgba(255, 255, 255, 0.06);
+          background: rgba(255, 255, 255, 0.025);
+          border: 1.5px solid rgba(255, 255, 255, 0.07);
           border-radius: 12px;
-          padding: 16px 16px 16px 50px;
+          padding: 14px 15px 14px 46px;
           font-family: inherit;
-          font-size: 0.92rem;
+          font-size: 0.9rem;
           color: #ffffff;
           outline: none;
-          transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+          transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
         }
 
         textarea.form-input {
-          resize: none;
-          height: 120px;
+          resize: vertical;
+          min-height: 118px;
+          line-height: 1.5;
         }
 
         .form-input:focus {
-          background: rgba(255, 255, 255, 0.04);
-          border-color: rgba(0, 162, 255, 0.6);
-          box-shadow: 0 0 20px rgba(0, 162, 255, 0.15);
-        }
-
-        .form-input:focus + .input-icon {
-          color: #00a2ff;
+          background: rgba(255, 255, 255, 0.045);
+          border-color: rgba(56, 189, 248, 0.65);
+          box-shadow: 0 0 20px rgba(56, 189, 248, 0.14);
         }
 
         .submit-btn {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: #ffffff;
+          border: 1px solid #ffffff;
           border-radius: 12px;
-          color: #ffffff;
+          color: #090d16;
           font-family: inherit;
-          font-size: 0.9rem;
-          font-weight: 700;
-          letter-spacing: 1px;
+          font-size: 0.88rem;
+          font-weight: 800;
+          letter-spacing: 0.8px;
           text-transform: uppercase;
           padding: 15px 0;
           display: flex;
           justify-content: center;
           align-items: center;
           gap: 10px;
-          transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+          transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
           width: 100%;
-          margin-bottom: 32px;
-          border-color: rgba(255,255,255,0.1);
+          margin-bottom: 28px;
         }
 
         .submit-btn:hover {
-          background: #ffffff;
-          color: #000000;
-          box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+          background: #38bdf8;
+          border-color: #38bdf8;
+          color: #05080f;
+          box-shadow: 0 10px 25px rgba(56, 189, 248, 0.25);
           transform: translateY(-2px);
         }
 
@@ -565,7 +667,7 @@ export function ContactSection() {
           width: 16px;
           height: 16px;
           fill: currentColor;
-          transition: transform 0.3s ease;
+          transition: transform 0.25s ease;
         }
 
         .submit-btn:hover svg {
@@ -574,30 +676,31 @@ export function ContactSection() {
 
         .social-section-title {
           font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 0.95rem;
+          font-size: 0.88rem;
           font-weight: 700;
-          color: rgba(255, 255, 255, 0.6);
-          margin: 0 0 16px 0;
-          letter-spacing: 0.5px;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.55);
+          margin: 0 0 14px 0;
+          letter-spacing: 0.8px;
         }
 
         .social-grid {
           display: grid;
           grid-template-columns: repeat(2, 1fr);
-          gap: 14px;
+          gap: 12px;
         }
 
         .social-card {
           background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.06);
           border-radius: 12px;
-          padding: 16px;
+          padding: 14px 15px;
           display: flex;
           align-items: center;
-          gap: 14px;
+          gap: 12px;
           text-decoration: none;
           color: #ffffff;
-          transition: all 0.3s ease;
+          transition: all 0.25s ease;
         }
 
         .social-card.large {
@@ -605,22 +708,22 @@ export function ContactSection() {
         }
 
         .social-card:hover {
-          background: rgba(255, 255, 255, 0.05);
-          border-color: rgba(255, 255, 255, 0.15);
+          background: rgba(255, 255, 255, 0.055);
+          border-color: rgba(255, 255, 255, 0.18);
           transform: translateY(-2px);
         }
 
         .social-icon {
-          width: 22px;
-          height: 22px;
-          color: rgba(255, 255, 255, 0.7);
+          width: 21px;
+          height: 21px;
+          color: rgba(255, 255, 255, 0.75);
           fill: currentColor;
-          transition: color 0.3s ease;
+          transition: color 0.25s ease;
           flex-shrink: 0;
         }
 
         .social-card:hover .social-icon {
-          color: #ffffff;
+          color: #38bdf8;
         }
 
         .social-info {
@@ -629,232 +732,192 @@ export function ContactSection() {
         }
 
         .social-name {
-          font-size: 0.9rem;
+          font-size: 0.88rem;
           font-weight: 700;
         }
 
         .social-handle {
-          font-size: 0.75rem;
-          color: rgba(255, 255, 255, 0.4);
+          font-size: 0.74rem;
+          color: rgba(255, 255, 255, 0.45);
           margin-top: 2px;
         }
 
-        .comments-input-row {
-          display: grid;
-          grid-template-columns: 1fr;
-          gap: 16px;
-          margin-bottom: 16px;
-        }
-
-        .comments-input-row .form-group {
-          margin-bottom: 0;
-        }
-
-        .comment-textarea {
-          padding-left: 18px;
-        }
-
-        .comments-actions {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-          margin-bottom: 30px;
-        }
-
-        .action-sub-btn {
-          background: rgba(255, 255, 255, 0.02);
-          border: 1.5px dashed rgba(255, 255, 255, 0.1);
-          border-radius: 12px;
-          color: rgba(255, 255, 255, 0.6);
-          font-family: inherit;
-          font-size: 0.88rem;
-          font-weight: 600;
-          padding: 14px 0;
+        /* CỘT PHẢI: B2B Engagement Options & Production SLA */
+        .tier-stack {
           display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 8px;
-          transition: all 0.3s ease;
-          cursor: none !important;
+          flex-direction: column;
+          gap: 14px;
+          margin-bottom: 20px;
         }
 
-        .action-sub-btn:hover {
-          border-color: rgba(255, 255, 255, 0.3);
-          color: #ffffff;
+        .tier-card {
+          background: rgba(255, 255, 255, 0.022);
+          border: 1px solid rgba(255, 255, 255, 0.075);
+          border-radius: 15px;
+          padding: 18px 20px;
+          transition: border-color 0.25s ease, background-color 0.25s ease, transform 0.25s ease;
+        }
+
+        .tier-card:hover {
           background: rgba(255, 255, 255, 0.04);
+          border-color: rgba(56, 189, 248, 0.35);
+          transform: translateY(-1px);
         }
 
-        .action-sub-btn svg {
-          width: 16px;
-          height: 16px;
-          fill: currentColor;
-        }
-
-        .action-post-btn {
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 12px;
-          color: #ffffff;
-          font-family: inherit;
-          font-size: 0.88rem;
-          font-weight: 700;
-          padding: 14px 0;
-          transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-          border-color: rgba(255,255,255,0.1);
-        }
-
-        .action-post-btn:hover {
-          background: #ffffff;
-          color: #000000;
-          box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
-        }
-
-        .comments-feed-title {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 0.95rem;
-          font-weight: 700;
-          color: rgba(255, 255, 255, 0.6);
-          margin: 0 0 16px 0;
-          letter-spacing: 0.5px;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          padding-top: 24px;
-        }
-
-        .comments-list {
+        .tier-top-row {
           display: flex;
-          flex-direction: column;
-          gap: 14px;
-          max-height: 480px;
-          overflow-y: auto;
-          padding-right: 6px;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 10px;
+          flex-wrap: wrap;
+          margin-bottom: 8px;
         }
 
-        .comments-list::-webkit-scrollbar {
-          width: 4px;
-        }
-        .comments-list::-webkit-scrollbar-track {
-          background: transparent;
-        }
-        .comments-list::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 10px;
-        }
-        .comments-list::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.25);
-        }
-
-        .comment-card {
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          border-radius: 14px;
-          padding: 16px;
+        .tier-title-group {
           display: flex;
-          gap: 14px;
-          position: relative;
-          transition: border-color 0.3s ease, background-color 0.3s ease;
-        }
-
-        .comment-card:hover {
-          background: rgba(255, 255, 255, 0.03);
-          border-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .comment-card.pinned {
-          border-color: rgba(147, 51, 234, 0.3);
-          background: rgba(147, 51, 234, 0.02);
-        }
-
-        .comment-avatar {
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          background: #252836;
-          color: #ffffff;
-          font-size: 0.95rem;
-          font-weight: 700;
-          display: flex;
-          justify-content: center;
           align-items: center;
-          text-transform: uppercase;
-          flex-shrink: 0;
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          gap: 9px;
         }
 
-        .comment-content-box {
+        .tier-code {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: #38bdf8;
+          background: rgba(56, 189, 248, 0.1);
+          border: 1px solid rgba(56, 189, 248, 0.25);
+          border-radius: 6px;
+          padding: 2px 7px;
+          flex-shrink: 0;
+        }
+
+        .tier-title {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 1rem;
+          font-weight: 700;
+          color: #ffffff;
+          margin: 0;
+          line-height: 1.35;
+        }
+
+        .tier-badge {
+          font-family: 'Fira Code', monospace;
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: #6ee7b7;
+          background: rgba(16, 185, 129, 0.1);
+          border: 1px solid rgba(16, 185, 129, 0.28);
+          border-radius: 999px;
+          padding: 3px 10px;
+          white-space: nowrap;
+        }
+
+        .tier-desc {
+          font-size: 0.83rem;
+          color: rgba(255, 255, 255, 0.65);
+          line-height: 1.5;
+          margin: 0 0 10px 0;
+        }
+
+        .tier-list {
+          list-style: none;
+          padding: 0;
+          margin: 0 0 12px 0;
           display: flex;
           flex-direction: column;
-          flex-grow: 1;
+          gap: 5px;
         }
 
-        .comment-author-row {
+        .tier-list li {
+          font-size: 0.79rem;
+          color: rgba(255, 255, 255, 0.78);
           display: flex;
           align-items: center;
           gap: 8px;
-          margin-bottom: 5px;
         }
 
-        .comment-author-name {
-          font-size: 0.88rem;
-          font-weight: 700;
-          color: #ffffff;
-        }
-
-        .comment-badge-pinned {
-          background: rgba(147, 51, 234, 0.2);
-          border: 1.5px solid rgba(147, 51, 234, 0.4);
-          border-radius: 6px;
-          color: #c084fc;
-          font-size: 0.62rem;
-          font-weight: 800;
-          letter-spacing: 0.5px;
-          padding: 2px 6px;
-          text-transform: uppercase;
-        }
-
-        .comment-text {
-          font-size: 0.85rem;
-          color: rgba(255, 255, 255, 0.7);
-          line-height: 1.45;
-          margin: 0;
-        }
-
-        .comment-attachment {
-          width: 100%;
-          max-width: 140px;
-          height: 90px;
-          border-radius: 8px;
-          object-fit: cover;
-          margin-top: 10px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .comment-like-box {
-          position: absolute;
-          right: 16px;
-          top: 16px;
-          display: flex;
-          align-items: center;
-          gap: 5px;
-          color: rgba(255, 255, 255, 0.3);
-          font-size: 0.75rem;
-          font-weight: 600;
-          cursor: none !important;
-          transition: color 0.3s ease;
-        }
-
-        .comment-like-box:hover, .comment-like-box.liked {
-          color: #f43f5e;
-        }
-
-        .comment-like-box svg {
+        .tier-list li svg {
           width: 14px;
           height: 14px;
-          fill: currentColor;
-          transition: transform 0.2s ease;
+          color: #10b981;
+          flex-shrink: 0;
         }
 
-        .comment-like-box:active svg {
-          transform: scale(1.3);
+        .tier-select-btn {
+          background: transparent;
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          border-radius: 8px;
+          color: #e4e4e7;
+          font-family: inherit;
+          font-size: 0.76rem;
+          font-weight: 700;
+          padding: 6px 12px;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          transition: all 0.2s ease;
+        }
+
+        .tier-select-btn:hover {
+          background: rgba(56, 189, 248, 0.14);
+          border-color: #38bdf8;
+          color: #38bdf8;
+        }
+
+        .tier-select-btn svg {
+          width: 13px;
+          height: 13px;
+        }
+
+        .sla-guarantee-box {
+          background: linear-gradient(135deg, rgba(16, 185, 129, 0.09), rgba(56, 189, 248, 0.06));
+          border: 1px solid rgba(16, 185, 129, 0.32);
+          border-radius: 16px;
+          padding: 18px 20px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .sla-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .sla-header svg {
+          width: 20px;
+          height: 20px;
+          color: #10b981;
+          flex-shrink: 0;
+        }
+
+        .sla-headline {
+          font-family: 'Plus Jakarta Sans', sans-serif;
+          font-size: 0.94rem;
+          font-weight: 800;
+          color: #ecfdf5;
+          margin: 0;
+          letter-spacing: 0.1px;
+        }
+
+        .sla-points {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 6px;
+          margin: 0;
+          padding: 0;
+          list-style: none;
+        }
+
+        .sla-points li {
+          font-size: 0.8rem;
+          color: rgba(255, 255, 255, 0.74);
+          line-height: 1.45;
+        }
+
+        .sla-points strong {
+          color: #ffffff;
         }
 
         .toast-container {
@@ -870,21 +933,26 @@ export function ContactSection() {
 
         .toast {
           pointer-events: auto;
-          background: rgba(18, 20, 29, 0.95);
+          background: rgba(15, 18, 26, 0.96);
           backdrop-filter: blur(12px);
-          border: 1px solid rgba(0, 162, 255, 0.25);
+          border: 1px solid rgba(56, 189, 248, 0.35);
           border-radius: 12px;
-          padding: 16px 24px;
+          padding: 15px 22px;
           color: #ffffff;
-          font-size: 0.88rem;
+          font-size: 0.86rem;
           font-weight: 500;
           display: flex;
           align-items: center;
           gap: 12px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 162, 255, 0.1);
+          max-width: 440px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.55);
           transform: translateY(100px);
           opacity: 0;
-          transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .toast.toast-warn {
+          border-color: rgba(245, 158, 11, 0.45);
         }
 
         .toast.show {
@@ -895,7 +963,7 @@ export function ContactSection() {
         .toast-icon {
           width: 18px;
           height: 18px;
-          color: #00a2ff;
+          color: #38bdf8;
           flex-shrink: 0;
         }
 
@@ -908,68 +976,101 @@ export function ContactSection() {
           to   { opacity: 1; transform: translateY(0); }
         }
 
-        .scroll-hint {
-          border: 1px solid rgba(255,255,255,0.18);
-          border-radius: 100px;
-          padding: 9px 20px;
-          color: rgba(255,255,255,0.6);
-          font-size: 0.78rem;
-          font-weight: 500;
-          letter-spacing: 0.3px;
-          backdrop-filter: blur(6px);
-          background: rgba(255,255,255,0.04);
-        }
-
-        @media (max-width: 1024px) {
+        @media (max-width: 1040px) {
           .contact-grid {
             grid-template-columns: 1fr;
-            gap: 30px;
-            padding: 0 20px 40px 20px;
+            gap: 28px;
+            padding: 0 20px 44px 20px;
           }
           .contact-header-wrapper {
-            margin-top: 80px;
+            margin-top: 72px;
           }
         }
       `}</style>
 
-      {/* THÔNG BÁO TOAST */}
       <div className="toast-container">
-        {toasts.map((t) => (
-          <ToastItem key={t.id} toast={t} />
+        {toasts.map((item) => (
+          <ToastItem key={item.id} toast={item} />
         ))}
       </div>
 
-      {/* NAVBAR */}
       <NavBar />
 
-      {/* TIÊU ĐỀ HEADER */}
       <div className="contact-header-wrapper">
-        <h1 className="gallery-title" style={{ marginBottom: "12px" }}>
-          <span className="word-project">{t("Liên Hệ", "Get In")}</span>
-          <span className="word-showcase">{t("& Hợp Tác", "Touch")}</span>
+        <h1 className="gallery-title" style={{ marginBottom: "10px" }}>
+          <span className="word-project">{t("Hợp Tác Kỹ Thuật", "Engineering")}</span>
+          <span className="word-showcase">{t("& Báo Giá Sprint", "& Direct Dispatch")}</span>
         </h1>
         <p className="contact-subtitle">
           {t(
-            "Sẵn sàng cho dự án freelance cố định giá, hợp tác agency quốc tế & vị trí kỹ sư từ xa (UTC+7).",
-            "Available for fixed-price milestones, white-label agency partnerships & remote contracts (UTC+7)."
+            "Nhận phát triển trọn gói hệ thống cào dữ liệu chống chặn, tự động hóa n8n/FastAPI và hợp đồng kỹ sư B2B từ xa.",
+            "Scoped B2B data extraction pipelines, deterministic workflow automations, and paid engineering trial sprints."
           )}
         </p>
       </div>
 
-      {/* GRID HAI CỘT */}
       <section className="contact-grid">
-        {/* CỘT TRÁI: Form liên hệ + Grid mạng xã hội */}
+        {/* CỘT TRÁI: Hộp Email Trực Tiếp + Form Bảo Hiểm Kép + 5 Kênh Xác Thực */}
         <div className="contact-column-card">
-          <h2 className="column-title">{t("Gửi Tin Nhắn", "Direct Inquiry")}</h2>
+          <h2 className="column-title">{t("Gửi Yêu Cầu Trực Tiếp", "Direct Engineering Brief")}</h2>
           <p className="column-subtitle">
             {t(
-              "Gửi mô tả ngắn về bài toán dữ liệu, luồng tự động hoá hoặc sản phẩm bạn cần — mình thường phản hồi kèm phương án/mẫu thử trong vòng vài giờ.",
-              "Share your target URL, workflow bottleneck, or product scope — I typically reply within a few hours with a concrete technical plan or working sample."
+              "Gửi URL mục tiêu hoặc bài toán hệ thống đang nghẽn — phản hồi trong 2–4 giờ kèm phương án kỹ thuật hoặc mẫu dữ liệu thật.",
+              "Share your target URL, API spec, or workflow bottleneck. Typical response within 2–4 hours with a concrete technical plan or sample."
             )}
           </p>
 
+          <div className="direct-desk-box">
+            <div className="direct-email-row">
+              <a
+                href={`mailto:${receiverEmail}`}
+                className="direct-email-addr"
+                {...hoverProps}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="2" y="4" width="20" height="16" rx="2" />
+                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                </svg>
+                <span>{receiverEmail}</span>
+              </a>
+
+              <button
+                type="button"
+                className="copy-email-btn"
+                onClick={handleCopyEmail}
+                {...hoverProps}
+              >
+                {emailCopied ? (
+                  <>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                    <span>{t("Đã Chép Email", "Copied")}</span>
+                  </>
+                ) : (
+                  <>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                    </svg>
+                    <span>{t("Chép Email Trực Tiếp", "Copy Direct Email")}</span>
+                  </>
+                )}
+              </button>
+            </div>
+
+            <div className="meta-pills-row">
+              <span className="meta-pill">
+                <span className="meta-pill-dot" />
+                Ho Chi Minh City (UTC+7 • US EST / EU / APAC Overlap)
+              </span>
+              <span className="meta-pill">
+                Direct W-8BEN / Wise / Upwork Direct Contract (0% Fee)
+              </span>
+            </div>
+          </div>
+
           <form onSubmit={handleContactSubmit}>
-            {/* Ô nhập tên */}
             <div className="form-group">
               <svg
                 className="input-icon"
@@ -982,9 +1083,10 @@ export function ContactSection() {
                 <circle cx="12" cy="7" r="4" />
               </svg>
               <input
+                ref={nameInputRef}
                 type="text"
                 className="form-input"
-                placeholder="Your Name"
+                placeholder={t("Tên của bạn / Công ty", "Your Name & Company")}
                 value={contactName}
                 onChange={(e) => setContactName(e.target.value)}
                 required
@@ -992,7 +1094,6 @@ export function ContactSection() {
               />
             </div>
 
-            {/* Ô nhập email */}
             <div className="form-group">
               <svg
                 className="input-icon"
@@ -1007,7 +1108,7 @@ export function ContactSection() {
               <input
                 type="email"
                 className="form-input"
-                placeholder="Your Email"
+                placeholder={t("Email làm việc của bạn", "Work Email (for sample & quote reply)")}
                 value={contactEmail}
                 onChange={(e) => setContactEmail(e.target.value)}
                 required
@@ -1015,11 +1116,10 @@ export function ContactSection() {
               />
             </div>
 
-            {/* Ô nhập tin nhắn */}
             <div className="form-group">
               <svg
                 className="input-icon"
-                style={{ top: "16px" }}
+                style={{ top: "15px" }}
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -1028,8 +1128,12 @@ export function ContactSection() {
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
               </svg>
               <textarea
+                ref={messageInputRef}
                 className="form-input"
-                placeholder="Your Message"
+                placeholder={t(
+                  "Dán URL mục tiêu, lỗi hệ thống hiện tại hoặc phạm vi Sprint bạn muốn triển khai...",
+                  "Share target URL(s), broken workflow details, or desired sprint deliverables..."
+                )}
                 value={contactMessage}
                 onChange={(e) => setContactMessage(e.target.value)}
                 required
@@ -1037,11 +1141,19 @@ export function ContactSection() {
               />
             </div>
 
-            <button type="submit" className="submit-btn" disabled={isSending} style={{ opacity: isSending ? 0.7 : 1 }} {...hoverProps}>
+            <button
+              type="submit"
+              className="submit-btn"
+              disabled={isSending}
+              style={{ opacity: isSending ? 0.72 : 1 }}
+              {...hoverProps}
+            >
               <svg viewBox="0 0 24 24" className={isSending ? "animate-pulse" : ""}>
                 <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
               </svg>
-              {isSending ? "Sending..." : "Send Message"}
+              {isSending
+                ? t("Đang Gửi...", "Dispatching...")
+                : t("Gửi Yêu Cầu Báo Giá & Mẫu Thử", "Send Brief & Request Sample")}
             </button>
           </form>
 
@@ -1070,128 +1182,100 @@ export function ContactSection() {
           </div>
         </div>
 
-        {/* CỘT PHẢI: Sổ lưu bút / Bình luận */}
+        {/* CỘT PHẢI: Engagement Options & Verified Production SLA (Thay thế sổ lưu bút localStorage) */}
         <div className="contact-column-card">
-          <h2 className="column-title">Comments</h2>
-          <p className="column-subtitle">Leave your thoughts here</p>
+          <h2 className="column-title">
+            {t("Gói Triển Khai & Cam Kết SLA", "Engagement Options & Verified Production SLA")}
+          </h2>
+          <p className="column-subtitle">
+            {t(
+              "Định giá minh bạch theo kết quả đầu ra. Chọn nhanh một cấu trúc bên dưới để điền sẵn bản mô tả sang cột trái.",
+              "Transparent fixed-scope execution with zero agency bloat. Select an option below to pre-fill your project brief."
+            )}
+          </p>
 
-          <form onSubmit={handleCommentSubmit}>
-            <div className="comments-input-row">
-              {/* Tên người bình luận */}
-              <div className="form-group">
-                <svg
-                  className="input-icon"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-                <input
-                  type="text"
-                  className="form-input"
-                  placeholder="Your Name"
-                  value={commentAuthor}
-                  onChange={(e) => setCommentAuthor(e.target.value)}
-                  required
-                  {...hoverProps}
-                />
-              </div>
-
-              {/* Nội dung bình luận */}
-              <div className="form-group">
-                <textarea
-                  className="form-input comment-textarea"
-                  placeholder="Your Comment"
-                  value={commentText}
-                  onChange={(e) => setCommentText(e.target.value)}
-                  required
-                  {...hoverProps}
-                />
-              </div>
-            </div>
-
-            <div className="comments-actions">
-              {/* Tải ảnh lên */}
-              <button
-                type="button"
-                className="action-sub-btn animate-pulse-glow"
-                onClick={triggerFileInput}
-                {...hoverProps}
-                style={{
-                  borderColor: selectedImageBase64 ? "rgba(0, 162, 255, 0.4)" : "rgba(255, 255, 255, 0.1)",
-                  color: selectedImageBase64 ? "#00a2ff" : "rgba(255, 255, 255, 0.6)",
-                }}
-              >
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="17 8 12 3 7 8" />
-                  <line x1="12" y1="3" x2="12" y2="15" />
-                </svg>
-                <span>{selectedImageBase64 ? "Image Selected" : "Upload Image"}</span>
-              </button>
-              <input
-                type="file"
-                ref={fileInputRef}
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleImageSelected}
-              />
-
-              <button type="submit" className="action-post-btn" {...hoverProps}>
-                Post Comment
-              </button>
-            </div>
-          </form>
-
-          <h3 className="comments-feed-title">Latest Comments</h3>
-
-          {/* DANH SÁCH BÌNH LUẬN */}
-          <div className="comments-list">
-            {comments.map((comment) => (
-              <div
-                key={comment.id}
-                className={`comment-card ${comment.pinned ? "pinned" : ""}`}
-              >
-                <div className="comment-avatar">{comment.initial}</div>
-                <div className="comment-content-box">
-                  <div className="comment-author-row">
-                    <span className="comment-author-name">{comment.author}</span>
-                    {comment.pinned && <span className="comment-badge-pinned">Pinned</span>}
+          <div className="tier-stack">
+            {ENGAGEMENT_TIERS.map((tier) => (
+              <div key={tier.id} className="tier-card">
+                <div className="tier-top-row">
+                  <div className="tier-title-group">
+                    <span className="tier-code">{tier.code}</span>
+                    <h3 className="tier-title">{t(tier.titleVi, tier.titleEn)}</h3>
                   </div>
-                  <p className="comment-text">{comment.text}</p>
-                  {comment.image && (
-                    <img
-                      src={comment.image}
-                      className="comment-attachment"
-                      alt="Attached attachment"
-                    />
-                  )}
+                  <span className="tier-badge">{t(tier.badgeVi, tier.badgeEn)}</span>
                 </div>
+
+                <p className="tier-desc">{t(tier.descVi, tier.descEn)}</p>
+
+                <ul className="tier-list">
+                  {(lang === "en" ? tier.deliverablesEn : tier.deliverablesVi).map((item, i) => (
+                    <li key={i}>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
+                        <polyline points="20 6 9 17 4 12" />
+                      </svg>
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
 
                 <button
                   type="button"
-                  className={`comment-like-box ${comment.liked ? "liked" : ""}`}
-                  onClick={() => toggleLike(comment.id)}
+                  className="tier-select-btn"
+                  onClick={() => handleSelectScope(tier)}
                   {...hoverProps}
-                  style={{ background: "none", border: "none", padding: 0 }}
                 >
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  <span>{t("Chọn Khung Dự Án Này", "Use This Scope Template")}</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
                   </svg>
-                  <span>{comment.likes}</span>
                 </button>
               </div>
             ))}
           </div>
+
+          <div className="sla-guarantee-box">
+            <div className="sla-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.1">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                <polyline points="9 12 11 14 15 10" />
+              </svg>
+              <h3 className="sla-headline">
+                {t(
+                  "Cam Kết 100% Có Video Chạy Thật Trước Khi Tất Toán",
+                  "100% Working Screen-Recorded Proof Before Final Settlement"
+                )}
+              </h3>
+            </div>
+
+            <ul className="sla-points">
+              <li>
+                <strong>{t("Kiểm chứng mẫu trước (< 24h):", "Sample-First Validation (< 24h):")}</strong>{" "}
+                {t(
+                  "Trích xuất thử 20–50 dòng dữ liệu thật hoặc bản chẩn đoán kiến trúc trước khi bạn mở cọc.",
+                  "Receive a verified 20–50 row live data slice or root-cause teardown before committing funds."
+                )}
+              </li>
+              <li>
+                <strong>{t("Thanh toán quốc tế linh hoạt:", "Zero-Friction Settlement:")}</strong>{" "}
+                {t(
+                  "Hóa đơn thương mại kèm W-8BEN qua Wise / Chuyển khoản quốc tế, hoặc Upwork Direct Contract (0% phí Freelancer).",
+                  "Direct W-8BEN commercial invoice via Wise / Wire, or protected Upwork Direct Contract (0% Freelancer Fee)."
+                )}
+              </li>
+              <li>
+                <strong>{t("Bàn giao chuẩn Production:", "Clean Engineering Handover:")}</strong>{" "}
+                {t(
+                  "Toàn quyền sở hữu mã nguồn (Python 3.11+ / TypeScript), cấu hình Docker & tài liệu vận hành.",
+                  "Full IP ownership, typed Python 3.11+ / TypeScript source, Docker config, and runbook docs."
+                )}
+              </li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      {/* CHÂN TRANG */}
-      <footer className="bottom-controls" style={{ paddingBottom: "30px", zIndex: 2 }}>
-      </footer>
+      <footer className="bottom-controls" style={{ paddingBottom: "30px", zIndex: 2 }} />
     </div>
   );
 }
