@@ -14,7 +14,7 @@ export const Route = createFileRoute("/skills")({
       {
         property: "og:description",
         content:
-          "Production stack across Python, Anti-Bot Web Scraping, AI Workflow Automation, Backend APIs, Web & Mobile.",
+          "Tools I use across Python, web scraping, AI workflow automation, backend APIs, web & mobile.",
       },
     ],
     links: [

@@ -31,35 +31,35 @@ export const DEFAULT_SOCIALS = [
   {
     type: "GitHub",
     url: "https://github.com/Tthanh2k6",
-    handle: "@Tthanh2k6 · 20 Public Repos",
+    handle: "@Tthanh2k6 · Public Repos",
     visible: true,
     large: true,
   },
   {
     type: "Apify Store",
     url: "https://apify.com/thanh81646",
-    handle: "6 Commercial Data Actors",
+    handle: "5 Public Actors (early, few runs)",
     visible: true,
     large: false,
   },
   {
     type: "Upwork",
     url: "https://www.upwork.com/freelancers/trungthanhtrandev",
-    handle: "Direct Contract (0% Fee) · UTC+7",
+    handle: "1 Completed Job (5★) · UTC+7",
     visible: true,
     large: false,
   },
   {
     type: "Dev.to",
     url: "https://dev.to/tthanh2k6",
-    handle: "Benchmarks & Deep-Dives",
+    handle: "Technical Articles",
     visible: true,
     large: false,
   },
   {
     type: "RapidAPI",
     url: "https://rapidapi.com/Tthanh2k6/api/b2b-website-email-phone-and-tech-stack-enricher",
-    handle: "2 Live Public REST APIs",
+    handle: "2 Freemium API Listings",
     visible: true,
     large: false,
   },
@@ -69,74 +69,74 @@ const ENGAGEMENT_TIERS: EngagementTier[] = [
   {
     id: "rescue",
     code: "01",
-    titleEn: "Emergency Storefront / API / Webhook Rescue",
-    titleVi: "Cứu Hộ Khẩn Cấp Website / API / Webhook",
-    badgeEn: "$120–$250 Fixed • 24–48h Turnaround",
-    badgeVi: "$120–$250 Trọn Gói • Giao Trong 24–48h",
+    titleEn: "Fix a Broken Website / API / Webhook",
+    titleVi: "Sửa Lỗi Website / API / Webhook",
+    badgeEn: "From $120 • Timeline Agreed Per Job",
+    badgeVi: "Từ $120 • Thời Gian Thống Nhất Theo Việc",
     descEn:
-      "Rapid root-cause isolation and hotfix deployment for broken n8n/Make scenarios, dropped Stripe/Shopify/CRM webhooks, broken mobile checkout/booking links, or blocked scrapers.",
+      "Finding the root cause and shipping a fix for broken n8n/Make scenarios, dropped Stripe/Shopify/CRM webhooks, broken mobile checkout/booking links, or blocked scrapers.",
     descVi:
-      "Khoanh vùng nguyên nhân gốc và vá nóng các luồng n8n/Make đứt gãy, mất webhook thanh toán/CRM, hỏng nút đặt lịch trên di động hoặc scraper bị chặn anti-bot.",
+      "Tìm nguyên nhân gốc và sửa các luồng n8n/Make đứt gãy, mất webhook thanh toán/CRM, hỏng nút đặt lịch trên di động hoặc scraper bị chặn anti-bot.",
     deliverablesEn: [
-      "Idempotent retry guard + dead-letter error logging",
-      "Before/after diagnostic verification & clean PR/patch",
+      "Retry guard against duplicates + error logging where it fits",
+      "Before/after check & a clean patch or PR",
     ],
     deliverablesVi: [
       "Khóa chống lặp dữ liệu (idempotent) + ghi log bắt lỗi tự động",
       "Báo cáo đối chiếu trước/sau & bàn giao bản vá sạch",
     ],
     prefillEn:
-      "Scope: Emergency Storefront / API / Webhook Rescue ($120-$250 Fixed, 24-48h)\nTarget URL / Stack: \nCurrent bottleneck or error: ",
+      "Scope: Fix a Broken Website / API / Webhook (from $120)\nTarget URL / Stack: \nCurrent bottleneck or error: ",
     prefillVi:
-      "Gói đăng ký: Cứu hộ khẩn cấp Website / API / Webhook ($120-$250, 24-48h)\nURL hoặc hệ thống hiện tại: \nLỗi cần xử lý gấp: ",
+      "Gói đăng ký: Sửa lỗi Website / API / Webhook (từ $120)\nURL hoặc hệ thống hiện tại: \nLỗi cần xử lý gấp: ",
   },
   {
     id: "trial-sprint",
     code: "02",
-    titleEn: "1-Week Paid Engineering Trial Sprint",
-    titleVi: "Sprint Kỹ Thuật Có Lương 1 Tuần (Paid Trial)",
-    badgeEn: "$300–$450 Fixed • 5–7 Days",
-    badgeVi: "$300–$450 Cố Định • 5–7 Ngày",
+    titleEn: "1-Week Paid Trial",
+    titleVi: "Làm Thử Có Trả Phí 1 Tuần",
+    badgeEn: "$300–$450 Fixed • About 1 Week",
+    badgeVi: "$300–$450 Cố Định • Khoảng 1 Tuần",
     descEn:
-      "Designed for CTOs, SaaS founders, and white-label GTM/RevOps agencies evaluating long-term engineering velocity on a real production module with zero hiring overhead.",
+      "For teams that want to see how I work on one small, well-defined piece of their system before agreeing to anything longer.",
     descVi:
-      "Thiết kế riêng cho CTO, Founder SaaS và Agency quốc tế muốn kiểm chứng tốc độ code thực chiến trên một phân hệ thật trước khi hợp tác dài hạn.",
+      "Dành cho đội muốn xem tôi làm việc thế nào trên một phần nhỏ, rõ ràng của hệ thống trước khi hợp tác lâu dài.",
     deliverablesEn: [
-      "Production FastAPI / Next.js / Supabase / MCP or LLM strict-JSON service",
-      "Daily async progress updates across US EST, UK/EU & APAC overlap",
+      "A small FastAPI / Node / Supabase service or an LLM strict-JSON step",
+      "Written progress updates (I work part-time, UTC+7)",
     ],
     deliverablesVi: [
       "Phân hệ FastAPI / Next.js / Supabase / MCP hoặc LLM chuẩn JSON Schema",
-      "Cập nhật tiến độ async hàng ngày khớp khung giờ Mỹ, Âu, Úc & Châu Á",
+      "Cập nhật tiến độ bằng văn bản (tôi làm bán thời gian, UTC+7)",
     ],
     prefillEn:
-      "Scope: 1-Week Paid Engineering Trial Sprint ($300-$450 Fixed)\nCompany / Team: \nSprint deliverable we want to ship this week: ",
+      "Scope: 1-Week Paid Trial ($300-$450 Fixed)\nCompany / Team: \nSprint deliverable we want to ship this week: ",
     prefillVi:
       "Gói đăng ký: Sprint kỹ thuật dùng thử 1 tuần ($300-$450)\nĐơn vị / Dự án: \nHạng mục muốn hoàn thành trong tuần này: ",
   },
   {
     id: "custom-pipeline",
     code: "03",
-    titleEn: "Custom Cloud Scraper / ERP Reconciliation Pipeline",
-    titleVi: "Hệ Thống Cào Dữ Liệu Cloud & Đối Soát ERP/CRM",
-    badgeEn: "Scoped Milestone • <50 MB RAM",
-    badgeVi: "Theo Cột Mốc • Tối Ưu <50 MB RAM",
+    titleEn: "Custom Scraper / Data Sync Pipeline",
+    titleVi: "Công Cụ Cào Dữ Liệu & Đồng Bộ Dữ Liệu",
+    badgeEn: "Scoped Milestones",
+    badgeVi: "Theo Cột Mốc",
     descEn:
-      "Deterministic async Python & Playwright extractors, private Apify Docker Actors, multi-store SKU price/stock monitors, and automated PostgreSQL/Sheets/ERP data sync.",
+      "Async Python & Playwright extractors, private Apify Actors, multi-store SKU price/stock monitors, and automated PostgreSQL/Sheets/ERP data sync.",
     descVi:
-      "Bộ trích xuất dữ liệu Python bất đồng bộ & Playwright chống gãy, Docker Actor riêng tư, theo dõi giá/tồn kho đa sàn và đồng bộ đối soát ERP/PostgreSQL/Google Sheets.",
+      "Bộ trích xuất dữ liệu Python bất đồng bộ & Playwright, Apify Actor riêng, theo dõi giá/tồn kho đa sàn và đồng bộ đối soát ERP/PostgreSQL/Google Sheets.",
     deliverablesEn: [
-      "Free 20–50 row live sample dataset delivered before kickoff",
-      "Containerized deployment + automated schema & completeness checks",
+      "A small sample of real rows before the deposit, when the site allows it",
+      "Deployment notes + basic schema and completeness checks",
     ],
     deliverablesVi: [
-      "Gửi trước mẫu dữ liệu thật 20–50 dòng để kiểm duyệt trước khi mở cọc",
-      "Đóng gói Docker nhẹ (<50 MB RAM) kèm bộ kiểm tra toàn vẹn dữ liệu",
+      "Gửi trước một ít dòng dữ liệu thật trước khi đặt cọc, nếu trang nguồn cho phép",
+      "Hướng dẫn triển khai kèm kiểm tra schema và độ đầy đủ dữ liệu cơ bản",
     ],
     prefillEn:
-      "Scope: Custom Cloud Scraper / ERP Reconciliation Pipeline\nTarget data source(s) & destination (CRM/ERP/DB): \nDesired schedule & fields: ",
+      "Scope: Custom Scraper / Data Sync Pipeline\nTarget data source(s) & destination (CRM/ERP/DB): \nDesired schedule & fields: ",
     prefillVi:
-      "Gói đăng ký: Hệ thống cào dữ liệu Cloud / Đối soát ERP-CRM\nNguồn dữ liệu & nơi nhận (CRM/ERP/Sheets): \nTrường dữ liệu & tần suất chạy: ",
+      "Gói đăng ký: Công cụ cào dữ liệu / Đồng bộ dữ liệu\nNguồn dữ liệu & nơi nhận (CRM/ERP/Sheets): \nTrường dữ liệu & tần suất chạy: ",
   },
 ];
 
@@ -742,7 +742,7 @@ export function ContactSection() {
           margin-top: 2px;
         }
 
-        /* CỘT PHẢI: B2B Engagement Options & Production SLA */
+        /* CỘT PHẢI: B2B Engagement Options & cách làm việc */
         .tier-stack {
           display: flex;
           flex-direction: column;
@@ -1062,10 +1062,10 @@ export function ContactSection() {
             <div className="meta-pills-row">
               <span className="meta-pill">
                 <span className="meta-pill-dot" />
-                Ho Chi Minh City (UTC+7 • US EST / EU / APAC Overlap)
+                Ho Chi Minh City (UTC+7)
               </span>
               <span className="meta-pill">
-                Direct W-8BEN / Wise / Upwork Direct Contract (0% Fee)
+                {t("Nhận việc qua Upwork hoặc email", "Work via Upwork or email")}
               </span>
             </div>
           </div>
@@ -1158,7 +1158,7 @@ export function ContactSection() {
           </form>
 
           <h3 className="social-section-title">
-            {t("Kênh Kỹ Thuật & Hồ Sơ Đã Xác Thực", "Verified Engineering Channels")}
+            {t("Nơi Xem Công Việc Của Tôi", "Where to See My Work")}
           </h3>
           <div className="social-grid">
             {socials
@@ -1182,15 +1182,15 @@ export function ContactSection() {
           </div>
         </div>
 
-        {/* CỘT PHẢI: Engagement Options & Verified Production SLA (Thay thế sổ lưu bút localStorage) */}
+        {/* CỘT PHẢI: Engagement Options & cách làm việc (Thay thế sổ lưu bút localStorage) */}
         <div className="contact-column-card">
           <h2 className="column-title">
-            {t("Gói Triển Khai & Cam Kết SLA", "Engagement Options & Verified Production SLA")}
+            {t("Cách Hợp Tác", "Ways to Work Together")}
           </h2>
           <p className="column-subtitle">
             {t(
-              "Định giá minh bạch theo kết quả đầu ra. Chọn nhanh một cấu trúc bên dưới để điền sẵn bản mô tả sang cột trái.",
-              "Transparent fixed-scope execution with zero agency bloat. Select an option below to pre-fill your project brief."
+              "Giá cố định theo phạm vi việc. Chọn một mục bên dưới để điền sẵn bản mô tả sang cột trái.",
+              "Fixed price per agreed scope. Pick an option below to pre-fill your project brief."
             )}
           </p>
 
@@ -1242,32 +1242,32 @@ export function ContactSection() {
               </svg>
               <h3 className="sla-headline">
                 {t(
-                  "Cam Kết 100% Có Video Chạy Thật Trước Khi Tất Toán",
-                  "100% Working Screen-Recorded Proof Before Final Settlement"
+                  "Bạn Xem Nó Chạy Trước Khi Thanh Toán Phần Cuối",
+                  "You See It Working Before the Final Payment"
                 )}
               </h3>
             </div>
 
             <ul className="sla-points">
               <li>
-                <strong>{t("Kiểm chứng mẫu trước (< 24h):", "Sample-First Validation (< 24h):")}</strong>{" "}
+                <strong>{t("Xem mẫu trước:", "Sample first:")}</strong>{" "}
                 {t(
-                  "Trích xuất thử 20–50 dòng dữ liệu thật hoặc bản chẩn đoán kiến trúc trước khi bạn mở cọc.",
-                  "Receive a verified 20–50 row live data slice or root-cause teardown before committing funds."
+                  "Khi làm được, tôi gửi vài dòng dữ liệu thật hoặc bản chẩn đoán lỗi trước khi bạn đặt cọc.",
+                  "Where possible, I send a few real rows or a written diagnosis before you pay a deposit."
                 )}
               </li>
               <li>
-                <strong>{t("Thanh toán quốc tế linh hoạt:", "Zero-Friction Settlement:")}</strong>{" "}
+                <strong>{t("Thanh toán:", "Payment:")}</strong>{" "}
                 {t(
-                  "Hóa đơn thương mại kèm W-8BEN qua Wise / Chuyển khoản quốc tế, hoặc Upwork Direct Contract (0% phí Freelancer).",
-                  "Direct W-8BEN commercial invoice via Wise / Wire, or protected Upwork Direct Contract (0% Freelancer Fee)."
+                  "Qua hợp đồng Upwork, hoặc thoả thuận trực tiếp qua email.",
+                  "Through an Upwork contract, or agreed directly by email."
                 )}
               </li>
               <li>
-                <strong>{t("Bàn giao chuẩn Production:", "Clean Engineering Handover:")}</strong>{" "}
+                <strong>{t("Bàn giao:", "Handover:")}</strong>{" "}
                 {t(
-                  "Toàn quyền sở hữu mã nguồn (Python 3.11+ / TypeScript), cấu hình Docker & tài liệu vận hành.",
-                  "Full IP ownership, typed Python 3.11+ / TypeScript source, Docker config, and runbook docs."
+                  "Bạn sở hữu mã nguồn (Python / TypeScript), kèm hướng dẫn chạy và cấu hình.",
+                  "You own the source (Python / TypeScript), with setup notes and config."
                 )}
               </li>
             </ul>

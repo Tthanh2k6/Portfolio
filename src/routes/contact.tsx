@@ -14,7 +14,7 @@ export const Route = createFileRoute("/contact")({
       {
         property: "og:description",
         content:
-          "Available for fixed-price freelance milestones, white-label agency partnerships, and remote engineering contracts (UTC+7).",
+          "Available for part-time, fixed-scope freelance work (UTC+7).",
       },
     ],
     links: [

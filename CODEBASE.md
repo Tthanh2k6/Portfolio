@@ -188,7 +188,7 @@ flowchart TD
 2. **Tầng App Shell & Đồng bộ Phiên bản Nội dung (`src/routes/__root.tsx`):**
    - `RootShell` dựng khung tài liệu `<html>`, `<HeadContent />` (chứa meta, Google Fonts theo từng trang, và stylesheet `styles.css?url`) cùng `<Scripts />`.
    - `RootComponent` bọc cây ứng dụng trong `<QueryClientProvider>` và `<LangProvider>`, hiển thị route con qua `<Outlet />` và gắn `<CustomCursor />` vào `document.body` bằng `createPortal`.
-   - Hook `useResetStaleContent()` đối chiếu khóa `localStorage["content_version"]` với hằng số `CONTENT_VERSION = "2026-08-06-2"` nhằm tự động dọn sạch 4 khóa dữ liệu cấu trúc cũ nếu mã nguồn vừa cập nhật danh sách dự án/kỹ năng mới.
+   - Hook `useResetStaleContent()` đối chiếu khóa `localStorage["content_version"]` với hằng số `CONTENT_VERSION = "2026-10-31-1"` nhằm tự động dọn sạch 4 khóa dữ liệu cấu trúc cũ nếu mã nguồn vừa cập nhật danh sách dự án/kỹ năng mới.
 
 3. **Tầng Đa ngôn ngữ Phản ứng (`src/lib/i18n.tsx`):**
    - Cung cấp Context `LangContext` cho toàn bộ các trang thông qua hook `useLang()`.
@@ -418,6 +418,7 @@ d:\Project\Portfolio\
 | | `background_info.jpeg` | 7.344.668 B (~7,00 MB) | Ảnh nền của `information.tsx`, `ContactSection.tsx` và `admin.tsx` |
 | **Logo Bàn phím Kỹ năng (16 tệp)** | `React.png`, `unnamed-Photoroom.png` (Expo), `Python.png`, `PHP-logo.png`, `MySQL-Photoroom.png`, `JavaScript.png`, `HTML.png`, `CSS.png`, `Java.jpg`, `C++.png`, `Git.png`, `GitHub.png`, `Visual_Studio_Code.png`, `chatgpt-logo-png_seeklogo-465219-Photoroom.png`, `Claude.png`, `Gemini.png` | 14 KB – 368 KB | Hiển thị trên mặt 16/24 phím keycap trong `SkillsSection.tsx` (8 phím còn lại để `img: ""` nên tự hiển thị nhãn chữ dự phòng `.keycap-label-fallback`) |
 | **Ảnh Chụp Dự án Thật (10 tệp)** | `project-madalena-app.png` (613 KB), `project-madalena-web.png` (399 KB), `project-lichiuh.png` (322 KB), `project-workflowai.png` (858 KB), `project-notemod.png` (76 KB), `project-autotool.png` (327 KB), `project-diemdanhqr.jpg` (190 KB), `project-ailab.png` (612 KB), `project-knn.png` (194 KB), `project-portfolio.png` (943 KB) | 76 KB – 943 KB | Khai báo trong `REPO_IMAGES` của `ProjectSection.tsx` làm ảnh bìa card & banner modal. *(Lưu ý: 3 khóa `ToolPhone`, `Sothuchi`, `NCKH-PeopleCount` đã khai báo đường dẫn trong `REPO_IMAGES` nhưng hiện chưa có tệp ảnh vật lý trong `public/IMG/`, tự động rơi về placeholder)* |
+| **Ảnh dự án bổ sung `2026-10-31`** | `project-vn-sme-tools.png` (120 KB, 1280×800, chụp công cụ "Đối soát đội xe" với dữ liệu mẫu giả) | 120 KB | `REPO_IMAGES["vn-sme-offline-tools"]` trong `ProjectSection.tsx` |
 | **Ảnh Mẫu Legacy (5 tệp)** | `aura.png` (563 KB), `cognitive.png` (951 KB), `decentralized.png` (897 KB), `neoswap.png` (680 KB), `vortex.png` (776 KB) | 563 KB – 951 KB | Ảnh minh họa của 5 dự án mẫu trong `Idea Demo/Project.html`; riêng `/IMG/neoswap.png` vẫn được dùng làm giá trị ảnh mặc định gợi ý khi bấm `+ THÊM DỰ ÁN MỚI` tại `admin.tsx` |
 
 ---
@@ -482,7 +483,7 @@ d:\Project\Portfolio\
   - `head`: thiết lập `<meta charset="utf-8">`, `viewport`, các thẻ meta OpenGraph/Twitter mặc định và nạp stylesheet toàn cục `appCss` (`../styles.css?url`).
   - Đăng ký `shellComponent: RootShell`, `component: RootComponent`, `notFoundComponent: NotFoundComponent` (trang 404 với nút `<Link to="/">Go home</Link>`), `errorComponent: ErrorComponent` (gọi `reportLovableError`, nút `"Try again"` gọi `router.invalidate()` + `reset()`).
 - **Cơ chế `useResetStaleContent()`:**
-  - Hằng số `CONTENT_VERSION = "2026-08-06-2"`.
+  - Hằng số `CONTENT_VERSION = "2026-10-31-1"`.
   - Mảng `VERSIONED_CONTENT_KEYS = ["project_list", "skills_keycaps", "skills_chart_data", "skills_title_to_chart"]`.
   - Trong `useEffect`, nếu `localStorage.getItem("content_version") !== CONTENT_VERSION`, lặp xóa cả 4 khóa trên rồi ghi `localStorage.setItem("content_version", CONTENT_VERSION)`. Các khóa cá nhân khác như `contact_comments` hay `site_lang` được bảo toàn nguyên vẹn.
 - **Component `CustomCursor()` (dòng 163–290):**
@@ -609,7 +610,7 @@ d:\Project\Portfolio\
 - **Tách bạch 2 tầng nội dung (cả tiếng Việt và tiếng Anh `*En`):**
   - `desc` / `descEn`: Mô tả ngắn dưới ~130 ký tự (giới hạn `-webkit-line-clamp: 3` trên card active), viết dễ hiểu cho người không chuyên công nghệ.
   - `detail` / `detailEn`: Bài phân tích chuyên sâu nhiều đoạn văn (ngăn cách bằng `\n\n`) dành cho nhà tuyển dụng trong `ProjectDetailModal`, trình bày bài toán, kiến trúc, giải thuật, bảo mật và các đánh đổi kỹ thuật.
-- **Danh sách 14 dự án mặc định (`export const projects = [...privateProjects, ...publicProjects]`):**
+- **Danh sách 24 dự án mặc định (`export const projects = [...privateProjects, ...publicProjects]`):**
   - **9 dự án không công khai mã nguồn (`privateProjects` — đặt lên đầu theo mức độ thực chiến):**
     1. `MadalenaApp` — *Madalena | App khách hàng thân thiết* (`React Native`, `Expo`, `PHP`, `MySQL`, `JWT`, `Expo Push`, có link Google Play `com.madalena.app`).
     2. `MadalenaWeb` — *Madalena | Website thương mại điện tử* (`PHP`, `MySQL`, `Google Sheets API`, `AltoRouter`, `PDO`, có link chạy thật `https://madalena.vn`).
@@ -620,13 +621,9 @@ d:\Project\Portfolio\
     7. `Sothuchi` — *Sổ thu chi | App quản lý chi tiêu* (`Flutter 3.19.6`, `Dart`, `SQLite`, `Gemini API`, `Home Widget`).
     8. `AutoTool` — *AutoTool | Tự động hoá web* (`Python`, `Tkinter`, `Selenium`, `openpyxl`, `threading`).
     9. `NCKH-PeopleCount` — *PeopleCount | Đếm người bằng thị giác máy* (`Python`, `PyTorch`, `YOLOv8`, `OpenCV`, `CentroidTracker` chống đếm trùng khi khuất vật cản).
-  - **5 dự án công khai trên GitHub (`publicProjects`, có metadata giàu chi tiết trong `REPO_META`):**
-    1. `DiemDanhQR` — *DiemDanhQR | Điểm danh QR* (`JavaScript`, `PWA`, `Google Apps Script`, `Google Sheets`, có bản live GitHub Pages).
-    2. `AI_Lab` — *AI_Lab | Thử nghiệm AI (AI Game Arena)* (`TypeScript`, `Electron`, `Three.js`, `Minimax`, `MCTS`, `Q-Learning`, có bản live Vercel).
-    3. `KNN` — *KNN | Elbow Method* (`Python`, `scikit-learn`, vai trò `Project Manager` nhóm 9 người).
-    4. `H-c-AI-ML` — *AI-ML | Học Máy & Học Sâu* (`Python`, `scikit-learn`, `TensorFlow`, `Keras`).
-    5. `Portfolio` — *Portfolio | Trang cá nhân* (`React 19`, `TypeScript`, `TanStack Start`, `Three.js`, `TailwindCSS`, `Vercel`).
-  - *(Tổng cộng mảng `projects` mặc định gồm **14 dự án**: **9 dự án `privateProjects`** + **5 dự án `publicProjects`**).*
+  - **15 dự án công khai trên GitHub (`publicProjects`, metadata trong `REPO_META`, thứ tự hiển thị):** `ai-automation-and-rag-toolkit`, `apify-b2b-lead-and-contact-enricher`, `apify-ecommerce-price-and-stock-monitor`, `apify-us-healthcare-clinic-contact-enricher`, `apify-multi-stop-route-and-distance-optimizer`, `apify-malaysia-kpkt-teduh-property-scraper`, `vn-sme-offline-tools` (9 công cụ HTML offline cho hộ kinh doanh VN, demo `https://tthanh2k6.github.io/vn-sme-offline-tools/`, ảnh `/IMG/project-vn-sme-tools.png`), `web-scraping-showcase`, `burgershop-pod-tool`, `moto-nav`, `DiemDanhQR`, `AI_Lab`, `Portfolio`, `KNN`, `H-c-AI-ML`.
+  - *(Tổng cộng mảng `projects` mặc định gồm **24 dự án**: **9 `privateProjects`** + **15 `publicProjects`**). Bản fetch GitHub API lọc qua `HIDDEN_REPOS = ["GhiChu", "Tthanh2k6", "apify-thefork-restaurant-scraper"]`; Actor TheFork (bản demo trả dữ liệu cố định, đang gỡ) đã bị xoá khỏi `REPO_META` và JSON-LD.*
+  - **Quy tắc nội dung (từ `2026-10-31`):** chỉ ghi số liệu có đo đạc trong repo. Không dùng các cụm "Commercial", "Production", "51×", "0.00% drift", "<50MB RAM", "96.4% precision"; số benchmark duy nhất được trích là ~3.3× của `web-scraping-showcase` (một lần đo, 100 mục). Mỗi Actor Apify ghi rõ "vài lượt chạy, chưa có người dùng trả phí" và giới hạn thật (B2B: không kiểm tra MX/SMTP; e-commerce: chỉ đọc offer JSON-LD đầu tiên; healthcare: không tra NPI, không nhận diện widget đặt lịch, cờ chuỗi chỉ là heuristic từ khoá; KPKT: rơi về dữ liệu mẫu khi API lỗi).
 
 #### Thuật toán Băng chuyền Vô hạn (`Infinite Film-Strip Carousel`)
 - **Nhân bản 5 bộ (`repeatCount = 5`):** Tạo mảng `cardsData` dài `5 * N` phần tử (với `N = 14` dự án → `70` card trên băng phim). Bộ nhân bản ở chính giữa `[2*N .. 3*N - 1]` đóng vai trò là **"Vùng an toàn" (Safe Zone)**, đảm bảo cả bên trái lẫn bên phải luôn còn dư `2 * N` card đệm trên màn hình siêu rộng 4K/UltraWide.
@@ -654,8 +651,9 @@ d:\Project\Portfolio\
 - **Bố cục 2 cột kính mờ (`.contact-grid` `1fr : 1.1fr`, thu về 1 cột ở `<= 1024px`):**
   - **Cột trái — `Contact Me` & `Connect With Me`:**
     - Form gồm 3 trường bắt buộc (`Your Name`, `Your Email`, `Your Message`), gửi bất đồng bộ tới `https://formsubmit.co/ajax/${receiverEmail}`.
-    - Lưới mạng xã hội Bento 2 cột (`.social-grid`): đọc từ `localStorage["contact_socials"]` hoặc `DEFAULT_SOCIALS` (`GitHub` `@Tthanh2k6` chiếm 2 cột `large: true`, `Facebook` và `Zalo` mỗi thẻ 1 cột). Hàm `getSocialIcon(type)` hỗ trợ sẵn vector SVG cho `github`, `facebook`, `zalo`, `linkedin`, `instagram`, `youtube` và icon mắt xích liên kết mặc định cho mọi nền tảng khác.
-  - **Cột phải — `Comments` (Guestbook):**
+    - Lưới kênh Bento 2 cột (`.social-grid`, tiêu đề "Where to See My Work"): đọc từ `localStorage["contact_socials"]` hoặc `DEFAULT_SOCIALS` (`GitHub` chiếm 2 cột `large: true`; `Apify Store` "5 Public Actors (early, few runs)", `Upwork` "1 Completed Job (5★)", `Dev.to`, `RapidAPI` "2 Freemium API Listings"). Hàm `getSocialIcon(type)` hỗ trợ sẵn vector SVG cho `github`, `facebook`, `zalo`, `linkedin`, `instagram`, `youtube` và icon mắt xích liên kết mặc định cho mọi nền tảng khác.
+  - **Cột phải — `Ways to Work Together` (`ENGAGEMENT_TIERS`, đã thay sổ lưu bút):** 3 gói giá cố định (`Fix a Broken Website / API / Webhook` từ \$120, `1-Week Paid Trial` \$300–\$450, `Custom Scraper / Data Sync Pipeline` theo cột mốc) + hộp `.sla-guarantee-box` "You See It Working Before the Final Payment". Từ `2026-10-31` đã gỡ mọi cam kết không giữ được (24–48h, "<24h sample", "Verified Production SLA", W-8BEN, "Upwork Direct Contract 0% fee"); thanh toán ghi "Upwork contract hoặc thoả thuận qua email".
+  - **(Mô tả cũ) Cột phải — `Comments` (Guestbook):**
     - Khởi tạo với lời chào ghim (`pinned: true`) của `"Trần Trung Thành"` (`WELCOME_VI` / `WELCOME_EN`), tự động chuyển đổi ngôn ngữ theo `lang` nếu nội dung chưa bị sửa khác đi.
     - Cho phép khách nhập tên, lời nhắn và chọn 1 tệp ảnh (`accept="image/*"`, chuyển đổi qua `FileReader.readAsDataURL` thành chuỗi Base64 nhúng trực tiếp vào trường `comment.image`), thả tim tăng/giảm lượt thích (`toggleLike`), lưu bền vững tại trình duyệt qua `localStorage["contact_comments"]`.
   - **Hệ thống Toast (`ToastItem`):** Hiển thị ở góc dưới phải (`z-index: 9999`), kích hoạt hiệu ứng trượt lên sau `10ms`, bắt đầu trượt xuống ẩn đi ở `3.500ms` và gỡ khỏi mảng state ở `4.000ms`.
@@ -665,6 +663,7 @@ d:\Project\Portfolio\
 ### 4.10. Trang Hồ sơ CV Song ngữ Chuẩn In Ấn A4 (`src/routes/cv.tsx`)
 
 - **Thiết kế dữ liệu:** Toàn bộ thông tin liên hệ (`PHONE = "0372 131 320"`, `EMAIL = "ttrungthanh90@gmail.com"`, `GITHUB = "github.com/Tthanh2k6"`, `SITE = "portfolio-tthanh2006.vercel.app"`, địa điểm VI/EN) và từ điển song ngữ `T.vi` / `T.en` được khai báo tĩnh ngay trong tệp (cố ý không hiển thị mục GPA theo chủ ý của tác giả).
+- **Nội dung (từ `2026-10-31`, khớp CV trung thực `Searching/thu-thach-1tr/kenh/parttime-global-applications/cv-trung-thuc/cv.html`):** vai trò "Python & automation developer"; Kinh nghiệm = `Madalena` (05/2026 — nay: app React Native + REST API PHP làm một mình, chuyển backend Node/Render sang PHP, tính năng web PHP cùng đội) + `Freelance projects` (fitness web app, 1 buổi tư vấn Upwork 5★); mục `hProjects` = 5 Actor Apify (chưa có khách trả phí), `vn-sme-offline-tools`, tích hợp mã nguồn mở, dự án cá nhân; mục mới `hDeliver` / `deliver` ("What I deliver", bảng `.cv-skills` 4 dòng) render trước Skills; Skills 4 dòng (Languages, Data, Backend & Apps, AI); Học vấn "Information Technology student" (đã bỏ MSSV); giữ chứng chỉ HackerRank kèm ID.
 - **Đồng bộ ngôn ngữ nhất quán:** Đọc trực tiếp `const { lang } = useLang(); const t = T[lang];` — dùng chung nút `EN`/`VI` trên `NavBar` với toàn bộ website.
 - **Bố cục chuẩn tờ giấy & Quy tắc in `@media print`:**
   - Trên màn hình: Hiển thị tờ giấy trắng `.cv-sheet` (`max-width: 820px`, chữ tối `#14161c`, `padding: 48px 54px`) nổi trên nền tối `#0b0d13` để xem trước chính xác bố cục trang in, đi kèm nút `.cv-primary` gọi `window.print()`.
@@ -1051,7 +1050,7 @@ Dự án **không yêu cầu tệp `.env`** để khởi chạy cục bộ hay t
 | Hằng số / Tham số | Giá trị hiện tại | Vị trí tệp & dòng | Ý nghĩa kỹ thuật |
 | :--- | :--- | :--- | :--- |
 | **Cổng Dev / Preview** | `3000` hoặc `5173` (mặc định Vite/TanStack Start; `4173` khi `preview`) | `package.json` (`vite dev` / `vite preview`) | Cổng HTTP máy chủ phát triển cục bộ trên `http://localhost:<port>`. |
-| `CONTENT_VERSION` | `"2026-08-06-2"` | `src/routes/__root.tsx:16` | Mã phiên bản dữ liệu nội dung; đổi chuỗi này sẽ buộc trình duyệt khách xóa cache `project_list` và `skills_*` cũ trong `localStorage`. |
+| `CONTENT_VERSION` | `"2026-10-31-1"` | `src/routes/__root.tsx:16` | Mã phiên bản dữ liệu nội dung; đổi chuỗi này sẽ buộc trình duyệt khách xóa cache `project_list` và `skills_*` cũ trong `localStorage`. |
 | `GITHUB_USER` | `"Tthanh2k6"` | `src/components/ProjectSection.tsx:346` | Tên tài khoản GitHub dùng để tự động đồng bộ danh sách kho mã nguồn công khai và ảnh OpenGraph. |
 | `ADMIN_PASSWORD_HASH` | `"af53da2aa1c2a31137f4651a3abb165d5544f5e4867130abc7d7a756ea3efaeb"` | `src/routes/admin.tsx:296` | Mã băm `SHA-256` (hex 64 ký tự) của mật khẩu đăng nhập bảng điều khiển `/admin`. |
 | `KEYS_PER_ROW` | `6` | `src/components/SkillsSection.tsx:148` | Số phím trên mỗi hàng của bàn phím cơ 3D (`24` phím chia làm `4` hàng × `6` cột). |
@@ -1174,3 +1173,4 @@ node -e "const crypto = require('crypto'); console.log(crypto.createHash('sha256
 | :--- | :--- | :--- |
 | `2026-10-26` | Khởi tạo toàn bộ `CODEBASE.md` (Mục 1 → Mục 9) & `agent.md` | Phân tích kiến trúc ngược toàn diện 100% mã nguồn dự án `Portfolio` (`TanStack Start` + `React 19` + `Three.js` + `Tailwind CSS v4` + `Nitro Vercel`): lập bản đồ đầy đủ 36 tệp nguồn/cấu hình/tài liệu/nguyên mẫu và 34 tệp ảnh trong `public/IMG/`; giải phẫu chi tiết cơ chế SSR error normalization, hệ thống song ngữ `i18n`, con trỏ vật lý lò xo, lưới 3D isometric `HeroScene`, vật lý dây đeo thẻ `Verlet`, bàn phím cơ 3D `preserve-3d` + `DonutChart`, băng chuyền dự án vô hạn + modal 2 tầng nội dung + GitHub API, trang CV in ấn PDF khổ A4, hệ thống CMS phía trình duyệt `/admin` (69 khóa Web Storage) cùng 10 bất biến kỹ thuật và kiểm toán bảo mật. |
 | `2026-10-26` | Quốc tế hóa mặc định (`EN`), cập nhật ảnh highlight dự án & bổ sung `web-scraping-showcase` (`src/lib/i18n.tsx`, `src/routes/__root.tsx`, `src/routes/index.tsx`, `src/components/ProjectSection.tsx`, `public/IMG/*`) | Đổi ngôn ngữ khởi tạo mặc định sang `"en"` (vẫn giữ đồng bộ SSR Hydration), cập nhật meta gốc trong `__root.tsx`, nâng `CONTENT_VERSION` lên `"2026-10-26-1"`, cập nhật dòng giới thiệu & bộ tag trang chủ (`WEB SCRAPING`, `AUTOMATION`, `FULL-STACK`, `AI / ML`, `MOBILE`, `3D WEB`), bổ sung dự án `web-scraping-showcase`, lọc repo trùng `GhiChu` khi fetch GitHub API, và bổ sung/thay thế 8 ảnh chụp màn hình dự án 16:9 (`project-toolphone.png`, `project-sothuchi.png`, `project-peoplecount.png`, `project-aiml.png`, `project-scraping.png`, `project-knn.png`, `project-diemdanhqr.jpg`, `project-ailab.png`). |
+| `2026-10-31` | Sửa nội dung cho trung thực + thêm `vn-sme-offline-tools` (`src/components/ProjectSection.tsx`, `ContactSection.tsx`, `SkillsSection.tsx`, `src/routes/cv.tsx`, `__root.tsx`, `index.tsx`, `project.tsx`, `skills.tsx`, `contact.tsx`, `information.tsx`, `admin.tsx`, `public/IMG/project-vn-sme-tools.png`) | Gỡ các số liệu không có đo đạc ("51×", "0.00% drift", "<50MB RAM", "96.4%", "6 Commercial/Production Actors", "first-on-market") và các cam kết không giữ được (24–48h SLA, W-8BEN, "Upwork Direct Contract 0% fee"); gỡ Actor TheFork (demo dữ liệu cố định) khỏi `REPO_META`, JSON-LD và thêm vào `HIDDEN_REPOS`; mô tả 5 Actor kèm giới hạn thật; thêm KPKT + `vn-sme-offline-tools` vào `publicProjects`; viết lại `/cv` theo CV trung thực (thêm mục `deliver`); nâng `CONTENT_VERSION` lên `"2026-10-31-1"`. |

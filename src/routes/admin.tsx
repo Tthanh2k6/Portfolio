@@ -44,20 +44,20 @@ const DEFAULT_INFO = {
   titleBottom: "& Full-Stack",
   typing: "Shipping clean data & reliable systems",
   description:
-    "Building high-concurrency Python & Playwright scrapers (<50MB RAM), strict-schema OpenAI & n8n workflows, and full-stack web/mobile products.\nPublished 6 commercial data Actors on Apify Store, 2 public REST APIs on RapidAPI, and a live customer loyalty app on Google Play.\nEngineering philosophy: working sample first — clean schemas, resilient retries, zero fluff.",
-  tags: "Python & Playwright, AI / n8n Workflows, FastAPI & Supabase, React & Expo, 6 Apify Store Actors",
+    "IT student at IUH and, since May 2026, developer at Madalena: I built their customer loyalty app (React Native, on Google Play) and its PHP REST API on my own.\nOn the side I build async Python & Playwright scrapers and strict-schema OpenAI / n8n workflows; 5 public Actors on the Apify Store (new, a few runs each, no paying users yet).\nHow I work: a working sample first, and clear notes on what a tool does not do.",
+  tags: "Python & Playwright, AI / n8n Workflows, FastAPI & Supabase, React & Expo, 5 Apify Store Actors",
   explore1: "↗ inspect my interactive 3D tech stack under skills",
-  explore2: "→ browse shipped projects, 6 live Apify Actors & printable CV above",
+  explore2: "→ browse projects, 5 Apify Actors & printable CV above",
   cardName: "TRUNG THANH TRAN",
   cardTitle: "AI Automation & Full-Stack\nHo Chi Minh City (UTC+7)",
 };
 
 const DEFAULT_SKILLS_TEXT = {
-  sub: "Battle-tested in production, refined every day",
+  sub: "Used in real projects, still learning every day",
   title1: "Engineering",
   title2: "stack",
-  typewriter: "Proven across Google Play, 6 Apify Store Actors & live client systems",
-  desc: "From <50MB RAM async Python scrapers and zero-drift OpenAI/n8n pipelines to shipped React Native apps and PHP/PostgreSQL backends — hover any keycap to inspect real production usage.",
+  typewriter: "Used in a Google Play app, 5 Apify Actors & open-source tools",
+  desc: "From async Python scrapers and strict-schema OpenAI/n8n workflows to a shipped React Native app and its PHP backend — hover any keycap to see where I used it.",
 };
 
 // DEFAULT_KEYCAPS / DEFAULT_CHART / DEFAULT_MAP / DEFAULT_SOCIALS / DEFAULT_PROJECTS:

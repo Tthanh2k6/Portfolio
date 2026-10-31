@@ -118,7 +118,7 @@ const SCHEMA_ORG_GRAPH = JSON.stringify({
     {
       "@type": "ItemList",
       "@id": `${SITE_URL}/#apify-actors`,
-      name: "Production Data Extraction & Optimization Microservices by Trung Thanh Tran",
+      name: "Public Apify Actors by Trung Thanh Tran",
       itemListElement: [
         {
           "@type": "SoftwareApplication",
@@ -153,16 +153,6 @@ const SCHEMA_ORG_GRAPH = JSON.stringify({
         {
           "@type": "SoftwareApplication",
           position: 4,
-          name: "TheFork Restaurant & Reservation System Extractor (EU)",
-          applicationCategory: "BusinessApplication",
-          operatingSystem: "Cloud Serverless (Apify)",
-          url: "https://apify.com/thanh81646/thefork-restaurant-and-booking-system-scraper",
-          author: { "@id": `${SITE_URL}/#person` },
-          offers: { "@type": "Offer", price: "2.00", priceCurrency: "USD" },
-        },
-        {
-          "@type": "SoftwareApplication",
-          position: 5,
           name: "Malaysia KPKT TEDUH Property Developers & Housing Projects",
           applicationCategory: "BusinessApplication",
           operatingSystem: "Cloud Serverless (Apify)",
@@ -172,7 +162,7 @@ const SCHEMA_ORG_GRAPH = JSON.stringify({
         },
         {
           "@type": "SoftwareApplication",
-          position: 6,
+          position: 5,
           name: "Multi-Stop Route, Geocoder & 2-Opt TSP Distance Optimizer",
           applicationCategory: "BusinessApplication",
           operatingSystem: "Cloud Serverless (Apify & Python)",
@@ -197,7 +187,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Software & Automation Engineer building <50MB RAM async Python & Playwright web scrapers, deterministic OpenAI/n8n/FastAPI workflows, full-stack web/mobile apps, and 6 commercial Apify Store Actors.",
+          "IT student and developer at Madalena (React Native loyalty app on Google Play + PHP API). Builds async Python & Playwright scrapers, OpenAI/n8n/FastAPI workflows, and 5 public Apify Store Actors.",
       },
       { name: "author", content: "Trung Thanh Tran" },
       {
@@ -216,7 +206,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "6 Production Apify Actors • <50MB RAM Async Python & Hidden-API Scrapers • 0.00% Schema Drift LLM & n8n Pipelines • FastAPI, React & Mobile.",
+          "Python & Playwright scrapers • n8n / OpenAI workflows • React Native app on Google Play • 5 public Apify Actors.",
       },
       { property: "og:image", content: OG_IMAGE_URL },
       { property: "og:image:secure_url", content: OG_IMAGE_URL },
@@ -226,7 +216,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:image:alt",
         content:
-          "Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer (6 Live Apify Actors, Async Python, Playwright, n8n, FastAPI)",
+          "Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer (Async Python, Playwright, n8n, FastAPI)",
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Tthanh2k6" },
@@ -238,7 +228,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "twitter:description",
         content:
-          "6 Commercial Apify Actors • Async Python/Playwright (<50MB RAM) • Strict-Schema OpenAI, n8n & FastAPI Pipelines.",
+          "Async Python/Playwright scrapers • Strict-schema OpenAI, n8n & FastAPI workflows • 5 public Apify Actors.",
       },
       { name: "twitter:image", content: OG_IMAGE_URL },
     ],
@@ -290,7 +280,7 @@ function RootShell({ children }: { children: ReactNode }) {
 // Cách xử lý: tăng CONTENT_VERSION mỗi khi đổi các mặc định trong code. Trình duyệt thấy
 // phiên bản lệch sẽ xoá đúng các khoá nội dung cũ để rơi về mặc định mới.
 // Các khoá KHÔNG liên quan tới nội dung mặc định (vd sổ lưu bút khách viết) được giữ nguyên.
-const CONTENT_VERSION = "2026-10-30-3";
+const CONTENT_VERSION = "2026-10-31-1";
 const VERSIONED_CONTENT_KEYS = [
   "project_list",
   "skills_keycaps",

@@ -4,17 +4,17 @@ import { ProjectSection } from "@/components/ProjectSection";
 export const Route = createFileRoute("/project")({
   head: () => ({
     meta: [
-      { title: "Projects & Commercial Microservices — Trung Thanh Tran" },
+      { title: "Projects — Trung Thanh Tran" },
       {
         name: "description",
         content:
-          "Production case studies by Trung Thanh Tran — Google Play loyalty app, 6 commercial Apify Store Actors, Hybrid RAG & OpenAI pipelines, Hidden-API scrapers, and full-stack apps.",
+          "Projects by Trung Thanh Tran — a loyalty app on Google Play built at Madalena, 5 public Apify Store Actors, offline tools for Vietnamese small businesses, scrapers, and AI workflow code.",
       },
       { property: "og:title", content: "Projects & Case Studies — Trung Thanh Tran" },
       {
         property: "og:description",
         content:
-          "Shipped commercial mobile/web systems, 6 live Apify Store Actors, async Python scrapers, and AI workflow engines.",
+          "A shipped React Native app, 5 public Apify Actors, async Python scrapers, and open-source tools.",
       },
     ],
     links: [

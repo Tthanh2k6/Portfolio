@@ -26,7 +26,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "6 Production Apify Actors • <50MB RAM Async Python & Hidden-API Scrapers • 0.00% Schema Drift LLM & n8n Pipelines • FastAPI, React & Mobile.",
+          "Python & Playwright scrapers • n8n / OpenAI workflows • React Native app on Google Play • 5 public Apify Actors.",
       },
     ],
     links: [

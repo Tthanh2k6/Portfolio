@@ -5,11 +5,11 @@ import { useLang } from "@/lib/i18n";
 export const Route = createFileRoute("/cv")({
   head: () => ({
     meta: [
-      { title: "CV — Trung Thanh Tran | AI Automation, Web Scraping & Full-Stack Engineer" },
+      { title: "CV — Trung Thanh Tran | Python & Automation Developer" },
       {
         name: "description",
         content:
-          "Curriculum Vitae of Trung Thanh Tran (Trần Trung Thành) — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer (Python, Playwright, FastAPI, n8n, OpenAI, React Native, PHP, PostgreSQL).",
+          "CV of Trung Thanh Tran (Trần Trung Thành) — IT student at IUH and developer at Madalena (React Native loyalty app + PHP API). Python, Playwright, n8n, FastAPI, React Native.",
       },
     ],
   }),
@@ -34,80 +34,79 @@ const T = {
   vi: {
     langBtn: "English",
     print: "Tải CV (PDF)",
-    role: "Lập trình viên Tự động hoá AI, Web Scraping & Full-Stack",
+    role: "Lập trình viên Python & tự động hoá: thu thập dữ liệu web, API, luồng n8n",
     tagline:
-      "Kỹ sư phần mềm & tự động hoá chú trọng tính thực chiến: đã độc lập xây dựng và phát hành ứng dụng di động doanh nghiệp trên Google Play, xuất bản 6 microservice thu thập dữ liệu thương mại trên Apify Store (<50MB RAM), 2 REST API trên RapidAPI, cùng các luồng AI/n8n kiểm soát chặt cấu trúc dữ liệu.",
-    hExp: "Kinh nghiệm thực tế",
-    hProjects: "Dự án kỹ thuật tiêu biểu",
-    hSkills: "Kỹ năng chuyên môn",
-    hCerts: "Chứng chỉ xác thực",
+      "Có một vị trí làm việc chính thức (app di động + REST API, tự làm một mình) và một loạt dự án tự động hoá công khai đang lớn dần. Tôi ưu tiên gọi thẳng API JSON phía sau trang web thay vì cào giao diện, và thích biến việc thủ công lộn xộn thành công cụ nhỏ có kiểm thử. Tiếng Anh: B2, đọc tài liệu và trao đổi với khách bằng văn bản thoải mái.",
+    hExp: "Kinh nghiệm",
+    hProjects: "Dự án công khai & cá nhân",
+    hDeliver: "Tôi nhận làm",
+    hSkills: "Kỹ năng",
+    hCerts: "Chứng chỉ",
     hEdu: "Học vấn",
     hContact: "Liên hệ",
     eduSchool: "Đại học Công nghiệp TP.HCM (IUH)",
-    eduMajor: "Cử nhân Khoa học Máy tính · MSSV 24731801",
-    eduTime: "2024 — 2028 (dự kiến)",
+    eduMajor: "Sinh viên ngành Công nghệ Thông tin",
+    eduTime: "2024 — đang học",
     present: "nay",
     skills: [
-      ["Scraping & ETL", "Python (asyncio, httpx, BeautifulSoup4), Playwright (CDP), Selenium, dò Hidden JSON/GraphQL API, xác thực DNS/MX, Apify SDK"],
-      ["AI & Tự động hoá", "OpenAI & Anthropic Structured Outputs (JSON Schema chặt), Hybrid RAG (BM25 + Vector RRF), n8n, Make.com, Google Apps Script"],
-      ["Backend & CSDL", "FastAPI, PHP (REST API, JWT HS256, phân quyền DB, rate-limit, cron), PostgreSQL / Supabase (RLS, pgTAP), MySQL, SQLite"],
-      ["Web & Extension", "React 19, TypeScript, TanStack Start (SSR), TailwindCSS, Three.js (WebGL), Chrome Extension (Manifest V3)"],
-      ["Mobile & Hệ thống", "React Native (Expo Router, EAS Build, OTA), Kotlin (Jetpack Glance/Compose, WorkManager), apktool/smali, C++17, ESP32 BLE"],
+      ["Ngôn ngữ", "Python, TypeScript/JavaScript, PHP, SQL, Kotlin, Dart"],
+      ["Dữ liệu", "httpx, Playwright, Selenium, Apify SDK, n8n, Make, REST/GraphQL, webhook, Pydantic, pandas"],
+      ["Backend & App", "FastAPI, Node.js, PostgreSQL/Supabase, SQLite, React, React Native (Expo), Flutter, Docker, Git"],
+      ["AI", "OpenAI và Claude API (structured outputs, tool use), MediaPipe, YOLOv8, scikit-learn/PyTorch"],
+    ],
+    deliver: [
+      ["Dữ liệu web", "Bộ cào và Apify Actor (ưu tiên API JSON/GraphQL ẩn, cần mới dùng Playwright), theo dõi định kỳ, xuất CSV/Sheets/DB sạch"],
+      ["Tự động hoá", "Luồng n8n và Make, webhook, tích hợp CRM/Sheets/Telegram/email, Google Apps Script, Chrome extension (MV3)"],
+      ["Tính năng AI", "Trích xuất và phân loại bằng LLM theo JSON schema chặt, tìm kiếm RAG, AI agent gọi công cụ, mô hình thị giác nhỏ"],
+      ["App & công cụ", "REST API FastAPI/Node, dashboard React, app React Native, công cụ offline một tệp nhập Excel/CSV, báo cáo PDF/Excel"],
     ],
     exp: [
       {
-        role: "Lập trình viên Tự động hoá AI & Dữ liệu độc lập",
-        org: "Apify Store, RapidAPI & Khách hàng quốc tế",
-        time: "2026 — nay",
+        role: "Lập trình viên",
+        org: "Madalena (bán lẻ mỹ phẩm)",
+        time: "05/2026 — nay · TP.HCM",
         bullets: [
-          "Thiết kế và xuất bản 6 Actor thương mại trả phí theo kết quả trên Apify Store (@thanh81646) cùng 2 REST API công khai trên RapidAPI Hub, tối ưu chạy gọn trong container serverless 256 MB (<50MB RAM thực tế).",
-          "Xây dựng các bộ làm giàu dữ liệu B2B (xác thực DNS/MX, lọc chuỗi phòng khám tập đoàn DSO Hoa Kỳ đạt độ chính xác 96.4%) và theo dõi giá/tồn kho Shopify & WooCommerce nhanh gấp 51 lần cào DOM bằng trình duyệt.",
-          "Phát triển kiến trúc tham chiếu AI doanh nghiệp kết hợp FastAPI, Pydantic Strict JSON Schemas (0% lỗi lệch định dạng JSON), kiểm soát nghẽn luồng (backpressure), Hybrid RAG và tự động hoá webhook n8n/CRM.",
+          "Tự làm một mình app khách hàng thân thiết: app React Native (Expo, TypeScript) cùng REST API PHP có xác thực JWT, check-in bằng QR, thông báo đẩy và tác vụ định kỳ (ưu đãi sinh nhật, flash sale). App đã lên Google Play.",
+          "Chuyển backend từ Node.js trên Render sang PHP trên hosting sẵn có của công ty, bỏ được một khoản phí máy chủ riêng hằng tháng.",
+          "Làm thêm tính năng cho website thương mại điện tử PHP của công ty cùng với đội.",
         ],
       },
       {
-        role: "Lập trình viên Full-stack & Mobile",
-        org: "Madalena (Chuỗi mỹ phẩm & Thương mại điện tử)",
-        time: "2026 — nay",
+        role: "Dự án freelance",
+        org: "Việc nhận lẻ",
+        time: "2026",
         bullets: [
-          "Độc lập phát triển trọn bộ ứng dụng khách hàng thân thiết cho iOS + Android đã phát hành trên Google Play (com.madalena.app): React Native (TypeScript, Expo Router) + REST API PHP/MySQL.",
-          "Xây dựng hệ thống tự động xếp hạng thành viên theo doanh thu, mã QR định danh tại quầy, flash sale do máy chủ kiểm soát thời gian chống gian lận giờ máy, thông báo đẩy chống gửi trùng và cron chúc mừng sinh nhật.",
-          "Bảo mật & Tối ưu chi phí: xác thực JWT HS256, đối chiếu quyền admin trực tiếp từ CSDL, chặn brute-force theo cặp IP + SĐT; chủ động chuyển toàn bộ backend từ Node/Express (Render + Aiven) sang PHP dùng chung hạ tầng web công ty, cắt giảm 100% phí máy chủ phát sinh hàng tháng.",
-          "Phát triển các phân hệ nghiệp vụ trên website bán hàng đang vận hành thật (madalena.vn): hệ thống mã giảm giá giới hạn lượt theo SĐT, tự động đồng bộ đơn hàng sang Google Sheets cho đội sale và quản lý trạng thái tồn kho.",
+          "Web app fitness làm cho phần thi của một nhóm sinh viên, khách huỷ nên nay đã mở mã nguồn (React, TypeScript): lên lịch tập theo hồ sơ người dùng, nhận xét tư thế tập theo thời gian thực bằng MediaPipe Pose, và bộ phân loại ảnh món ăn tự huấn luyện trên 30 món Việt (đặc trưng MobileNetV3 + logistic, top-1 76% / top-3 91%).",
+          "Một buổi tư vấn trên Upwork (10/2026, đánh giá 5★) về bot cào tin tuyển dụng: kiến trúc lấy tin từ Telegram, LinkedIn và X, lọc tin giả.",
         ],
       },
     ],
     projects: [
       {
-        name: "WorkFlow AI — Dây chuyền sản xuất video AI khép kín",
-        tech: "Python · FastAPI · Playwright/CDP · ffmpeg",
-        desc: "Tự động hoá từ kịch bản → phân cảnh → sinh ảnh/video trên nền tảng không có API công khai (điều khiển Chrome thật qua giao thức CDP kèm cơ chế dự phòng) → dựng phim bằng ffmpeg; tích hợp license server quản lý và hoàn trả credit tự động.",
+        name: "5 Actor trên Apify Store",
+        tech: "10/2026 — nay · Python · httpx · Playwright",
+        desc: "Bộ cào Python bất đồng bộ: làm giàu liên hệ & công nghệ từ website B2B, theo dõi giá và tồn kho Shopify/WooCommerce, nhận diện liên hệ phòng khám tại Mỹ, cào danh sách chủ đầu tư bất động sản Malaysia, tối ưu lộ trình nhiều điểm. Mới có vài lượt chạy, chưa có khách trả phí.",
       },
       {
-        name: "BurgerShop POD Listing Automator — Tiện ích Chrome quản trị TMĐT",
-        tech: "JavaScript · Chrome MV3 · Angular/PrimeNG",
-        desc: "Tiện ích Manifest V3 tự động điền quy trình đăng sản phẩm nhiều bước trên cổng quản trị Angular: đồng bộ change detection của Reactive Forms, cuộn từng nhịp qua bảng ảo hoá PrimeNG để áp giá chính xác từng SKU và chèn mô tả vào TinyMCE.",
+        name: "vn-sme-offline-tools — Công cụ offline cho doanh nghiệp nhỏ",
+        tech: "HTML · JavaScript thuần",
+        desc: "9 công cụ chạy trong trình duyệt không cần mạng cho hộ kinh doanh Việt Nam: VietQR thu ngân, công nợ B2B, báo giá sỉ, giá vốn hàng nhập, đối soát hoá đơn XML, đối soát đội xe... Làm ở dạng bản mẫu. tthanh2k6.github.io/vn-sme-offline-tools",
       },
       {
-        name: "ToolPhone — Hệ thống phân tích chênh lệch giá điện thoại cũ",
-        tech: "Python · Flask · SQLite · pytest",
-        desc: "Theo dõi song song 113 dòng máy trên 4 sàn rao vặt; khắc phục sai số thiên lệch sống sót (tin tốt bán nhanh khiến giá còn lại cao hơn 17%) bằng cách tính 'giá thoát hàng' thực tế và lọc đa tầng dân buôn đội lốt cá nhân.",
+        name: "Tích hợp mã nguồn mở",
+        tech: "github.com/Tthanh2k6 · FastAPI · n8n · pytest",
+        desc: "Đồng bộ Apify sang Twenty CRM có chống trùng và webhook xác thực HMAC; bộ công cụ webhook và structured output cho LLM (FastAPI, n8n). Có bộ test pytest; chưa có khách trả phí dùng.",
       },
       {
-        name: "Lịch IUH & Ghi chú Mod — Hệ sinh thái tiện ích Android chuyên sâu",
-        tech: "Kotlin · Jetpack Glance · apktool/smali · Supabase",
-        desc: "Lịch IUH: 3 widget màn hình chính, OAuth2 đồng bộ nền và tự nhúng chứng chỉ TLS trung gian bị thiếu của máy chủ trường. Ghi chú Mod: dịch ngược 15.386 file app hệ thống Xiaomi, tiêm tính năng lịch tuần + trợ lý Gemini biên dịch xuống smali mà giữ nguyên 100% tính năng vẽ tay gốc.",
-      },
-      {
-        name: "Moto-Nav BLE HUD & AI Game Arena — Nhúng C++17 & Mô phỏng 3D",
-        tech: "C++17 · ESP32 · Kotlin · TypeScript · Three.js",
-        desc: "Moto-Nav: nhân dẫn đường C++17 dùng chung cho Android (JNI) và màn hình ghi-đông ESP32 qua BLE GATT. AI Game Arena: 9 môi trường trực quan hoá giải thuật MCTS/UCT, Minimax Zobrist, Q-Learning và tiến hoá thần kinh 3D.",
+        name: "Dự án cá nhân",
+        tech: "2025 — 2026",
+        desc: "PWA điểm danh QR với backend Google Apps Script (DiemDanhQR); app Android viết bằng Kotlin (widget lịch học của trường, giữ kết nối thông báo); Chrome extension (Manifest V3); ba bài viết kỹ thuật trên dev.to.",
       },
     ],
     certs: [
-      ["HackerRank Software Engineer", "Chứng chỉ Kỹ sư Phần mềm xác thực — Mã ID: 3e14323f3998"],
-      ["HackerRank SQL (Advanced)", "Truy vấn phân tích nâng cao, tối ưu hoá & cửa sổ dữ liệu — Mã ID: f6214fbc9a7f"],
-      ["HackerRank REST API (Intermediate)", "Thiết kế, phân trang & tích hợp HTTP/JSON API — Mã ID: 0950402ec1b3"],
+      ["HackerRank Software Engineer", "Mã ID: 3e14323f3998"],
+      ["HackerRank SQL (Advanced)", "Mã ID: f6214fbc9a7f"],
+      ["HackerRank REST API (Intermediate)", "Mã ID: 0950402ec1b3"],
       ["HackerRank Node.js & JS (Intermediate)", "Node.js (ID: aea6444671ab) · JavaScript (ID: 73f0cc9845c4)"],
       ["HackerRank Problem Solving & IBM Python", "Problem Solving Intermediate (ID: 34ee18911edf) · IBM Python 101 for Data Science"],
     ],
@@ -116,80 +115,79 @@ const T = {
   en: {
     langBtn: "Tiếng Việt",
     print: "Download CV (PDF)",
-    role: "AI Automation, Web Scraping & Full-Stack Engineer",
+    role: "Python & automation developer: web data extraction, APIs, n8n workflows",
     tagline:
-      "Production-focused software and automation engineer who single-handedly shipped a commercial loyalty app on Google Play, published 6 Pay-Per-Event data extraction microservices on Apify Store (<50MB RAM) plus 2 public REST APIs on RapidAPI, and builds zero-drift OpenAI/n8n/FastAPI pipelines.",
+      "Developer with one in-house role (mobile app + REST API, built alone) and a growing set of public automation projects. I prefer calling the JSON APIs behind a web page over scraping the rendered page, and I like turning messy manual work into small, tested tools. English: good working proficiency (B2), comfortable reading docs and writing to clients.",
     hExp: "Experience",
-    hProjects: "Selected Engineering Projects",
-    hSkills: "Technical Stack",
-    hCerts: "Verified Certifications",
+    hProjects: "Public work & personal projects",
+    hDeliver: "What I deliver",
+    hSkills: "Skills",
+    hCerts: "Certifications",
     hEdu: "Education",
     hContact: "Contact",
     eduSchool: "Industrial University of Ho Chi Minh City (IUH)",
-    eduMajor: "B.S. in Computer Science · Student ID 24731801",
-    eduTime: "2024 — 2028 (expected)",
+    eduMajor: "Information Technology student",
+    eduTime: "2024 — in progress",
     present: "Present",
     skills: [
-      ["Scraping & ETL", "Python (asyncio, httpx, BeautifulSoup4), Playwright (CDP), Selenium, Hidden JSON/GraphQL API extraction, DNS/MX validation, Apify SDK"],
-      ["AI & Automation", "OpenAI & Anthropic Structured Outputs (Strict JSON Schema), Hybrid RAG (BM25 + Vector RRF), n8n, Make.com, Google Apps Script"],
-      ["Backend & Data", "FastAPI, PHP (REST API, JWT HS256, DB-backed RBAC, rate limiting, cron), PostgreSQL / Supabase (RLS, pgTAP), MySQL, SQLite"],
-      ["Web & Browser", "React 19, TypeScript, TanStack Start (SSR), TailwindCSS, Three.js (WebGL), Chrome Extensions (Manifest V3)"],
-      ["Mobile & Systems", "React Native (Expo Router, EAS Build, OTA), Kotlin (Jetpack Glance/Compose, WorkManager), apktool/smali, C++17, ESP32 BLE"],
+      ["Languages", "Python, TypeScript/JavaScript, PHP, SQL, Kotlin, Dart"],
+      ["Data", "httpx, Playwright, Selenium, Apify SDK, n8n, Make, REST/GraphQL, webhooks, Pydantic, pandas"],
+      ["Backend & Apps", "FastAPI, Node.js, PostgreSQL/Supabase, SQLite, React, React Native (Expo), Flutter, Docker, Git"],
+      ["AI", "OpenAI and Claude APIs (structured outputs, tool use), MediaPipe, YOLOv8, scikit-learn/PyTorch"],
+    ],
+    deliver: [
+      ["Web data", "Scrapers and Apify Actors (hidden JSON/GraphQL APIs first, Playwright when needed), scheduled monitoring, clean CSV/Sheets/DB output"],
+      ["Automation", "n8n and Make workflows, webhooks, CRM/Sheets/Telegram/email integrations, Google Apps Script, Chrome extensions (MV3)"],
+      ["AI features", "LLM extraction and classification with strict JSON schemas, RAG search, AI agents with tool calls, small vision models"],
+      ["Apps & tools", "FastAPI/Node REST APIs, React dashboards, React Native apps, offline single-file tools that import Excel/CSV, PDF/Excel reports"],
     ],
     exp: [
       {
-        role: "Independent AI Automation & Data Extraction Engineer",
-        org: "Apify Store, RapidAPI & Global Clients",
-        time: "2026 — Present",
+        role: "Software Developer",
+        org: "Madalena (cosmetics retailer)",
+        time: "May 2026 — Present · Ho Chi Minh City",
         bullets: [
-          "Engineered and published 6 commercial Pay-Per-Event microservices on Apify Store (@thanh81646) and 2 public REST APIs on RapidAPI Hub, optimized for 256 MB serverless containers (<50MB runtime RAM).",
-          "Built sub-second B2B contact & technographics enrichers (cached DNS/MX verification, 96.4%-precision US Healthcare corporate DSO/MSO chain filtering) and Shopify/WooCommerce SKU monitors running 51× faster than headless DOM scrapers.",
-          "Architected production LLM & workflow toolkits combining FastAPI, Pydantic Strict JSON Schemas (0.00% schema drift), stream backpressure, Hybrid BM25 + Vector RRF retrieval, and idempotent n8n/CRM webhook sync.",
+          "Built the customer loyalty app alone: React Native (Expo, TypeScript) app plus a PHP REST API with JWT auth, QR check-in, push notifications and scheduled jobs (birthday offers, flash sales). The app is on Google Play.",
+          "Moved the backend from Node.js on Render to PHP on the company's existing hosting, removing a separate monthly server bill.",
+          "Added features to the company's PHP e-commerce website as part of the team.",
         ],
       },
       {
-        role: "Full-Stack & Mobile Developer",
-        org: "Madalena (Retail Cosmetics & E-Commerce)",
-        time: "2026 — Present",
+        role: "Freelance projects",
+        org: "Individual jobs",
+        time: "2026",
         bullets: [
-          "Sole developer of the customer loyalty app live on Google Play (com.madalena.app) for iOS and Android: React Native (TypeScript, Expo Router) paired with a custom PHP/MySQL REST API.",
-          "Implemented spend-based membership tiers, counter QR identification, server-authoritative flash sales immune to device-clock tampering, idempotent Expo Push reminders, and automated birthday cron campaigns.",
-          "Security & Cost Engineering: enforced JWT HS256 auth, database-resolved admin RBAC, and IP+phone brute-force throttling; migrated the backend from Node/Express (Render + Aiven) to shared PHP infrastructure, eliminating 100% of separate monthly cloud hosting bills.",
-          "Delivered core revenue features on the live production storefront (madalena.vn): per-phone-capped discount engine, real-time order sync to Google Sheets for sales operations, and inventory-aware catalog ranking.",
+          "Fitness web app built for a student team's competition entry, now open source after the client cancelled (React, TypeScript): workout plans from a user profile, real-time exercise form feedback with MediaPipe Pose, and a food photo classifier I trained on 30 Vietnamese dishes (MobileNetV3 features + logistic head, 76% top-1 / 91% top-3).",
+          "Upwork consultation (Oct 2026, 5★ review) for a job-posting scraper bot: architecture across Telegram, LinkedIn and X; fake-post filtering.",
         ],
       },
     ],
     projects: [
       {
-        name: "WorkFlow AI — Closed-Loop AI Video Production Pipeline",
-        tech: "Python · FastAPI · Playwright/CDP · ffmpeg",
-        desc: "Automates script generation → scene breakdown → visual synthesis on platforms with no public API (driving real Chrome over CDP with graceful manual fallbacks) → final ffmpeg cut; backed by a custom credit-based licence server with automatic failure refunds.",
+        name: "5 Actors on the Apify Store",
+        tech: "Oct 2026 — Present · Python · httpx · Playwright",
+        desc: "Async Python scrapers: B2B website contact and tech-stack enricher, Shopify/WooCommerce price and stock monitor, US clinic contact detector, Malaysia property developer scraper, multi-stop route optimizer. A few runs each so far; no paying clients yet.",
       },
       {
-        name: "BurgerShop POD Listing Automator — Chrome MV3 Admin Extension",
-        tech: "JavaScript · Chrome MV3 · Angular/PrimeNG",
-        desc: "Automates multi-step Print-on-Demand catalog uploads inside an Angular admin portal: dispatches change-detection-safe reactive form events, incrementally scrolls virtualized PrimeNG SKU tables, and injects HTML into sandboxed TinyMCE editors.",
+        name: "vn-sme-offline-tools — Offline tools for small businesses",
+        tech: "HTML · Vanilla JavaScript",
+        desc: "Nine browser tools that work without a connection, for Vietnamese small businesses: VietQR cashier, B2B receivables, wholesale quotes, import landed cost, e-invoice XML checks, fleet fuel reconciliation and more. Built as templates. tthanh2k6.github.io/vn-sme-offline-tools",
       },
       {
-        name: "ToolPhone — Multi-Marketplace Used-Phone Arbitrage Analytics",
-        tech: "Python · Flask · SQLite · pytest",
-        desc: "Tracks 113 phone models across 4 marketplaces in parallel; corrects a measured 17% survivorship-bias markup in live asking prices by computing historical clearing-price ceilings and multi-layer dealer/red-flag filters.",
+        name: "Open-source integrations",
+        tech: "github.com/Tthanh2k6 · FastAPI · n8n · pytest",
+        desc: "Apify-to-Twenty CRM sync with dedupe and HMAC-verified webhooks; webhook and LLM structured-output toolkit (FastAPI, n8n). Covered by pytest suites; not yet used by paying clients.",
       },
       {
-        name: "Lich IUH & Xiaomi Notes Mod — Native Android & Reverse Engineering",
-        tech: "Kotlin · Jetpack Glance · apktool/smali · Supabase",
-        desc: "Lich IUH: 3 home-screen schedule widgets with OAuth2 background sync and custom TLS intermediate-cert pinning. Notes Mod: decompiled 15,386 system app files, injecting Kotlin week-calendar & Gemini AI features compiled to smali while keeping proprietary stylus capabilities intact.",
-      },
-      {
-        name: "Moto-Nav BLE HUD & AI Game Arena — C++17 Embedded & 3D RL",
-        tech: "C++17 · ESP32 · Kotlin · TypeScript · Three.js",
-        desc: "Moto-Nav: shared bit-exact C++17 turn-by-turn geometry core running across Android (JNI) and an ESP32 handlebar HUD over BLE GATT. AI Game Arena: 9 interactive 2D/3D environments showcasing MCTS/UCT, Zobrist Minimax, Q-Learning, and neuroevolution.",
+        name: "Personal projects",
+        tech: "2025 — 2026",
+        desc: "QR attendance PWA with Google Apps Script backend (DiemDanhQR); Android apps in Kotlin (university timetable widget, notification keep-alive); Chrome extensions (Manifest V3); three technical articles on dev.to.",
       },
     ],
     certs: [
-      ["HackerRank Software Engineer", "Verified Role Certification — Credential ID: 3e14323f3998"],
-      ["HackerRank SQL (Advanced)", "Complex joins, window functions, aggregations & query tuning — ID: f6214fbc9a7f"],
-      ["HackerRank REST API (Intermediate)", "HTTP pagination, filtering & JSON payload consumption — ID: 0950402ec1b3"],
+      ["HackerRank Software Engineer", "Credential ID: 3e14323f3998"],
+      ["HackerRank SQL (Advanced)", "ID: f6214fbc9a7f"],
+      ["HackerRank REST API (Intermediate)", "ID: 0950402ec1b3"],
       ["HackerRank Node.js & JS (Intermediate)", "Node.js (ID: aea6444671ab) · JavaScript (ID: 73f0cc9845c4)"],
       ["HackerRank Problem Solving & IBM Python", "Problem Solving Intermediate (ID: 34ee18911edf) · IBM Python 101 for Data Science"],
     ],
@@ -253,6 +251,20 @@ function CvPage() {
               <p>{p.desc}</p>
             </article>
           ))}
+        </section>
+
+        <section>
+          <h2>{t.hDeliver}</h2>
+          <table className="cv-skills">
+            <tbody>
+              {t.deliver.map(([area, items]) => (
+                <tr key={area}>
+                  <th>{area}</th>
+                  <td>{items}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </section>
 
         <section>

@@ -10,7 +10,7 @@ export const Route = createFileRoute("/information")({
       {
         name: "description",
         content:
-          "About Trung Thanh Tran (Trần Trung Thành) — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer in Ho Chi Minh City (UTC+7). Creator of 6 Apify Store Actors & production web/mobile systems.",
+          "About Trung Thanh Tran (Trần Trung Thành) — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer in Ho Chi Minh City (UTC+7). IT student at IUH, building a loyalty app at Madalena and 5 public Apify Actors.",
       },
     ],
     links: [
@@ -317,9 +317,9 @@ const INFO_CSS = `
 // Đoạn giới thiệu mặc định song ngữ — trình bày năng lực thực chiến cho khách quốc tế
 // và nhà tuyển dụng. Người dùng chỉnh qua /admin thì bản chỉnh tay được ưu tiên.
 const DESC_VI =
-  "Xây dựng bộ cào dữ liệu Python & Playwright bất đồng bộ (<50MB RAM), luồng tự động hoá AI / n8n chuẩn schema và sản phẩm web/mobile trọn gói.\nĐã xuất bản 6 Actor thương mại trên Apify Store, 2 REST API công khai trên RapidAPI và ứng dụng khách hàng thực tế trên Google Play.\nTriết lý làm việc: Gửi mẫu chạy thật trước — dữ liệu sạch, tự động phục hồi lỗi, không màu mè.";
+  "Sinh viên CNTT tại IUH, làm lập trình viên ở Madalena từ 05/2026: tự làm một mình app khách hàng thân thiết (React Native, đã lên Google Play) và REST API PHP.\nNgoài giờ làm bộ cào dữ liệu Python & Playwright, luồng tự động hoá AI / n8n chuẩn schema; có 5 Actor công khai trên Apify Store (mới, vài lượt chạy, chưa có khách trả phí).\nCách làm việc: gửi mẫu chạy được trước, nói rõ giới hạn của công cụ.";
 const DESC_EN =
-  "Building high-concurrency Python & Playwright scrapers (<50MB RAM), strict-schema OpenAI & n8n workflows, and full-stack web/mobile products.\nPublished 6 commercial data Actors on Apify Store, 2 public REST APIs on RapidAPI, and a live customer loyalty app on Google Play.\nEngineering philosophy: working sample first — clean schemas, resilient retries, zero fluff.";
+  "IT student at IUH and, since May 2026, developer at Madalena: I built their customer loyalty app (React Native, on Google Play) and its PHP REST API on my own.\nOn the side I build async Python & Playwright scrapers and strict-schema OpenAI / n8n workflows; 5 public Actors on the Apify Store (new, a few runs each, no paying users yet).\nHow I work: a working sample first, and clear notes on what a tool does not do.";
 
 function Information() {
   const { t } = useLang();
@@ -340,7 +340,7 @@ function Information() {
     "AI / n8n Workflows",
     "FastAPI & Supabase",
     "React & Expo",
-    "6 Apify Store Actors",
+    "5 Apify Store Actors",
   ]);
   const [customExplore1, setCustomExplore1] = useState<string | null>(null);
   const [customExplore2, setCustomExplore2] = useState<string | null>(null);
@@ -353,8 +353,8 @@ function Information() {
   const explore2 =
     customExplore2 ??
     t(
-      "→ xem dự án thực tế, 6 Apify Actors & CV chi tiết trên thanh điều hướng",
-      "→ browse shipped projects, 6 live Apify Actors & printable CV above"
+      "→ xem dự án, 5 Apify Actor & CV chi tiết trên thanh điều hướng",
+      "→ browse projects, 5 Apify Actors & printable CV above"
     );
   const [cardName, setCardName] = useState("TRUNG THANH TRAN");
   const [cardTitle, setCardTitle] = useState(

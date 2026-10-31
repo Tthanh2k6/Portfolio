@@ -31,16 +31,16 @@ const KEY_ICON     = 36;   // cạnh logo trong phím (px)
 // (xem span.keycap-label-fallback ở phần render). Có logo thì thả file vào
 // public/IMG/ rồi điền đường dẫn vào đây.
 export const KEYCAPS = [
-  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "Asyncio, httpx, xử lý dữ liệu, 6 Actor thương mại trên Apify Store và các pipeline AI.", descEn: "Asyncio, httpx, ETL pipelines, 6 commercial Apify Store Actors, and ML/AI systems." },
+  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "Asyncio, httpx, xử lý dữ liệu, 5 Actor công khai trên Apify Store và các pipeline AI.", descEn: "Asyncio, httpx, ETL pipelines, 5 public Apify Store Actors, and ML/AI experiments." },
   { bg: "#2d8a4e", shadow: "#1b5730", color: "#fff",    img: "",                         title: "Playwright",      desc: "Tự động hoá trình duyệt vượt anti-bot, điều khiển Chrome qua CDP và dò Hidden JSON API.", descEn: "Anti-bot browser automation, Chrome CDP remote debugging, and hidden JSON API sniffing." },
-  { bg: "#009688", shadow: "#00635a", color: "#fff",    img: "",                         title: "FastAPI",         desc: "Backend bất đồng bộ hiệu năng cao, cổng OpenAI Structured Outputs, kiểm soát backpressure & license server.", descEn: "High-concurrency async microservices, OpenAI Structured Output routers, and credit licence servers." },
-  { bg: "#ea4b71", shadow: "#9c2b47", color: "#fff",    img: "",                         title: "n8n",             desc: "Điều phối luồng tự động hoá doanh nghiệp, webhook Make.com/Clay, đồng bộ CRM & hàng đợi thử lại.", descEn: "Production workflow orchestration, Make.com/Clay webhooks, CRM sync, and idempotent retry queues." },
-  { bg: "#10a37f", shadow: "#0a664f", color: "#fff",    img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "OpenAI API", desc: "Ép kiểu JSON Schema tuyệt đối (0% lệch cấu trúc), Hybrid RAG (BM25 + Vector RRF) và gọi hàm.", descEn: "Zero-drift Strict JSON Schema Structured Outputs, Hybrid BM25 + Vector RRF RAG, and tool calling." },
+  { bg: "#009688", shadow: "#00635a", color: "#fff",    img: "",                         title: "FastAPI",         desc: "Backend bất đồng bộ, cổng OpenAI Structured Outputs, kiểm soát backpressure & license server.", descEn: "Async microservices, OpenAI Structured Output routers, and credit licence servers." },
+  { bg: "#ea4b71", shadow: "#9c2b47", color: "#fff",    img: "",                         title: "n8n",             desc: "Điều phối luồng tự động hoá doanh nghiệp, webhook Make.com/Clay, đồng bộ CRM & hàng đợi thử lại.", descEn: "Workflow orchestration, Make.com/Clay webhooks, CRM sync, and idempotent retry queues." },
+  { bg: "#10a37f", shadow: "#0a664f", color: "#fff",    img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "OpenAI API", desc: "Ép AI trả JSON đúng schema (Structured Outputs), Hybrid RAG (BM25 + Vector RRF) và gọi hàm.", descEn: "Strict JSON Schema Structured Outputs, Hybrid BM25 + Vector RRF RAG, and tool calling." },
   { bg: "#3178c6", shadow: "#1f4e80", color: "#fff",    img: "",                         title: "TypeScript",      desc: "Ứng dụng full-stack kiểm kiểu chặt: app di động Expo Router, portfolio TanStack Start SSR và AI Lab.", descEn: "Strictly typed full-stack apps: the Google Play Expo app, this TanStack Start SSR site, and AI Arena." },
   { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png",           title: "React",           desc: "Giao diện web tương tác cao với React 19, custom hooks, SSR, TailwindCSS và CMS phía client.", descEn: "Interactive interfaces built with React 19, custom hooks, SSR, TailwindCSS, and client-side CMS." },
   { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "Ứng dụng React Native chạy thật trên Google Play (com.madalena.app): thông báo đẩy, quét QR, cập nhật OTA.", descEn: "Shipped React Native loyalty app on Google Play (com.madalena.app): push, QR scan, and OTA updates." },
-  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "REST API sản xuất thật (JWT HS256, phân quyền DB, chống brute-force, cron) và tính năng web TMĐT.", descEn: "Production REST API (JWT HS256, DB-backed RBAC, brute-force protection, cron) and live storefront work." },
-  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Thiết kế lược đồ cơ sở dữ liệu vận hành thật, migration, truy vấn hạng doanh thu và tối ưu chỉ mục.", descEn: "Production relational schemas, migrations, cumulative revenue tier queries, and index tuning." },
+  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "REST API cho app đang chạy thật (JWT HS256, phân quyền DB, chống brute-force, cron) và tính năng web TMĐT.", descEn: "REST API behind a live app (JWT HS256, DB-backed RBAC, brute-force protection, cron) and storefront features." },
+  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Thiết kế lược đồ cơ sở dữ liệu vận hành thật, migration, truy vấn hạng doanh thu và tối ưu chỉ mục.", descEn: "Relational schemas in live use, migrations, cumulative revenue tier queries, and index tuning." },
   { bg: "#24b47e", shadow: "#15734f", color: "#fff",    img: "",                         title: "Supabase",        desc: "PostgreSQL phân quyền từng dòng (RLS), kiểm thử bảo mật tự động bằng pgTAP và đồng bộ đám mây.", descEn: "PostgreSQL Row-Level Security (RLS), automated pgTAP policy auditing, and real-time cloud sync." },
   { bg: "#ffeb3b", shadow: "#bfa500", color: "#000",    img: "/IMG/JavaScript.png",      title: "JavaScript",      desc: "Chrome Extension Manifest V3 tự động hoá Angular/PrimeNG, Google Apps Script và ứng dụng PWA.", descEn: "Manifest V3 Chrome Extensions automating Angular/PrimeNG portals, Google Apps Script, and PWAs." },
   { bg: "#7f52ff", shadow: "#5433b0", color: "#fff",    img: "",                         title: "Kotlin",          desc: "Ngôn ngữ chính cho Android native: app widget Lịch IUH, GiuThongBao và mã tiêm smali cho Ghi chú Mod.", descEn: "Primary native Android language: Lich IUH widgets, push keep-alive utility, and smali-injected mods." },
@@ -305,14 +305,14 @@ export function SkillsSection() {
   const [phase, setPhase]             = useState<"idle"|"exiting"|"entering">("idle");
 
   // Các text layout động và mảng dữ liệu từ localStorage
-  const [subText, setSubText] = useState("Battle-tested in production, refined every day");
+  const [subText, setSubText] = useState("Used in real projects, still learning every day");
   const [title1, setTitle1] = useState("Engineering");
   const [title2, setTitle2] = useState("stack");
   const [typewriterText, setTypewriterText] = useState(
-    "Proven across Google Play, 6 Apify Store Actors & live client systems"
+    "Used in a Google Play app, 5 Apify Actors & open-source tools"
   );
   const [descText, setDescText] = useState(
-    "From <50MB RAM async Python scrapers and zero-drift OpenAI/n8n pipelines to shipped React Native apps and PHP/PostgreSQL backends — hover any keycap to inspect real production usage."
+    "From async Python scrapers and strict-schema OpenAI/n8n workflows to a shipped React Native app and its PHP backend — hover any keycap to see where I used it."
   );
   
   // Khởi tạo bằng chính giá trị mặc định (không phải mảng rỗng) để HTML do server dựng
@@ -342,7 +342,7 @@ export function SkillsSection() {
 
     // Tải cấu hình từ localStorage ở phía client
     const storedSub = localStorage.getItem("skills_sub");
-    setSubText(storedSub || "Battle-tested in production, refined every day");
+    setSubText(storedSub || "Used in real projects, still learning every day");
 
     const storedTitle1 = localStorage.getItem("skills_title_1");
     setTitle1(storedTitle1 || "Engineering");
@@ -352,13 +352,13 @@ export function SkillsSection() {
 
     const storedTypewriter = localStorage.getItem("skills_typewriter");
     setTypewriterText(
-      storedTypewriter || "Proven across Google Play, 6 Apify Store Actors & live client systems"
+      storedTypewriter || "Used in a Google Play app, 5 Apify Actors & open-source tools"
     );
 
     const storedDesc = localStorage.getItem("skills_desc");
     setDescText(
       storedDesc ||
-        "From <50MB RAM async Python scrapers and zero-drift OpenAI/n8n pipelines to shipped React Native apps and PHP/PostgreSQL backends — hover any keycap to inspect real production usage."
+        "From async Python scrapers and strict-schema OpenAI/n8n workflows to a shipped React Native app and its PHP backend — hover any keycap to see where I used it."
     );
 
     const storedKeycaps = localStorage.getItem("skills_keycaps");
