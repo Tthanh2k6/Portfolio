@@ -1052,7 +1052,7 @@ Dự án **không yêu cầu tệp `.env`** để khởi chạy cục bộ hay t
 | **Cổng Dev / Preview** | `3000` hoặc `5173` (mặc định Vite/TanStack Start; `4173` khi `preview`) | `package.json` (`vite dev` / `vite preview`) | Cổng HTTP máy chủ phát triển cục bộ trên `http://localhost:<port>`. |
 | `CONTENT_VERSION` | `"2026-10-31-1"` | `src/routes/__root.tsx:16` | Mã phiên bản dữ liệu nội dung; đổi chuỗi này sẽ buộc trình duyệt khách xóa cache `project_list` và `skills_*` cũ trong `localStorage`. |
 | `GITHUB_USER` | `"Tthanh2k6"` | `src/components/ProjectSection.tsx:346` | Tên tài khoản GitHub dùng để tự động đồng bộ danh sách kho mã nguồn công khai và ảnh OpenGraph. |
-| `ADMIN_PASSWORD_HASH` | `"af53da2aa1c2a31137f4651a3abb165d5544f5e4867130abc7d7a756ea3efaeb"` | `src/routes/admin.tsx:296` | Mã băm `SHA-256` (hex 64 ký tự) của mật khẩu đăng nhập bảng điều khiển `/admin`. |
+| `ADMIN_PASSWORD_HASH` | `<REDACTED_ADMIN_HASH>` | `src/routes/admin.tsx:296` | Mã băm `SHA-256` (hex 64 ký tự) của mật khẩu đăng nhập bảng điều khiển `/admin`. |
 | `KEYS_PER_ROW` | `6` | `src/components/SkillsSection.tsx:148` | Số phím trên mỗi hàng của bàn phím cơ 3D (`24` phím chia làm `4` hàng × `6` cột). |
 | `AUTOPLAY_DELAY` | `4000` (`ms`) | `src/components/ProjectSection.tsx:1135` | Chu kỳ tự động trượt sang dự án kế tiếp trên băng chuyền khi người dùng không tương tác và chưa mở modal. |
 | `TTL_MS` | `5000` (`ms`) | `src/lib/error-capture.ts:4` | Thời gian sống tối đa của lỗi toàn cục được lưu tạm để `src/server.ts` đối chiếu khi SSR gặp lỗi 500. |
