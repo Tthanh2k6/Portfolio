@@ -14,6 +14,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { LangProvider } from "../lib/i18n";
+import { SITE_URL } from "../lib/site";
 
 function NotFoundComponent() {
   return (
@@ -76,7 +77,6 @@ function ErrorComponent({ error, reset }: { error: unknown; reset: () => void })
   );
 }
 
-const SITE_URL = "https://trungthanhtran.vercel.app";
 const OG_IMAGE_URL = `${SITE_URL}/og-preview-1200x630.png`;
 
 const SCHEMA_ORG_GRAPH = JSON.stringify({
@@ -237,10 +237,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      {
-        rel: "canonical",
-        href: `${SITE_URL}/`,
-      },
+      // Canonical KHÔNG khai ở đây — mỗi route công khai tự khai qua pageSeo() (src/lib/site.ts),
+      // vì links của root và route con bị cộng dồn, sẽ ra 2 thẻ canonical.
+      { rel: "icon", href: "/favicon.ico", sizes: "32x32" },
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
       {
         rel: "alternate",
         type: "text/plain",

@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageSeo } from "@/lib/site";
 import { ContactSection } from "@/components/ContactSection";
+
+const SEO = pageSeo("/contact");
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -16,8 +19,10 @@ export const Route = createFileRoute("/contact")({
         content:
           "Available for part-time, fixed-scope freelance work (UTC+7).",
       },
+      SEO.ogUrl,
     ],
     links: [
+      SEO.canonical,
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

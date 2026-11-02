@@ -1,10 +1,13 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { pageSeo } from "@/lib/site";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { HeroScene } from "@/components/HeroScene";
 import { NavBar } from "@/components/NavBar";
 import { useLang } from "@/lib/i18n";
 
+
+const SEO = pageSeo("/");
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,8 +31,10 @@ export const Route = createFileRoute("/")({
         content:
           "Python & Playwright scrapers • n8n / OpenAI workflows • React Native app on Google Play • 5 public Apify Actors.",
       },
+      SEO.ogUrl,
     ],
     links: [
+      SEO.canonical,
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

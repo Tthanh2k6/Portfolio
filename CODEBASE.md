@@ -186,7 +186,7 @@ flowchart TD
    - Nếu lỗi xảy ra sâu trong tầng `h3` khiến `h3` tự nuốt exception và trả về JSON `{"unhandled":true,"message":"HTTPError"}` kèm mã HTTP 500, hàm `normalizeCatastrophicSsrResponse` trong `src/server.ts` sẽ phát hiện mẫu JSON này, khôi phục stack trace thật nhờ `consumeLastCapturedError()` (`src/lib/error-capture.ts`) để ghi ra `console.error`, rồi thay thế bằng trang HTML `renderErrorPage()`.
 
 2. **Tầng App Shell & Đồng bộ Phiên bản Nội dung (`src/routes/__root.tsx`):**
-   - `RootShell` dựng khung tài liệu `<html>`, `<HeadContent />` (chứa meta, Google Fonts theo từng trang, và stylesheet `styles.css?url`) cùng `<Scripts />`.
+   - `RootShell` dựng khung tài liệu `<html>`, `<HeadContent />` (chứa meta, Google Fonts theo từng trang, stylesheet `styles.css?url`, favicon/apple-touch-icon từ root và canonical riêng của từng route qua `pageSeo()`) cùng `<Scripts />`.
    - `RootComponent` bọc cây ứng dụng trong `<QueryClientProvider>` và `<LangProvider>`, hiển thị route con qua `<Outlet />` và gắn `<CustomCursor />` vào `document.body` bằng `createPortal`.
    - Hook `useResetStaleContent()` đối chiếu khóa `localStorage["content_version"]` với hằng số `CONTENT_VERSION = "2026-11-02-2"` nhằm tự động dọn sạch 4 khóa dữ liệu cấu trúc cũ nếu mã nguồn vừa cập nhật danh sách dự án/kỹ năng mới.
 
@@ -324,7 +324,10 @@ d:\Project\Portfolio\
 ├── vite.config.ts                 # Cấu hình Lovable TanStack Vite + Nitro preset vercel + server entry
 │
 ├── public/                        # Tài nguyên tĩnh phục vụ trực tiếp từ gốc URL "/"
-│   └── IMG/                       # 34 tệp hình ảnh (ảnh hồ sơ, ảnh nền, logo kỹ năng, ảnh chụp dự án)
+│   ├── IMG/                       # 34 tệp hình ảnh (ảnh hồ sơ, ảnh nền, logo kỹ năng, ảnh chụp dự án)
+│   ├── favicon.svg                # Favicon vector monogram "Tt" (nền #1C1B19, T kem #F1EFEA, t cam #E0461D) — khớp logo trên og-preview
+│   ├── favicon.ico                # Favicon ICO 3 cỡ 16/32/48 px (trình duyệt tự xin /favicon.ico)
+│   └── apple-touch-icon.png       # Icon 180×180 nền tràn viền (iOS tự bo góc)
 │
 ├── src/                           # Mã nguồn chính của ứng dụng TanStack Start
 │   ├── router.tsx                 # Khởi tạo TanStack Router + QueryClient context
@@ -337,7 +340,8 @@ d:\Project\Portfolio\
 │   │   ├── i18n.tsx               # Context đa ngôn ngữ VI/EN (LangProvider, useLang, t, pick)
 │   │   ├── error-capture.ts       # Bắt global error / unhandledrejection với TTL 5 giây cho SSR
 │   │   ├── error-page.ts          # Sinh chuỗi HTML trang báo lỗi 500 dự phòng
-│   │   └── lovable-error-reporting.ts # Gửi ngoại lệ từ React ErrorBoundary tới window.__lovableEvents
+│   │   ├── lovable-error-reporting.ts # Gửi ngoại lệ từ React ErrorBoundary tới window.__lovableEvents
+│   │   └── site.ts                # SITE_URL + pageSeo(path): canonical & og:url riêng cho từng route công khai
 │   │
 │   ├── components/                # Các thành phần giao diện & cảnh 3D dùng trên các trang
 │   │   ├── NavBar.tsx             # Thanh điều hướng cố định, hiệu ứng bubble trượt & nút đổi EN/VI
@@ -390,6 +394,7 @@ d:\Project\Portfolio\
 | `src/lib/error-capture.ts` | 28 | 925 B | Ghi nhận lỗi toàn cục (`error`, `unhandledrejection`) trong bộ đệm TTL 5.000ms phục vụ log SSR | `consumeLastCapturedError` |
 | `src/lib/error-page.ts` | 31 | 1.371 B | Trả về chuỗi tài liệu HTML5 hoàn chỉnh cho trang báo lỗi 500 ("This page didn't load") | `renderErrorPage` |
 | `src/lib/lovable-error-reporting.ts` | 37 | 830 B | Đẩy thông tin lỗi từ React Error Boundary sang `window.__lovableEvents.captureException` | `reportLovableError` |
+| `src/lib/site.ts` | 14 | 764 B | Hằng số `SITE_URL` dùng chung (canonical, `og:url`, JSON-LD, `og:image`) và hàm `pageSeo(path)` trả cặp thẻ canonical + `og:url` cho từng route công khai | `SITE_URL`, `pageSeo` |
 | `src/routes/__root.tsx` | 291 | 10.107 B | Layout gốc HTML, UI 404/Error, cơ chế xóa cache cũ `useResetStaleContent`, con trỏ vật lý `CustomCursor` | `Route` |
 | `src/routes/index.tsx` | 130 | 4.968 B | Trang chủ (`/`): kết hợp nền `HeroScene`, `NavBar` và khối chữ động `framer-motion` đọc từ `localStorage` | `Route` |
 | `src/routes/information.tsx` | 629 | 20.063 B | Trang hồ sơ (`/information`): hiệu ứng chữ xuất hiện tuần tự, gõ chữ terminal và thẻ đeo vật lý Verlet | `Route` |
@@ -474,13 +479,19 @@ d:\Project\Portfolio\
 - Mở rộng interface toàn cục `Window` với thuộc tính tùy chọn `__lovableEvents?: { captureException?: ... }`.
 - Hàm `reportLovableError(error: unknown, context: Record<string, unknown> = {})`: thoát ngay nếu chạy trên server (`typeof window === "undefined"`); trên trình duyệt gọi `window.__lovableEvents?.captureException?.(...)` kèm metadata `source: "react_error_boundary"`, `route: window.location.pathname`, `mechanism: "react_error_boundary"`, `handled: false`, `severity: "error"`.
 
+#### `src/lib/site.ts` (SEO dùng chung, từ `2026-11-02`)
+- `export const SITE_URL = "https://trungthanhtran.vercel.app"` — nguồn duy nhất của địa chỉ site; `__root.tsx` import để dựng `OG_IMAGE_URL` và JSON-LD. Đặt ở `src/lib/` thay vì export từ `__root.tsx` vì tệp route chỉ nên export `Route` (export thêm làm hỏng code-splitting của `@tanstack/router-plugin`).
+- ``export function pageSeo(path: `/${string}`)`` trả `{ canonical: { rel: "canonical", href }, ogUrl: { property: "og:url", content: href } }` với `href = SITE_URL + path`.
+- **Cách dùng ở mỗi route công khai:** khai `const SEO = pageSeo("/project");` ở cấp module, rồi thêm `SEO.ogUrl` vào cuối mảng `meta` và `SEO.canonical` vào mảng `links` của `head()`. Đang dùng ở 6 route: `/` (`pageSeo("/")` → `https://trungthanhtran.vercel.app/`), `/project`, `/skills`, `/contact`, `/information`, `/cv`. `/admin` cố ý KHÔNG dùng (đã `noindex, nofollow`).
+- **Lý do canonical không được khai ở `__root.tsx` (đã kiểm trong `@tanstack/react-router` `1.170.46`, `headContentUtils.js` → `buildTagsFromMatches`):** `meta` được khử trùng theo `name`/`property` và route sâu nhất thắng (nên `og:url` ở route con ghi đè được `og:url` mặc định của root), còn `links` thì bị `flatMap` cộng dồn từ mọi route khớp, chỉ bỏ thẻ giống hệt (`appendUniqueUserTags`). Canonical ở root + ở route con = 2 thẻ canonical khác `href` trên cùng trang.
+
 ---
 
 ### 4.3. Layout Gốc, Cơ chế Chống Lệch Phiên bản Cache & Con trỏ Vật lý (`src/routes/__root.tsx`, `src/styles.css`)
 
 #### `src/routes/__root.tsx`
 - **`Route` (`createRootRouteWithContext<{ queryClient: QueryClient }>()`)**:
-  - `head`: thiết lập `<meta charset="utf-8">`, `viewport`, các thẻ meta OpenGraph/Twitter mặc định và nạp stylesheet toàn cục `appCss` (`../styles.css?url`).
+  - `head`: thiết lập `<meta charset="utf-8">`, `viewport`, các thẻ meta OpenGraph/Twitter mặc định (`og:url` mặc định `${SITE_URL}/`, bị route con ghi đè qua `pageSeo`) và `links` gồm: stylesheet toàn cục `appCss` (`../styles.css?url`), favicon `{ rel: "icon", href: "/favicon.ico", sizes: "32x32" }` + `{ rel: "icon", type: "image/svg+xml", href: "/favicon.svg" }`, `{ rel: "apple-touch-icon", href: "/apple-touch-icon.png" }` và `alternate` `text/plain` trỏ `/llms.txt`. **Không có canonical ở root** (từ `2026-11-02`; trước đó canonical `${SITE_URL}/` cứng ở đây khiến mọi trang khai mình trùng trang chủ) — canonical do từng route công khai tự khai qua `pageSeo()` (`src/lib/site.ts`); `/admin` và trang `404` vì thế không có canonical. `SITE_URL` import từ `../lib/site`.
   - Đăng ký `shellComponent: RootShell`, `component: RootComponent`, `notFoundComponent: NotFoundComponent` (trang 404 với nút `<Link to="/">Go home</Link>`), `errorComponent: ErrorComponent` (gọi `reportLovableError`, nút `"Try again"` gọi `router.invalidate()` + `reset()`).
 - **Cơ chế `useResetStaleContent()`:**
   - Hằng số `CONTENT_VERSION = "2026-11-02-2"`.
@@ -674,7 +685,7 @@ d:\Project\Portfolio\
 
 ### 4.11. Trang Quản trị CMS Phía Trình duyệt (`src/routes/admin.tsx`)
 
-- **Cấu hình SEO an toàn:** Đặt thẻ `<meta name="robots" content="noindex, nofollow">` trong `Route.head` để công cụ tìm kiếm không lập chỉ mục trang quản trị.
+- **Cấu hình SEO an toàn:** Đặt thẻ `<meta name="robots" content="noindex, nofollow">` trong `Route.head` để công cụ tìm kiếm không lập chỉ mục trang quản trị. Cố ý không gọi `pageSeo()` nên trang này không có thẻ canonical (root cũng không khai canonical).
 - **Cơ chế Xác thực Băm SHA-256 phía Client (`sha256Hex` & `handleLogin`):**
   - Không lưu mật khẩu dạng văn bản thuần trong logic so sánh; sử dụng Web Crypto API `crypto.subtle.digest("SHA-256", new TextEncoder().encode(text))` chuyển mật khẩu nhập vào thành chuỗi hex 64 ký tự và đối chiếu với `ADMIN_PASSWORD_HASH = "<REDACTED_ADMIN_HASH>"`.
   - Khi khớp, ghi `sessionStorage.setItem("admin_authorized", "true")` (phiên làm việc chỉ tồn tại trong tab hiện tại, đóng tab tự khóa lại).
@@ -1177,3 +1188,4 @@ node -e "const crypto = require('crypto'); console.log(crypto.createHash('sha256
 | `2026-10-31` | Sửa nội dung cho trung thực + thêm `vn-sme-offline-tools` (`src/components/ProjectSection.tsx`, `ContactSection.tsx`, `SkillsSection.tsx`, `src/routes/cv.tsx`, `__root.tsx`, `index.tsx`, `project.tsx`, `skills.tsx`, `contact.tsx`, `information.tsx`, `admin.tsx`, `public/IMG/project-vn-sme-tools.png`) | Gỡ các số liệu không có đo đạc ("51×", "0.00% drift", "<50MB RAM", "96.4%", "6 Commercial/Production Actors", "first-on-market") và các cam kết không giữ được (24–48h SLA, W-8BEN, "Upwork Direct Contract 0% fee"); gỡ Actor TheFork (demo dữ liệu cố định) khỏi `REPO_META`, JSON-LD và thêm vào `HIDDEN_REPOS`; mô tả 5 Actor kèm giới hạn thật; thêm KPKT + `vn-sme-offline-tools` vào `publicProjects`; viết lại `/cv` theo CV trung thực (thêm mục `deliver`); nâng `CONTENT_VERSION` lên `"2026-10-31-1"`. |
 | `2026-11-02` | Đối chiếu mô tả với mã nguồn Actor thật (`src/components/ProjectSection.tsx`, `src/routes/cv.tsx`, `src/components/ContactSection.tsx`, `src/routes/__root.tsx`, `public/llms.txt`) | Viết lại `public/llms.txt` (lần sửa 31/10 bỏ sót: còn "0.00% schema drift", "96.4% precision", "51x", "DNS/MX verification" cho Actor B2B, "30+ hrs/week", TheFork như Actor thật); `REPO_META`: Actor e-commerce bỏ các tính năng không có (`/products.json`, WooCommerce Store API, compare-at price, `in_stock`, OpenGraph), Actor B2B sửa "~30 fingerprints / de-obfuscated / normalised phones" thành ~15 dấu hiệu + header, KPKT bỏ "company registration numbers / statuses" và chip `BeautifulSoup4`, route optimizer thêm giới hạn `fallback_centroid`, AI_Lab "Eight" thành "Nine" + Cell War, moto-nav bỏ "weatherproof"; `/cv` sửa 30 thành 28 món Việt (đúng `fitness-app` `food-head.json`); `/contact` đổi "2–4 giờ" thành "trong vòng 24 giờ"; nâng `CONTENT_VERSION` lên `"2026-11-02-1"`. |
 | `2026-11-02` | `burgershop-pod-tool` chuyển private (`src/components/ProjectSection.tsx`, `src/routes/__root.tsx`) | Repo GitHub đổi sang private theo yêu cầu user nên link cũ trả 404: chuyển thẻ từ `publicProjects` sang cuối `privateProjects` (`link: undefined`, nút hiện nhãn private), còn 10 private + 14 public = 24 dự án; tăng `CONTENT_VERSION` lên `2026-11-02-2`. `tsc --noEmit` qua. |
+| `2026-11-02` | SEO: canonical riêng từng trang + favicon (`src/lib/site.ts` mới, `src/routes/__root.tsx`, `index.tsx`, `project.tsx`, `skills.tsx`, `contact.tsx`, `information.tsx`, `cv.tsx`, `public/favicon.svg`, `public/favicon.ico`, `public/apple-touch-icon.png`; Mục 2.2, 3.1, 3.2, 4.2, 4.3, 4.11) | Canonical `${SITE_URL}/` cứng trong `links` của `__root.tsx` làm mọi trang tự khai là bản trùng của trang chủ: gỡ khỏi root, thêm `pageSeo(path)` (`src/lib/site.ts`, kèm `SITE_URL` chuyển từ `__root.tsx` sang) để 6 route công khai tự khai canonical + `og:url` của mình; `/admin` (`noindex`) và `404` không có canonical. Lý do không khai ở root: TanStack Router `1.170.46` cộng dồn `links` của mọi route khớp (chỉ bỏ thẻ giống hệt) còn `meta` thì khử trùng theo `name`/`property`. Thêm favicon monogram "Tt" (SVG + ICO 16/32/48 + apple-touch-icon 180×180, vẽ bằng Pillow theo đúng hình trên `og-preview-1200x630.png`) và 3 thẻ `link` icon ở root. Không đổi nội dung hiển thị nên giữ `CONTENT_VERSION`. `tsc --noEmit` + `npm run build` qua; gọi thẳng hàm SSR đã build xác nhận mỗi trang đúng 1 canonical. |

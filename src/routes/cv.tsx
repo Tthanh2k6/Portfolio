@@ -1,6 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageSeo } from "@/lib/site";
 import { NavBar } from "@/components/NavBar";
 import { useLang } from "@/lib/i18n";
+
+const SEO = pageSeo("/cv");
 
 export const Route = createFileRoute("/cv")({
   head: () => ({
@@ -11,7 +14,9 @@ export const Route = createFileRoute("/cv")({
         content:
           "CV of Trung Thanh Tran (Trần Trung Thành) — IT student at IUH and developer at Madalena (React Native loyalty app + PHP API). Python, Playwright, n8n, FastAPI, React Native.",
       },
+      SEO.ogUrl,
     ],
+    links: [SEO.canonical],
   }),
   component: CvPage,
 });

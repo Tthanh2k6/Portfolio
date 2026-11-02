@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageSeo } from "@/lib/site";
 import { ProjectSection } from "@/components/ProjectSection";
+
+const SEO = pageSeo("/project");
 
 export const Route = createFileRoute("/project")({
   head: () => ({
@@ -16,8 +19,10 @@ export const Route = createFileRoute("/project")({
         content:
           "A shipped React Native app, 5 public Apify Actors, async Python scrapers, and open-source tools.",
       },
+      SEO.ogUrl,
     ],
     links: [
+      SEO.canonical,
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

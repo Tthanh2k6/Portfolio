@@ -1,5 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageSeo } from "@/lib/site";
 import { SkillsSection } from "@/components/SkillsSection";
+
+const SEO = pageSeo("/skills");
 
 export const Route = createFileRoute("/skills")({
   head: () => ({
@@ -16,8 +19,10 @@ export const Route = createFileRoute("/skills")({
         content:
           "Tools I use across Python, web scraping, AI workflow automation, backend APIs, web & mobile.",
       },
+      SEO.ogUrl,
     ],
     links: [
+      SEO.canonical,
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {

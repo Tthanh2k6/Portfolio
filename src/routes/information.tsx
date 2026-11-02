@@ -1,7 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { pageSeo } from "@/lib/site";
 import { useEffect, useState } from "react";
 import { NavBar } from "@/components/NavBar";
 import { useLang } from "@/lib/i18n";
+
+const SEO = pageSeo("/information");
 
 export const Route = createFileRoute("/information")({
   head: () => ({
@@ -12,8 +15,10 @@ export const Route = createFileRoute("/information")({
         content:
           "About Trung Thanh Tran (Trần Trung Thành) — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer in Ho Chi Minh City (UTC+7). IT student at IUH, building a loyalty app at Madalena and 5 public Apify Actors.",
       },
+      SEO.ogUrl,
     ],
     links: [
+      SEO.canonical,
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
