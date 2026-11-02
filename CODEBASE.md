@@ -135,6 +135,7 @@ flowchart TD
         ContactRoute["/contact (contact.tsx + ContactSection.tsx - Mail & Guestbook)"]
         CvRoute["/cv (cv.tsx - A4 Print-Ready Bilingual CV)"]
         AdminRoute["/admin (admin.tsx - Client-Side CMS & SHA-256 Gate)"]
+        LinksRoute["/links (links.tsx - Link in bio, no NavBar, no 3D)"]
 
         LangCtx --> HomeRoute
         LangCtx --> InfoRoute
@@ -143,6 +144,7 @@ flowchart TD
         LangCtx --> ContactRoute
         LangCtx --> CvRoute
         LangCtx --> AdminRoute
+        LangCtx --> LinksRoute
     end
 
     subgraph StorageAPI["Tầng Lưu trữ Trình duyệt & Dịch vụ Ngoài"]
@@ -170,6 +172,7 @@ flowchart TD
         SkillsRoute -- "dispatch cursorHover*" --> WindowBus
         ProjRoute -- "dispatch cursorHover*" --> WindowBus
         ContactRoute -- "dispatch cursorHover*" --> WindowBus
+        LinksRoute -- "dispatch cursorHover*" --> WindowBus
         WindowBus -- "phóng to 1.35x" --> Cursor
 
         ProjRoute --> GitHubAPI
@@ -359,6 +362,7 @@ d:\Project\Portfolio\
 │       ├── project.tsx            # Route "/project" — Bọc hiển thị ProjectSection
 │       ├── contact.tsx            # Route "/contact" — Bọc hiển thị ContactSection
 │       ├── cv.tsx                 # Route "/cv" — Trang CV song ngữ chuẩn in ấn PDF khổ A4
+│       ├── links.tsx              # Route "/links" — Trang "link in bio" 1 cột (7 nút), không NavBar/3D, chạy được khi tắt JS
 │       └── admin.tsx              # Route "/admin" — Bảng điều khiển CMS phía trình duyệt (5 phân hệ)
 │
 └── Idea Demo/                     # Bản phác thảo thiết kế HTML/CSS/JS thuần ban đầu (tham khảo lịch sử)
@@ -386,7 +390,7 @@ d:\Project\Portfolio\
 | `README.md` | 90 | 4.651 B | Tài liệu tổng quan dự án, bảng tính năng các trang, lệnh chạy, cơ chế chỉnh nội dung và triển khai | — |
 | `src/routes/README.md` | 29 | 1.536 B | Bản đồ ánh xạ 8 tệp trong `src/routes/` sang URL và 5 quy tắc bắt buộc khi sửa/thêm trang | — |
 | `src/router.tsx` | 17 | 394 B | Tạo `QueryClient` và `Router` với `scrollRestoration: true`, `defaultPreloadStaleTime: 0` | `getRouter` |
-| `src/routeTree.gen.ts` | 200 | 5.353 B | Cây route và khai báo kiểu TypeScript tự động sinh cho TanStack Router & TanStack Start | `routeTree`, `FileRoutesByFullPath`, `FileRoutesByTo`, `FileRoutesById`, `FileRouteTypes`, `RootRouteChildren` |
+| `src/routeTree.gen.ts` | 220 | 5.910 B | Cây route và khai báo kiểu TypeScript tự động sinh cho TanStack Router & TanStack Start | `routeTree`, `FileRoutesByFullPath`, `FileRoutesByTo`, `FileRoutesById`, `FileRouteTypes`, `RootRouteChildren` |
 | `src/server.ts` | 55 | 1.912 B | Lớp bọc ngoài cùng của SSR server, bắt lỗi ngoại lệ và chuẩn hóa phản hồi JSON 500 bị `h3` nuốt | `default` (`{ fetch }`) |
 | `src/start.ts` | 23 | 619 B | Khởi tạo `startInstance` với `errorMiddleware` chặn lỗi SSR trả về trang lỗi HTML | `startInstance` |
 | `src/styles.css` | 233 | 8.667 B | Cấu hình Tailwind v4 `@theme inline`, bảng màu sáng/tối `oklch`, ẩn con trỏ mặc định, keyframes 3D | — (import qua `?url` tại `__root.tsx`) |
@@ -402,6 +406,7 @@ d:\Project\Portfolio\
 | `src/routes/project.tsx` | 31 | 1.156 B | Khai báo route `/project`, nạp bộ 3 font Google và render `ProjectSection` | `Route` |
 | `src/routes/contact.tsx` | 31 | 1.211 B | Khai báo route `/contact`, nạp bộ 3 font Google và render `ContactSection` | `Route` |
 | `src/routes/cv.tsx` | 388 | 17.062 B | Trang CV (`/cv`) song ngữ VI/EN tự đồng bộ với `NavBar`, hỗ trợ in/xuất PDF khổ A4 qua `@media print` | `Route` |
+| `src/routes/links.tsx` | 450 | 13.915 B | Trang "link in bio" (`/links`, từ `2026-11-02`): 1 cột mobile-first, 7 nút `<a>` thường (Portfolio, `vn-sme-offline-tools`, Apify Store, GitHub, dev.to, Upwork, email), song ngữ qua `t()`, nút `EN`/`VI` riêng; không `NavBar`, không 3D, CSS nội tuyến | `Route` |
 | `src/routes/admin.tsx` | 1.787 | 93.244 B | Hệ thống CMS phía client (`/admin`): cổng SHA-256 + 5 tab quản trị toàn bộ thông số website | `Route` |
 | `src/components/NavBar.tsx` | 195 | 7.871 B | Thanh menu cố định trên đỉnh trang, chỉ báo bong bóng kính mờ chạy theo chuột và nút chuyển `EN`/`VI` | `NavBar` |
 | `src/components/HeroScene.tsx` | 474 | 20.710 B | Cảnh WebGL `Three.js` isometric: 1.444 khối neon, hậu kỳ `UnrealBloomPass`, raycasting & sóng tự động | `HeroScene` |
@@ -459,7 +464,7 @@ d:\Project\Portfolio\
 
 #### `src/router.tsx` & `src/routeTree.gen.ts`
 - `getRouter()` khởi tạo `new QueryClient()` mới cho mỗi phiên/request SSR (tránh rò rỉ dữ liệu cache giữa các request khác nhau trên server), truyền vào `createRouter({ routeTree, context: { queryClient }, scrollRestoration: true, defaultPreloadStaleTime: 0 })`.
-- `src/routeTree.gen.ts` do plugin tự sinh, ánh xạ chính xác 7 route con dưới `__root__`: `/`, `/admin`, `/contact`, `/cv`, `/information`, `/project`, `/skills` và khai báo module augmentation `ssr: true` cho `@tanstack/react-start`.
+- `src/routeTree.gen.ts` do plugin tự sinh, ánh xạ chính xác 8 route con dưới `__root__`: `/`, `/admin`, `/contact`, `/cv`, `/information`, `/links`, `/project`, `/skills` và khai báo module augmentation `ssr: true` cho `@tanstack/react-start`.
 
 ---
 
@@ -482,7 +487,7 @@ d:\Project\Portfolio\
 #### `src/lib/site.ts` (SEO dùng chung, từ `2026-11-02`)
 - `export const SITE_URL = "https://trungthanhtran.vercel.app"` — nguồn duy nhất của địa chỉ site; `__root.tsx` import để dựng `OG_IMAGE_URL` và JSON-LD. Đặt ở `src/lib/` thay vì export từ `__root.tsx` vì tệp route chỉ nên export `Route` (export thêm làm hỏng code-splitting của `@tanstack/router-plugin`).
 - ``export function pageSeo(path: `/${string}`)`` trả `{ canonical: { rel: "canonical", href }, ogUrl: { property: "og:url", content: href } }` với `href = SITE_URL + path`.
-- **Cách dùng ở mỗi route công khai:** khai `const SEO = pageSeo("/project");` ở cấp module, rồi thêm `SEO.ogUrl` vào cuối mảng `meta` và `SEO.canonical` vào mảng `links` của `head()`. Đang dùng ở 6 route: `/` (`pageSeo("/")` → `https://trungthanhtran.vercel.app/`), `/project`, `/skills`, `/contact`, `/information`, `/cv`. `/admin` cố ý KHÔNG dùng (đã `noindex, nofollow`).
+- **Cách dùng ở mỗi route công khai:** khai `const SEO = pageSeo("/project");` ở cấp module, rồi thêm `SEO.ogUrl` vào cuối mảng `meta` và `SEO.canonical` vào mảng `links` của `head()`. Đang dùng ở 7 route: `/` (`pageSeo("/")` → `https://trungthanhtran.vercel.app/`), `/project`, `/skills`, `/contact`, `/information`, `/cv`, `/links` (thêm `2026-11-02`). `/admin` cố ý KHÔNG dùng (đã `noindex, nofollow`).
 - **Lý do canonical không được khai ở `__root.tsx` (đã kiểm trong `@tanstack/react-router` `1.170.46`, `headContentUtils.js` → `buildTagsFromMatches`):** `meta` được khử trùng theo `name`/`property` và route sâu nhất thắng (nên `og:url` ở route con ghi đè được `og:url` mặc định của root), còn `links` thì bị `flatMap` cộng dồn từ mọi route khớp, chỉ bỏ thẻ giống hệt (`appendUniqueUserTags`). Canonical ở root + ở route con = 2 thẻ canonical khác `href` trên cùng trang.
 
 ---
@@ -718,6 +723,17 @@ d:\Project\Portfolio\
 
 ---
 
+### 4.13. Trang "Link in bio" (`src/routes/links.tsx`, từ `2026-11-02`)
+
+- **Mục đích:** một URL ngắn (`https://trungthanhtran.vercel.app/links`) để dán vào hồ sơ Zalo / Instagram / dev.to / GitHub. Cố ý **không** gắn vào `navItems` của `NavBar` và trang cũng không render `NavBar` (chỉ có lối vào trực tiếp + `sitemap.xml` + `llms.txt`).
+- **`head()`:** `title` `"Links — Trung Thanh Tran"`, `description`, `og:title`, `og:description`, `SEO.ogUrl` + `SEO.canonical` từ `pageSeo("/links")`; `og:image` / `twitter:image` kế thừa từ root (`og-preview-1200x630.png`). Nạp đúng chuỗi Google Fonts của `/contact` (`Be Vietnam Pro` + `Plus Jakarta Sans` + `Fira Code`) nên dùng lại cache trình duyệt.
+- **Dữ liệu:** mảng nội bộ `LINKS: LinkItem[]` (`href`, `vi`, `en`, `handle`, `icon`, `external`) — 7 mục theo thứ tự: Portfolio (`${SITE_URL}/`, cùng tab, kiểu nút chính `.is-primary` nền trắng như `.submit-btn` của `/contact`), `https://tthanh2k6.github.io/vn-sme-offline-tools/`, `https://apify.com/thanh81646`, `https://github.com/Tthanh2k6`, `https://dev.to/tthanh2k6`, `https://www.upwork.com/freelancers/trungthanhtrandev`, `mailto:ttrungthanh90@gmail.com`. Link ngoài có `target="_blank" rel="noopener"`; Portfolio và `mailto:` không mở tab mới. Không có số điện thoại, số Zalo hay thông tin ngân hàng — giữ nguyên như vậy. Mảng không đọc `localStorage` và không thuộc `/admin`, nên sửa không cần tăng `CONTENT_VERSION`.
+- **Song ngữ:** nhãn và dòng giới thiệu qua `t(vi, en)` của `useLang()` (SSR luôn ra `en`); nút `.links-lang` gọi `setLang` (dùng lại khóa `site_lang`, không thêm khóa mới), hiển thị ngôn ngữ đích như `NavBar`.
+- **Giao diện (CSS nội tuyến trong `<style>`):** nền `#0b0c10` + `radial-gradient` xanh `rgba(56,189,248,0.09)` thay cho ảnh nền nặng; khung `max-width: 480px`, lề hai bên `16px`; avatar là `/favicon.svg` (monogram "Tt", 252 B). Nút `.links-btn` (`min-height: 64px`, bo `14px`) hover nhấc `translateY(-2px)` + viền/icon `#38bdf8`, nhấn `scale(0.985)`; mọi chuyển động tắt dưới `@media (prefers-reduced-motion: reduce)`. Mỗi nút phát `cursorHoverEnter` / `cursorHoverLeave` cho `CustomCursor`.
+- **Khi tắt JavaScript:** mọi nút vẫn là `<a href>` từ SSR; `@media (scripting: none)` trả lại con trỏ gốc (`cursor: auto` / `pointer` có `!important` và độ ưu tiên selector cao hơn quy tắc `html, body, * { cursor: none !important }` của `styles.css`, vì `CustomCursor` không chạy) và ẩn nút `EN`/`VI`.
+
+---
+
 ## 5. Mô hình Dữ liệu, Lưu trữ & Giao thức / API (Data Schemas, Storage & Protocols)
 
 ### 5.1. Kiến trúc Lưu trữ Trình duyệt (`localStorage` & `sessionStorage`)
@@ -905,7 +921,7 @@ interface Comment {
 
 ### 6.1. Danh mục Màn hình, Modal, Panel & Widget
 
-Dự án gồm **7 màn hình định tuyến (routes)**, **2 màn hình ngoại lệ toàn cục** (`NotFoundComponent`, `ErrorComponent`), **2 lớp phủ dùng chung** (`NavBar`, `CustomCursor`), và **3 hộp thoại Modal chuyên biệt**:
+Dự án gồm **8 màn hình định tuyến (routes)**, **2 màn hình ngoại lệ toàn cục** (`NotFoundComponent`, `ErrorComponent`), **2 lớp phủ dùng chung** (`NavBar`, `CustomCursor`), và **3 hộp thoại Modal chuyên biệt**:
 
 | Định danh / Đường dẫn | Thành phần chính | Bố cục & Widget đặc trưng | Điều hướng / Kích hoạt |
 | :--- | :--- | :--- | :--- |
@@ -916,6 +932,7 @@ Dự án gồm **7 màn hình định tuyến (routes)**, **2 màn hình ngoại
 | **Modal Chi tiết Dự án** (`ProjectDetailModal` trong `ProjectSection.tsx`) | `ProjectDetailModal` (`role="dialog"`, `aria-modal="true"`) | Hộp thoại kính mờ tối đa `860px` (`max-height: calc(100vh - 48px)`, cuộn dọc mượt): ảnh bìa 16:10 đầu trang, huy hiệu category + năm, tiêu đề lớn, chip công nghệ `tech[]`, bài phân tích kỹ thuật nhiều đoạn `detail`, lưới thông tin `Vai trò / Bối cảnh / Năm` và chân modal chứa nút mở `demo` / `link`. | Nhấn nút `"Xem chi tiết"` trên thẻ dự án đang mở; đóng bằng nút `×`, phím `Escape` hoặc click ra vùng nền mờ `.proj-modal-backdrop`. |
 | `/contact` (`src/routes/contact.tsx`) | `ContactPage` → `ContactSection` + `NavBar` | Bố cục 2 cột kính mờ (`max-width: 1200px`, lưới `1fr 1.1fr`): cột trái gồm Form gửi email trực tiếp + lưới Bento `Connect With Me` (GitHub chiếm 2 cột, Facebook & Instagram chia đôi); cột phải là Sổ lưu bút `Guestbook` (ô nhập bình luận, đính kèm ảnh xem trước, danh sách bình luận có ghim & thả tim) + hộp thông báo nổi `.toast-container` góc dưới phải. | Menu `Contact` trên `NavBar`. |
 | `/cv` (`src/routes/cv.tsx`) | `CvPage` + `NavBar` | Thanh công cụ `.cv-toolbar` (ẩn khi in) gồm gợi ý in và nút `"Tải CV (PDF)"` (`window.print()`); bên dưới là tờ giấy trắng `.cv-sheet` rộng `850px` chuẩn tỷ lệ A4 trình bày Họ tên, Liên hệ, Tóm tắt, Học vấn, Kinh nghiệm, 7 Dự án tiêu biểu, 5 Nhóm kỹ năng và Giải thưởng theo ngôn ngữ `VI`/`EN` hiện hành. | Menu `CV` trên `NavBar`. |
+| `/links` (`src/routes/links.tsx`) | `LinksPage` (không `NavBar`) | Một cột `max-width: 480px` trên nền `#0b0c10`: nút `EN`/`VI` góc phải, avatar monogram `/favicon.svg`, tên + dòng giới thiệu, danh sách 7 nút liên kết (icon + nhãn + địa chỉ `Fira Code` + mũi tên), nút đầu (Portfolio) nền trắng. | Chỉ truy cập trực tiếp URL `/links` (link dán trên hồ sơ mạng xã hội); có trong `sitemap.xml` và `llms.txt`, không có trên `NavBar`. |
 | `/admin` (`src/routes/admin.tsx`) | `AdminPanel` | Khi chưa đăng nhập: thẻ khóa mật khẩu giữa màn hình nền tối `#06070d`. Khi đã xác thực: bố cục Sidebar trái cố định (`w-64`, 5 tab điều hướng + nút `"Xem trang chủ"` + `"Đăng xuất"`) và vùng làm việc phải (`max-w-5xl`) hiển thị các thẻ cấu hình, thanh trượt số học, bảng chọn màu và trình quản lý danh sách. | Nhập trực tiếp URL `/admin` trên trình duyệt (không đặt link công khai trên `NavBar`). |
 | **Modal Sửa Phím Kỹ năng & Modal Sửa Dự án** (`admin.tsx`) | `editingKeyIdx !== null` / `editingProjIdx !== null` | Hộp thoại phủ kín màn hình (`bg-black/80 backdrop-blur-sm z-50`) cho phép chỉnh sửa trực quan màu nền/cạnh đổ bóng, đường dẫn ảnh `/IMG/...`, tiêu đề, mô tả, vai trò, khách hàng, năm, link GitHub và link Demo trước khi nhấn `"Lưu Cài Đặt"`. | Nhấn vào một phím hoặc nhấn `"Sửa"` / `"+ Thêm phím"` / `"+ Thêm dự án"` trong tab `Skills` hoặc `Projects` tại `/admin`. |
 | **Màn hình 404 & Lỗi Runtime** (`__root.tsx`, `error-page.ts`) | `NotFoundComponent`, `ErrorComponent`, `renderErrorPage()` | Trang thông báo tối giản căn giữa màn hình: `404` có nút `<Link to="/">Go home</Link>`; `ErrorComponent` (client) báo lỗi kèm nút `Reload page`; `renderErrorPage()` (SSR 500) trả HTML độc lập không phụ thuộc bundle JS. | Tự động kích hoạt khi URL không khớp route hoặc xảy ra ngoại lệ runtime/SSR. |
@@ -972,6 +989,10 @@ stateDiagram-v2
         TabContact --> LoginGate: Nhấn "Đăng xuất" (xóa sessionStorage)
     }
 
+    state "Trang Link in bio (/links, không NavBar)" as LinksPage
+    [*] --> LinksPage: Mở link từ hồ sơ Zalo / Instagram / dev.to / GitHub
+    LinksPage --> Home: Nút "Portfolio"
+
     PublicShell --> LoginGate: Nhập trực tiếp URL "/admin"
     AdminFlow --> Home: Nhấn "Xem trang chủ" (dữ liệu mới áp dụng qua localStorage)
 ```
@@ -1014,7 +1035,7 @@ Dự án kết hợp **hai lớp màu sắc** rõ rệt: (1) Hệ thống biến
 Các tệp route nạp phông chữ từ `https://fonts.googleapis.com` thông qua hàm `head()` của TanStack Router (hỗ trợ đầy đủ dấu tiếng Việt Unicode):
 
 - **`Be Vietnam Pro`** (`wght@300;400;500;600;700;800;900` — nạp tại `/skills` và `/cv`): Phông chữ chủ đạo tối ưu cho tiếng Việt hiện đại, dùng cho toàn bộ tờ CV A4, tiêu đề/mô tả kỹ năng và chữ nổi 3D `ExtrudedText`.
-- **`Plus Jakarta Sans`** (`wght@300;400;500;600;700;800` — nạp tại `/project` và `/contact`): Phông chữ hình học sắc nét dùng cho nội dung thẻ dự án, modal phân tích kỹ thuật, form liên hệ và sổ lưu bút.
+- **`Plus Jakarta Sans`** (`wght@300;400;500;600;700;800` — nạp tại `/project`, `/contact` và `/links`; `/links` dùng cùng URL font với `/contact` gồm cả `Be Vietnam Pro` và `Fira Code`): Phông chữ hình học sắc nét dùng cho nội dung thẻ dự án, modal phân tích kỹ thuật, form liên hệ và sổ lưu bút.
 - **`Syne`** (`wght@600;700;800` — nạp tại `/project` và `/contact`): Phông chữ trưng bày cá tính mạnh dùng cho các tiêu đề nghệ thuật hoặc nhãn nhấn.
 - **`Fira Code`** (`wght@400;500` — nạp tại `/project` và `/contact`, cùng họ monospace trên `/information` và `/admin`): Dùng cho chỉ số kỹ thuật, năm thực hiện (`year`), dòng gõ chữ terminal, mã băm và các ô nhập đường dẫn/JSON.
 - **`Inter` / System Sans-Serif**: Dùng cho giao diện quản trị `/admin` và trang báo lỗi dự phòng.
@@ -1189,3 +1210,4 @@ node -e "const crypto = require('crypto'); console.log(crypto.createHash('sha256
 | `2026-11-02` | Đối chiếu mô tả với mã nguồn Actor thật (`src/components/ProjectSection.tsx`, `src/routes/cv.tsx`, `src/components/ContactSection.tsx`, `src/routes/__root.tsx`, `public/llms.txt`) | Viết lại `public/llms.txt` (lần sửa 31/10 bỏ sót: còn "0.00% schema drift", "96.4% precision", "51x", "DNS/MX verification" cho Actor B2B, "30+ hrs/week", TheFork như Actor thật); `REPO_META`: Actor e-commerce bỏ các tính năng không có (`/products.json`, WooCommerce Store API, compare-at price, `in_stock`, OpenGraph), Actor B2B sửa "~30 fingerprints / de-obfuscated / normalised phones" thành ~15 dấu hiệu + header, KPKT bỏ "company registration numbers / statuses" và chip `BeautifulSoup4`, route optimizer thêm giới hạn `fallback_centroid`, AI_Lab "Eight" thành "Nine" + Cell War, moto-nav bỏ "weatherproof"; `/cv` sửa 30 thành 28 món Việt (đúng `fitness-app` `food-head.json`); `/contact` đổi "2–4 giờ" thành "trong vòng 24 giờ"; nâng `CONTENT_VERSION` lên `"2026-11-02-1"`. |
 | `2026-11-02` | `burgershop-pod-tool` chuyển private (`src/components/ProjectSection.tsx`, `src/routes/__root.tsx`) | Repo GitHub đổi sang private theo yêu cầu user nên link cũ trả 404: chuyển thẻ từ `publicProjects` sang cuối `privateProjects` (`link: undefined`, nút hiện nhãn private), còn 10 private + 14 public = 24 dự án; tăng `CONTENT_VERSION` lên `2026-11-02-2`. `tsc --noEmit` qua. |
 | `2026-11-02` | SEO: canonical riêng từng trang + favicon (`src/lib/site.ts` mới, `src/routes/__root.tsx`, `index.tsx`, `project.tsx`, `skills.tsx`, `contact.tsx`, `information.tsx`, `cv.tsx`, `public/favicon.svg`, `public/favicon.ico`, `public/apple-touch-icon.png`; Mục 2.2, 3.1, 3.2, 4.2, 4.3, 4.11) | Canonical `${SITE_URL}/` cứng trong `links` của `__root.tsx` làm mọi trang tự khai là bản trùng của trang chủ: gỡ khỏi root, thêm `pageSeo(path)` (`src/lib/site.ts`, kèm `SITE_URL` chuyển từ `__root.tsx` sang) để 6 route công khai tự khai canonical + `og:url` của mình; `/admin` (`noindex`) và `404` không có canonical. Lý do không khai ở root: TanStack Router `1.170.46` cộng dồn `links` của mọi route khớp (chỉ bỏ thẻ giống hệt) còn `meta` thì khử trùng theo `name`/`property`. Thêm favicon monogram "Tt" (SVG + ICO 16/32/48 + apple-touch-icon 180×180, vẽ bằng Pillow theo đúng hình trên `og-preview-1200x630.png`) và 3 thẻ `link` icon ở root. Không đổi nội dung hiển thị nên giữ `CONTENT_VERSION`. `tsc --noEmit` + `npm run build` qua; gọi thẳng hàm SSR đã build xác nhận mỗi trang đúng 1 canonical. |
+| `2026-11-02` | Trang "link in bio" `/links` (`src/routes/links.tsx` mới, `src/routeTree.gen.ts` sinh lại, `public/sitemap.xml`, `public/llms.txt`; Mục 2.1, 3.1, 3.2, 4.1, 4.2, 4.13 mới, 6.1, 6.2, 6.4; `agent.md` Mục 2.1 thêm dòng 13) | Thêm route công khai `/links` để dán vào hồ sơ mạng xã hội: 1 cột mobile-first, 7 nút `<a>` thường (Portfolio, `vn-sme-offline-tools` demo, Apify Store, GitHub, dev.to, Upwork, email; không điện thoại/Zalo/ngân hàng), song ngữ qua `t()` + nút `EN`/`VI` riêng, không `NavBar`/3D/ảnh nặng (avatar `/favicon.svg`), hover/nhấn chỉ bằng CSS và tắt dưới `prefers-reduced-motion`; `@media (scripting: none)` trả lại con trỏ gốc và ẩn nút đổi ngôn ngữ. `head()` dùng `pageSeo("/links")` (canonical + `og:url`), `og:image` kế thừa root. Không thêm vào `NavBar` (site không có footer chứa danh sách link). `sitemap.xml` + `llms.txt` liệt kê `/links`. Không đổi dữ liệu dự án/kỹ năng nên giữ `CONTENT_VERSION`. `npm run build` (sinh lại `routeTree.gen.ts`) + `npx tsc --noEmit -p .` + `eslint src/routes/links.tsx` qua; gọi hàm SSR đã build: `/links` 200, đúng 1 canonical, đủ 7 `href`. `src/routes/README.md` chưa cập nhật (agent.md xếp vào nhóm không tự ý sửa). |
