@@ -655,6 +655,14 @@ const privateProjects = [
     yearRole: "2026 • Computer Vision",
     link: undefined as string | undefined,
   },
+  // Repo đã chuyển sang private (02/11/2026): giữ thẻ, bỏ link GitHub
+  {
+    id: "burgershop-pod-tool",
+    ...REPO_META["burgershop-pod-tool"],
+    image: projectImage("burgershop-pod-tool"),
+    year: "2026",
+    link: undefined as string | undefined,
+  },
 ];
 
 // Danh sách dự án tĩnh = dự án private + các repo công khai chủ lực trên GitHub.
@@ -677,7 +685,6 @@ const publicProjects = [
   buildStaticPublic("apify-malaysia-kpkt-teduh-property-scraper"),
   buildStaticPublic("vn-sme-offline-tools"),
   buildStaticPublic("web-scraping-showcase"),
-  buildStaticPublic("burgershop-pod-tool"),
   buildStaticPublic("moto-nav"),
   {
     ...buildStaticPublic("DiemDanhQR"),
