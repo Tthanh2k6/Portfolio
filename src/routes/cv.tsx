@@ -76,7 +76,7 @@ const T = {
         org: "Việc nhận lẻ",
         time: "2026",
         bullets: [
-          "Web app fitness làm cho phần thi của một nhóm sinh viên, khách huỷ nên nay đã mở mã nguồn (React, TypeScript): lên lịch tập theo hồ sơ người dùng, nhận xét tư thế tập theo thời gian thực bằng MediaPipe Pose, và bộ phân loại ảnh món ăn tự huấn luyện trên 30 món Việt (đặc trưng MobileNetV3 + logistic, top-1 76% / top-3 91%).",
+          "Web app fitness làm cho phần thi của một nhóm sinh viên, khách huỷ nên nay đã mở mã nguồn (React, TypeScript): lên lịch tập theo hồ sơ người dùng, nhận xét tư thế tập theo thời gian thực bằng MediaPipe Pose, và bộ phân loại ảnh món ăn tự huấn luyện trên 28 món Việt (đặc trưng MobileNetV3 + logistic, top-1 76% / top-3 91%).",
           "Một buổi tư vấn trên Upwork (10/2026, đánh giá 5★) về bot cào tin tuyển dụng: kiến trúc lấy tin từ Telegram, LinkedIn và X, lọc tin giả.",
         ],
       },
@@ -157,7 +157,7 @@ const T = {
         org: "Individual jobs",
         time: "2026",
         bullets: [
-          "Fitness web app built for a student team's competition entry, now open source after the client cancelled (React, TypeScript): workout plans from a user profile, real-time exercise form feedback with MediaPipe Pose, and a food photo classifier I trained on 30 Vietnamese dishes (MobileNetV3 features + logistic head, 76% top-1 / 91% top-3).",
+          "Fitness web app built for a student team's competition entry, now open source after the client cancelled (React, TypeScript): workout plans from a user profile, real-time exercise form feedback with MediaPipe Pose, and a food photo classifier I trained on 28 Vietnamese dishes (MobileNetV3 features + logistic head, 76% top-1 / 91% top-3).",
           "Upwork consultation (Oct 2026, 5★ review) for a job-posting scraper bot: architecture across Telegram, LinkedIn and X; fake-post filtering.",
         ],
       },

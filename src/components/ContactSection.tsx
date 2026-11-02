@@ -356,8 +356,8 @@ export function ContactSection() {
       if (isDelivered) {
         showToast(
           t(
-            "Đã gửi yêu cầu thành công! Mình thường phản hồi trong vòng 2–4 giờ.",
-            "Inquiry delivered! I typically reply within 2–4 hours with a concrete plan."
+            "Đã gửi yêu cầu thành công! Mình thường phản hồi trong vòng 24 giờ (giờ Việt Nam, UTC+7).",
+            "Inquiry delivered! I usually reply within 24 hours (UTC+7) with a concrete plan."
           )
         );
         setContactName("");
@@ -1015,8 +1015,8 @@ export function ContactSection() {
           <h2 className="column-title">{t("Gửi Yêu Cầu Trực Tiếp", "Direct Engineering Brief")}</h2>
           <p className="column-subtitle">
             {t(
-              "Gửi URL mục tiêu hoặc bài toán hệ thống đang nghẽn — phản hồi trong 2–4 giờ kèm phương án kỹ thuật hoặc mẫu dữ liệu thật.",
-              "Share your target URL, API spec, or workflow bottleneck. Typical response within 2–4 hours with a concrete technical plan or sample."
+              "Gửi URL mục tiêu hoặc bài toán hệ thống đang nghẽn — thường phản hồi trong vòng 24 giờ kèm phương án kỹ thuật hoặc mẫu dữ liệu thật.",
+              "Share your target URL, API spec, or workflow bottleneck. Usually a reply within 24 hours (UTC+7) with a concrete technical plan or sample."
             )}
           </p>
 
