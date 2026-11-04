@@ -708,7 +708,79 @@ const publicProjects = [
 // Danh sách hiển thị mặc định: dự án không công khai mã nguồn đứng trước, rồi tới repo công khai.
 // Được export để trang /admin dùng CHUNG một nguồn — trước đây admin tự chép lại danh sách
 // riêng nên bị lệch, và mỗi lần bấm lưu là ghi đè danh sách thiếu dự án xuống localStorage.
-export const projects = [...privateProjects, ...publicProjects];
+const recentProjects = [
+  {
+    id: "discord-membership-bot",
+    category: "NODE.JS • DISCORD • SUBSCRIPTIONS",
+    shortName: "BOT THÀNH VIÊN DISCORD",
+    shortNameEn: "DISCORD MEMBERSHIP BOT",
+    title: "Bot quản lý thành viên Discord",
+    titleEn: "Discord membership bot",
+    desc: "Cấp vai trò Discord khi gói trả phí còn hiệu lực, thu hồi khi hết kỳ; báo đơn Shopify không kèm thông tin liên hệ.",
+    descEn: "Grants paid Discord roles during active subscriptions, removes them when the paid period ends, and posts Shopify order alerts.",
+    detail: "Bot Node.js dùng discord.js và node:sqlite. Cấp vai trò Discord trả phí cho thành viên có gói đăng ký còn hiệu lực qua Stripe, Whop hoặc Zapier/Make; thu hồi vai trò khi kỳ trả phí kết thúc.\n\nĐăng thông báo đơn hàng Shopify không kèm thông tin liên hệ của khách hàng. Có 57 bài kiểm thử offline.",
+    detailEn: "A Node.js bot using discord.js and node:sqlite. Gives a paid Discord role to members with an active Stripe, Whop or Zapier/Make subscription and removes it when the paid period ends.\n\nPosts Shopify order alerts without customer contact details. Includes 57 offline tests.",
+    tech: ["Node.js", "discord.js", "node:sqlite"],
+    image: "https://placehold.co/600x338/111219/ffffff?text=Discord+Membership+Bot",
+    role: "Lập trình viên",
+    roleEn: "Developer",
+    client: "Dự án mã nguồn mở",
+    clientEn: "Open-source project",
+    year: "2026",
+    yearRole: "2026 • Node.js & Discord",
+    link: "https://github.com/Tthanh2k6/discord-membership-bot",
+  },
+  {
+    id: "demo-nail-salon-booking-agent",
+    category: "AI • AGENTPLACE • DEMO",
+    shortName: "AI ĐẶT LỊCH NAIL",
+    shortNameEn: "AI NAIL BOOKING DEMO",
+    title: "AI đặt lịch cho tiệm nail mẫu (Agentplace)",
+    titleEn: "AI booking agent for a demo nail salon (Agentplace)",
+    desc: "Tư vấn dịch vụ và giá, gợi ý ba giờ trống, tóm tắt trước khi xác nhận, trả lời được tiếng Việt. Tiệm mẫu, lịch hẹn không có thật.",
+    descEn: "Recommends services and prices, offers three open times, and summarizes before confirmation. Demo salon; bookings are not real.",
+    detail: "Agent trên Agentplace trả lời bằng tiếng Việt, đề xuất dịch vụ kèm giá và ba khung giờ còn trống. Hiển thị tóm tắt trước khi xác nhận và chỉ báo giá đã được niêm yết.\n\nĐây là cơ sở kinh doanh mẫu; các lịch đặt không có thật.",
+    detailEn: "An Agentplace agent that recommends a service with its price, and offers three open times. Shows a summary before confirming, only quotes listed prices, and answers in Vietnamese when the customer writes in Vietnamese.\n\nThis is a demo business; bookings are not real.",
+    tech: ["Agentplace"],
+    image: "https://placehold.co/600x338/111219/ffffff?text=Nail+Salon+Booking+Demo",
+    role: "Người xây dựng agent",
+    roleEn: "Agent builder",
+    client: "Tiệm nail mẫu — lịch hẹn không có thật",
+    clientEn: "Demo nail salon — bookings are not real",
+    year: "2026",
+    yearRole: "2026 • Agentplace",
+    link: undefined as string | undefined,
+    demo: "https://nsit6vgim8oi.run.agentplace.io",
+    demoLabel: "Thử bản demo",
+    demoLabelEn: "Try the demo",
+  },
+  {
+    id: "offline-fuel-receipt-ocr",
+    category: "PYTHON • PADDLEOCR • EXCEL",
+    shortName: "OCR HOÁ ĐƠN XĂNG DẦU",
+    shortNameEn: "OFFLINE FUEL RECEIPT OCR",
+    title: "OCR hoá đơn xăng dầu sang Excel, chạy offline",
+    titleEn: "Offline fuel receipt OCR to Excel",
+    desc: "Đọc ảnh hoá đơn xăng dầu Việt Nam vào Excel, đánh dấu dòng lệch tiền. Đã thử trên 6 hoá đơn tổng hợp.",
+    descEn: "Reads Vietnamese fuel receipt photos into Excel and flags mismatched totals. Tested on 6 synthetic receipts.",
+    detail: "Công cụ Python dùng PaddleOCR chạy offline để đọc ảnh hoá đơn xăng dầu tiếng Việt và xuất sang Excel. Đánh dấu các dòng mà số lít nhân đơn giá không khớp với tổng tiền.\n\nĐã kiểm thử trên 6 hoá đơn tổng hợp, không phải bộ hoá đơn thực tế.",
+    detailEn: "An offline Python tool using PaddleOCR to read Vietnamese fuel receipt photos into Excel. Flags rows where liters × unit price does not match the total.\n\nTested on 6 synthetic receipts, not a real-world receipt dataset.",
+    tech: ["Python", "PaddleOCR"],
+    image: "https://placehold.co/600x338/111219/ffffff?text=Offline+Fuel+Receipt+OCR",
+    role: "Lập trình viên",
+    roleEn: "Developer",
+    client: "Dự án thử nghiệm — hoá đơn tổng hợp",
+    clientEn: "Experimental project — synthetic receipts",
+    year: "2026",
+    yearRole: "2026 • Python & PaddleOCR",
+    link: undefined as string | undefined,
+    demo: "https://dev.to/tthanh2k6/offline-vietnamese-fuel-receipt-ocr-in-python-and-the-apostrophe-bug-that-zeroed-three-fields-8n5",
+    demoLabel: "Đọc bài viết kỹ thuật",
+    demoLabelEn: "Read the write-up",
+  },
+];
+
+export const projects = [...recentProjects, ...privateProjects, ...publicProjects];
 
 // Nhãn cho nút chính của card, tuỳ theo dự án có công khai mã nguồn hay không:
 //  - không có link  -> dự án private, nút trơ (không bấm được)
@@ -991,10 +1063,10 @@ export function ProjectSection() {
         // Bỏ các repo fork và repo trùng với dự án đã có trong danh sách private (vd GhiChu trùng NoteMod)
         const HIDDEN_REPOS = new Set(["GhiChu", "Tthanh2k6", "apify-thefork-restaurant-scraper"]);
         const mapped = repos
-          .filter((r: any) => !r.fork && !HIDDEN_REPOS.has(r.name))
+          .filter((r: any) => !r.fork && !HIDDEN_REPOS.has(r.name) && !recentProjects.some((p) => p.id === r.name))
           .map(mapRepoToProject);
-        // Luôn giữ dự án private (tool) ở đầu — GitHub API không trả về chúng
-        if (mapped.length > 0) applyList([...privateProjects, ...mapped]);
+        // Giữ ba dự án mới ở đầu, kể cả khi GitHub cập nhật danh sách.
+        if (mapped.length > 0) applyList([...recentProjects, ...privateProjects, ...mapped]);
       })
       .catch((err) => console.error("Không lấy được repo GitHub:", err));
 

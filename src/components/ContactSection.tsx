@@ -43,9 +43,23 @@ export const DEFAULT_SOCIALS = [
     large: false,
   },
   {
+    type: "Contra",
+    url: "https://contra.com/trung_thanh_tran_7tjnw73h",
+    handle: "contra.com/trung_thanh_tran_7tjnw73h",
+    visible: true,
+    large: false,
+  },
+  {
     type: "Upwork",
     url: "https://www.upwork.com/freelancers/trungthanhtrandev",
     handle: "1 Completed Job (5★) · UTC+7",
+    visible: true,
+    large: false,
+  },
+  {
+    type: "LinkedIn",
+    url: "https://www.linkedin.com/in/trungthanhtran-dev/",
+    handle: "linkedin.com/in/trungthanhtran-dev",
     visible: true,
     large: false,
   },
@@ -1065,7 +1079,7 @@ export function ContactSection() {
                 Ho Chi Minh City (UTC+7)
               </span>
               <span className="meta-pill">
-                {t("Nhận việc qua Upwork hoặc email", "Work via Upwork or email")}
+                {t("Nhận việc qua Contra, Upwork hoặc email", "Work via Contra, Upwork or email")}
               </span>
             </div>
           </div>
@@ -1259,8 +1273,8 @@ export function ContactSection() {
               <li>
                 <strong>{t("Thanh toán:", "Payment:")}</strong>{" "}
                 {t(
-                  "Qua hợp đồng Upwork, hoặc thoả thuận trực tiếp qua email.",
-                  "Through an Upwork contract, or agreed directly by email."
+                  "Qua hợp đồng Contra, Upwork, hoặc thoả thuận trực tiếp qua email.",
+                  "Through a Contra or Upwork contract, or agreed directly by email."
                 )}
               </li>
               <li>

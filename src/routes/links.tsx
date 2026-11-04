@@ -101,6 +101,19 @@ const LINKS: LinkItem[] = [
     ),
   },
   {
+    href: "https://contra.com/trung_thanh_tran_7tjnw73h",
+    vi: "Contra",
+    en: "Contra",
+    handle: "contra.com/trung_thanh_tran_7tjnw73h",
+    external: true,
+    icon: (
+      <svg {...svgProps}>
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+      </svg>
+    ),
+  },
+  {
     href: "https://www.upwork.com/freelancers/trungthanhtrandev",
     vi: "Upwork",
     en: "Upwork",
@@ -110,6 +123,19 @@ const LINKS: LinkItem[] = [
       <svg {...svgProps}>
         <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
         <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+      </svg>
+    ),
+  },
+  {
+    href: "https://www.linkedin.com/in/trungthanhtran-dev/",
+    vi: "LinkedIn",
+    en: "LinkedIn",
+    handle: "linkedin.com/in/trungthanhtran-dev",
+    external: true,
+    icon: (
+      <svg {...svgProps}>
+        <rect x="3" y="3" width="18" height="18" rx="2" />
+        <path d="M7 10v7M7 7h.01M11 17v-7M11 13a3 3 0 0 1 6 0v4" />
       </svg>
     ),
   },
@@ -135,7 +161,7 @@ export const Route = createFileRoute("/links")({
       {
         name: "description",
         content:
-          "All links of Trung Thanh Tran, Python & automation developer: portfolio, offline tools for Vietnamese small businesses, Apify Actors, GitHub, dev.to, Upwork and email.",
+          "All links of Trung Thanh Tran, Python & automation developer: portfolio, offline tools for Vietnamese small businesses, Apify Actors, GitHub, dev.to, Contra, Upwork, LinkedIn and email.",
       },
       { property: "og:title", content: "Links — Trung Thanh Tran" },
       {
