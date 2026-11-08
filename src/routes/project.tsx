@@ -11,13 +11,13 @@ export const Route = createFileRoute("/project")({
       {
         name: "description",
         content:
-          "Projects by Trung Thanh Tran — a loyalty app on Google Play built at Madalena, 5 public Apify Store Actors, offline tools for Vietnamese small businesses, scrapers, and AI workflow code.",
+          "Projects by Trung Thanh Tran — open-source supabase-rls-check (Python CLI & MCP), race-safe salon booking on Cloudflare Workers + D1 + Stripe, Madalena loyalty app on the App Store & Google Play, Electron admin, and 5 public Apify Store Actors.",
       },
       { property: "og:title", content: "Projects & Case Studies — Trung Thanh Tran" },
       {
         property: "og:description",
         content:
-          "A shipped React Native app, 5 public Apify Actors, async Python scrapers, and open-source tools.",
+          "supabase-rls-check (Python/SQL/MCP) • Cloudflare Workers + D1 race-safe booking • App Store & Google Play loyalty app • 5 public Apify Actors.",
       },
       SEO.ogUrl,
     ],

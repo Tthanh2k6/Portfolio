@@ -87,7 +87,8 @@ const SCHEMA_ORG_GRAPH = JSON.stringify({
       "@id": `${SITE_URL}/#person`,
       name: "Trung Thanh Tran",
       alternateName: ["Trần Trung Thành", "Tthanh2k6", "thanh81646"],
-      jobTitle: "AI Automation, Web Scraping & Full-Stack Software Engineer",
+      jobTitle:
+        "Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
       url: `${SITE_URL}/`,
       image: OG_IMAGE_URL,
       address: {
@@ -96,18 +97,20 @@ const SCHEMA_ORG_GRAPH = JSON.stringify({
         addressCountry: "VN",
       },
       knowsAbout: [
-        "Python Asyncio & Anti-Bot Web Scraping",
-        "Playwright Browser Automation",
-        "Hidden JSON & GraphQL API Extraction",
-        "n8n & Make.com Workflow Automation",
-        "OpenAI & Anthropic Structured Outputs",
-        "Hybrid RAG (BM25 + Vector RRF)",
+        "Postgres Row Level Security (RLS) & Policy Review",
+        "SECURITY DEFINER, Grant Checks & JWT Auth",
+        "HMAC & Stripe Webhook Verification",
+        "Cloudflare Workers & D1",
+        "React 19, TypeScript, React Native (Expo) & Electron",
+        "Python Asyncio & Playwright Browser Automation",
+        "Claude Code, Codex CLI, Gemini CLI & MCP Servers",
+        "n8n, Make & Structured LLM Outputs",
         "FastAPI, PHP & PostgreSQL / Supabase",
-        "React 19, TypeScript & React Native (Expo)",
-        "Google Apps Script & Chrome Extensions (MV3)",
       ],
       sameAs: [
         "https://github.com/Tthanh2k6",
+        "https://www.linkedin.com/in/trungthanhtran-dev/",
+        "https://contra.com/trung_thanh_tran_7tjnw73h",
         "https://apify.com/thanh81646",
         "https://dev.to/tthanh2k6",
         "https://www.upwork.com/freelancers/trungthanhtrandev",
@@ -182,18 +185,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       {
         title:
-          "Trung Thanh Tran (Trần Trung Thành) — AI Automation, Web Scraping & Full-Stack Engineer",
+          "Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
       },
       {
         name: "description",
         content:
-          "IT student and developer at Madalena (React Native loyalty app on Google Play + PHP API). Builds async Python & Playwright scrapers, OpenAI/n8n/FastAPI workflows, and 5 public Apify Store Actors.",
+          "Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation. Full-time at Madalena since March 2026 (loyalty app on the App Store & Google Play, PHP API & e-commerce, Electron admin); creator of supabase-rls-check.",
       },
       { name: "author", content: "Trung Thanh Tran" },
       {
         name: "keywords",
         content:
-          "Trung Thanh Tran, Trần Trung Thành, Python Web Scraping, Playwright Automation, n8n Workflow Engineer, FastAPI, OpenAI Structured Outputs, Apify Actor Developer, B2B Lead Enrichment, Full-Stack TypeScript React Native",
+          "Trung Thanh Tran, Trần Trung Thành, Full-stack Developer, Supabase RLS, Postgres Security, supabase-rls-check, React Native Expo, Cloudflare Workers D1, Python Automation, Playwright, MCP Server, FastAPI, PHP",
       },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "Trung Thanh Tran — Engineering Portfolio" },
@@ -201,12 +204,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:title",
         content:
-          "Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer",
+          "Trung Thanh Tran — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
       },
       {
         property: "og:description",
         content:
-          "Python & Playwright scrapers • n8n / OpenAI workflows • React Native app on Google Play • 5 public Apify Actors.",
+          "Supabase/Postgres RLS security (supabase-rls-check) • React Native app on App Store & Google Play • Cloudflare Workers + D1 • Python automation.",
       },
       { property: "og:image", content: OG_IMAGE_URL },
       { property: "og:image:secure_url", content: OG_IMAGE_URL },
@@ -216,19 +219,20 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:image:alt",
         content:
-          "Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer (Async Python, Playwright, n8n, FastAPI)",
+          "Trung Thanh Tran — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
       },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Tthanh2k6" },
       { name: "twitter:creator", content: "@Tthanh2k6" },
       {
         name: "twitter:title",
-        content: "Trung Thanh Tran — AI Automation, Web Scraping & Full-Stack Engineer",
+        content:
+          "Trung Thanh Tran — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
       },
       {
         name: "twitter:description",
         content:
-          "Async Python/Playwright scrapers • Strict-schema OpenAI, n8n & FastAPI workflows • 5 public Apify Actors.",
+          "Supabase/Postgres security (supabase-rls-check) • React Native apps on App Store & Google Play • Python automation.",
       },
       { name: "twitter:image", content: OG_IMAGE_URL },
     ],
@@ -281,7 +285,7 @@ function RootShell({ children }: { children: ReactNode }) {
 // Cách xử lý: tăng CONTENT_VERSION mỗi khi đổi các mặc định trong code. Trình duyệt thấy
 // phiên bản lệch sẽ xoá đúng các khoá nội dung cũ để rơi về mặc định mới.
 // Các khoá KHÔNG liên quan tới nội dung mặc định (vd sổ lưu bút khách viết) được giữ nguyên.
-const CONTENT_VERSION = "2026-11-04-1";
+const CONTENT_VERSION = "2026-11-08-1";
 const VERSIONED_CONTENT_KEYS = [
   "project_list",
   "skills_keycaps",

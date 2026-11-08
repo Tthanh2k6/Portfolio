@@ -1,22 +1,31 @@
-# Trung Thanh Tran (Trần Trung Thành) — Python & Automation Developer
+# Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation
 
-> IT student at Industrial University of Ho Chi Minh City (IUH) and, since May 2026, developer at Madalena (a cosmetics retailer), where he built the customer loyalty app (React Native / Expo, on Google Play) and its PHP REST API on his own. Takes part-time, fixed-scope freelance work (UTC+7): web data extraction, APIs, n8n / Make workflows and small AI features.
+> Full-stack developer who ships production apps and checks them for the security mistakes that fast-built apps often have. Full-time Software Developer at Madalena (a cosmetics retailer in Ho Chi Minh City) since March 2026, where he built and shipped the customer loyalty app to both the App Store and Google Play (React Native / Expo, 152 commits since May 2026), its PHP REST API, an Electron desktop admin, and most features of the company's PHP e-commerce website on a vendor's base framework. B.S. in Computer Science student at Industrial University of Ho Chi Minh City (IUH, 2024 – 2029 expected). Open to remote contract work (~20–30 hours/week, async, written updates, UTC+7).
 
 ## Facts
-- Location: Ho Chi Minh City, Vietnam (UTC+7). Works part-time; contact through Upwork or email.
-- Upwork: 1 completed job (Oct 2026, 5.0 review).
-- Apify Store: 5 public Actors, pay per event from $2.00 per 1,000 results. They are new: a few runs each and no paying users yet. A sixth listing (TheFork) is a demo that returns fixed sample data and is being retired.
-- RapidAPI: 2 freemium API listings that call the Apify Actors. Gumroad: 2 products (one free, one $14.99).
-- Skills: Python (httpx, Playwright, FastAPI, Pydantic), TypeScript / JavaScript, PHP, SQL, React, React Native (Expo), n8n, Make, Google Apps Script, OpenAI and Claude APIs.
+- Location: Ho Chi Minh City, Vietnam (UTC+7). Open to remote contract work (~20–30 hours/week, async, written updates); contact via Contra, Upwork, or email (`ttrungthanh90@gmail.com`).
+- In-house role: Full-time Software Developer at Madalena since March 2026 (loyalty mobile app on App Store & Google Play, PHP REST API with JWT auth & brute-force protection, Electron desktop admin with roles & audit log, PHP e-commerce storefront synced with the app).
+- Upwork: 1 completed contract (Oct 2026, 5.0/5 rating — job-posting bot architecture across Telegram, LinkedIn & X with fake-post filtering).
+- Apify Store: 5 public Actors (early, a few runs each, no paying users yet).
+- Skills:
+  - Security: Postgres Row Level Security (RLS) & policy review, `SECURITY DEFINER` & grant checks, HMAC/Stripe webhook verification, JWT auth, brute-force protection.
+  - AI agents & LLMs: Claude Code, Codex CLI, Gemini CLI daily (parallel agents from written specs, custom skills, custom MCP servers, browser automation, results verified by tests); OpenAI/Claude APIs with structured outputs.
+  - Programming & Backend/Apps: Python (httpx, Playwright, FastAPI, Pydantic), TypeScript / JavaScript, PHP, SQL, Kotlin, PostgreSQL/Supabase, Cloudflare Workers + D1, Node.js, React, React Native (Expo), Electron, n8n, Make, Google Apps Script.
 
 ## Links
 - Portfolio: https://trungthanhtran.vercel.app
 - CV: https://trungthanhtran.vercel.app/cv
 - All links on one page: https://trungthanhtran.vercel.app/links
 - GitHub: https://github.com/Tthanh2k6
+- LinkedIn: https://www.linkedin.com/in/trungthanhtran-dev/
+- Contra: https://contra.com/trung_thanh_tran_7tjnw73h
 - Apify Store: https://apify.com/thanh81646
 - Upwork: https://www.upwork.com/freelancers/trungthanhtrandev
 - dev.to: https://dev.to/tthanh2k6
+
+## Featured Security & Edge Projects
+- [supabase-rls-check](https://github.com/Tthanh2k6/supabase-rls-check) (MIT, Python, SQL, MCP): Python CLI + MCP server mode running read-only Postgres catalog metadata queries to flag 8 misconfiguration types (RLS turned off, `true` policies, `anon` policies on sensitive tables, `SECURITY DEFINER` functions callable with the `anon` key, definer functions missing `search_path`, views bypassing RLS, public Storage buckets, extensions in `public` schema), plus opt-in `GET`/`HEAD`-only probe behind a consent flag and frontend `service_role` JWT leak check. CI verified on PostgreSQL 15 with seeded issues (all found, zero false positives), 52 tests; outputs HTML/MD reports + `ROLLBACK`-wrapped `fix.sql`. Fixed-scope review on Contra: https://contra.com/s/sFUXWqOZ-supabase-security-check-for-lovable-bolt-and-v0-apps
+- Race-safe salon booking (Cloudflare Workers + D1 + Stripe — demo build, no public live link yet): 5 simultaneous booking requests for the same technician & slot result in 1 accepted and 4 rejected; overlap checks across mixed service lengths; Stripe Checkout deposits with webhook signatures verified in Web Crypto; per-technician iCal feeds; password-protected admin page; English/Vietnamese UI; 11 tests. Setup package on Contra: https://contra.com/s/rM2mMN2k-nail-salon-booking-page-with-deposits-no-monthly-fee
 
 ## Apify Actors (each README lists its limits)
 - [B2B Website Email, Phone, Social Links & Tech Stack Scraper](https://apify.com/thanh81646/apify-b2b-lead-and-contact-enricher): fetches a company homepage and up to two contact/about pages without a browser; returns emails as found on the page (not verified), phone-like strings, social links, JSON-LD types and a tech-stack guess.
@@ -26,6 +35,7 @@
 - [Multi-Stop Route, Geocoder & 2-Opt Distance Optimizer](https://apify.com/thanh81646/apify-multi-stop-route-and-distance-optimizer): OpenStreetMap Nominatim geocoding, nearest-neighbour + 2-opt ordering on straight-line distance times a road factor, and a Google Maps link. Addresses that cannot be geocoded get a synthetic point marked `fallback_centroid`.
 
 ## Other public work
+- [discord-membership-bot](https://github.com/Tthanh2k6/discord-membership-bot): Node.js + `node:sqlite` bot managing paid Discord roles via signed Stripe/Whop webhooks (57 offline tests).
 - [vn-sme-offline-tools](https://tthanh2k6.github.io/vn-sme-offline-tools/): nine single-file browser tools for Vietnamese small businesses (VietQR cashier, receivables, quotes, fleet fuel checks, e-invoice XML...). Built as templates with placeholder sample data.
 - Open-source integration and toolkit repositories on GitHub with pytest suites; not yet used by paying clients.
 - Personal projects: QR attendance PWA (Google Apps Script), Android apps in Kotlin, Chrome extensions (Manifest V3), an AI game lab (TypeScript).

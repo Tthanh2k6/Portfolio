@@ -14,22 +14,22 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Trung Thanh Tran (Trần Trung Thành) — AI Automation, Web Scraping & Full-Stack Engineer",
+          "Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
       },
       {
         name: "description",
         content:
-          "Portfolio of Trung Thanh Tran (Trần Trung Thành) — Python & Playwright Web Scraping, n8n / OpenAI Workflow Automation, FastAPI, Full-Stack Web & Mobile Developer.",
+          "Portfolio of Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer: Supabase/Postgres security, React Native apps (App Store & Google Play), Cloudflare Workers + D1, and Python automation.",
       },
       {
         property: "og:title",
         content:
-          "Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer",
+          "Trung Thanh Tran — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
       },
       {
         property: "og:description",
         content:
-          "Python & Playwright scrapers • n8n / OpenAI workflows • React Native app on Google Play • 5 public Apify Actors.",
+          "Supabase/Postgres RLS security (supabase-rls-check) • React Native loyalty app on the App Store & Google Play • Cloudflare Workers + D1 • Python automation & 5 public Apify Actors.",
       },
       SEO.ogUrl,
     ],
@@ -47,11 +47,11 @@ export const Route = createFileRoute("/")({
 });
 
 const DEFAULT_HERO_TAGS = [
-  "PYTHON & PLAYWRIGHT",
-  "AI / N8N AUTOMATION",
-  "APIFY & REST APIS",
-  "FASTAPI & SUPABASE",
-  "REACT & MOBILE",
+  "SUPABASE / POSTGRES SECURITY",
+  "REACT NATIVE (IOS & ANDROID)",
+  "PYTHON AUTOMATION",
+  "CLOUDFLARE WORKERS & D1",
+  "AI AGENTS & MCP",
 ];
 
 function Index() {
@@ -74,8 +74,8 @@ function Index() {
   const line1 =
     customLine1 ||
     (lang === "en"
-      ? "Shipping resilient web scrapers, AI workflow automations & full-stack products."
-      : "Xây dựng hệ thống cào dữ liệu, tự động hoá AI & sản phẩm full-stack vận hành thật.");
+      ? "Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation."
+      : "Lập trình viên full-stack — bảo mật Supabase/Postgres, app React Native, tự động hoá Python.");
   const line2 = customLine2 || (lang === "en" ? "Trung Thanh Tran" : "Trần Trung Thành");
 
   return (

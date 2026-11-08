@@ -46,6 +46,19 @@ const LINKS: LinkItem[] = [
     ),
   },
   {
+    href: "https://github.com/Tthanh2k6/supabase-rls-check",
+    vi: "supabase-rls-check (CLI Python & MCP kiểm tra RLS)",
+    en: "supabase-rls-check (Postgres RLS scanner & MCP)",
+    handle: "github.com/Tthanh2k6/supabase-rls-check",
+    external: true,
+    icon: (
+      <svg {...svgProps}>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+        <polyline points="9 12 11 14 15 10" />
+      </svg>
+    ),
+  },
+  {
     href: "https://tthanh2k6.github.io/vn-sme-offline-tools/",
     vi: "Bộ công cụ cho hộ kinh doanh (demo trực tiếp)",
     en: "Offline tools for Vietnamese small businesses (live demo)",
@@ -161,13 +174,13 @@ export const Route = createFileRoute("/links")({
       {
         name: "description",
         content:
-          "All links of Trung Thanh Tran, Python & automation developer: portfolio, offline tools for Vietnamese small businesses, Apify Actors, GitHub, dev.to, Contra, Upwork, LinkedIn and email.",
+          "All links of Trung Thanh Tran — Full-stack Developer (Supabase/Postgres security, React Native apps, Python automation): portfolio, supabase-rls-check, Contra, Upwork, GitHub, Apify Store, dev.to, LinkedIn and email.",
       },
       { property: "og:title", content: "Links — Trung Thanh Tran" },
       {
         property: "og:description",
         content:
-          "Python & automation developer · web scraping, Apify Actors, n8n/Make, Google Sheets.",
+          "Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation.",
       },
       SEO.ogUrl,
     ],
@@ -431,8 +444,8 @@ function LinksPage() {
           <h1 className="links-name">Trung Thanh Tran</h1>
           <p className="links-tagline">
             {t(
-              "Lập trình viên Python & tự động hoá · cào dữ liệu web, Apify Actors, n8n/Make, Google Sheets",
-              "Python & automation developer · web scraping, Apify Actors, n8n/Make, Google Sheets",
+              "Lập trình viên full-stack — bảo mật Supabase/Postgres, app React Native, tự động hoá Python",
+              "Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
             )}
           </p>
         </header>

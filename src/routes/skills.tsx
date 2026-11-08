@@ -11,13 +11,13 @@ export const Route = createFileRoute("/skills")({
       {
         name: "description",
         content:
-          "Interactive 3D tech stack of Trung Thanh Tran — Python, Playwright, FastAPI, n8n, OpenAI Structured Outputs, TypeScript, React, React Native, PHP & PostgreSQL/Supabase.",
+          "Interactive 3D tech stack of Trung Thanh Tran — Supabase/Postgres RLS security, AI Agents & MCP (Claude Code, Codex CLI, Gemini CLI), React Native (App Store & Google Play), Cloudflare Workers + D1, Python, Playwright, FastAPI, TypeScript & PHP.",
       },
       { property: "og:title", content: "Skills & Tech Stack — Trung Thanh Tran" },
       {
         property: "og:description",
         content:
-          "Tools I use across Python, web scraping, AI workflow automation, backend APIs, web & mobile.",
+          "28 tools across Postgres/Supabase security, AI agents & MCP, React Native (iOS & Android), Cloudflare Workers + D1, and Python automation.",
       },
       SEO.ogUrl,
     ],

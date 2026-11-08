@@ -53,6 +53,29 @@ const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
 //            vào cách giải quyết vấn đề, quyết định kỹ thuật và kết quả đạt được.
 //   tech    — danh sách công nghệ, hiện dạng chip trong modal.
 const REPO_META: Record<string, any> = {
+  "supabase-rls-check": {
+    category: "PYTHON • POSTGRES RLS • MCP",
+    shortName: "SUPABASE-RLS-CHECK",
+    shortNameEn: "SUPABASE-RLS-CHECK",
+    title: "supabase-rls-check | Kiểm tra bảo mật RLS Postgres & MCP",
+    titleEn: "supabase-rls-check | Postgres RLS & Catalog Security Scanner",
+    desc: "CLI Python & MCP server đọc catalog Postgres, phát hiện 8 nhóm lỗi phân quyền RLS, xuất báo cáo HTML/MD kèm fix.sql (52 test).",
+    descEn:
+      "Open-source Python CLI & MCP server flagging 8 Postgres/Supabase RLS misconfiguration types, with HTML/MD reports & ROLLBACK fix.sql.",
+    detailEn:
+      "An MIT-licensed open-source Python CLI and MCP server that runs read-only Postgres catalog metadata queries to flag 8 misconfiguration types common in fast-built Supabase apps:\n\n• Tables with RLS turned off, permissive `true` policies, `anon` policies on sensitive tables, `SECURITY DEFINER` functions callable with the `anon` key, definer functions missing `search_path`, views bypassing RLS, public Storage buckets, and extensions installed in the `public` schema.\n\n• Includes an opt-in `GET`/`HEAD`-only live probe gated behind an explicit consent flag, plus a scanner for leaked `service_role` JWTs in frontend code.\n\n• CI verifies every check against PostgreSQL 15 seeded with intentional misconfigurations (all found, zero false positives), backed by 52 automated tests. Outputs HTML/Markdown reports and a `ROLLBACK`-wrapped `fix.sql` script for safe review.\n\n• Also offered as a fixed-scope security review on Contra: https://contra.com/s/sFUXWqOZ-supabase-security-check-for-lovable-bolt-and-v0-apps",
+    detail:
+      "Công cụ mã nguồn mở (MIT) gồm CLI Python và chế độ MCP server, truy vấn chỉ-đọc metadata catalog của Postgres để phát hiện 8 nhóm lỗi cấu hình bảo mật thường gặp trên ứng dụng Supabase:\n\n• Bảng tắt Row Level Security (RLS), policy dùng điều kiện `true`, policy cho phép `anon` trên bảng nhạy cảm, hàm `SECURITY DEFINER` gọi được bằng `anon` key, hàm definer thiếu `search_path`, view bỏ qua RLS, bucket Storage để public, và extension cài trong schema `public`.\n\n• Có thêm chế độ probe chỉ gửi `GET`/`HEAD` khi bật cờ đồng ý rõ ràng, cùng bộ quét tìm khoá JWT `service_role` bị lộ ở mã nguồn frontend.\n\n• CI chạy trên PostgreSQL 15 với các lỗi cài sẵn (bắt đủ toàn bộ, không báo nhầm), gồm 52 bài test. Xuất báo cáo HTML/MD và tệp `fix.sql` bọc `ROLLBACK` để kiểm tra an toàn trước khi chạy.\n\n• Cũng bán thành gói review cố định trên Contra: https://contra.com/s/sFUXWqOZ-supabase-security-check-for-lovable-bolt-and-v0-apps",
+    tech: ["Python", "PostgreSQL", "Supabase RLS", "SQL", "MCP Server", "pytest", "GitHub Actions"],
+    role: "Tác giả mã nguồn mở",
+    roleEn: "Open-source Author",
+    client: "Mã nguồn mở (MIT) & gói review Contra",
+    clientEn: "Open-source (MIT) & Contra security review",
+    yearRole: "2026 • Python, SQL, MCP",
+    demo: "https://contra.com/s/sFUXWqOZ-supabase-security-check-for-lovable-bolt-and-v0-apps",
+    demoLabel: "Xem gói review trên Contra",
+    demoLabelEn: "Fixed-Scope Review on Contra",
+  },
   "ai-automation-and-rag-toolkit": {
     category: "OPENAI • HYBRID RAG • FASTAPI",
     shortName: "AI & RAG TOOLKIT",
@@ -441,51 +464,51 @@ const REPO_META: Record<string, any> = {
 const privateProjects = [
   {
     id: "MadalenaApp",
-    category: "REACT NATIVE • PHP API",
+    category: "REACT NATIVE • PHP API • ELECTRON",
     shortName: "MADALENA APP",
-    title: "Madalena | App khách hàng thân thiết",
-    titleEn: "Madalena | Customer Loyalty App",
-    desc: "App tích điểm cho khách của một chuỗi mỹ phẩm, đã có trên Google Play. Tôi làm một mình từ app tới máy chủ.",
+    title: "Madalena | App khách hàng thân thiết & Electron Admin",
+    titleEn: "Madalena | Loyalty App (App Store & Google Play) & Admin",
+    desc: "App khách hàng thân thiết đã lên cả App Store và Google Play (152 commit từ 05/2026), kèm REST API PHP và app quản trị Electron.",
     descEn:
-      "A loyalty app for a cosmetics chain, live on Google Play. I built all of it alone, app through server.",
+      "Customer loyalty app shipped to both the App Store and Google Play (152 commits since May 2026), plus its PHP API and Electron admin.",
     detailEn:
-      "A customer loyalty app for the Madalena cosmetics chain, published on Google Play and serving real customers. I built the whole thing on my own: the mobile app, the REST API, the database, and the operational tooling for staff.\n\nFor customers: membership tiers assigned automatically from accumulated spend (GOLDEN → VIP → VIP PRO → VIP PROMAX → VIP BLACK), a QR code staff scan at the counter to identify them, a screen to look up their spend year by year, and a benefits table per tier.\n\nFlash sales run inside a window an admin schedules ahead of time. The remaining time is computed by the server rather than trusting the device clock, so changing your phone's time gets you nowhere. Customers are reminded three times — when it's scheduled, 15 minutes before, and at the opening bell — each with an idempotency flag so nobody gets a duplicate.\n\nBirthday campaigns go out automatically on a cron job. On security: JWT HS256 authentication, admin rights resolved from the database instead of trusting the token, and login brute-force protection keyed on IP plus phone number.\n\nThe backend originally ran on Node/Express hosted on Render with an Aiven database. I ported all of it to PHP so it shares infrastructure with the company website, removing the recurring server bill entirely. It ships with Windows tooling to import monthly revenue and export the customer list without needing SSH access to the host.",
+      "Built and shipped as the sole developer while working full-time at cosmetics retailer Madalena (since March 2026): the customer loyalty app on both the App Store and Google Play (React Native, Expo, TypeScript — 152 commits since May 2026), its PHP REST API, database, and an Electron desktop admin for staff.\n\nPoints & loyalty program: automatic membership tiers (GOLDEN → VIP → VIP PRO → VIP PROMAX → VIP BLACK), purchase and livestream points, promotional campaigns, bulk point grants from Excel, rewards with gift stock tracking, QR check-in at the counter, and flash sales with per-customer limits and server-authoritative countdowns.\n\nElectron desktop admin for staff: role-based access control and an audit log, customer search, scheduled push notifications, flash-sale scheduling, monthly revenue import with duplicate-period checks, and operational reports.\n\nBackend & security: migrated the backend from Node.js on Render to PHP hosting shared with the company storefront; implemented JWT HS256 authentication, DB-resolved roles, login brute-force protection, scheduled cron jobs, and automated backups.",
     detail:
-      "Ứng dụng khách hàng thân thiết cho chuỗi mỹ phẩm Madalena, đã phát hành trên Google Play và đang phục vụ khách thật. Tôi làm một mình toàn bộ: app di động, REST API, cơ sở dữ liệu và các công cụ vận hành cho quản trị viên.\n\nPhía khách hàng: hạng thành viên tự xếp theo doanh thu tích luỹ (GOLDEN → VIP → VIP PRO → VIP PROMAX → VIP BLACK), mã QR định danh để nhân viên quét tại quầy, màn hình tra cứu chi tiêu từng năm, và bảng đặc quyền riêng cho mỗi hạng.\n\nFlash sale chạy theo khung giờ do quản trị viên hẹn trước. Thời gian còn lại do máy chủ tính chứ không tin đồng hồ máy khách, nên đổi giờ điện thoại cũng không lách được. Khách được nhắc ba lần: lúc đặt lịch, trước 15 phút và đúng giờ mở — mỗi mốc có cờ chống gửi trùng.\n\nChiến dịch chúc mừng sinh nhật gửi tự động bằng cron. Bảo mật: xác thực JWT HS256, quyền admin kiểm tra thẳng từ cơ sở dữ liệu thay vì tin token, và chặn brute-force đăng nhập theo cặp IP + số điện thoại.\n\nBackend ban đầu chạy Node/Express trên Render kèm database Aiven. Tôi tự port toàn bộ sang PHP để gộp chung hạ tầng với website công ty, cắt hẳn chi phí máy chủ hằng tháng. Kèm theo là bộ công cụ chạy từ máy Windows để nhập doanh thu hàng tháng và xuất danh sách khách, không cần SSH vào hosting.",
-    tech: ["React Native", "Expo", "TypeScript", "PHP", "MySQL", "JWT", "Expo Push"],
+      "Xây dựng và phát hành một mình toàn bộ khi làm full-time tại chuỗi mỹ phẩm Madalena (từ 03/2026): ứng dụng khách hàng thân thiết trên cả App Store và Google Play (React Native, Expo, TypeScript — 152 commit từ 05/2026), REST API PHP, cơ sở dữ liệu và ứng dụng quản trị Electron trên desktop cho nhân viên.\n\nChương trình tích điểm & khách hàng thân thiết: tự động xếp hạng thành viên (GOLDEN → VIP → VIP PRO → VIP PROMAX → VIP BLACK), tích điểm mua hàng và livestream, chiến dịch khuyến mãi, cộng điểm hàng loạt từ Excel, đổi quà có quản lý tồn kho quà tặng, quét mã QR tại quầy và flash sale giới hạn theo từng khách với đồng hồ đếm ngược tính từ máy chủ.\n\nỨng dụng Electron desktop admin cho nhân viên: phân quyền theo vai trò kèm nhật ký kiểm toán (audit log), tra cứu khách hàng, hẹn giờ gửi thông báo đẩy, lên lịch flash sale, nhập doanh thu có kiểm tra trùng kỳ và xuất báo cáo.\n\nHạ tầng & bảo mật: chuyển đổi backend từ Node.js trên Render sang PHP hosting dùng chung với website công ty; trang bị xác thực JWT HS256, đối chiếu quyền trực tiếp từ DB, chống brute-force đăng nhập, tác vụ hẹn giờ và sao lưu tự động (automated backups).",
+    tech: ["React Native", "Expo", "TypeScript", "PHP", "MySQL", "Electron", "JWT"],
     image: projectImage("MadalenaApp"),
-    role: "Full-stack Developer (một mình toàn bộ)",
-    roleEn: "Full-stack Developer (sole developer)",
-    client: "Madalena — dự án công ty",
-    clientEn: "Madalena — company project",
+    role: "Full-stack Developer (full-time, làm một mình)",
+    roleEn: "Full-stack Developer (full-time, sole developer)",
+    client: "Madalena — dự án công ty (full-time từ 03/2026)",
+    clientEn: "Madalena — full-time since Mar 2026",
     year: "2026",
-    yearRole: "2026 • React Native & PHP",
+    yearRole: "2026 • React Native, PHP, Electron",
     link: undefined as string | undefined,
     demo: "https://play.google.com/store/apps/details?id=com.madalena.app",
-    demoLabel: "Tải trên Google Play",
-    demoLabelEn: "Get it on Google Play",
+    demoLabel: "Google Play (đã có cả App Store)",
+    demoLabelEn: "Google Play (also on App Store)",
   },
   {
     id: "MadalenaWeb",
-    category: "PHP • WEB",
+    category: "PHP • E-COMMERCE • APP SYNC",
     shortName: "MADALENA WEB",
-    title: "Madalena | Website thương mại điện tử",
-    titleEn: "Madalena | E-commerce Website",
-    desc: "Website bán mỹ phẩm đang hoạt động thật. Tôi làm phần mã giảm giá, quản lý đơn hàng và tìm kiếm sản phẩm.",
+    title: "Madalena | Website thương mại điện tử PHP",
+    titleEn: "Madalena | PHP E-commerce Storefront",
+    desc: "Phát triển hầu hết tính năng web bán hàng PHP của công ty từ 03/2026 trên bộ khung có sẵn và kết nối đồng bộ với app di động.",
     descEn:
-      "A live cosmetics storefront. I built the discount-code system, order management and product search.",
+      "Built most features of Madalena's live PHP e-commerce site since March 2026 on a vendor's base framework and linked it to the mobile app.",
     detailEn:
-      "Madalena's online store — live, with real orders coming in daily. I joined when the site already existed, as a feature developer on the team. I did not build the whole site, but the areas below are core business functionality I owned.\n\nThe discount-code system, built from scratch: admins create codes, attach them to specific products, cap how many times each phone number may redeem one, and track storage and usage statistics per code. On the customer side, codes are entered at checkout.\n\nOrder management: customers review past orders and cancel their own, and payment details are remembered for next time. The shop gets an email on every new order, and all orders sync automatically into Google Sheets along with address, discount code and amount discounted — so the sales team follows everything in the spreadsheet they already live in, instead of logging into an admin panel.\n\nAlso: product search, an \"out of stock\" state that automatically pushes sold-out items to the bottom of listings, free-shipping tags, and a rework of how discounts are entered — the admin now types the final post-discount price and the system derives the percentage, rather than making them do the arithmetic.\n\nThe stack is the web agency's own PHP codebase (AltoRouter, PDO, cart, SEO, file caching, custom admin), so every feature meant reading and understanding existing code before adding to it.",
+      "Madalena's live online cosmetics store, processing daily customer orders. Working full-time since March 2026, I built most of the storefront's features on top of an external vendor's base PHP framework (AltoRouter, PDO, file caching, custom admin) and connected the website directly to the mobile loyalty app.\n\nStorefront-to-app integration: product catalog sync, live sold counts, and tiered free-shipping rules shared between web and mobile.\n\nCheckout, promotions & order ops: built the discount-code engine from scratch (product-scoped codes, per-phone redemption caps, usage analytics, and final-price input that auto-computes discount percentages), customer order history and self-service cancellation, email notifications, automatic order sync to Google Sheets for the sales team, product search, and automatic out-of-stock demotion.",
     detail:
-      "Website bán hàng của Madalena, chạy thật và có khách đặt hàng mỗi ngày. Tôi vào dự án khi site đã tồn tại, với vai trò lập trình viên tính năng trong đội — không phải người dựng toàn bộ site, nhưng phần tôi làm là những mảng nghiệp vụ chính bên dưới.\n\nHệ thống mã giảm giá làm từ đầu: quản trị viên tạo mã, gắn mã vào từng sản phẩm, giới hạn số lần mỗi số điện thoại được dùng, lưu trữ và thống kê mức tiêu thụ của từng mã. Phía khách thì nhập mã ngay lúc thanh toán.\n\nQuản lý đơn hàng: khách xem lại đơn cũ và tự huỷ đơn, thông tin thanh toán được nhớ cho lần mua sau. Phía cửa hàng nhận email báo mỗi khi có đơn mới, và toàn bộ đơn tự đồng bộ sang Google Sheets kèm địa chỉ, mã giảm giá, mức giảm — nhờ vậy bộ phận bán hàng theo dõi ngay trên bảng tính quen thuộc thay vì phải vào trang quản trị.\n\nNgoài ra: tìm kiếm sản phẩm, trạng thái \"Tạm hết hàng\" kèm việc tự đẩy hàng hết xuống cuối danh sách, nhãn miễn phí vận chuyển, và sửa lại cách nhập giảm giá — quản trị viên nhập thẳng giá sau giảm rồi hệ thống tự tính ra phần trăm chiết khấu, thay vì phải tự nhẩm.\n\nNền tảng là PHP tự viết của đơn vị làm web (AltoRouter, PDO, giỏ hàng, SEO, cache file, trang quản trị riêng) nên phải đọc hiểu codebase có sẵn rồi mới chèn tính năng vào.",
+      "Website thương mại điện tử đang vận hành hằng ngày của Madalena. Làm việc full-time từ 03/2026, tôi phát triển hầu hết tính năng nghiệp vụ của site dựa trên bộ khung PHP nền tảng của đơn vị bên ngoài (AltoRouter, PDO, cache file, trang quản trị riêng) và kết nối trực tiếp website với ứng dụng khách hàng thân thiết.\n\nLiên kết dữ liệu giữa Web và App: đồng bộ danh mục sản phẩm, số lượng đã bán (sold counts) và các bậc miễn phí vận chuyển (freeship tiers).\n\nThanh toán, khuyến mãi & vận hành đơn hàng: xây dựng mới hệ thống mã giảm giá (gắn theo sản phẩm, giới hạn lượt dùng theo số điện thoại, thống kê lượt sử dụng, nhập thẳng giá sau giảm để máy tự tính phần trăm), lịch sử & tự huỷ đơn cho khách, gửi email báo đơn mới, tự động đồng bộ đơn sang Google Sheets cho đội bán hàng, tìm kiếm sản phẩm và tự đẩy hàng tạm hết xuống cuối danh sách.",
     tech: ["PHP", "MySQL", "JavaScript", "Google Sheets API", "AltoRouter", "PDO"],
     image: projectImage("MadalenaWeb"),
-    role: "PHP Developer (phát triển tính năng)",
-    roleEn: "PHP Developer (feature work)",
-    client: "Madalena — dự án công ty",
-    clientEn: "Madalena — company project",
+    role: "Full-stack / PHP Developer (full-time)",
+    roleEn: "Full-stack / PHP Developer (full-time)",
+    client: "Madalena — dự án công ty (full-time từ 03/2026)",
+    clientEn: "Madalena — full-time since Mar 2026",
     year: "2026",
-    yearRole: "2026 • PHP",
+    yearRole: "2026 • PHP & MySQL",
     // Mã nguồn là tài sản của công ty nên không công khai, nhưng site chạy thật thì
     // công khai → chỉ đưa link bản chạy thật, giữ nhãn "private" cho phần mã nguồn.
     link: undefined as string | undefined,
@@ -705,10 +728,42 @@ const publicProjects = [
   buildStaticPublic("H-c-AI-ML"),
 ];
 
-// Danh sách hiển thị mặc định: dự án không công khai mã nguồn đứng trước, rồi tới repo công khai.
-// Được export để trang /admin dùng CHUNG một nguồn — trước đây admin tự chép lại danh sách
-// riêng nên bị lệch, và mỗi lần bấm lưu là ghi đè danh sách thiếu dự án xuống localStorage.
+// Danh sách hiển thị mặc định: 2 dự án định vị mới đứng ĐẦU danh sách, tiếp đến các dự án gần đây,
+// dự án doanh nghiệp/private và các repo công khai.
+// Được export để trang /admin dùng CHUNG một nguồn — tránh lệch dữ liệu khi lưu localStorage.
 const recentProjects = [
+  {
+    id: "supabase-rls-check",
+    ...REPO_META["supabase-rls-check"],
+    image: projectImage("supabase-rls-check"),
+    year: "2026",
+    link: "https://github.com/Tthanh2k6/supabase-rls-check",
+  },
+  {
+    id: "race-safe-salon-booking",
+    category: "CLOUDFLARE WORKERS • D1 • STRIPE",
+    shortName: "SALON BOOKING (D1)",
+    shortNameEn: "RACE-SAFE BOOKING",
+    title: "Đặt lịch tiệm nail chống trùng ca (Cloudflare Workers + D1 + Stripe)",
+    titleEn: "Race-safe salon booking (Cloudflare Workers + D1 + Stripe)",
+    desc: "Trang đặt lịch có đặt cọc Stripe: 5 yêu cầu cùng lúc cho cùng thợ và giờ chỉ nhận 1, chặn 4; chống chồng ca khác thời lượng.",
+    descEn:
+      "Deposit booking build on Workers + D1: 5 simultaneous requests for the same technician & slot accept 1 and reject 4; 11 tests.",
+    detail:
+      "Bản dựng demo hệ thống đặt lịch tiệm nail chạy trên Cloudflare Workers, cơ sở dữ liệu D1 và Stripe (bản demo, chưa mở link công khai):\n\n• Chống trùng lịch khi đặt đồng thời (race-safe): gửi 5 yêu cầu đặt cùng lúc cho cùng một thợ và khung giờ → hệ thống nhận đúng 1 yêu cầu và chặn 4 yêu cầu còn lại; kiểm tra chống chồng ca khi các dịch vụ có thời lượng dài ngắn khác nhau.\n\n• Đặt cọc qua Stripe Checkout, xác minh chữ ký webhook bằng Web Crypto ngay trên Workers.\n\n• Cấp lịch iCal riêng cho từng thợ, trang quản trị có mật khẩu bảo vệ, giao diện song ngữ Anh/Việt và 11 bài test.\n\n• Gói cài đặt trên Contra: https://contra.com/s/rM2mMN2k-nail-salon-booking-page-with-deposits-no-monthly-fee",
+    detailEn:
+      "A demo salon booking system built on Cloudflare Workers, D1 SQLite, and Stripe (demo build, no public live link yet):\n\n• Race-safe concurrency: 5 simultaneous booking requests for the same technician and time result in 1 accepted and 4 rejected, with overlap checks across mixed service lengths.\n\n• Deposits processed via Stripe Checkout with webhook signatures verified in Web Crypto.\n\n• Per-technician iCal feeds, password-protected admin page, English/Vietnamese UI, and 11 tests.\n\n• Setup package on Contra: https://contra.com/s/rM2mMN2k-nail-salon-booking-page-with-deposits-no-monthly-fee",
+    tech: ["Cloudflare Workers", "Cloudflare D1", "TypeScript", "Stripe Checkout", "Web Crypto", "iCal"],
+    image: "https://placehold.co/600x338/111219/ffffff?text=Race-Safe+Salon+Booking",
+    role: "Full-stack Developer",
+    roleEn: "Full-stack Developer",
+    client: "Bản demo & gói cài đặt trên Contra",
+    clientEn: "Demo build & Contra setup package",
+    year: "2026",
+    yearRole: "2026 • Cloudflare Workers, D1",
+    link: undefined as string | undefined,
+    demo: undefined as string | undefined,
+  },
   {
     id: "discord-membership-bot",
     category: "NODE.JS • DISCORD • SUBSCRIPTIONS",
@@ -888,9 +943,32 @@ function ProjectDetailModal({
           ) : null}
 
           <div className="pd-text">
-            {paragraphs.map((p, i) => (
-              <p key={i}>{p}</p>
-            ))}
+            {paragraphs.map((p, i) => {
+              const parts = p.split(/(https?:\/\/[^\s]+)/g);
+              return (
+                <p key={i}>
+                  {parts.map((part, j) =>
+                    /^https?:\/\//.test(part) ? (
+                      <a
+                        key={j}
+                        href={part}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          color: "#93c5fd",
+                          textDecoration: "underline",
+                          wordBreak: "break-all",
+                        }}
+                      >
+                        {part}
+                      </a>
+                    ) : (
+                      part
+                    )
+                  )}
+                </p>
+              );
+            })}
           </div>
 
           <div className="pd-actions">
@@ -960,12 +1038,11 @@ function mapRepoToProject(repo: any) {
 }
 
 // Vị trí xuất phát của băng chuyền, dùng ĐÚNG công thức của applyList bên dưới:
-// giữa bộ nhân bản thứ 3 — cũng là "vùng an toàn" [2*N .. 3*N-1] mà goToProject dùng,
-// nên hai đầu luôn còn bộ đệm để cuộn. Phải suy ra từ số dự án chứ không ghim số:
-// trước đây ghim cứng 12, nên mỗi lần thêm/bớt dự án là điểm xuất phát lại trôi đi chỗ khác
-// (với 14 dự án thì 12 rơi hẳn vào bộ nhân bản đầu tiên, hết đệm bên trái).
-// Khớp với applyList để khung hình đầu tiên không bị nhảy một nhịp khi effect chạy.
-const START_INDEX = projects.length * 2 + Math.floor(projects.length / 2);
+// đầu bộ nhân bản thứ 3 (`2 * N`, ứng với dự án đầu tiên `projects[0]`) — nằm trọn trong
+// "vùng an toàn" [2*N .. 3*N-1] mà goToProject dùng, nên hai đầu luôn còn 2 bộ đệm đầy đủ để cuộn,
+// đồng thời mở trang ra thấy ngay dự án mới nhất ở đầu danh sách và không bị nhảy sang dự án khác
+// khi fetch GitHub API hoàn tất.
+const START_INDEX = projects.length * 2;
 
 export function ProjectSection() {
   const { t, pick } = useLang();
@@ -1031,8 +1108,8 @@ export function ProjectSection() {
       );
       setProjectList(list);
       const N = list.length;
-      // Bộ thứ 3 (floor(5/2)=2 -> 2*N) + phần tử giữa của bộ (floor(N/2)), để dư bộ ở cả 2 phía.
-      const initialIndex = Math.floor(5 / 2) * N + Math.floor(N / 2);
+      // Đầu bộ thứ 3 (floor(5/2)=2 -> 2*N, tức dự án đầu tiên `list[0]`), để dư 2 bộ đệm ở cả 2 phía.
+      const initialIndex = Math.floor(5 / 2) * N;
       setActiveIndex(initialIndex);
       activeIndexRef.current = initialIndex;
     };

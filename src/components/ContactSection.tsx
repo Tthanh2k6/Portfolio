@@ -116,12 +116,12 @@ const ENGAGEMENT_TIERS: EngagementTier[] = [
     descVi:
       "Dành cho đội muốn xem tôi làm việc thế nào trên một phần nhỏ, rõ ràng của hệ thống trước khi hợp tác lâu dài.",
     deliverablesEn: [
-      "A small FastAPI / Node / Supabase service or an LLM strict-JSON step",
-      "Written progress updates (I work part-time, UTC+7)",
+      "A small FastAPI / Node / Supabase service, RLS review, or an LLM strict-JSON step",
+      "Async, written updates, UTC+7, about 20–30 hours/week for contract work",
     ],
     deliverablesVi: [
-      "Phân hệ FastAPI / Next.js / Supabase / MCP hoặc LLM chuẩn JSON Schema",
-      "Cập nhật tiến độ bằng văn bản (tôi làm bán thời gian, UTC+7)",
+      "Phân hệ FastAPI / Node / Supabase, rà soát RLS hoặc LLM chuẩn JSON Schema",
+      "Làm việc bất đồng bộ (async), cập nhật bằng văn bản, UTC+7, khoảng 20–30 giờ/tuần cho việc hợp đồng",
     ],
     prefillEn:
       "Scope: 1-Week Paid Trial ($300-$450 Fixed)\nCompany / Team: \nSprint deliverable we want to ship this week: ",
@@ -1017,8 +1017,8 @@ export function ContactSection() {
         </h1>
         <p className="contact-subtitle">
           {t(
-            "Nhận phát triển trọn gói hệ thống cào dữ liệu chống chặn, tự động hóa n8n/FastAPI và hợp đồng kỹ sư B2B từ xa.",
-            "Scoped B2B data extraction pipelines, deterministic workflow automations, and paid engineering trial sprints."
+            "Nhận kiểm tra bảo mật Supabase/Postgres, phát triển app React Native / Cloudflare Workers + D1 và tự động hoá Python (~20–30 giờ/tuần cho việc hợp đồng, async, UTC+7).",
+            "Supabase/Postgres security reviews, React Native & Cloudflare Workers + D1 builds, and Python automation (~20–30 hours/week for contract work, async, written updates, UTC+7)."
           )}
         </p>
       </div>
@@ -1079,7 +1079,13 @@ export function ContactSection() {
                 Ho Chi Minh City (UTC+7)
               </span>
               <span className="meta-pill">
-                {t("Nhận việc qua Contra, Upwork hoặc email", "Work via Contra, Upwork or email")}
+                {t(
+                  "Async · cập nhật văn bản · ~20–30 giờ/tuần",
+                  "Async · written updates · ~20–30 hrs/wk"
+                )}
+              </span>
+              <span className="meta-pill">
+                {t("Qua Contra, Upwork hoặc email", "Via Contra, Upwork or email")}
               </span>
             </div>
           </div>

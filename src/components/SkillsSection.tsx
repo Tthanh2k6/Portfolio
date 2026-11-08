@@ -14,35 +14,36 @@ const navItems = [
 
 // Kích thước bàn phím kỹ năng. Để chung một chỗ vì lưới, ô phím và logo phải khớp nhau.
 //
-// 24 phím xếp 6 CỘT × 4 HÀNG. Trước đây là 4 cột × 6 hàng: bàn phím cao ~614px, cộng
-// với phần chữ phía trên thì tràn khỏi màn hình -> trang bị cuộn, mà hoạt ảnh trôi nổi
-// (keyboard-float) lại đẩy chiều cao lên xuống liên tục nên thanh cuộn hiện/ẩn theo,
-// gây giật. Xếp ngang lại còn ~346px nên vừa một màn hình, hết giật.
-// Đổi số cột thì nhớ giữ tổng số phím chia hết cho số cột để hàng cuối không lẻ.
-const KEYS_PER_ROW = 6;
-const KEY_SIZE     = 62;   // cạnh một phím (px)
-const KEY_GAP      = 14;   // khoảng cách giữa các phím (px)
-const KEY_ICON     = 36;   // cạnh logo trong phím (px)
+// 28 phím xếp 7 CỘT × 4 HÀNG (giữ đúng 4 hàng để chiều cao ~300px vừa gọn 1 màn hình,
+// không làm hoạt ảnh keyboard-float sinh thanh cuộn dọc gây giật; chia hết cho 7 nên hàng cuối đầy đặn).
+const KEYS_PER_ROW = 7;
+const KEY_SIZE     = 55;   // cạnh một phím (px)
+const KEY_GAP      = 12;   // khoảng cách giữa các phím (px)
+const KEY_ICON     = 32;   // cạnh logo trong phím (px)
 
-// Bàn phím kỹ năng — 24 phím.
+// Bàn phím kỹ năng — 28 phím (4 phím nhóm mới Security / AI Agents / MCP / Cloudflare + 24 phím cũ).
 //
-// Thứ tự = thứ tự hiển thị: kỹ năng có sản phẩm thật chứng minh đứng trước.
+// Thứ tự = thứ tự hiển thị: nhóm định vị chính & kỹ năng có sản phẩm thật chứng minh đứng trước.
 // Phím nào chưa có logo trong public/IMG thì để img: "" — keycap sẽ tự hiện chữ
 // (xem span.keycap-label-fallback ở phần render). Có logo thì thả file vào
 // public/IMG/ rồi điền đường dẫn vào đây.
 export const KEYCAPS = [
-  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "Asyncio, httpx, xử lý dữ liệu, 5 Actor công khai trên Apify Store và các pipeline AI.", descEn: "Asyncio, httpx, ETL pipelines, 5 public Apify Store Actors, and ML/AI experiments." },
-  { bg: "#2d8a4e", shadow: "#1b5730", color: "#fff",    img: "",                         title: "Playwright",      desc: "Tự động hoá trình duyệt vượt anti-bot, điều khiển Chrome qua CDP và dò Hidden JSON API.", descEn: "Anti-bot browser automation, Chrome CDP remote debugging, and hidden JSON API sniffing." },
+  { bg: "#dc2626", shadow: "#991b1b", color: "#fff",    img: "",                         title: "Security",        desc: "Postgres RLS & rà soát policy, kiểm tra SECURITY DEFINER/grant, xác minh webhook HMAC/Stripe, JWT auth, chống brute-force.", descEn: "Postgres Row Level Security & policy review, SECURITY DEFINER/grant checks, HMAC/Stripe webhook verification, JWT auth, brute-force protection." },
+  { bg: "#d97706", shadow: "#92400e", color: "#fff",    img: "",                         title: "AI Agents",       desc: "Claude Code, Codex CLI, Gemini CLI hằng ngày: chạy nhiều agent song song theo đặc tả, tự viết skill & MCP server, browser automation, kiểm bằng test.", descEn: "Claude Code, Codex CLI, Gemini CLI daily: parallel agents from written specs, custom skills, custom MCP servers, browser automation, checked by tests." },
+  { bg: "#0ea5e9", shadow: "#0369a1", color: "#fff",    img: "",                         title: "MCP",             desc: "Tự làm MCP server (gồm chế độ MCP của supabase-rls-check) để nối kiểm tra catalog Postgres & công cụ riêng vào agent CLI.", descEn: "Built custom Model Context Protocol servers (including supabase-rls-check MCP mode) wiring Postgres catalog audits into coding agents." },
+  { bg: "#f38020", shadow: "#a8520b", color: "#fff",    img: "",                         title: "Cloudflare",      desc: "Cloudflare Workers + D1 SQLite: đặt lịch chống trùng ca (5 yêu cầu đồng thời nhận 1 chặn 4), xác minh webhook Stripe bằng Web Crypto.", descEn: "Cloudflare Workers + D1 SQLite: race-safe booking concurrency, Stripe webhook verification in Web Crypto, and edge APIs." },
+  { bg: "#3875a6", shadow: "#204969", color: "#fff",    img: "/IMG/Python.png",          title: "Python",          desc: "CLI bảo mật supabase-rls-check (52 test), asyncio, httpx, pipeline ETL và 5 Actor công khai trên Apify Store.", descEn: "Open-source supabase-rls-check CLI (52 tests), asyncio, httpx, ETL pipelines, and 5 public Apify Store Actors." },
+  { bg: "#2d8a4e", shadow: "#1b5730", color: "#fff",    img: "",                         title: "Playwright",      desc: "Tự động hoá trình duyệt, kiểm thử luồng giao diện cho AI agent, điều khiển Chrome qua CDP và gọi JSON API ẩn.", descEn: "Browser automation, UI verification for AI agents, Chrome CDP debugging, and JSON API-first extraction." },
   { bg: "#009688", shadow: "#00635a", color: "#fff",    img: "",                         title: "FastAPI",         desc: "Backend bất đồng bộ, cổng OpenAI Structured Outputs, kiểm soát backpressure & license server.", descEn: "Async microservices, OpenAI Structured Output routers, and credit licence servers." },
   { bg: "#ea4b71", shadow: "#9c2b47", color: "#fff",    img: "",                         title: "n8n",             desc: "Điều phối luồng tự động hoá doanh nghiệp, webhook Make.com/Clay, đồng bộ CRM & hàng đợi thử lại.", descEn: "Workflow orchestration, Make.com/Clay webhooks, CRM sync, and idempotent retry queues." },
-  { bg: "#10a37f", shadow: "#0a664f", color: "#fff",    img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "OpenAI API", desc: "Ép AI trả JSON đúng schema (Structured Outputs), Hybrid RAG (BM25 + Vector RRF) và gọi hàm.", descEn: "Strict JSON Schema Structured Outputs, Hybrid BM25 + Vector RRF RAG, and tool calling." },
-  { bg: "#3178c6", shadow: "#1f4e80", color: "#fff",    img: "",                         title: "TypeScript",      desc: "Ứng dụng full-stack kiểm kiểu chặt: app di động Expo Router, portfolio TanStack Start SSR và AI Lab.", descEn: "Strictly typed full-stack apps: the Google Play Expo app, this TanStack Start SSR site, and AI Arena." },
-  { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png",           title: "React",           desc: "Giao diện web tương tác cao với React 19, custom hooks, SSR, TailwindCSS và CMS phía client.", descEn: "Interactive interfaces built with React 19, custom hooks, SSR, TailwindCSS, and client-side CMS." },
-  { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "Ứng dụng React Native chạy thật trên Google Play (com.madalena.app): thông báo đẩy, quét QR, cập nhật OTA.", descEn: "Shipped React Native loyalty app on Google Play (com.madalena.app): push, QR scan, and OTA updates." },
-  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "REST API cho app đang chạy thật (JWT HS256, phân quyền DB, chống brute-force, cron) và tính năng web TMĐT.", descEn: "REST API behind a live app (JWT HS256, DB-backed RBAC, brute-force protection, cron) and storefront features." },
-  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Thiết kế lược đồ cơ sở dữ liệu vận hành thật, migration, truy vấn hạng doanh thu và tối ưu chỉ mục.", descEn: "Relational schemas in live use, migrations, cumulative revenue tier queries, and index tuning." },
-  { bg: "#24b47e", shadow: "#15734f", color: "#fff",    img: "",                         title: "Supabase",        desc: "PostgreSQL phân quyền từng dòng (RLS), kiểm thử bảo mật tự động bằng pgTAP và đồng bộ đám mây.", descEn: "PostgreSQL Row-Level Security (RLS), automated pgTAP policy auditing, and real-time cloud sync." },
-  { bg: "#ffeb3b", shadow: "#bfa500", color: "#000",    img: "/IMG/JavaScript.png",      title: "JavaScript",      desc: "Chrome Extension Manifest V3 tự động hoá Angular/PrimeNG, Google Apps Script và ứng dụng PWA.", descEn: "Manifest V3 Chrome Extensions automating Angular/PrimeNG portals, Google Apps Script, and PWAs." },
+  { bg: "#10a37f", shadow: "#0a664f", color: "#fff",    img: "/IMG/chatgpt-logo-png_seeklogo-465219-Photoroom.png", title: "OpenAI API", desc: "Ép AI trả JSON đúng schema (Structured Outputs), dùng Codex CLI hằng ngày, Hybrid RAG và gọi hàm.", descEn: "Strict JSON Schema Structured Outputs, Codex CLI daily workflows, Hybrid BM25 + Vector RRF RAG, and tool calling." },
+  { bg: "#3178c6", shadow: "#1f4e80", color: "#fff",    img: "",                         title: "TypeScript",      desc: "Ứng dụng full-stack kiểm kiểu chặt: app Expo trên App Store & Google Play, Cloudflare Workers + D1 và TanStack Start SSR.", descEn: "Strictly typed full-stack apps: the App Store & Google Play Expo app, Cloudflare Workers + D1, and this TanStack Start SSR site." },
+  { bg: "#2c3e50", shadow: "#1a252f", color: "#00d8ff", img: "/IMG/React.png",           title: "React",           desc: "Giao diện web & Electron desktop admin (phân quyền, audit log) với React 19, custom hooks, SSR và TailwindCSS.", descEn: "Web UIs and Electron desktop admin (roles, audit log) built with React 19, custom hooks, SSR, and TailwindCSS." },
+  { bg: "#eef1f7", shadow: "#b9c0cf", color: "#1a1b23", img: "/IMG/unnamed-Photoroom.png", title: "Expo",          desc: "App khách hàng thân thiết React Native trên cả App Store và Google Play (152 commit từ 05/2026): push, quét QR, OTA.", descEn: "Shipped React Native loyalty app on both the App Store and Google Play (152 commits since May 2026): push, QR check-in, OTA." },
+  { bg: "#777bb4", shadow: "#4f5b93", color: "#fff",    img: "/IMG/PHP-logo.png",        title: "PHP",             desc: "REST API cho app chạy thật (JWT, phân quyền, chống brute-force, backup tự động) và hầu hết tính năng web TMĐT công ty.", descEn: "REST API behind a live app (JWT auth, roles, brute-force protection, automated backups) and most features of the company's e-commerce site." },
+  { bg: "#00a8cc", shadow: "#006b82", color: "#fff",    img: "/IMG/MySQL-Photoroom.png", title: "MySQL",           desc: "Thiết kế lược đồ cơ sở dữ liệu vận hành thật, migration, đối soát kỳ doanh thu trùng và tối ưu chỉ mục.", descEn: "Relational schemas in live use, migrations, duplicate-period revenue checks, and index tuning." },
+  { bg: "#24b47e", shadow: "#15734f", color: "#fff",    img: "",                         title: "Supabase",        desc: "PostgreSQL RLS, tác giả supabase-rls-check (phát hiện 8 nhóm lỗi cấu hình catalog, CI PG15, 52 test) và pgTAP.", descEn: "PostgreSQL RLS, author of supabase-rls-check (flags 8 catalog misconfiguration types, PG15 CI, 52 tests), and pgTAP." },
+  { bg: "#ffeb3b", shadow: "#bfa500", color: "#000",    img: "/IMG/JavaScript.png",      title: "JavaScript",      desc: "Chrome Extension Manifest V3 tự động hoá Angular/PrimeNG, Electron desktop app, Google Apps Script và PWA.", descEn: "Manifest V3 Chrome Extensions automating Angular/PrimeNG portals, Electron apps, Google Apps Script, and PWAs." },
   { bg: "#7f52ff", shadow: "#5433b0", color: "#fff",    img: "",                         title: "Kotlin",          desc: "Ngôn ngữ chính cho Android native: app widget Lịch IUH, GiuThongBao và mã tiêm smali cho Ghi chú Mod.", descEn: "Primary native Android language: Lich IUH widgets, push keep-alive utility, and smali-injected mods." },
   { bg: "#2aa06a", shadow: "#186a45", color: "#fff",    img: "",                         title: "Android",         desc: "Jetpack Glance widget, WorkManager đồng bộ nền, ghim chứng chỉ TLS tuỳ chỉnh và dịch ngược APK.", descEn: "Jetpack Glance widgets, WorkManager background sync, custom TLS cert pinning, and APK reverse engineering." },
   { bg: "#43b02a", shadow: "#2b731b", color: "#fff",    img: "",                         title: "Selenium",        desc: "Tự động đăng nhập trang quản trị, cập nhật giá hàng loạt và đối soát đơn hàng xuất ra Excel.", descEn: "Automated admin logins, validated batch price updates, and order reconciliation exports to Excel." },
@@ -50,25 +51,33 @@ export const KEYCAPS = [
   { bg: "#ff6f00", shadow: "#b34e00", color: "#fff",    img: "",                         title: "TensorFlow",      desc: "Mạng nơ-ron CNN/MLP (99.14% MNIST), chỉnh tư thế tập bằng MediaPipe Pose và phân loại ảnh trên trình duyệt.", descEn: "CNN/MLP pipelines (99.14% MNIST), real-time MediaPipe Pose coaching, and in-browser TF.js classifiers." },
   { bg: "#007acc", shadow: "#005187", color: "#fff",    img: "/IMG/C++.png",             title: "C / C++",         desc: "Nhân dẫn đường C++17 chính xác từng bit, firmware màn hình HUD ESP32 qua BLE và mod Windhawk Windows 11.", descEn: "Bit-exact C++17 turn-by-turn navigation core, ESP32 BLE HUD firmware, and native Windows 11 C++ mods." },
   { bg: "#e76f51", shadow: "#a73e25", color: "#fff",    img: "/IMG/Java.jpg",            title: "Java",            desc: "Nền tảng lập trình hướng đối tượng trên JVM và kiến trúc hệ thống Android.", descEn: "Object-oriented backend foundations on the JVM and Android platform internals." },
-  { bg: "#f4511e", shadow: "#b02600", color: "#fff",    img: "/IMG/Git.png",             title: "Git",             desc: "Quản lý lịch sử phiên bản chặt chẽ, phân nhánh rõ ràng trên các codebase đa nền tảng.", descEn: "Clean version history, disciplined branching, and multi-repository release workflows." },
-  { bg: "#33353f", shadow: "#1a1b21", color: "#fff",    img: "/IMG/GitHub.png",          title: "GitHub",          desc: "20 kho mã nguồn mở công khai kèm tài liệu kiến trúc, kiểm thử tự động và benchmark tái lập được.", descEn: "20 public engineering repositories with architecture docs, automated tests, and reproducible benchmarks." },
-  { bg: "#00a2ff", shadow: "#006bb3", color: "#fff",    img: "/IMG/Visual_Studio_Code.png", title: "VS Code",      desc: "Môi trường phát triển tốc độ cao tối ưu cho Python, TypeScript, Docker và gỡ lỗi từ xa.", descEn: "High-velocity development cockpit tuned for async Python, TypeScript, and remote debugging." },
-  { bg: "#e08260", shadow: "#a64f31", color: "#fff",    img: "/IMG/Claude.png",          title: "Claude",          desc: "Tích hợp Anthropic Structured Outputs và đối tác suy luận sâu khi kiểm toán kiến trúc & refactor.", descEn: "Anthropic Structured Outputs integration and deep architectural reasoning for complex refactors." },
-  { bg: "#4c75f2", shadow: "#2143b3", color: "#fff",    img: "/IMG/Gemini.png",          title: "Gemini",          desc: "Tích hợp Gemini API đọc ảnh hoá đơn (OCR) và trợ lý ngôn ngữ tự nhiên trong ứng dụng di động thực tế.", descEn: "Multimodal Gemini API integration for receipt OCR and natural-language assistants in mobile apps." },
+  { bg: "#f4511e", shadow: "#b02600", color: "#fff",    img: "/IMG/Git.png",             title: "Git",             desc: "Quản lý lịch sử phiên bản chặt chẽ (152 commit trên app Madalena từ 05/2026) và phân nhánh đa nền tảng.", descEn: "Clean version history (152 commits on the Madalena app since May 2026) and multi-platform release branching." },
+  { bg: "#33353f", shadow: "#1a1b21", color: "#fff",    img: "/IMG/GitHub.png",          title: "GitHub",          desc: "Kho mã nguồn mở công khai (gồm supabase-rls-check MIT) kèm CI PostgreSQL 15, kiểm thử tự động và tài liệu rõ ràng.", descEn: "Public open-source repositories (including MIT supabase-rls-check) with PostgreSQL 15 CI and automated tests." },
+  { bg: "#00a2ff", shadow: "#006bb3", color: "#fff",    img: "/IMG/Visual_Studio_Code.png", title: "VS Code",      desc: "Môi trường phát triển tốc độ cao tối ưu cho Python, TypeScript, Docker và điều phối agent CLI.", descEn: "High-velocity development environment tuned for Python, TypeScript, and parallel CLI agent workflows." },
+  { bg: "#e08260", shadow: "#a64f31", color: "#fff",    img: "/IMG/Claude.png",          title: "Claude",          desc: "Dùng Claude Code hằng ngày: chạy nhiều agent song song theo đặc tả viết sẵn, tự viết skill & MCP server, Structured Outputs.", descEn: "Claude Code daily for spec-driven parallel agents, custom skills & MCP servers, plus Anthropic Structured Outputs." },
+  { bg: "#4c75f2", shadow: "#2143b3", color: "#fff",    img: "/IMG/Gemini.png",          title: "Gemini",          desc: "Dùng Gemini CLI hằng ngày kiểm kết quả bằng test; tích hợp Gemini API đọc ảnh hoá đơn (OCR) trong app di động.", descEn: "Gemini CLI daily in test-verified agent workflows, plus multimodal Gemini API receipt OCR in mobile apps." },
 ] as const;
 
 // Tỉ trọng sử dụng kỹ năng (biểu đồ tròn) — gom theo nhóm sản xuất thực tế, tổng = 100.
 export const CHART_DATA = [
-  { name: "Python & FastAPI",       pct: 26, color: "#60A5FA" },
-  { name: "Scraping & Automation",  pct: 20, color: "#34D399" },
-  { name: "TypeScript & React",     pct: 18, color: "#67E8F9" },
-  { name: "Mobile (Expo / Kotlin)", pct: 14, color: "#A78BFA" },
-  { name: "Backend & Databases",    pct: 12, color: "#818CF8" },
-  { name: "LLM / RAG & ML",         pct: 10, color: "#FB923C" },
+  { name: "Security",               pct: 18, color: "#F87171" },
+  { name: "AI Agents & MCP",        pct: 16, color: "#FBBF24" },
+  { name: "Python & FastAPI",       pct: 18, color: "#60A5FA" },
+  { name: "Backend & Databases",    pct: 14, color: "#818CF8" },
+  { name: "Mobile (Expo / Kotlin)", pct: 12, color: "#A78BFA" },
+  { name: "TypeScript & React",     pct: 10, color: "#67E8F9" },
+  { name: "Scraping & Automation",  pct: 7,  color: "#34D399" },
+  { name: "LLM / RAG & ML",         pct: 5,  color: "#FB923C" },
 ];
 
 // Ánh xạ title của keycap → tên mục trong biểu đồ (hover phím thì lát tương ứng bật ra).
 export const TITLE_TO_CHART: Record<string, string> = {
+  "Security": "Security",
+  "Supabase": "Security",
+  "AI Agents": "AI Agents & MCP",
+  "MCP": "AI Agents & MCP",
+  "Claude": "AI Agents & MCP",
+  "Gemini": "AI Agents & MCP",
   "Python": "Python & FastAPI",
   "FastAPI": "Python & FastAPI",
   "Playwright": "Scraping & Automation",
@@ -81,12 +90,10 @@ export const TITLE_TO_CHART: Record<string, string> = {
   "Expo": "Mobile (Expo / Kotlin)",
   "Kotlin": "Mobile (Expo / Kotlin)",
   "Android": "Mobile (Expo / Kotlin)",
+  "Cloudflare": "Backend & Databases",
   "PHP": "Backend & Databases",
   "MySQL": "Backend & Databases",
-  "Supabase": "Backend & Databases",
   "OpenAI API": "LLM / RAG & ML",
-  "Claude": "LLM / RAG & ML",
-  "Gemini": "LLM / RAG & ML",
   "TensorFlow": "LLM / RAG & ML",
 };
 
@@ -304,16 +311,34 @@ export function SkillsSection() {
   // 'idle' | 'exiting' | 'entering' (nghỉ | đang thoát | đang vào)
   const [phase, setPhase]             = useState<"idle"|"exiting"|"entering">("idle");
 
-  // Các text layout động và mảng dữ liệu từ localStorage
-  const [subText, setSubText] = useState("Used in real projects, still learning every day");
-  const [title1, setTitle1] = useState("Engineering");
-  const [title2, setTitle2] = useState("stack");
-  const [typewriterText, setTypewriterText] = useState(
-    "Used in a Google Play app, 5 Apify Actors & open-source tools"
-  );
-  const [descText, setDescText] = useState(
-    "From async Python scrapers and strict-schema OpenAI/n8n workflows to a shipped React Native app and its PHP backend — hover any keycap to see where I used it."
-  );
+  // Các text layout động và mảng dữ liệu từ localStorage (null = dùng mặc định song ngữ VI/EN)
+  const [customSub, setCustomSub] = useState<string | null>(null);
+  const [customTitle1, setCustomTitle1] = useState<string | null>(null);
+  const [customTitle2, setCustomTitle2] = useState<string | null>(null);
+  const [customTypewriter, setCustomTypewriter] = useState<string | null>(null);
+  const [customDesc, setCustomDesc] = useState<string | null>(null);
+
+  const subText =
+    customSub ||
+    t(
+      "Dùng trong sản phẩm chạy thật — kiểm tra bằng test mỗi ngày",
+      "Used in production apps & security reviews, verified by tests"
+    );
+  const title1 = customTitle1 || t("Hệ kỹ năng", "Engineering");
+  const title2 = customTitle2 || t("thực chiến", "stack");
+  const typewriterText =
+    customTypewriter ||
+    t(
+      "App trên App Store & Google Play • supabase-rls-check • 5 Apify Actor",
+      "App Store & Google Play app • supabase-rls-check • 5 Apify Actors"
+    );
+  const descText =
+    customDesc ||
+    t(
+      "Từ rà soát bảo mật Supabase/Postgres RLS, app React Native (iOS & Android), Cloudflare Workers + D1 đến tự động hoá Python — rê chuột lên từng phím để xem dự án thực tế.",
+      "From Supabase/Postgres RLS security checks, React Native apps (iOS & Android), and Cloudflare Workers + D1 to Python automation — hover any keycap to see where I used it."
+    );
+  const displayInfoDesc = activeKey ? pick(activeKey, "desc") : infoDesc;
   
   // Khởi tạo bằng chính giá trị mặc định (không phải mảng rỗng) để HTML do server dựng
   // đã có sẵn tên kỹ năng — trước đây trang này trả về khung trống, Google và công cụ
@@ -340,26 +365,21 @@ export function SkillsSection() {
   useEffect(() => {
     setMounted(true);
 
-    // Tải cấu hình từ localStorage ở phía client
+    // Tải cấu hình từ localStorage ở phía client (chỉ ghi đè khi người dùng đã lưu qua /admin)
     const storedSub = localStorage.getItem("skills_sub");
-    setSubText(storedSub || "Used in real projects, still learning every day");
+    if (storedSub) setCustomSub(storedSub);
 
     const storedTitle1 = localStorage.getItem("skills_title_1");
-    setTitle1(storedTitle1 || "Engineering");
+    if (storedTitle1) setCustomTitle1(storedTitle1);
 
     const storedTitle2 = localStorage.getItem("skills_title_2");
-    setTitle2(storedTitle2 || "stack");
+    if (storedTitle2) setCustomTitle2(storedTitle2);
 
     const storedTypewriter = localStorage.getItem("skills_typewriter");
-    setTypewriterText(
-      storedTypewriter || "Used in a Google Play app, 5 Apify Actors & open-source tools"
-    );
+    if (storedTypewriter) setCustomTypewriter(storedTypewriter);
 
     const storedDesc = localStorage.getItem("skills_desc");
-    setDescText(
-      storedDesc ||
-        "From async Python scrapers and strict-schema OpenAI/n8n workflows to a shipped React Native app and its PHP backend — hover any keycap to see where I used it."
-    );
+    if (storedDesc) setCustomDesc(storedDesc);
 
     const storedKeycaps = localStorage.getItem("skills_keycaps");
     if (storedKeycaps) {
@@ -406,17 +426,22 @@ export function SkillsSection() {
   // Hiệu ứng đánh máy (typewriter)
   useEffect(() => {
     if (!mounted || !typewriterText) return;
+    setTypedText("");
     let i = 0;
-    // Đệ quy qua setTimeout: mỗi 45ms thêm 1 ký tự cho tới hết chuỗi (tốc độ gõ)
+    let charTimer: ReturnType<typeof setTimeout>;
+    // Đệ quy qua setTimeout: mỗi 38ms thêm 1 ký tự cho tới hết chuỗi (tốc độ gõ)
     const typeNext = () => {
       if (i < typewriterText.length) {
         setTypedText(typewriterText.slice(0, i + 1));
         i++;
-        setTimeout(typeNext, 45);
+        charTimer = setTimeout(typeNext, 38);
       }
     };
-    const timer = setTimeout(typeNext, 1200); // delay 1.2s trước khi bắt đầu gõ (chờ hiệu ứng fade-in)
-    return () => clearTimeout(timer);
+    const timer = setTimeout(typeNext, 700);
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(charTimer);
+    };
   }, [mounted, typewriterText]);
 
   // Nhấn phím ngẫu nhiên khi idle — chỉ kích hoạt sau 2s không có chuyển động chuột ở bất cứ đâu
@@ -545,22 +570,22 @@ export function SkillsSection() {
         {mounted && (
           <div
             style={{
-              position: "absolute", top: "36%", left: "54px",
-              zIndex: 90, maxWidth: "520px",
+              position: "absolute", top: "24%", left: "54px",
+              zIndex: 90, maxWidth: "470px",
               animation: "skillsFadeUp 0.9s ease 0.5s both",
             }}
           >
             <p style={{
               color: "rgba(255,255,255,0.6)", fontSize: "0.8rem", fontWeight: 700,
-              margin: "0 0 12px 0", letterSpacing: "2px", textTransform: "uppercase",
+              margin: "0 0 10px 0", letterSpacing: "2px", textTransform: "uppercase",
               textShadow: "0 2px 8px rgba(0,0,0,0.5)",
             }}>
               {subText}
             </p>
 
             <h2 style={{
-              fontSize: "clamp(2.8rem, 4.5vw, 4rem)", fontWeight: 900,
-              margin: "0 0 22px 0", lineHeight: 1.05, letterSpacing: "-1px",
+              fontSize: "clamp(2.6rem, 4.2vw, 3.8rem)", fontWeight: 900,
+              margin: "0 0 18px 0", lineHeight: 1.05, letterSpacing: "-1px",
             }}>
               <span style={{ color: "#00d8ff", textShadow: "0 0 35px rgba(0,216,255,0.6), 0 4px 15px rgba(0,0,0,0.6)" }}>
                 {title1}
@@ -571,8 +596,8 @@ export function SkillsSection() {
             </h2>
 
             <p style={{
-              color: "rgba(255,255,255,0.85)", fontSize: "1.15rem", fontWeight: 600,
-              lineHeight: 1.6, margin: 0, minHeight: "1.6em",
+              color: "rgba(255,255,255,0.85)", fontSize: "1.05rem", fontWeight: 600,
+              lineHeight: 1.55, margin: 0, minHeight: "1.6em",
               textShadow: "0 2px 12px rgba(0,0,0,0.7)",
             }}>
               {typedText}
@@ -585,13 +610,51 @@ export function SkillsSection() {
             </p>
 
             <p style={{
-              color: "rgba(255,255,255,0.45)", fontSize: "0.88rem", fontWeight: 400,
-              lineHeight: 1.6, marginTop: "18px",
+              color: "rgba(255,255,255,0.52)", fontSize: "0.85rem", fontWeight: 400,
+              lineHeight: 1.55, marginTop: "14px", marginBottom: "14px",
               textShadow: "0 2px 10px rgba(0,0,0,0.5)",
-              animation: "skillsFadeInText 1.2s ease 3s both",
             }}>
               {descText}
             </p>
+
+            {/* Hai nhóm trọng tâm mới (Security & AI agents) hiển thị trực tiếp song ngữ */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+              <div style={{
+                padding: "9px 12px",
+                borderRadius: "10px",
+                background: "rgba(15, 18, 28, 0.72)",
+                border: "1px solid rgba(248, 113, 113, 0.28)",
+                fontSize: "0.76rem",
+                lineHeight: 1.45,
+                color: "rgba(255,255,255,0.78)",
+              }}>
+                <strong style={{ color: "#fca5a5", letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.7rem" }}>
+                  Security ·{" "}
+                </strong>
+                {t(
+                  "Postgres Row Level Security & rà soát policy, kiểm tra SECURITY DEFINER/grant, xác minh webhook HMAC/Stripe, JWT auth, chống brute-force.",
+                  "Postgres Row Level Security & policy review, SECURITY DEFINER/grant checks, HMAC/Stripe webhook verification, JWT auth, brute-force protection."
+                )}
+              </div>
+
+              <div style={{
+                padding: "9px 12px",
+                borderRadius: "10px",
+                background: "rgba(15, 18, 28, 0.72)",
+                border: "1px solid rgba(251, 191, 36, 0.28)",
+                fontSize: "0.76rem",
+                lineHeight: 1.45,
+                color: "rgba(255,255,255,0.78)",
+              }}>
+                <strong style={{ color: "#fcd34d", letterSpacing: "0.04em", textTransform: "uppercase", fontSize: "0.7rem" }}>
+                  AI agents ·{" "}
+                </strong>
+                {t(
+                  "Claude Code, Codex CLI, Gemini CLI hằng ngày: chạy nhiều agent song song theo đặc tả viết sẵn, tự viết skill, tự làm MCP server, tự động hoá trình duyệt, kiểm kết quả agent bằng test.",
+                  "Claude Code, Codex CLI, Gemini CLI daily: parallel agents from written specs, custom skills, custom MCP servers, browser automation, agent output checked by tests."
+                )}
+              </div>
+            </div>
           </div>
         )}
 
@@ -625,8 +688,8 @@ export function SkillsSection() {
             ref={infoPanelRef}
             className={panelClass}
             style={{
-              position: "absolute", top: "40px", left: 0,
-              width: "422px", height: "160px",
+              position: "absolute", top: "26px", left: 0,
+              width: "460px", height: "172px",
               transformStyle: "preserve-3d", transform: "translateZ(60px)",
               pointerEvents: "none",
               visibility: panelVisible ? "visible" : "hidden",
@@ -641,19 +704,19 @@ export function SkillsSection() {
                 depth={12}
                 step={0.8}
                 containerStyle={{
-                  fontSize: "5rem", fontWeight: 900, margin: "0 0 26px 0",
-                  lineHeight: 1.08, textTransform: "uppercase",
+                  fontSize: "4.6rem", fontWeight: 900, margin: "0 0 20px 0",
+                  lineHeight: 1.06, textTransform: "uppercase",
                 }}
                 frontStyle={{ color: "#ffffff", textShadow: "0 2px 8px rgba(0,0,0,0.6)" }}
                 sideColor="#ffffff"
               />
               <ExtrudedText
-                text={infoDesc}
+                text={displayInfoDesc}
                 depth={6}
                 step={0.6}
                 containerStyle={{
-                  fontSize: "1.5rem", fontWeight: 800,
-                  lineHeight: 1.3, letterSpacing: "-0.3px", maxWidth: "430px",
+                  fontSize: "1.32rem", fontWeight: 800,
+                  lineHeight: 1.28, letterSpacing: "-0.3px", maxWidth: "460px",
                 }}
                 frontStyle={{ color: "#f2f2f2", textShadow: "0 1px 4px rgba(0,0,0,0.5)" }}
                 sideColor="#ffffff"
@@ -721,8 +784,8 @@ export function SkillsSection() {
                     position: "absolute",
                     transform: "translateZ(3px)",
                     // Phím nhỏ lại nên chữ dự phòng cũng phải nhỏ theo, không thì
-                    // các tên dài ("TensorFlow", "Playwright") tràn ra ngoài phím.
-                    fontSize: "0.58rem",
+                    // các tên dài ("Cloudflare", "TensorFlow", "Playwright") tràn ra ngoài phím.
+                    fontSize: "0.54rem",
                     fontWeight: 800,
                     textAlign: "center",
                     padding: "0 3px",

@@ -8,11 +8,14 @@ const SEO = pageSeo("/cv");
 export const Route = createFileRoute("/cv")({
   head: () => ({
     meta: [
-      { title: "CV — Trung Thanh Tran | Python & Automation Developer" },
+      {
+        title:
+          "CV — Trung Thanh Tran | Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
+      },
       {
         name: "description",
         content:
-          "CV of Trung Thanh Tran (Trần Trung Thành) — IT student at IUH and developer at Madalena (React Native loyalty app + PHP API). Python, Playwright, n8n, FastAPI, React Native.",
+          "CV of Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer: Supabase/Postgres security, React Native apps (App Store & Google Play), Python automation. Full-time at Madalena since March 2026.",
       },
       SEO.ogUrl,
     ],
@@ -21,13 +24,10 @@ export const Route = createFileRoute("/cv")({
   component: CvPage,
 });
 
-// Thông tin liên hệ hiển thị trên CV. Số điện thoại viết cách nhóm 4-3-3 cho dễ
-// đọc; dán vào máy vẫn gọi được. Cố ý KHÔNG có GPA — chủ ý của tác giả.
-const PHONE = "+84 372 131 320";
-const PHONE_VI = "0372 131 320";
-
+// Thông tin liên hệ công khai trên CV web (không ghi số điện thoại / địa chỉ nhà).
 const EMAIL = "ttrungthanh90@gmail.com";
 const GITHUB = "github.com/Tthanh2k6";
+const LINKEDIN = "linkedin.com/in/trungthanhtran-dev";
 const APIFY = "apify.com/thanh81646";
 const SITE = "trungthanhtran.vercel.app";
 const LOCATION_VI = "TP. Hồ Chí Minh, Việt Nam (UTC+7)";
@@ -37,164 +37,166 @@ type Lang = "vi" | "en";
 
 const T = {
   vi: {
-    langBtn: "English",
     print: "Tải CV (PDF)",
-    role: "Lập trình viên Python & tự động hoá: thu thập dữ liệu web, API, luồng n8n",
+    role: "Lập trình viên full-stack — bảo mật Supabase/Postgres, app React Native, tự động hoá Python",
+    hSummary: "Tóm tắt",
     tagline:
-      "Có một vị trí làm việc chính thức (app di động + REST API, tự làm một mình) và một loạt dự án tự động hoá công khai đang lớn dần. Tôi ưu tiên gọi thẳng API JSON phía sau trang web thay vì cào giao diện, và thích biến việc thủ công lộn xộn thành công cụ nhỏ có kiểm thử. Tiếng Anh: B2, đọc tài liệu và trao đổi với khách bằng văn bản thoải mái.",
-    hExp: "Kinh nghiệm",
-    hProjects: "Dự án công khai & cá nhân",
-    hDeliver: "Tôi nhận làm",
-    hSkills: "Kỹ năng",
-    hCerts: "Chứng chỉ",
+      "Lập trình viên full-stack xây dựng ứng dụng vận hành thực tế và kiểm tra các lỗi bảo mật thường gặp ở những ứng dụng phát triển nhanh. Làm việc full-time tại một doanh nghiệp bán lẻ mỹ phẩm từ tháng 03/2026, nơi tôi một mình xây dựng ứng dụng khách hàng thân thiết (đã lên cả App Store và Google Play), REST API PHP và phần mềm quản trị Electron. Nhận hợp đồng làm việc từ xa khoảng 20–30 giờ/tuần, trao đổi bất đồng bộ (async) bằng văn bản (tiếng Anh B2, tiếng Việt bản ngữ).",
+    hSkills: "Kỹ năng kỹ thuật",
+    hExp: "Kinh nghiệm làm việc",
+    hProjects: "Dự án tiêu biểu",
     hEdu: "Học vấn",
-    hContact: "Liên hệ",
-    eduSchool: "Đại học Công nghiệp TP.HCM (IUH)",
-    eduMajor: "Sinh viên ngành Công nghệ Thông tin",
-    eduTime: "2024 — đang học",
-    present: "nay",
+    eduSchool: "Cử nhân Khoa học Máy tính, Đại học Công nghiệp TP.HCM (IUH)",
+    eduTime: "2024 – 2029 (dự kiến)",
     skills: [
-      ["Ngôn ngữ", "Python, TypeScript/JavaScript, PHP, SQL, Kotlin, Dart"],
-      ["Dữ liệu", "httpx, Playwright, Selenium, Apify SDK, n8n, Make, REST/GraphQL, webhook, Pydantic, pandas"],
-      ["Backend & App", "FastAPI, Node.js, PostgreSQL/Supabase, SQLite, React, React Native (Expo), Flutter, Docker, Git"],
-      ["AI", "OpenAI và Claude API (structured outputs, tool use), MediaPipe, YOLOv8, scikit-learn/PyTorch"],
-    ],
-    deliver: [
-      ["Dữ liệu web", "Bộ cào và Apify Actor (ưu tiên API JSON/GraphQL ẩn, cần mới dùng Playwright), theo dõi định kỳ, xuất CSV/Sheets/DB sạch"],
-      ["Tự động hoá", "Luồng n8n và Make, webhook, tích hợp CRM/Sheets/Telegram/email, Google Apps Script, Chrome extension (MV3)"],
-      ["Tính năng AI", "Trích xuất và phân loại bằng LLM theo JSON schema chặt, tìm kiếm RAG, AI agent gọi công cụ, mô hình thị giác nhỏ"],
-      ["App & công cụ", "REST API FastAPI/Node, dashboard React, app React Native, công cụ offline một tệp nhập Excel/CSV, báo cáo PDF/Excel"],
+      [
+        "Security",
+        "Postgres Row Level Security (RLS) & rà soát policy, kiểm tra SECURITY DEFINER & quyền grant, xác minh chữ ký webhook HMAC/Stripe, JWT auth, chống brute-force",
+      ],
+      ["Ngôn ngữ lập trình", "Python, TypeScript, JavaScript, PHP, SQL, Kotlin"],
+      [
+        "Thu thập dữ liệu & ETL",
+        "Apify Actors, Playwright, httpx (asyncio), Selenium, REST & GraphQL API, pandas",
+      ],
+      [
+        "Tự động hoá quy trình",
+        "n8n, Make, webhook, Google Apps Script, Chrome extension (Manifest V3)",
+      ],
+      [
+        "Backend & Ứng dụng",
+        "PostgreSQL/Supabase, Cloudflare Workers + D1, FastAPI, Node.js, REST API, React, React Native (Expo), Electron, Git",
+      ],
+      [
+        "AI agents & LLMs",
+        "Claude Code, Codex CLI, Gemini CLI hằng ngày: chạy nhiều agent song song theo đặc tả viết sẵn, tự viết skill, tự làm MCP server, tự động hoá trình duyệt, kiểm kết quả agent bằng test; OpenAI/Claude API trả JSON đúng schema",
+      ],
     ],
     exp: [
       {
-        role: "Lập trình viên",
-        org: "Madalena (bán lẻ mỹ phẩm)",
-        time: "05/2026 — nay · TP.HCM",
+        title: "Lập trình viên phần mềm, Madalena",
+        sub: "Full-time · Bán lẻ mỹ phẩm, TP. Hồ Chí Minh",
+        time: "03/2026 – nay",
         bullets: [
-          "Tự làm một mình app khách hàng thân thiết: app React Native (Expo, TypeScript) cùng REST API PHP có xác thực JWT, check-in bằng QR, thông báo đẩy và tác vụ định kỳ (ưu đãi sinh nhật, flash sale). App đã lên Google Play.",
-          "Chuyển backend từ Node.js trên Render sang PHP trên hosting sẵn có của công ty, bỏ được một khoản phí máy chủ riêng hằng tháng.",
-          "Làm thêm tính năng cho website thương mại điện tử PHP của công ty cùng với đội.",
+          "Một mình xây dựng và đưa ứng dụng khách hàng thân thiết lên cả App Store và Google Play: React Native (Expo, TypeScript) kết hợp REST API PHP có xác thực JWT, thông báo đẩy, quét mã QR check-in và tác vụ định kỳ (152 commit từ 05/2026).",
+          "Xây dựng chương trình tích điểm: điểm mua hàng và livestream, chiến dịch khuyến mãi, cộng điểm hàng loạt từ Excel, đổi quà có quản lý tồn kho quà tặng, flash sale giới hạn theo từng khách.",
+          "Xây dựng ứng dụng quản trị Electron trên desktop cho nhân viên, có phân quyền theo vai trò và nhật ký kiểm toán (audit log): tra cứu khách hàng, hẹn giờ gửi thông báo, flash sale, nhập doanh thu có kiểm tra trùng kỳ, xuất báo cáo.",
+          "Phát triển hầu hết tính năng của website thương mại điện tử PHP cho công ty từ 03/2026 trên bộ khung có sẵn của bên khác, đồng thời kết nối với app (đồng bộ sản phẩm, số lượng đã bán, bậc miễn phí vận chuyển).",
+          "Chuyển backend từ Node.js trên Render sang PHP hosting; bổ sung sao lưu tự động (automated backups) và chống dò mật khẩu (brute-force protection).",
         ],
       },
       {
-        role: "Dự án freelance",
-        org: "Việc nhận lẻ",
-        time: "2026",
+        title: "Lập trình viên Python & Tự động hoá Freelance",
+        sub: "Hợp đồng · Làm việc từ xa, Upwork",
+        time: "10/2026 – nay",
         bullets: [
-          "Web app fitness làm cho phần thi của một nhóm sinh viên, khách huỷ nên nay đã mở mã nguồn (React, TypeScript): lên lịch tập theo hồ sơ người dùng, nhận xét tư thế tập theo thời gian thực bằng MediaPipe Pose, và bộ phân loại ảnh món ăn tự huấn luyện trên 28 món Việt (đặc trưng MobileNetV3 + logistic, top-1 76% / top-3 91%).",
-          "Một buổi tư vấn trên Upwork (10/2026, đánh giá 5★) về bot cào tin tuyển dụng: kiến trúc lấy tin từ Telegram, LinkedIn và X, lọc tin giả.",
+          "Bàn giao báo cáo kiến trúc cho bot thu thập tin tuyển dụng từ Telegram, LinkedIn và X kèm bộ lọc tin giả; khách hàng đánh giá hợp đồng 5.0/5 trên Upwork.",
+          "Xây dựng web app thể hình cho một nhóm sinh viên (React, TypeScript, MediaPipe Pose): nhận xét tư thế tập trực tiếp qua camera và bộ phân loại ảnh món ăn.",
         ],
       },
     ],
     projects: [
       {
-        name: "5 Actor trên Apify Store",
-        tech: "10/2026 — nay · Python · httpx · Playwright",
-        desc: "Bộ cào Python bất đồng bộ: làm giàu liên hệ & công nghệ từ website B2B, theo dõi giá và tồn kho Shopify/WooCommerce, nhận diện liên hệ phòng khám tại Mỹ, cào danh sách chủ đầu tư bất động sản Malaysia, tối ưu lộ trình nhiều điểm. Mới có vài lượt chạy, chưa có khách trả phí.",
+        name: "supabase-rls-check (mã nguồn mở MIT: Python, SQL, MCP)",
+        tech: "github.com/Tthanh2k6/supabase-rls-check",
+        desc: "Truy vấn chỉ-đọc catalog Postgres, CLI Python và chế độ MCP server phát hiện 8 nhóm lỗi cấu hình: bảng tắt RLS, policy true, policy anon trên bảng nhạy cảm, hàm SECURITY DEFINER gọi được bằng anon key, hàm definer thiếu search_path, view bỏ qua RLS, bucket Storage public, extension trong schema public; kèm chế độ probe chỉ GET/HEAD có cờ đồng ý và quét khoá service_role lộ ở frontend. CI kiểm trên PostgreSQL 15 với lỗi cài sẵn (bắt đủ, không báo nhầm); 52 test; xuất báo cáo HTML/MD + fix.sql bọc ROLLBACK. Cũng bán thành gói review trên Contra.",
       },
       {
-        name: "vn-sme-offline-tools — Công cụ offline cho doanh nghiệp nhỏ",
-        tech: "HTML · JavaScript thuần",
-        desc: "9 công cụ chạy trong trình duyệt không cần mạng cho hộ kinh doanh Việt Nam: VietQR thu ngân, công nợ B2B, báo giá sỉ, giá vốn hàng nhập, đối soát hoá đơn XML, đối soát đội xe... Làm ở dạng bản mẫu. tthanh2k6.github.io/vn-sme-offline-tools",
+        name: "Race-safe salon booking (Cloudflare Workers, D1, Stripe)",
+        tech: "bản demo",
+        desc: "5 yêu cầu đặt cùng lúc cho cùng thợ và khung giờ: nhận 1, chặn 4; kiểm tra chống chồng ca giữa các dịch vụ có độ dài khác nhau; đặt cọc qua Stripe Checkout xác minh chữ ký webhook bằng Web Crypto; lịch iCal cho từng thợ; trang admin có mật khẩu; giao diện Anh/Việt; 11 test. Có gói cài đặt trên Contra.",
       },
       {
-        name: "Tích hợp mã nguồn mở",
-        tech: "github.com/Tthanh2k6 · FastAPI · n8n · pytest",
-        desc: "Đồng bộ Apify sang Twenty CRM có chống trùng và webhook xác thực HMAC; bộ công cụ webhook và structured output cho LLM (FastAPI, n8n). Có bộ test pytest; chưa có khách trả phí dùng.",
+        name: "Apify Store: 5 Actor công khai",
+        tech: "apify.com/thanh81646",
+        desc: "Các Actor Python bất đồng bộ (httpx, Playwright) ưu tiên gọi thẳng JSON API: làm giàu liên hệ B2B, theo dõi giá Shopify, tìm liên hệ phòng khám Mỹ, danh bạ chủ đầu tư bất động sản Malaysia, tối ưu lộ trình nhiều điểm.",
       },
       {
-        name: "Dự án cá nhân",
-        tech: "2025 — 2026",
-        desc: "PWA điểm danh QR với backend Google Apps Script (DiemDanhQR); app Android viết bằng Kotlin (widget lịch học của trường, giữ kết nối thông báo); Chrome extension (Manifest V3); ba bài viết kỹ thuật trên dev.to.",
+        name: "Các dự án khác",
+        tech: "2025 – 2026",
+        desc: "Bot thành viên Discord (webhook có chữ ký Stripe/Whop); đồng bộ Apify sang Twenty CRM; bộ công cụ LLM structured-output (FastAPI, Pydantic, n8n); công cụ offline cho doanh nghiệp nhỏ Việt Nam; 5 bài viết trên dev.to.",
       },
-    ],
-    certs: [
-      ["HackerRank Software Engineer", "Mã ID: 3e14323f3998"],
-      ["HackerRank SQL (Advanced)", "Mã ID: f6214fbc9a7f"],
-      ["HackerRank REST API (Intermediate)", "Mã ID: 0950402ec1b3"],
-      ["HackerRank Node.js & JS (Intermediate)", "Node.js (ID: aea6444671ab) · JavaScript (ID: 73f0cc9845c4)"],
-      ["HackerRank Problem Solving & IBM Python", "Problem Solving Intermediate (ID: 34ee18911edf) · IBM Python 101 for Data Science"],
     ],
   },
 
   en: {
-    langBtn: "Tiếng Việt",
     print: "Download CV (PDF)",
-    role: "Python & automation developer: web data extraction, APIs, n8n workflows",
+    role: "Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
+    hSummary: "Summary",
     tagline:
-      "Developer with one in-house role (mobile app + REST API, built alone) and a growing set of public automation projects. I prefer calling the JSON APIs behind a web page over scraping the rendered page, and I like turning messy manual work into small, tested tools. English: good working proficiency (B2), comfortable reading docs and writing to clients.",
-    hExp: "Experience",
-    hProjects: "Public work & personal projects",
-    hDeliver: "What I deliver",
-    hSkills: "Skills",
-    hCerts: "Certifications",
+      "Full-stack developer who ships production apps and checks them for the security mistakes that fast-built apps often have. Full-time at a cosmetics retailer since March 2026, where I built the loyalty app (App Store and Google Play), its PHP API and an Electron admin as the only developer. Open to remote contract work, about 20–30 hours per week, async and in writing (English B2, Vietnamese native).",
+    hSkills: "Technical Skills",
+    hExp: "Work Experience",
+    hProjects: "Projects",
     hEdu: "Education",
-    hContact: "Contact",
-    eduSchool: "Industrial University of Ho Chi Minh City (IUH)",
-    eduMajor: "Information Technology student",
-    eduTime: "2024 — in progress",
-    present: "Present",
+    eduSchool: "B.S. in Computer Science, Industrial University of Ho Chi Minh City (IUH)",
+    eduTime: "2024 – 2029 (expected)",
     skills: [
-      ["Languages", "Python, TypeScript/JavaScript, PHP, SQL, Kotlin, Dart"],
-      ["Data", "httpx, Playwright, Selenium, Apify SDK, n8n, Make, REST/GraphQL, webhooks, Pydantic, pandas"],
-      ["Backend & Apps", "FastAPI, Node.js, PostgreSQL/Supabase, SQLite, React, React Native (Expo), Flutter, Docker, Git"],
-      ["AI", "OpenAI and Claude APIs (structured outputs, tool use), MediaPipe, YOLOv8, scikit-learn/PyTorch"],
-    ],
-    deliver: [
-      ["Web data", "Scrapers and Apify Actors (hidden JSON/GraphQL APIs first, Playwright when needed), scheduled monitoring, clean CSV/Sheets/DB output"],
-      ["Automation", "n8n and Make workflows, webhooks, CRM/Sheets/Telegram/email integrations, Google Apps Script, Chrome extensions (MV3)"],
-      ["AI features", "LLM extraction and classification with strict JSON schemas, RAG search, AI agents with tool calls, small vision models"],
-      ["Apps & tools", "FastAPI/Node REST APIs, React dashboards, React Native apps, offline single-file tools that import Excel/CSV, PDF/Excel reports"],
+      [
+        "Security",
+        "Postgres Row Level Security and policy review, SECURITY DEFINER and grant checks, HMAC/Stripe webhook verification, JWT auth, brute-force protection",
+      ],
+      ["Programming", "Python, TypeScript, JavaScript, PHP, SQL, Kotlin"],
+      [
+        "Web scraping & ETL",
+        "Apify Actors, Playwright, httpx (asyncio), Selenium, REST and GraphQL APIs, pandas",
+      ],
+      [
+        "Workflow automation",
+        "n8n, Make, webhooks, Google Apps Script, Chrome extensions (Manifest V3)",
+      ],
+      [
+        "Backend & apps",
+        "PostgreSQL/Supabase, Cloudflare Workers + D1, FastAPI, Node.js, REST APIs, React, React Native (Expo), Electron, Git",
+      ],
+      [
+        "AI agents & LLMs",
+        "Claude Code, Codex CLI, Gemini CLI daily: parallel agents from written specs, custom skills, MCP servers (built one), browser automation, results checked by tests; OpenAI/Claude APIs with structured outputs",
+      ],
     ],
     exp: [
       {
-        role: "Software Developer",
-        org: "Madalena (cosmetics retailer)",
-        time: "May 2026 — Present · Ho Chi Minh City",
+        title: "Software Developer, Madalena",
+        sub: "Full-time · Cosmetics retailer, Ho Chi Minh City",
+        time: "Mar 2026 – Present",
         bullets: [
-          "Built the customer loyalty app alone: React Native (Expo, TypeScript) app plus a PHP REST API with JWT auth, QR check-in, push notifications and scheduled jobs (birthday offers, flash sales). The app is on Google Play.",
-          "Moved the backend from Node.js on Render to PHP on the company's existing hosting, removing a separate monthly server bill.",
-          "Added features to the company's PHP e-commerce website as part of the team.",
+          "Built and shipped the customer loyalty app to the App Store and Google Play as the only developer: React Native (Expo, TypeScript) and a PHP REST API with JWT auth, push notifications, QR check-in and scheduled jobs (152 commits since May 2026).",
+          "Built the points program: purchase and livestream points, campaigns, bulk grants from Excel, rewards with gift stock, flash sales with per-customer limits.",
+          "Built an Electron desktop admin for staff with roles and an audit log: customer search, scheduled notifications, flash sales, revenue import with duplicate-period checks, reports.",
+          "Built most features of the company's PHP e-commerce site since March 2026 on a vendor's base framework, and linked it to the app (product sync, sold counts, freeship tiers).",
+          "Moved the backend from Node.js on Render to PHP hosting; added automated backups and brute-force protection.",
         ],
       },
       {
-        role: "Freelance projects",
-        org: "Individual jobs",
-        time: "2026",
+        title: "Freelance Python & Automation Developer",
+        sub: "Contract · Remote, Upwork",
+        time: "Oct 2026 – Present",
         bullets: [
-          "Fitness web app built for a student team's competition entry, now open source after the client cancelled (React, TypeScript): workout plans from a user profile, real-time exercise form feedback with MediaPipe Pose, and a food photo classifier I trained on 28 Vietnamese dishes (MobileNetV3 features + logistic head, 76% top-1 / 91% top-3).",
-          "Upwork consultation (Oct 2026, 5★ review) for a job-posting scraper bot: architecture across Telegram, LinkedIn and X; fake-post filtering.",
+          "Delivered an architecture report for a job-posting bot collecting posts from Telegram, LinkedIn and X with fake-post filtering; client rated the contract 5.0/5 on Upwork.",
+          "Built a fitness web app for a student team (React, TypeScript, MediaPipe Pose): live exercise form feedback and a food photo classifier.",
         ],
       },
     ],
     projects: [
       {
-        name: "5 Actors on the Apify Store",
-        tech: "Oct 2026 — Present · Python · httpx · Playwright",
-        desc: "Async Python scrapers: B2B website contact and tech-stack enricher, Shopify/WooCommerce price and stock monitor, US clinic contact detector, Malaysia property developer scraper, multi-stop route optimizer. A few runs each so far; no paying clients yet.",
+        name: "supabase-rls-check (open source: Python, SQL, MCP)",
+        tech: "github.com/Tthanh2k6/supabase-rls-check",
+        desc: "Read-only catalog query, CLI and MCP server mode that flag 8 misconfiguration types: RLS turned off, true policies, anon policies on sensitive tables, SECURITY DEFINER functions callable with the anon key, definer functions missing search_path, views bypassing RLS, public Storage buckets, extensions in public schema; plus opt-in GET/HEAD probe and a service_role key check in frontend code. CI checks it on PostgreSQL 15 with seeded issues (all found, no false positives); 52 tests; HTML/MD report plus ROLLBACK-wrapped fix.sql. Also sold as a review on Contra.",
       },
       {
-        name: "vn-sme-offline-tools — Offline tools for small businesses",
-        tech: "HTML · Vanilla JavaScript",
-        desc: "Nine browser tools that work without a connection, for Vietnamese small businesses: VietQR cashier, B2B receivables, wholesale quotes, import landed cost, e-invoice XML checks, fleet fuel reconciliation and more. Built as templates. tthanh2k6.github.io/vn-sme-offline-tools",
+        name: "Race-safe salon booking (Cloudflare Workers, D1, Stripe)",
+        tech: "demo build",
+        desc: "Five simultaneous requests for the same technician and time: 1 accepted, 4 rejected; overlap checks for mixed service lengths; deposits through Stripe Checkout with webhook signatures verified in Web Crypto; per-technician iCal feeds; password-protected admin page; English/Vietnamese UI; 11 tests. Setup package on Contra.",
       },
       {
-        name: "Open-source integrations",
-        tech: "github.com/Tthanh2k6 · FastAPI · n8n · pytest",
-        desc: "Apify-to-Twenty CRM sync with dedupe and HMAC-verified webhooks; webhook and LLM structured-output toolkit (FastAPI, n8n). Covered by pytest suites; not yet used by paying clients.",
+        name: "Apify Store: 5 published scrapers",
+        tech: "apify.com/thanh81646",
+        desc: "Async Python Actors (httpx, Playwright) that call JSON APIs first: B2B contact enricher, Shopify price monitor, US clinic contact finder, Malaysia property developer registry, route optimizer.",
       },
       {
-        name: "Personal projects",
-        tech: "2025 — 2026",
-        desc: "QR attendance PWA with Google Apps Script backend (DiemDanhQR); Android apps in Kotlin (university timetable widget, notification keep-alive); Chrome extensions (Manifest V3); three technical articles on dev.to.",
+        name: "Other projects",
+        tech: "2025 – 2026",
+        desc: "Discord membership bot (Stripe/Whop signed webhooks); Apify to Twenty CRM sync; LLM structured-output toolkit (FastAPI, Pydantic, n8n); offline tools for Vietnamese small businesses; five dev.to articles.",
       },
-    ],
-    certs: [
-      ["HackerRank Software Engineer", "Credential ID: 3e14323f3998"],
-      ["HackerRank SQL (Advanced)", "ID: f6214fbc9a7f"],
-      ["HackerRank REST API (Intermediate)", "ID: 0950402ec1b3"],
-      ["HackerRank Node.js & JS (Intermediate)", "Node.js (ID: aea6444671ab) · JavaScript (ID: 73f0cc9845c4)"],
-      ["HackerRank Problem Solving & IBM Python", "Problem Solving Intermediate (ID: 34ee18911edf) · IBM Python 101 for Data Science"],
     ],
   },
 } as const;
@@ -216,26 +218,43 @@ function CvPage() {
 
       <main className="cv-sheet">
         <header className="cv-head">
-          <h1>{lang === "vi" ? "Trần Trung Thành" : "Trung Thanh Tran (Trần Trung Thành)"}</h1>
+          <h1>{lang === "vi" ? "Trần Trung Thành" : "Trung Thanh Tran"}</h1>
           <p className="cv-role">{t.role}</p>
           <p className="cv-contact">
-            {lang === "vi" ? LOCATION_VI : LOCATION_EN} · {lang === "vi" ? PHONE_VI : PHONE} · {EMAIL}
+            {lang === "vi" ? LOCATION_VI : LOCATION_EN} · {EMAIL}
             <br />
-            {SITE} · {GITHUB} · {APIFY}
+            {GITHUB} · {LINKEDIN} · {APIFY} · {SITE}
           </p>
-          <p className="cv-tagline">{t.tagline}</p>
         </header>
+
+        <section>
+          <h2>{t.hSummary}</h2>
+          <p className="cv-tagline">{t.tagline}</p>
+        </section>
+
+        <section>
+          <h2>{t.hSkills}</h2>
+          <table className="cv-skills">
+            <tbody>
+              {t.skills.map(([group, items]) => (
+                <tr key={group}>
+                  <th>{group}</th>
+                  <td>{items}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </section>
 
         <section>
           <h2>{t.hExp}</h2>
           {t.exp.map((e) => (
-            <article key={e.role + e.org} className="cv-item">
+            <article key={e.title} className="cv-item">
               <div className="cv-item-head">
-                <strong>
-                  {e.role} — {e.org}
-                </strong>
+                <strong>{e.title}</strong>
                 <span>{e.time}</span>
               </div>
+              <p className="cv-sub">{e.sub}</p>
               <ul>
                 {e.bullets.map((b) => (
                   <li key={b}>{b}</li>
@@ -258,56 +277,13 @@ function CvPage() {
           ))}
         </section>
 
-        <section>
-          <h2>{t.hDeliver}</h2>
-          <table className="cv-skills">
-            <tbody>
-              {t.deliver.map(([area, items]) => (
-                <tr key={area}>
-                  <th>{area}</th>
-                  <td>{items}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>{t.hSkills}</h2>
-          <table className="cv-skills">
-            <tbody>
-              {t.skills.map(([group, items]) => (
-                <tr key={group}>
-                  <th>{group}</th>
-                  <td>{items}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-
-        <section>
-          <h2>{t.hCerts}</h2>
-          <table className="cv-skills">
-            <tbody>
-              {t.certs.map(([certName, certDetail]) => (
-                <tr key={certName}>
-                  <th>{certName}</th>
-                  <td>{certDetail}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
-
-        <section>
+        <section style={{ marginBottom: 0 }}>
           <h2>{t.hEdu}</h2>
-          <article className="cv-item">
+          <article className="cv-item" style={{ marginBottom: 0 }}>
             <div className="cv-item-head">
               <strong>{t.eduSchool}</strong>
               <span>{t.eduTime}</span>
             </div>
-            <p>{t.eduMajor}</p>
           </article>
         </section>
       </main>
@@ -350,67 +326,68 @@ function CvPage() {
           margin: 0 auto;
           background: #ffffff;
           color: #14161c;
-          padding: 44px 52px;
+          padding: 40px 48px;
           border-radius: 6px;
           box-shadow: 0 20px 60px rgba(0,0,0,0.45);
-          line-height: 1.5;
-          font-size: 0.91rem;
+          line-height: 1.46;
+          font-size: 0.9rem;
         }
 
-        .cv-head { border-bottom: 2px solid #14161c; padding-bottom: 14px; margin-bottom: 20px; }
+        .cv-head { border-bottom: 2px solid #14161c; padding-bottom: 12px; margin-bottom: 16px; }
         .cv-head h1 { font-size: 1.85rem; font-weight: 800; letter-spacing: -0.5px; margin: 0; }
-        .cv-role { font-size: 1rem; font-weight: 600; color: #3b4256; margin: 2px 0 7px; }
-        .cv-contact { font-size: 0.84rem; color: #4c5566; margin: 0 0 9px; }
+        .cv-role { font-size: 0.98rem; font-weight: 600; color: #1a365d; margin: 2px 0 6px; }
+        .cv-contact { font-size: 0.83rem; color: #4c5566; margin: 0; }
         .cv-tagline { font-size: 0.88rem; margin: 0; color: #1f2430; }
+        .cv-sub { font-size: 0.82rem; font-style: italic; color: #4c5566; margin: 0 0 3px; }
 
-        .cv-sheet section { margin-bottom: 20px; }
+        .cv-sheet section { margin-bottom: 16px; }
         .cv-sheet h2 {
           font-size: 0.8rem;
           font-weight: 800;
           text-transform: uppercase;
-          letter-spacing: 1.6px;
-          color: #6b7280;
-          border-bottom: 1px solid #d7dbe3;
-          padding-bottom: 4px;
-          margin: 0 0 10px;
+          letter-spacing: 1.4px;
+          color: #1a365d;
+          border-bottom: 1px solid #cbd5e1;
+          padding-bottom: 3px;
+          margin: 0 0 8px;
         }
 
-        .cv-item { margin-bottom: 12px; break-inside: avoid; }
+        .cv-item { margin-bottom: 10px; break-inside: avoid; }
         .cv-item-head {
           display: flex;
           justify-content: space-between;
           align-items: baseline;
           gap: 16px;
-          margin-bottom: 3px;
+          margin-bottom: 2px;
         }
-        .cv-item-head strong { font-size: 0.94rem; }
-        .cv-item-head span { font-size: 0.79rem; color: #6b7280; white-space: nowrap; }
+        .cv-item-head strong { font-size: 0.93rem; }
+        .cv-item-head span { font-size: 0.79rem; color: #4c5566; white-space: nowrap; }
         .cv-item p { margin: 0; }
-        .cv-item ul { margin: 4px 0 0; padding-left: 18px; }
-        .cv-item li { margin-bottom: 3px; }
+        .cv-item ul { margin: 3px 0 0; padding-left: 18px; }
+        .cv-item li { margin-bottom: 2px; }
 
         .cv-skills { width: 100%; border-collapse: collapse; }
         .cv-skills th {
           text-align: left;
           vertical-align: top;
-          width: 195px;
-          padding: 4px 14px 4px 0;
+          width: 175px;
+          padding: 3px 12px 3px 0;
           font-size: 0.85rem;
         }
-        .cv-skills td { padding: 4px 0; }
+        .cv-skills td { padding: 3px 0; }
 
         @media (max-width: 640px) {
           .cv-page { padding: 100px 12px 40px; }
-          .cv-sheet { padding: 28px 22px; }
+          .cv-sheet { padding: 28px 20px; }
           .cv-item-head { flex-direction: column; gap: 0; }
           .cv-item-head span { white-space: normal; }
           .cv-skills th { width: auto; display: block; padding-bottom: 0; }
           .cv-skills td { display: block; padding-top: 0; }
         }
 
-        /* In ra giấy / xuất PDF: bỏ nền tối, bỏ thanh điều khiển, canh khổ A4 */
+        /* In ra giấy / xuất PDF: bỏ nền tối, bỏ thanh điều khiển, canh gọn 1 trang khổ A4 */
         @media print {
-          @page { size: A4; margin: 12mm 14mm; }
+          @page { size: A4; margin: 9mm 13mm; }
           .cv-noprint { display: none !important; }
           .cv-page { background: #fff; padding: 0; }
           .cv-sheet {
@@ -418,10 +395,14 @@ function CvPage() {
             box-shadow: none;
             border-radius: 0;
             padding: 0;
-            font-size: 9.6pt;
-            line-height: 1.44;
+            font-size: 9.2pt;
+            line-height: 1.3;
           }
-          .cv-sheet section { break-inside: auto; }
+          .cv-head { padding-bottom: 6px; margin-bottom: 8px; }
+          .cv-sheet section { margin-bottom: 8px; break-inside: auto; }
+          .cv-sheet h2 { margin-bottom: 4px; padding-bottom: 2px; }
+          .cv-item { margin-bottom: 5px; }
+          .cv-skills th, .cv-skills td { padding: 1.5px 8px 1.5px 0; }
         }
       `}</style>
     </div>

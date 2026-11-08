@@ -31,3 +31,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+.agy-skills/
+YEU_CAU_AGY_08-11.md
+KET_QUA_AGY_08-11.md
+agy_log.txt

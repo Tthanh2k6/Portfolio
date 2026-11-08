@@ -11,13 +11,13 @@ export const Route = createFileRoute("/contact")({
       {
         name: "description",
         content:
-          "Get in touch with Trung Thanh Tran for Python/Playwright web scraping, n8n & OpenAI workflow automation, API integration, and full-stack development.",
+          "Get in touch with Trung Thanh Tran for Supabase/Postgres security reviews, React Native apps, Cloudflare Workers + D1 backends, and Python automation. Async, written updates, UTC+7, about 20–30 hours/week for contract work.",
       },
       { property: "og:title", content: "Contact — Trung Thanh Tran" },
       {
         property: "og:description",
         content:
-          "Available for part-time, fixed-scope freelance work (UTC+7).",
+          "Async, written updates, UTC+7, about 20–30 hours/week for contract work.",
       },
       SEO.ogUrl,
     ],

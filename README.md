@@ -2,7 +2,7 @@
 
 <div align="center">
   <a href="https://trungthanhtran.vercel.app/">
-    <img src="./public/og-preview-1200x630.png" alt="Trung Thanh Tran — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer" width="100%" />
+    <img src="./public/og-preview-1200x630.png" alt="Trung Thanh Tran — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation" width="100%" />
   </a>
 
   <br />
@@ -15,7 +15,7 @@
       <img src="https://img.shields.io/badge/Printable_A4_CV-/cv-10B981?style=for-the-badge" alt="Printable A4 CV" />
     </a>
     <a href="https://apify.com/thanh81646">
-      <img src="https://img.shields.io/badge/Apify_Store-6_Live_Actors-0EA5E9?style=for-the-badge" alt="Apify Store" />
+      <img src="https://img.shields.io/badge/Apify_Store-5_Public_Actors-0EA5E9?style=for-the-badge" alt="Apify Store" />
     </a>
   </p>
 
@@ -38,7 +38,7 @@ An interactive, bilingual (`EN` / `VI`) full-stack developer portfolio built wit
 | :--- | :--- |
 | **`/` (Home)** | Isometric 3D neon grid rendered with **Three.js + `UnrealBloomPass`**, interactive cursor raycasting, and damped spring blob cursor (`CustomCursor`). |
 | **`/information`** | Custom **Verlet Integration** physics simulation (25-node rope + rigid-body developer ID badge with pointer drag & impulse response) alongside education, experience, and timeline cards. |
-| **`/skills`** | Interactive **CSS `preserve-3d` Mechanical Keyboard** (24 keycaps mapped to core technologies) synchronized bidirectionally with an exploding **SVG Donut Chart**. |
+| **`/skills`** | Interactive **CSS `preserve-3d` Mechanical Keyboard** (28 keycaps across Security, AI Agents & MCP, Mobile, Backend & Python) synchronized bidirectionally with an exploding **SVG Donut Chart**. |
 | **`/project`** | Infinite **Film-Strip Carousel** combining commercial/private engineering case studies with live public repositories fetched dynamically from the **GitHub REST API (`users/Tthanh2k6/repos`)**, complete with two-tier executive & deep-dive technical modals. |
 | **`/contact`** | Direct email integration (`FormSubmit`), interactive local guestbook, and social links. |
 | **`/cv`** | Dedicated print-engineered **A4 Resume / CV** route (`@media print`) ready for one-click PDF export. |

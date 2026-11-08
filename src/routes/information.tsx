@@ -9,11 +9,14 @@ const SEO = pageSeo("/information");
 export const Route = createFileRoute("/information")({
   head: () => ({
     meta: [
-      { title: "Information — Trung Thanh Tran | AI Automation & Full-Stack Engineer" },
+      {
+        title:
+          "Information — Trung Thanh Tran | Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
+      },
       {
         name: "description",
         content:
-          "About Trung Thanh Tran (Trần Trung Thành) — AI Automation, Anti-Bot Web Scraping & Full-Stack Engineer in Ho Chi Minh City (UTC+7). IT student at IUH, building a loyalty app at Madalena and 5 public Apify Actors.",
+          "About Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer (Supabase/Postgres security, React Native apps, Python automation) in Ho Chi Minh City (UTC+7). Full-time at Madalena since March 2026 (loyalty app on the App Store & Google Play, PHP API, Electron admin, PHP e-commerce); open to remote contracts (~20–30 hrs/week, async).",
       },
       SEO.ogUrl,
     ],
@@ -322,48 +325,48 @@ const INFO_CSS = `
 // Đoạn giới thiệu mặc định song ngữ — trình bày năng lực thực chiến cho khách quốc tế
 // và nhà tuyển dụng. Người dùng chỉnh qua /admin thì bản chỉnh tay được ưu tiên.
 const DESC_VI =
-  "Sinh viên CNTT tại IUH, làm lập trình viên ở Madalena từ 05/2026: tự làm một mình app khách hàng thân thiết (React Native, đã lên Google Play) và REST API PHP.\nNgoài giờ làm bộ cào dữ liệu Python & Playwright, luồng tự động hoá AI / n8n chuẩn schema; có 5 Actor công khai trên Apify Store (mới, vài lượt chạy, chưa có khách trả phí).\nCách làm việc: gửi mẫu chạy được trước, nói rõ giới hạn của công cụ.";
+  "Lập trình viên full-stack tại Madalena (full-time từ 03/2026), đồng thời theo học Khoa học Máy tính tại IUH: một mình xây dựng và đưa lên cả App Store lẫn Google Play app khách hàng thân thiết (React Native + PHP REST API, 152 commit từ 05/2026), app quản trị Electron trên desktop và hầu hết tính năng web PHP thương mại điện tử của công ty trên bộ khung của bên khác.\nPhát triển mã nguồn mở supabase-rls-check (CLI Python + MCP kiểm tra 8 nhóm lỗi RLS/Postgres, 52 test), bản demo đặt lịch chống trùng ca trên Cloudflare Workers + D1 + Stripe và 5 Actor công khai trên Apify Store.\nNhận việc hợp đồng từ xa khoảng 20–30 giờ/tuần, làm việc bất đồng bộ (async), cập nhật tiến độ bằng văn bản (UTC+7).";
 const DESC_EN =
-  "IT student at IUH and, since May 2026, developer at Madalena: I built their customer loyalty app (React Native, on Google Play) and its PHP REST API on my own.\nOn the side I build async Python & Playwright scrapers and strict-schema OpenAI / n8n workflows; 5 public Actors on the Apify Store (new, a few runs each, no paying users yet).\nHow I work: a working sample first, and clear notes on what a tool does not do.";
+  "Full-stack developer at Madalena (full-time since March 2026) while studying Computer Science at IUH: as the only developer, I built and shipped the customer loyalty app to both the App Store and Google Play (React Native + PHP REST API, 152 commits since May 2026), an Electron desktop admin, and most features of the company's PHP e-commerce site on a vendor's base framework.\nAuthor of open-source supabase-rls-check (Python CLI + MCP server flagging 8 Postgres/RLS misconfiguration types, 52 tests), a race-safe salon booking demo on Cloudflare Workers + D1 + Stripe, and 5 public Apify Store Actors.\nOpen to remote contract work (~20–30 hours/week, async, written updates, UTC+7).";
 
 function Information() {
   const { t } = useLang();
   const [customStatus, setCustomStatus] = useState<string | null>(null);
-  const [titleTop, setTitleTop] = useState("Automation");
-  const [titleBottom, setTitleBottom] = useState("& Full-Stack");
+  const [titleTop, setTitleTop] = useState("Full-Stack");
+  const [titleBottom, setTitleBottom] = useState("& Security");
   // null = chưa có bản chỉnh tay -> lấy theo ngôn ngữ đang chọn
   const [customDesc, setCustomDesc] = useState<string | null>(null);
   const description = customDesc ?? t(DESC_VI, DESC_EN);
   const status =
     customStatus ??
     t(
-      "+ SẴN SÀNG NHẬN DỰ ÁN & HỢP ĐỒNG TỪ XA (UTC+7)",
-      "+ AVAILABLE FOR FREELANCE & REMOTE CONTRACTS (UTC+7)"
+      "+ NHẬN HỢP ĐỒNG TỪ XA ~20–30 GIỜ/TUẦN · ASYNC · UTC+7",
+      "+ OPEN TO REMOTE CONTRACTS ~20–30 HRS/WK · ASYNC · UTC+7"
     );
   const [tags, setTags] = useState([
+    "Supabase / Postgres RLS",
+    "React Native (iOS & Android)",
     "Python & Playwright",
-    "AI / n8n Workflows",
-    "FastAPI & Supabase",
-    "React & Expo",
-    "5 Apify Store Actors",
+    "Cloudflare Workers + D1",
+    "AI Agents & MCP",
   ]);
   const [customExplore1, setCustomExplore1] = useState<string | null>(null);
   const [customExplore2, setCustomExplore2] = useState<string | null>(null);
   const explore1 =
     customExplore1 ??
     t(
-      "↗ khám phá 24 kỹ năng & biểu đồ công nghệ ở mục skills",
-      "↗ inspect my interactive 3D tech stack under skills"
+      "↗ khám phá 28 kỹ năng (Security, AI Agents, Mobile, Backend) ở mục skills",
+      "↗ inspect 28 skills across Security, AI Agents, Mobile & Backend under skills"
     );
   const explore2 =
     customExplore2 ??
     t(
-      "→ xem dự án, 5 Apify Actor & CV chi tiết trên thanh điều hướng",
-      "→ browse projects, 5 Apify Actors & printable CV above"
+      "→ xem supabase-rls-check, các dự án thực tế & CV chuẩn in trên thanh điều hướng",
+      "→ browse supabase-rls-check, production builds & printable CV above"
     );
   const [cardName, setCardName] = useState("TRUNG THANH TRAN");
   const [cardTitle, setCardTitle] = useState(
-    "AI Automation & Full-Stack\nHo Chi Minh City (UTC+7)"
+    "Full-stack · Postgres Security\nHo Chi Minh City (UTC+7)"
   );
 
   useEffect(() => {
@@ -531,7 +534,7 @@ function Information() {
 
     // --- HIỆU ỨNG GÕ CHỮ ---
     const textToType =
-      localStorage.getItem("info_typing") || "Shipping clean data & reliable systems";
+      localStorage.getItem("info_typing") || "Full-stack: Postgres security, React Native, Python";
     let charIndex = 0;
 
     function typeCharacter() {

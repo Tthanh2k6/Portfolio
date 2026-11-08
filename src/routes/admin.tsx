@@ -33,31 +33,31 @@ const DEFAULT_CUBES = {
 };
 
 const DEFAULT_HOME = {
-  line1: "Shipping resilient web scrapers, AI workflow automations & full-stack products.",
+  line1: "Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation.",
   line2: "Trung Thanh Tran",
-  tags: "PYTHON & PLAYWRIGHT, AI / N8N AUTOMATION, APIFY & REST APIS, FASTAPI & SUPABASE, REACT & MOBILE",
+  tags: "SUPABASE / POSTGRES SECURITY, REACT NATIVE (IOS & ANDROID), PYTHON AUTOMATION, CLOUDFLARE WORKERS & D1, AI AGENTS & MCP",
 };
 
 const DEFAULT_INFO = {
-  status: "+ AVAILABLE FOR FREELANCE & REMOTE CONTRACTS (UTC+7)",
-  titleTop: "Automation",
-  titleBottom: "& Full-Stack",
-  typing: "Shipping clean data & reliable systems",
+  status: "+ OPEN TO REMOTE CONTRACTS ~20–30 HRS/WK · ASYNC · UTC+7",
+  titleTop: "Full-Stack",
+  titleBottom: "& Security",
+  typing: "Full-stack: Postgres security, React Native, Python",
   description:
-    "IT student at IUH and, since May 2026, developer at Madalena: I built their customer loyalty app (React Native, on Google Play) and its PHP REST API on my own.\nOn the side I build async Python & Playwright scrapers and strict-schema OpenAI / n8n workflows; 5 public Actors on the Apify Store (new, a few runs each, no paying users yet).\nHow I work: a working sample first, and clear notes on what a tool does not do.",
-  tags: "Python & Playwright, AI / n8n Workflows, FastAPI & Supabase, React & Expo, 5 Apify Store Actors",
-  explore1: "↗ inspect my interactive 3D tech stack under skills",
-  explore2: "→ browse projects, 5 Apify Actors & printable CV above",
+    "Full-stack developer at Madalena (full-time since March 2026) while studying Computer Science at IUH: as the only developer, I built and shipped the customer loyalty app to both the App Store and Google Play (React Native + PHP REST API, 152 commits since May 2026), an Electron desktop admin, and most features of the company's PHP e-commerce site on a vendor's base framework.\nAuthor of open-source supabase-rls-check (Python CLI + MCP server flagging 8 Postgres/RLS misconfiguration types, 52 tests), a race-safe salon booking demo on Cloudflare Workers + D1 + Stripe, and 5 public Apify Store Actors.\nOpen to remote contract work (~20–30 hours/week, async, written updates, UTC+7).",
+  tags: "Supabase / Postgres RLS, React Native (iOS & Android), Python & Playwright, Cloudflare Workers + D1, AI Agents & MCP",
+  explore1: "↗ inspect 28 skills across Security, AI Agents, Mobile & Backend under skills",
+  explore2: "→ browse supabase-rls-check, production builds & printable CV above",
   cardName: "TRUNG THANH TRAN",
-  cardTitle: "AI Automation & Full-Stack\nHo Chi Minh City (UTC+7)",
+  cardTitle: "Full-stack · Postgres Security\nHo Chi Minh City (UTC+7)",
 };
 
 const DEFAULT_SKILLS_TEXT = {
-  sub: "Used in real projects, still learning every day",
+  sub: "Used in production apps & security reviews, verified by tests",
   title1: "Engineering",
   title2: "stack",
-  typewriter: "Used in a Google Play app, 5 Apify Actors & open-source tools",
-  desc: "From async Python scrapers and strict-schema OpenAI/n8n workflows to a shipped React Native app and its PHP backend — hover any keycap to see where I used it.",
+  typewriter: "App Store & Google Play app • supabase-rls-check • 5 Apify Actors",
+  desc: "From Supabase/Postgres RLS security checks, React Native apps (iOS & Android), and Cloudflare Workers + D1 to Python automation — hover any keycap to see where I used it.",
 };
 
 // DEFAULT_KEYCAPS / DEFAULT_CHART / DEFAULT_MAP / DEFAULT_SOCIALS / DEFAULT_PROJECTS:
@@ -1352,7 +1352,7 @@ function AdminPanel() {
             </form>
 
             <h3 style={{ fontSize: "1.2rem", fontWeight: 700, marginBottom: "15px", borderTop: "1px solid rgba(255,255,255,0.05)", paddingTop: "30px" }}>
-              Danh Sách Phím Kỹ Năng (Keycaps Grid - Tối đa 16 phím)
+              Danh Sách Phím Kỹ Năng (Keycaps Grid - 28 phím / 7×4)
             </h3>
             <button
               className="admin-btn-save"
