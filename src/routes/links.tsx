@@ -59,6 +59,44 @@ const LINKS: LinkItem[] = [
     ),
   },
   {
+    href: "https://www.agensi.io/skills/supabase-rls-review",
+    vi: "Skill Supabase RLS Review cho AI agent (Agensi)",
+    en: "Supabase RLS Review skill for AI agents (Agensi)",
+    handle: "agensi.io/skills/supabase-rls-review",
+    external: true,
+    icon: (
+      <svg {...svgProps}>
+        <path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4l-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z" />
+      </svg>
+    ),
+  },
+  {
+    href: "https://lotus-nail-booking.lotus-nail-booking-v2.workers.dev",
+    vi: "Web đặt lịch chống trùng ca (demo chạy thật, Cloudflare Workers)",
+    en: "Race-safe booking (live demo, Cloudflare Workers)",
+    handle: "lotus-nail-booking.lotus-nail-booking-v2.workers.dev",
+    external: true,
+    icon: (
+      <svg {...svgProps}>
+        <rect x="3" y="4" width="18" height="18" rx="2" />
+        <path d="M16 2v4M8 2v4M3 10h18" />
+      </svg>
+    ),
+  },
+  {
+    href: "https://github.com/Tthanh2k6/remote-contract-jobs",
+    vi: "remote-contract-jobs (MCP lọc việc remote)",
+    en: "remote-contract-jobs (MCP job search)",
+    handle: "github.com/Tthanh2k6/remote-contract-jobs",
+    external: true,
+    icon: (
+      <svg {...svgProps}>
+        <rect x="2" y="7" width="20" height="14" rx="2" />
+        <path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2" />
+      </svg>
+    ),
+  },
+  {
     href: "https://tthanh2k6.github.io/vn-sme-offline-tools/",
     vi: "Bộ công cụ cho hộ kinh doanh (demo trực tiếp)",
     en: "Offline tools for Vietnamese small businesses (live demo)",

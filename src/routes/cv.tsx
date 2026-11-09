@@ -98,7 +98,7 @@ const T = {
       {
         name: "supabase-rls-check (mã nguồn mở MIT: Python, SQL, MCP)",
         tech: "github.com/Tthanh2k6/supabase-rls-check",
-        desc: "Truy vấn chỉ-đọc catalog Postgres, CLI Python và chế độ MCP server phát hiện 8 nhóm lỗi cấu hình: bảng tắt RLS, policy true, policy anon trên bảng nhạy cảm, hàm SECURITY DEFINER gọi được bằng anon key, hàm definer thiếu search_path, view bỏ qua RLS, bucket Storage public, extension trong schema public; kèm chế độ probe chỉ GET/HEAD có cờ đồng ý và quét khoá service_role lộ ở frontend. CI kiểm trên PostgreSQL 15 với lỗi cài sẵn (bắt đủ, không báo nhầm); 52 test; xuất báo cáo HTML/MD + fix.sql bọc ROLLBACK. Cũng bán thành gói review trên Contra.",
+        desc: "Truy vấn chỉ-đọc catalog Postgres, CLI Python và chế độ MCP server phát hiện 11 nhóm lỗi cấu hình: bảng tắt RLS, policy true, policy anon trên bảng nhạy cảm, hàm SECURITY DEFINER gọi được bằng anon key, hàm definer thiếu search_path, view bỏ qua RLS, bucket Storage public, extension trong schema public, policy đọc user_metadata, auth.uid() gọi lại từng dòng, view công khai lộ auth.users; kèm chế độ probe chỉ GET/HEAD có cờ đồng ý và quét khoá service_role lộ ở frontend. CI kiểm trên PostgreSQL 15 với lỗi cài sẵn (bắt đủ, không báo nhầm); 66 test; xuất báo cáo HTML/MD + fix.sql bọc ROLLBACK. Có trên PyPI, có GitHub Action; bán gói review trên Contra và skill trên Agensi.",
       },
       {
         name: "Race-safe salon booking (Cloudflare Workers, D1, Stripe)",
@@ -150,7 +150,7 @@ const T = {
       ],
       [
         "AI agents & LLMs",
-        "Claude Code, Codex CLI, Gemini CLI daily: parallel agents from written specs, custom skills, MCP servers (built one), browser automation, results checked by tests; OpenAI/Claude APIs with structured outputs",
+        "Claude Code, Codex CLI, Gemini CLI daily: parallel agents from written specs, custom skills, MCP servers (built two), browser automation, results checked by tests; OpenAI/Claude APIs with structured outputs",
       ],
     ],
     exp: [
@@ -180,7 +180,7 @@ const T = {
       {
         name: "supabase-rls-check (open source: Python, SQL, MCP)",
         tech: "github.com/Tthanh2k6/supabase-rls-check",
-        desc: "Read-only catalog query, CLI and MCP server mode that flag 8 misconfiguration types: RLS turned off, true policies, anon policies on sensitive tables, SECURITY DEFINER functions callable with the anon key, definer functions missing search_path, views bypassing RLS, public Storage buckets, extensions in public schema; plus opt-in GET/HEAD probe and a service_role key check in frontend code. CI checks it on PostgreSQL 15 with seeded issues (all found, no false positives); 52 tests; HTML/MD report plus ROLLBACK-wrapped fix.sql. Also sold as a review on Contra.",
+        desc: "Read-only catalog query, CLI and MCP server mode that flag 11 misconfiguration types: RLS turned off, true policies, anon policies on sensitive tables, SECURITY DEFINER functions callable with the anon key, definer functions missing search_path, views bypassing RLS, public Storage buckets, extensions in public schema, policies reading user_metadata, per-row auth.uid() calls, public views over auth.users; plus opt-in GET/HEAD probe and a service_role key check in frontend code. CI checks it on PostgreSQL 15 with seeded issues (all found, no false positives); 66 tests; HTML/MD report plus ROLLBACK-wrapped fix.sql. On PyPI and as a GitHub Action; sold as a review on Contra and as an agent skill on Agensi.",
       },
       {
         name: "Race-safe salon booking (Cloudflare Workers, D1, Stripe)",
