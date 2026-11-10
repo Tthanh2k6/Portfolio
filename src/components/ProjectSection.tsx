@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { NavBar } from "./NavBar";
 import { useLang } from "@/lib/i18n";
 
@@ -36,6 +36,7 @@ const REPO_IMAGES: Record<string, string> = {
   Sothuchi: "/IMG/project-sothuchi.png",
   "NCKH-PeopleCount": "/IMG/project-peoplecount.png",
   "supabase-multitenant-rls": "/IMG/project-multitenant-rls.png",
+  "supabase-rls-check": "/IMG/project-supabase-rls-check.png",
 };
 // Ảnh dùng cho card: ưu tiên ảnh chụp local, không có thì dùng ảnh OpenGraph của GitHub
 const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
@@ -1090,81 +1091,212 @@ function mapRepoToProject(repo: any) {
   return { ...base, ...(REPO_META[repo.name] || {}) };
 }
 
-// Vị trí xuất phát của băng chuyền, dùng ĐÚNG công thức của applyList bên dưới:
-// đầu bộ nhân bản thứ 3 (`2 * N`, ứng với dự án đầu tiên `projects[0]`) — nằm trọn trong
-// "vùng an toàn" [2*N .. 3*N-1] mà goToProject dùng, nên hai đầu luôn còn 2 bộ đệm đầy đủ để cuộn,
-// đồng thời mở trang ra thấy ngay dự án mới nhất ở đầu danh sách và không bị nhảy sang dự án khác
-// khi fetch GitHub API hoàn tất.
-const START_INDEX = projects.length * 2;
+// 5 dự án chủ lực hiển thị dạng thẻ lớn ở hàng Featured đầu trang (giữ đúng thứ tự)
+const FEATURED_IDS = [
+  "supabase-rls-check",
+  "supabase-multitenant-rls",
+  "race-safe-salon-booking",
+  "MadalenaApp",
+  "market-data-pipeline",
+] as const;
+
+const PAGE_SIZE = 9;
+
+type ProjectGroup =
+  | "Security & Supabase"
+  | "Mobile"
+  | "Automation & Data"
+  | "AI & ML"
+  | "Web & Tools";
+
+type FilterGroupKey = "All" | ProjectGroup;
+
+const FILTER_GROUPS: ReadonlyArray<{
+  key: FilterGroupKey;
+  labelVi: string;
+  labelEn: string;
+}> = [
+  { key: "All", labelVi: "Tất cả", labelEn: "All" },
+  {
+    key: "Security & Supabase",
+    labelVi: "Bảo mật & Supabase",
+    labelEn: "Security & Supabase",
+  },
+  { key: "Mobile", labelVi: "Di động", labelEn: "Mobile" },
+  {
+    key: "Automation & Data",
+    labelVi: "Tự động hoá & Dữ liệu",
+    labelEn: "Automation & Data",
+  },
+  { key: "AI & ML", labelVi: "AI & Học máy", labelEn: "AI & ML" },
+  { key: "Web & Tools", labelVi: "Web & Công cụ", labelEn: "Web & Tools" },
+];
+
+function matchCategoryToken(text: string): ProjectGroup | null {
+  if (!text) return null;
+  if (/\b(RLS|SUPABASE|POSTGRES|POSTGRESQL|POSTGREST)\b/i.test(text)) {
+    return "Security & Supabase";
+  }
+  if (/\b(REACT\s+NATIVE|KOTLIN|ANDROID|FLUTTER|MOBILE|IOS)\b/i.test(text)) {
+    return "Mobile";
+  }
+  if (
+    /\b(APIFY|SCRAPING|SCRAPER|PLAYWRIGHT|SELENIUM|AUTOMATION|N8N)\b/i.test(
+      text
+    ) ||
+    /PYTHON\s*[•·&/|-]\s*DATA/i.test(text)
+  ) {
+    return "Automation & Data";
+  }
+  if (
+    /\b(AI|ML|MACHINE\s+LEARNING|DEEP\s+LEARNING|RAG|OPENAI|LLM|VISION|MEDIAPIPE|TENSORFLOW|TF\.JS|PYTORCH|YOLOV8|PADDLEOCR|OCR)\b/i.test(
+      text
+    )
+  ) {
+    return "AI & ML";
+  }
+  return null;
+}
+
+// Hàm thuần phân nhóm dự án dựa trên `category` (nhãn chính) rồi tới `tech`
+function getProjectGroup(proj: {
+  category?: string;
+  tech?: string[];
+}): ProjectGroup {
+  const byCategory = matchCategoryToken(String(proj.category ?? ""));
+  if (byCategory) return byCategory;
+
+  const techJoined = Array.isArray(proj.tech) ? proj.tech.join(" • ") : "";
+  const byTech = matchCategoryToken(techJoined);
+  if (byTech) return byTech;
+
+  return "Web & Tools";
+}
+
+function foldVietnamese(input: string): string {
+  return input
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D");
+}
+
+// Tìm kiếm không phân biệt hoa thường trên cả tiếng Việt & tiếng Anh (title, desc, tech, category)
+function matchesProjectSearch(proj: any, rawQuery: string): boolean {
+  const q = rawQuery.trim().toLowerCase();
+  if (!q) return true;
+
+  const searchable = [
+    proj.title,
+    proj.titleEn,
+    proj.shortName,
+    proj.shortNameEn,
+    proj.desc,
+    proj.descEn,
+    proj.category,
+    proj.id,
+    ...(Array.isArray(proj.tech) ? proj.tech : []),
+  ]
+    .filter(Boolean)
+    .join(" \n ")
+    .toLowerCase();
+
+  if (searchable.includes(q)) return true;
+
+  // Hỗ trợ gõ tiếng Việt không dấu (vd: "diem danh", "lich hoc", "so thu chi")
+  const foldedQuery = foldVietnamese(q);
+  if (foldedQuery === q) {
+    return foldVietnamese(searchable).includes(foldedQuery);
+  }
+  return false;
+}
+
+function normalizeProjectItems(raw: any[]): any[] {
+  return raw.map((item: any) =>
+    item.yearRole ? item : { ...item, yearRole: `${item.year} • ${item.role}` }
+  );
+}
+
+function ProjectThumbnail({
+  proj,
+  alt,
+  eager = false,
+}: {
+  proj: any;
+  alt: string;
+  eager?: boolean;
+}) {
+  return (
+    <div className="ps-thumb">
+      <img
+        src={proj.image}
+        alt={alt}
+        loading={eager ? "eager" : "lazy"}
+        decoding="async"
+        draggable={false}
+        className={`ps-thumb-img ${proj.id === "AI_Lab" ? "is-zoom" : ""} ${
+          ["DiemDanhQR", "supabase-multitenant-rls", "supabase-rls-check"].includes(proj.id) ? "is-fit-top" : ""
+        }`}
+        onError={(e) => {
+          const target = e.currentTarget;
+          const og = ghImage(proj.id);
+          // Thiếu ảnh local -> thử ảnh OpenGraph GitHub; nếu vẫn lỗi -> placeholder
+          if (!target.dataset.fallback && proj.id) {
+            target.dataset.fallback = "og";
+            target.src = og;
+          } else {
+            target.src = `https://placehold.co/600x338/111219/ffffff?text=${encodeURIComponent(
+              proj.shortName || proj.title
+            )}`;
+          }
+        }}
+      />
+    </div>
+  );
+}
 
 export function ProjectSection() {
   const { t, pick } = useLang();
-  const [projectList, setProjectList] = useState<any[]>(projects);
-  const [activeIndex, setActiveIndex] = useState(START_INDEX);
-  const [translateX, setTranslateX] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [isNoTransitions, setIsNoTransitions] = useState(false);
-  const [isFastTransitions, setIsFastTransitions] = useState(false);
+  const [projectList, setProjectList] = useState<any[]>(() =>
+    normalizeProjectItems(projects)
+  );
+  const [activeGroup, setActiveGroup] = useState<FilterGroupKey>("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   // Dự án đang mở trong modal chi tiết (null = đang đóng)
   const [detailProj, setDetailProj] = useState<any | null>(null);
 
-  const trackRef = useRef<HTMLDivElement>(null);
-  const activeIndexRef = useRef(START_INDEX);
-  const isTransitioningRef = useRef(false);
-  const autoplayTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // Bản ref của trạng thái modal: resetAutoplayTimer chạy trong setTimeout nên đọc
-  // state trực tiếp sẽ dính giá trị cũ (stale closure).
-  const detailOpenRef = useRef(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+  const lastFocusRef = useRef<HTMLElement | null>(null);
 
-  // Mở modal thì dừng hẳn autoplay, đóng thì chạy lại — không thì carousel vẫn
-  // trượt sau lưng modal, đóng ra đã lạc sang dự án khác.
-  useEffect(() => {
-    detailOpenRef.current = detailProj !== null;
-    if (detailProj) {
-      if (autoplayTimeoutRef.current) clearTimeout(autoplayTimeoutRef.current);
-    } else {
-      resetAutoplayTimer();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [detailProj]);
+  // Tín hiệu hover của con trỏ chuột tuỳ chỉnh trên toàn site
+  const triggerCursorHover = (enter: boolean) => {
+    const eventName = enter ? "cursorHoverEnter" : "cursorHoverLeave";
+    window.dispatchEvent(new CustomEvent(eventName));
+  };
 
-  // Đồng bộ state refs để tránh lỗi stale closure trong window events/timeouts
-  useEffect(() => {
-    activeIndexRef.current = activeIndex;
-  }, [activeIndex]);
+  const openProjectModal = (proj: any, triggerEl?: HTMLElement | null) => {
+    lastFocusRef.current =
+      triggerEl ?? (document.activeElement as HTMLElement | null);
+    setDetailProj(proj);
+  };
 
-  useEffect(() => {
-    isTransitioningRef.current = isTransitioning;
-  }, [isTransitioning]);
-
-  // Lưới an toàn: nếu đang transition mà sau ~1.2s vẫn chưa nhận được 'transitionend'
-  // (vd: tab bị ẩn, transition bị huỷ giữa chừng) thì tự gỡ khoá để không kẹt cứng slider.
-  useEffect(() => {
-    if (!isTransitioning) return;
-    const failSafe = setTimeout(() => {
-      setIsTransitioning(false);
-      setIsFastTransitions(false);
-    }, 1200);
-    return () => clearTimeout(failSafe);
-  }, [isTransitioning]);
+  const closeProjectModal = () => {
+    setDetailProj(null);
+    requestAnimationFrame(() => {
+      lastFocusRef.current?.focus?.();
+    });
+  };
 
   // Tải danh sách dự án (chỉ chạy phía client). Thứ tự ưu tiên:
   //   1. localStorage "project_list" (do admin chỉnh) — nếu có thì dùng luôn, không gọi API.
   //   2. Hiển thị ngay danh sách tĩnh, rồi fetch repo công khai từ GitHub để cập nhật.
   //   3. Nếu fetch lỗi (offline / vượt giới hạn request) thì giữ nguyên danh sách tĩnh.
   useEffect(() => {
-    // Gán danh sách + canh activeIndex về giữa dải nhân bản (5 bộ) để cuộn vòng mượt
     const applyList = (raw: any[]) => {
-      const list = raw.map((item: any) =>
-        item.yearRole ? item : { ...item, yearRole: `${item.year} • ${item.role}` }
-      );
+      const list = normalizeProjectItems(raw);
       setProjectList(list);
-      const N = list.length;
-      // Đầu bộ thứ 3 (floor(5/2)=2 -> 2*N, tức dự án đầu tiên `list[0]`), để dư 2 bộ đệm ở cả 2 phía.
-      const initialIndex = Math.floor(5 / 2) * N;
-      setActiveIndex(initialIndex);
-      activeIndexRef.current = initialIndex;
     };
 
     // 1. Ưu tiên danh sách do admin quản lý
@@ -1181,22 +1313,37 @@ export function ProjectSection() {
       }
     }
 
-    // 2. Hiển thị ngay danh sách tĩnh (4 repo thật) làm nội dung tức thì + dự phòng
+    // 2. Hiển thị ngay danh sách tĩnh làm nội dung tức thì + dự phòng
     applyList(projects);
 
     // 3. Lấy repo công khai mới nhất từ GitHub (tự cập nhật khi thêm repo mới)
     let cancelled = false;
-    fetch(`https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`)
+    fetch(
+      `https://api.github.com/users/${GITHUB_USER}/repos?per_page=100&sort=updated`
+    )
       .then((r) => (r.ok ? r.json() : Promise.reject(r.status)))
       .then((repos) => {
         if (cancelled || !Array.isArray(repos)) return;
-        // Bỏ các repo fork và repo trùng với dự án đã có trong danh sách private (vd GhiChu trùng NoteMod)
-        const HIDDEN_REPOS = new Set(["GhiChu", "Tthanh2k6", "apify-thefork-restaurant-scraper"]);
+        // Bỏ các repo fork và repo trùng với dự án đã có trong danh sách recent/private
+        const HIDDEN_REPOS = new Set([
+          "GhiChu",
+          "Tthanh2k6",
+          "apify-thefork-restaurant-scraper",
+        ]);
+        const existingIds = new Set([
+          ...recentProjects.map((p) => p.id),
+          ...privateProjects.map((p) => p.id),
+        ]);
         const mapped = repos
-          .filter((r: any) => !r.fork && !HIDDEN_REPOS.has(r.name) && !recentProjects.some((p) => p.id === r.name))
+          .filter(
+            (r: any) =>
+              !r.fork && !HIDDEN_REPOS.has(r.name) && !existingIds.has(r.name)
+          )
           .map(mapRepoToProject);
-        // Giữ ba dự án mới ở đầu, kể cả khi GitHub cập nhật danh sách.
-        if (mapped.length > 0) applyList([...recentProjects, ...privateProjects, ...mapped]);
+        // Giữ các dự án định vị mới và dự án doanh nghiệp/private ở đầu khi gộp.
+        if (mapped.length > 0) {
+          applyList([...recentProjects, ...privateProjects, ...mapped]);
+        }
       })
       .catch((err) => console.error("Không lấy được repo GitHub:", err));
 
@@ -1205,200 +1352,74 @@ export function ProjectSection() {
     };
   }, []);
 
-  // Effect tính toán căn giữa
-  const calculateTranslation = () => {
-    if (!trackRef.current) return;
-    const activeCard = trackRef.current.querySelector(
-      `[data-index="${activeIndex}"]`
-    ) as HTMLDivElement;
-    if (!activeCard) return;
-
-    const viewportCenter = window.innerWidth / 2;
-    const activeCardCenterOffset =
-      activeCard.offsetLeft + activeCard.offsetWidth / 2;
-    const tx = viewportCenter - activeCardCenterOffset;
-    setTranslateX(tx);
-  };
-
-  useEffect(() => {
-    calculateTranslation();
-    window.addEventListener("resize", calculateTranslation);
-    return () => window.removeEventListener("resize", calculateTranslation);
-  }, [activeIndex, projectList]);
-
-  // Thiết lập độ trễ autoplay
-  const AUTOPLAY_DELAY = 3000;
-
-  const resetAutoplayTimer = () => {
-    if (autoplayTimeoutRef.current) {
-      clearTimeout(autoplayTimeoutRef.current);
-    }
-
-    // Đang đọc chi tiết thì không tự chuyển card
-    if (detailOpenRef.current) return;
-
-    // Tạm dừng hoàn toàn autoplay nếu đang hover card active
-    if (trackRef.current) {
-      const activeCard = trackRef.current.querySelector(
-        ".project-card.active"
-      ) as HTMLDivElement;
-      if (activeCard && activeCard.matches(":hover")) {
-        return;
+  // Hàng Featured ở đầu trang theo đúng thứ tự FEATURED_IDS (bỏ qua nếu id không tồn tại)
+  const featuredProjects = useMemo(() => {
+    const byId = new Map<string, any>();
+    for (const item of projectList) {
+      if (item?.id && !byId.has(item.id)) {
+        byId.set(item.id, item);
       }
     }
-
-    autoplayTimeoutRef.current = setTimeout(() => {
-      const currentIdx = activeIndexRef.current;
-      if (projectList.length === 0) return;
-      const nextLogical = (currentIdx + 1) % projectList.length;
-      goToProject(nextLogical);
-    }, AUTOPLAY_DELAY);
-  };
-
-  // Tìm index đích gần nhất theo vòng tròn (modular): từ vị trí hiện tại đi tới logic đích
-  // theo hướng ngắn nhất, thay vì luôn đi tiến. Nhờ vậy chuyển từ card cuối -> card đầu
-  // sẽ trượt sang phải 1 bước thay vì lùi qua cả danh sách.
-  const getShortestPath = (fromIndex: number, targetLogical: number) => {
-    const len = projectList.length;
-    if (len === 0) return fromIndex;
-    const currentLogical = fromIndex % len;
-    let diff = targetLogical - currentLogical;
-    // Chuẩn hóa diff về khoảng [-len/2, len/2] (ở đây ngưỡng 2 = floor(5/2)) để chọn chiều ngắn nhất:
-    // nếu đi tiến quá nửa vòng thì đổi sang đi lùi (và ngược lại).
-    if (diff > 2) diff -= len;
-    if (diff < -2) diff += len;
-    return fromIndex + diff;
-  };
-
-  const goToProject = (targetLogical: number) => {
-    if (isTransitioningRef.current) return;
-
-    const currentIdx = activeIndexRef.current;
-    const closestTarget = getShortestPath(currentIdx, targetLogical);
-    const N = projectList.length;
-    if (N === 0) return;
-
-    // Đích trùng vị trí hiện tại (vd: bấm vào chính card active ở giữa) -> không có
-    // chuyển động nào -> sự kiện 'transitionend' của transform sẽ KHÔNG bao giờ bắn.
-    // Phải thoát sớm, nếu không setIsTransitioning(true) bên dưới sẽ kẹt true mãi mãi
-    // và khoá toàn bộ thao tác cuộn/click sau đó.
-    if (closestTarget === currentIdx) {
-      setIsFastTransitions(false);
-      return;
-    }
-
-    // Vùng an toàn = bộ nhân bản ở giữa [2*N .. 3*N-1]. Nếu đích gần nhất vẫn nằm
-    // trong vùng này thì chỉ cần transition mượt bình thường (còn dư bộ 2 phía nên không lo hết card).
-    if (closestTarget >= 2 * N && closestTarget <= 3 * N - 1) {
-      setIsTransitioning(true);
-      setActiveIndex(closestTarget);
-    } else {
-      // Đích bị trôi ra ngoài vùng an toàn -> phải "tái định vị" về giữa để còn chỗ cuộn tiếp.
-      setIsTransitioning(true);
-      // safeTarget: cùng logic đích nhưng đặt trong bộ giữa.
-      const safeTarget = 2 * N + targetLogical;
-      // start: lùi safeTarget lại đúng quãng đường (closestTarget - currentIdx) cần trượt,
-      // để khi trượt từ start -> safeTarget mắt thấy đúng hướng/khoảng cách như đi tới closestTarget.
-      const start = safeTarget - (closestTarget - currentIdx);
-
-      // Thủ thuật chống nhấp nháy: nhảy tức thì (tắt transition) về 'start' tương đương,
-      // người dùng không thấy vì vị trí hiển thị giống hệt vị trí cũ.
-      setIsNoTransitions(true);
-      setActiveIndex(start);
-
-      // 35ms: chờ React commit DOM + browser áp layout của bước nhảy (đang tắt transition) xong
-      // mới bật lại transition, tránh trình duyệt gộp 2 lần đổi index thành 1 animation giật.
-      setTimeout(() => {
-        setIsNoTransitions(false);
-
-        // 20ms: thêm 1 frame đệm sau khi bật lại transition rồi mới đổi tới safeTarget,
-        // đảm bảo cú trượt cuối chạy mượt thay vì bị nhảy cóc.
-        setTimeout(() => {
-          setActiveIndex(safeTarget);
-        }, 20);
-      }, 35);
-    }
-  };
-
-  const handleTransitionEnd = (e: React.TransitionEvent) => {
-    if (e.target === e.currentTarget && e.propertyName === "transform") {
-      setIsTransitioning(false);
-      setIsFastTransitions(false);
-    }
-  };
-
-  // Xử lý khi click vào card
-  const handleCardClick = (idx: number) => {
-    if (isTransitioningRef.current) return;
-    if (projectList.length === 0) return;
-    const clickedLogical = idx % projectList.length;
-    setIsFastTransitions(true);
-    goToProject(clickedLogical);
-    resetAutoplayTimer();
-  };
-
-  // Tín hiệu hover của con trỏ chuột
-  const triggerCursorHover = (enter: boolean) => {
-    const eventName = enter ? "cursorHoverEnter" : "cursorHoverLeave";
-    window.dispatchEvent(new CustomEvent(eventName));
-  };
-
-  const handleCardMouseEnter = (idx: number) => {
-    triggerCursorHover(true);
-    if (idx === activeIndex) {
-      if (autoplayTimeoutRef.current) {
-        clearTimeout(autoplayTimeoutRef.current);
-      }
-    }
-  };
-
-  const handleCardMouseLeave = () => {
-    triggerCursorHover(false);
-    resetAutoplayTimer();
-  };
-
-  // Timers & listeners của autoplay
-  useEffect(() => {
-    resetAutoplayTimer();
-    return () => {
-      if (autoplayTimeoutRef.current) clearTimeout(autoplayTimeoutRef.current);
-    };
-  }, [activeIndex, projectList]);
-
-  useEffect(() => {
-    const handleGlobalInteraction = () => {
-      resetAutoplayTimer();
-    };
-
-    window.addEventListener("mousemove", handleGlobalInteraction);
-    window.addEventListener("mousedown", handleGlobalInteraction);
-    window.addEventListener("keydown", handleGlobalInteraction);
-    window.addEventListener("wheel", handleGlobalInteraction);
-    document.addEventListener("mouseleave", handleGlobalInteraction);
-    document.addEventListener("mouseenter", handleGlobalInteraction);
-
-    return () => {
-      window.removeEventListener("mousemove", handleGlobalInteraction);
-      window.removeEventListener("mousedown", handleGlobalInteraction);
-      window.removeEventListener("keydown", handleGlobalInteraction);
-      window.removeEventListener("wheel", handleGlobalInteraction);
-      document.removeEventListener("mouseleave", handleGlobalInteraction);
-      document.removeEventListener("mouseenter", handleGlobalInteraction);
-    };
+    return FEATURED_IDS.map((id) => byId.get(id)).filter(Boolean);
   }, [projectList]);
 
-  // Nhân bản danh sách 5 lần (vd 5 dự án -> 25 card) để tạo ảo giác cuộn vô hạn:
-  // luôn còn card đệm ở 2 đầu, kết hợp cú nhảy "tái định vị" trong goToProject.
-  const repeatCount = 5;
-  const cardsData = Array.from(
-    { length: repeatCount * projectList.length },
-    (_, idx) => {
-      const proj = projectList[idx % projectList.length];
-      return { ...proj, globalIdx: idx };
-    }
+  // Lọc theo từ khoá trước để số đếm trên từng chip phản ánh trực tiếp kết quả đang khớp
+  const searchMatchedProjects = useMemo(
+    () => projectList.filter((proj) => matchesProjectSearch(proj, searchQuery)),
+    [projectList, searchQuery]
   );
 
-  const logicalProjIndex = activeIndex % projectList.length;
+  const groupCounts = useMemo(() => {
+    const counts: Record<FilterGroupKey, number> = {
+      All: searchMatchedProjects.length,
+      "Security & Supabase": 0,
+      Mobile: 0,
+      "Automation & Data": 0,
+      "AI & ML": 0,
+      "Web & Tools": 0,
+    };
+    for (const proj of searchMatchedProjects) {
+      const grp = getProjectGroup(proj);
+      counts[grp] += 1;
+    }
+    return counts;
+  }, [searchMatchedProjects]);
+
+  const filteredProjects = useMemo(() => {
+    if (activeGroup === "All") return searchMatchedProjects;
+    return searchMatchedProjects.filter(
+      (proj) => getProjectGroup(proj) === activeGroup
+    );
+  }, [searchMatchedProjects, activeGroup]);
+
+  const visibleProjects = useMemo(
+    () => filteredProjects.slice(0, visibleCount),
+    [filteredProjects, visibleCount]
+  );
+
+  const remainingCount = Math.max(
+    0,
+    filteredProjects.length - visibleProjects.length
+  );
+
+  const handleSelectGroup = (group: FilterGroupKey) => {
+    setActiveGroup(group);
+    setVisibleCount(PAGE_SIZE);
+  };
+
+  const handleSearchChange = (value: string) => {
+    setSearchQuery(value);
+    setVisibleCount(PAGE_SIZE);
+  };
+
+  const handleResetFilters = () => {
+    setActiveGroup("All");
+    setSearchQuery("");
+    setVisibleCount(PAGE_SIZE);
+    searchInputRef.current?.focus();
+  };
+
+  const hasOddFeatured = featuredProjects.length % 2 === 1;
 
   return (
     <>
@@ -1407,414 +1428,811 @@ export function ProjectSection() {
         *, *::before, *::after { box-sizing: border-box; }
 
         .project-section-wrapper {
+          --ps-bg: #06070d;
+          --ps-surface: rgba(17, 18, 25, 0.9);
+          --ps-surface-solid: #111219;
+          --ps-surface-hover: #161824;
+          --ps-elevated: #252e42;
+          --ps-border: rgba(255, 255, 255, 0.08);
+          --ps-border-hover: rgba(142, 162, 255, 0.38);
+          --ps-accent: #8ea2ff;
+          --ps-accent-soft: rgba(142, 162, 255, 0.11);
+          --ps-accent-border: rgba(142, 162, 255, 0.24);
+          --ps-accent-text: #c3cdff;
+          --ps-cyan: #00a2ff;
+          --ps-amber: #f0932b;
+          --ps-font-display: 'Plus Jakarta Sans', 'Be Vietnam Pro', sans-serif;
+          --ps-font-body: 'Be Vietnam Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          --ps-font-mono: 'Fira Code', ui-monospace, SFMono-Regular, Menlo, monospace;
+
           position: relative;
           min-height: 100vh;
           width: 100%;
-          background-color: #06070d;
+          background-color: var(--ps-bg);
           background-image: url('/IMG/background.jpeg');
           background-size: cover;
           background-position: center;
           background-repeat: no-repeat;
           background-attachment: fixed;
-          overflow: hidden;
-          font-family: 'Be Vietnam Pro', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          overflow-x: clip;
+          font-family: var(--ps-font-body);
           color: #ffffff;
-          user-select: none; -webkit-user-select: none;
-          -webkit-user-drag: none;
-          display: flex;
-          flex-direction: column;
-          justify-content: space-between;
         }
 
-        /* Nền mờ ảo đồng bộ */
+        /* Lớp phủ tối làm dịu ảnh nền để chữ và hệ thống thẻ đọc rõ trên suốt chiều dài cuộn */
         .project-section-wrapper::before {
           content: '';
-          position: absolute; inset: 0;
-          background: radial-gradient(circle, rgba(0,162,255,0.04) 0%, rgba(240,147,43,0.01) 60%, transparent 100%);
-          pointer-events: none; z-index: 1;
-          animation: techPulse 8s ease-in-out infinite alternate;
-        }
-        @keyframes techPulse { 0%{opacity:.5} 100%{opacity:1} }
-
-        /* ===== GỢI Ý CUỘN ===== */
-        .scroll-hint {
-          border: 1px solid rgba(255,255,255,0.18);
-          border-radius: 100px;
-          padding: 9px 20px;
-          color: rgba(255,255,255,0.6);
-          font-size: 0.78rem;
-          font-weight: 500;
-          letter-spacing: 0.3px;
-          backdrop-filter: blur(6px);
-          background: rgba(255,255,255,0.04);
+          position: fixed;
+          inset: 0;
+          background:
+            radial-gradient(circle at 18% 12%, rgba(0, 162, 255, 0.09) 0%, transparent 46%),
+            radial-gradient(circle at 84% 18%, rgba(240, 147, 43, 0.06) 0%, transparent 42%),
+            linear-gradient(180deg, rgba(6, 7, 13, 0.78) 0%, rgba(6, 7, 13, 0.9) 55%, rgba(6, 7, 13, 0.96) 100%);
+          pointer-events: none;
+          z-index: 0;
         }
 
-        /* ===== TIÊU ĐỀ GALLERY CHÍNH ===== */
-        .gallery-title-wrapper {
-          text-align: center;
-          margin-top: 120px;
-          z-index: 2;
-          opacity: 0;
-          animation: fadeUp 0.9s ease 0.3s forwards;
-        }
-
-        .gallery-title {
-          font-family: 'Plus Jakarta Sans', sans-serif;
-          font-size: 2.6rem;
-          font-weight: 800;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-          margin: 0;
-          display: flex;
-          justify-content: center;
-          gap: 14px;
-        }
-
-        .gallery-title .word-project {
-          color: #ffffff;
-          text-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
-        }
-
-        .gallery-title .word-showcase {
-          background: linear-gradient(90deg, #00a2ff 0%, #f0932b 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-          filter: drop-shadow(0 2px 8px rgba(0, 162, 255, 0.15));
-        }
-
-        /* ===== CONTAINER CUỘN PHIM ===== */
-        .filmstrip-container {
+        .ps-shell {
           position: relative;
-          width: 100%;
-          height: 580px;
-          z-index: 2;
-          overflow: visible;
-          display: flex;
-          align-items: center;
-          opacity: 0;
-          animation: fadeIn 1.2s ease 0.4s forwards;
-        }
-
-        /* Cuộn phim răng đục chạy nền */
-        .filmstrip-bg-ribbon {
-          position: absolute;
-          left: 0; right: 0;
-          top: 50%;
-          transform: translateY(-50%);
-          height: 260px;
-          background: rgba(18, 20, 27, 0.4);
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.05);
           z-index: 1;
-          pointer-events: none;
+          width: min(1240px, 100%);
+          margin: 0 auto;
+          padding: 118px 28px 88px;
         }
 
-        .filmstrip-bg-ribbon::before, .filmstrip-bg-ribbon::after {
-          content: '';
-          position: absolute;
-          left: 0;
-          width: 100%;
-          height: 10px;
-          background-image: repeating-linear-gradient(to right, rgba(255, 255, 255, 0.05) 0px, rgba(255, 255, 255, 0.05) 8px, transparent 8px, transparent 18px);
-        }
-        .filmstrip-bg-ribbon::before { top: 6px; }
-        .filmstrip-bg-ribbon::after { bottom: 6px; }
-
-        /* Track di chuyển */
-        .filmstrip-track {
+        /* ===== TIÊU ĐỀ TRANG ===== */
+        .ps-hero {
           display: flex;
+          flex-wrap: wrap;
+          align-items: flex-end;
+          justify-content: space-between;
+          gap: 18px 32px;
+          padding-bottom: 28px;
+          border-bottom: 1px solid var(--ps-border);
+          animation: psFadeUp 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .ps-eyebrow {
+          display: inline-flex;
           align-items: center;
-          height: 100%;
-          will-change: transform;
-          transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
-          z-index: 2;
-        }
-
-        /* ===== CLASS KHÓA TRANSITION ĐỂ JUMP TRÁNH NHẤP NHÁY VÀ GIẬT HÌNH ===== */
-        .no-transitions, .no-transitions * {
-          transition: none !important;
-          animation: none !important;
-        }
-
-        /* ===== TRƯỢT NHANH KHI CLICK CARD HOẶC INDICATOR ===== */
-        .fast-transitions, .fast-transitions * {
-          transition-duration: 0.28s !important;
-        }
-
-        /* ===== CARD DỰ ÁN ===== */
-        .project-card {
-          position: relative;
-          width: 360px;
-          height: 220px;
-          margin: 0 35px;
-          border-radius: 20px;
-          overflow: hidden;
-          flex-shrink: 0;
-          background: rgba(18, 19, 26, 0.85);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          opacity: 0.25;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          padding: 14px;
-          transition: height 0.65s cubic-bezier(0.25, 1, 0.5, 1), 
-                      border-color 0.5s ease, 
-                      box-shadow 0.5s ease,
-                      opacity 0.6s ease;
-        }
-
-        /* Thẻ lân cận */
-        .project-card.neighbor {
-          opacity: 0.65;
-          border-color: rgba(255, 255, 255, 0.12);
-        }
-
-        /* Thẻ active phình to */
-        .project-card.active {
-          height: 550px;
-          opacity: 1;
-          border: 2px solid #ffffff;
-          box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 35px rgba(255,255,255,0.08);
-          background: #111219;
-          z-index: 10;
-          padding: 16px;
-        }
-
-        /* KHUNG ẢNH DÙNG CHUNG */
-        .card-img-box {
-          width: 100%;
-          height: 120px;
-          border-radius: 12px;
-          overflow: hidden;
-          background: #000;
-          flex-shrink: 0;
-          transition: height 0.65s cubic-bezier(0.25, 1, 0.5, 1), border-radius 0.65s ease;
-        }
-
-        .project-card.active .card-img-box {
-          height: 200px;
-          border-radius: 14px;
-        }
-
-        /* Transition của ảnh */
-        .project-card-img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          filter: grayscale(1) brightness(0.5);
-          transition: filter 0.45s ease, transform 0.6s ease;
-        }
-
-        /* Sắc độ thẻ lân cận */
-        .project-card.neighbor .project-card-img {
-          filter: grayscale(0.6) brightness(0.75);
-        }
-
-        /* Sắc độ thẻ active chính giữa */
-        .project-card.active .project-card-img {
-          filter: grayscale(0) brightness(0.95);
-        }
-
-        .project-card:hover .project-card-img {
-          transform: scale(1.03);
-        }
-
-        /* Canh phần trên của ảnh (hữu ích cho ảnh dọc như DiemDanhQR -> lộ header app) */
-        .project-card-img.fit-top {
-          object-position: center top;
-        }
-
-        /* Phóng to ảnh có nhiều lề trống (AI_Lab) để nội dung lấp đầy khung, canh phần trên */
-        .project-card-img.zoom {
-          transform: scale(1.5);
-          object-position: center top;
-        }
-        .project-card:hover .project-card-img.zoom {
-          transform: scale(1.55);
-        }
-
-        /* --- STYLE THÔNG TIN THU GỌN --- */
-        .info-collapsed {
-          display: flex;
-          flex-direction: column;
-          margin-top: 12px;
-          opacity: 1;
-          transition: opacity 0.4s ease;
-        }
-
-        .project-card.active .info-collapsed {
-          opacity: 0;
-          height: 0;
-          margin: 0;
-          overflow: hidden;
-          pointer-events: none;
-        }
-
-        .collapsed-num {
-          font-size: 0.65rem;
-          font-weight: 700;
-          color: rgba(255, 255, 255, 0.4);
-          letter-spacing: 1.5px;
-          text-transform: uppercase;
-          margin-bottom: 2px;
-        }
-
-        .collapsed-title {
-          font-size: 0.95rem;
-          font-weight: 700;
-          color: #ffffff;
-          margin: 0;
-          letter-spacing: -0.2px;
-        }
-
-        .collapsed-preview-link {
+          gap: 8px;
+          font-family: var(--ps-font-mono);
           font-size: 0.72rem;
-          font-weight: 700;
-          color: rgba(255, 255, 255, 0.4);
-          letter-spacing: 1px;
+          font-weight: 500;
+          letter-spacing: 0.14em;
           text-transform: uppercase;
-          margin-top: 10px;
-          display: inline-block;
+          color: var(--ps-accent);
+          margin: 0 0 10px;
+          font-variant-numeric: tabular-nums;
         }
 
-        /* --- STYLE THÔNG TIN MỞ RỘNG --- */
-        .info-expanded {
-          display: flex;
-          flex-direction: column;
-          margin-top: 14px;
-          opacity: 0;
-          height: 0;
-          overflow: hidden;
-          transition: opacity 0.5s ease 0.15s, height 0.65s cubic-bezier(0.25, 1, 0.5, 1);
-          pointer-events: none;
+        .ps-eyebrow-dot {
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, var(--ps-cyan), var(--ps-amber));
+          box-shadow: 0 0 10px rgba(0, 162, 255, 0.6);
         }
 
-        .project-card.active .info-expanded {
-          opacity: 1;
-          height: calc(100% - 214px);
-          pointer-events: auto;
-        }
-
-        .expanded-title {
-          font-size: 1.28rem;
+        .ps-title {
+          font-family: var(--ps-font-display);
+          font-size: clamp(2rem, 3.6vw, 2.85rem);
           font-weight: 800;
+          letter-spacing: -0.025em;
+          line-height: 1.2;
+          margin: 0;
           color: #ffffff;
-          margin: 0 0 8px 0;
-          letter-spacing: -0.5px;
-          flex-shrink: 0;
         }
 
-        .expanded-desc {
-          font-size: 0.85rem;
-          color: rgba(255, 255, 255, 0.65);
-          line-height: 1.5;
-          margin: 0 0 12px 0;
-          display: -webkit-box;
-          -webkit-line-clamp: 3;
-          -webkit-box-orient: vertical;
-          overflow: hidden;
-          flex-shrink: 0;
+        .ps-title-accent {
+          background: linear-gradient(90deg, var(--ps-cyan) 0%, var(--ps-accent) 52%, var(--ps-amber) 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
         }
 
-        .expanded-details {
+        .ps-subtitle {
+          max-width: 520px;
+          margin: 0;
+          font-size: 0.92rem;
+          line-height: 1.6;
+          color: rgba(255, 255, 255, 0.66);
+        }
+
+        /* ===== CẤU TRÚC SECTION CHUNG ===== */
+        .ps-section {
+          margin-top: 38px;
+        }
+
+        .ps-section-all {
+          margin-top: 56px;
+          padding-top: 40px;
+          border-top: 1px solid var(--ps-border);
+        }
+
+        .ps-section-head {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: flex-end;
+          justify-content: space-between;
+          gap: 14px 24px;
+          margin-bottom: 20px;
+        }
+
+        .ps-section-title-group {
           display: flex;
           flex-direction: column;
           gap: 4px;
-          margin-bottom: 16px;
-          font-size: 0.82rem;
-          color: rgba(255, 255, 255, 0.85);
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
-          padding-top: 12px;
+        }
+
+        .ps-section-kicker {
+          font-family: var(--ps-font-mono);
+          font-size: 0.68rem;
+          font-weight: 500;
+          letter-spacing: 0.14em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.45);
+          font-variant-numeric: tabular-nums;
+        }
+
+        .ps-section-title {
+          font-family: var(--ps-font-display);
+          font-size: clamp(1.32rem, 2.2vw, 1.65rem);
+          font-weight: 800;
+          letter-spacing: -0.02em;
+          line-height: 1.3;
+          margin: 0;
+          color: #ffffff;
+        }
+
+        .ps-section-note {
+          margin: 0;
+          font-size: 0.84rem;
+          color: rgba(255, 255, 255, 0.56);
+          font-variant-numeric: tabular-nums;
+        }
+
+        /* ===== HÀNG FEATURED (THẺ LỚN Ở ĐẦU TRANG) ===== */
+        .ps-featured-grid {
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 22px;
+        }
+
+        /* ===== KHUNG THẺ DỰ ÁN DÙNG CHUNG ===== */
+        .ps-card {
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          min-width: 0;
+          background: var(--ps-surface);
+          border: 1px solid var(--ps-border);
+          border-radius: 18px;
+          overflow: hidden;
+          backdrop-filter: blur(12px);
+          -webkit-backdrop-filter: blur(12px);
+          box-shadow: 0 14px 36px rgba(0, 0, 0, 0.36);
+          transition:
+            transform 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+            border-color 0.24s ease,
+            background-color 0.24s ease,
+            box-shadow 0.26s ease;
+        }
+
+        .ps-card:hover {
+          transform: translateY(-3px);
+          background: var(--ps-surface-hover);
+          border-color: var(--ps-border-hover);
+          box-shadow: 0 22px 48px rgba(0, 0, 0, 0.54), 0 0 0 1px rgba(142, 162, 255, 0.14);
+        }
+
+        .ps-card-featured {
+          border-color: rgba(142, 162, 255, 0.18);
+          background: linear-gradient(180deg, rgba(22, 25, 38, 0.94) 0%, rgba(15, 16, 24, 0.95) 100%);
+        }
+
+        /* Chữ ký thị giác tinh gọn cho thẻ đầu bảng Featured: dải phổ mảnh 2px */
+        .ps-card-lead::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: linear-gradient(90deg, var(--ps-cyan) 0%, var(--ps-accent) 55%, var(--ps-amber) 100%);
+          z-index: 3;
+          pointer-events: none;
+        }
+
+        @media (min-width: 1024px) {
+          .ps-card-lead {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            align-items: stretch;
+          }
+
+          .ps-card-lead .ps-thumb {
+            height: 100%;
+            min-height: 290px;
+            border-bottom: none;
+            border-right: 1px solid var(--ps-border);
+          }
+
+          .ps-card-lead .ps-card-body {
+            padding: 26px 28px;
+          }
+
+          .ps-card-lead .ps-card-title {
+            font-size: 1.42rem;
+          }
+        }
+
+        /* KHUNG THUMBNAIL 16:9 */
+        .ps-thumb {
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          overflow: hidden;
+          background: #0a0b11;
+          border-bottom: 1px solid var(--ps-border);
           flex-shrink: 0;
         }
 
-        .detail-row {
-          display: flex;
-          gap: 8px;
+        .ps-thumb-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+          transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease;
         }
 
-        .detail-label {
-          color: rgba(255, 255, 255, 0.4);
-          width: 60px;
-          font-weight: 500;
+        .ps-card:hover .ps-thumb-img {
+          transform: scale(1.035);
         }
 
-        /* Cụm nút cuối card: gom nút "bản chạy thật" + nút mã nguồn vào một khối,
-           khối này mới là thứ bị đẩy xuống đáy (thay cho margin-top:auto của từng nút). */
-        .expanded-actions {
-          margin-top: auto;
+        .ps-thumb-img.is-fit-top {
+          object-position: center top;
+        }
+
+        .ps-thumb-img.is-zoom {
+          transform: scale(1.42);
+          object-position: center top;
+        }
+
+        .ps-card:hover .ps-thumb-img.is-zoom {
+          transform: scale(1.47);
+        }
+
+        /* PHẦN THÂN THẺ (lưu ý: giữ position: static để .ps-card-cta::after phủ trọn .ps-card) */
+        .ps-card-body {
           display: flex;
           flex-direction: column;
+          flex: 1 1 auto;
+          min-width: 0;
+          padding: 16px 18px 18px;
           gap: 8px;
-          width: 100%;
         }
 
-        .expanded-btn {
-          background: #252e42;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          color: #ffffff;
-          text-align: center;
-          padding: 12px 0;
-          border-radius: 10px;
-          font-size: 0.82rem;
-          font-weight: 700;
-          letter-spacing: 1.5px;
+        .ps-card-featured .ps-card-body {
+          padding: 20px 22px 22px;
+          gap: 10px;
+        }
+
+        .ps-card-topline {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+          min-width: 0;
+        }
+
+        .ps-card-category {
+          font-family: var(--ps-font-mono);
+          font-size: 0.67rem;
+          font-weight: 500;
+          letter-spacing: 0.08em;
           text-transform: uppercase;
-          text-decoration: none;
-          width: 100%;
-          transition: all 0.3s ease;
-          margin-top: 0;
+          color: var(--ps-accent);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          min-width: 0;
         }
 
-        .expanded-btn:hover {
-          background: #ffffff;
-          color: #000000;
+        .ps-featured-badge {
+          flex-shrink: 0;
+          font-family: var(--ps-font-mono);
+          font-size: 0.64rem;
+          font-weight: 500;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          padding: 3px 8px;
+          border-radius: 999px;
+          background: rgba(0, 162, 255, 0.12);
+          border: 1px solid rgba(0, 162, 255, 0.28);
+          color: #8fd8ff;
         }
 
-        /* Nút chính (bản chạy thật) — nổi bật hơn nút xem mã nguồn */
-        .expanded-btn.primary-cta {
+        .ps-card-title {
+          font-family: var(--ps-font-display);
+          font-size: 1.04rem;
+          font-weight: 700;
+          line-height: 1.36;
+          letter-spacing: -0.015em;
+          color: #ffffff;
+          margin: 0;
+          padding-top: 1px;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          overflow-wrap: anywhere;
+        }
+
+        .ps-card-featured .ps-card-title {
+          font-size: 1.22rem;
+          font-weight: 800;
+        }
+
+        .ps-card-desc {
+          font-size: 0.855rem;
+          line-height: 1.56;
+          color: rgba(255, 255, 255, 0.68);
+          margin: 0;
+          padding-top: 1px;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .ps-card-featured .ps-card-desc {
+          font-size: 0.9rem;
+          -webkit-line-clamp: 3;
+          line-clamp: 3;
+          color: rgba(255, 255, 255, 0.74);
+        }
+
+        .ps-featured-context {
+          font-size: 0.78rem;
+          line-height: 1.45;
+          color: rgba(255, 255, 255, 0.5);
+          margin: 2px 0 0;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .ps-tech-list {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+          list-style: none;
+          padding: 2px 0 0;
+          margin: 0;
+        }
+
+        .ps-tech-chip {
+          font-family: var(--ps-font-mono);
+          font-size: 0.69rem;
+          font-weight: 500;
+          line-height: 1.2;
+          padding: 4px 9px;
+          border-radius: 999px;
+          background: var(--ps-accent-soft);
+          border: 1px solid var(--ps-accent-border);
+          color: var(--ps-accent-text);
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .ps-card-footer {
+          margin-top: auto;
+          padding-top: 12px;
+          border-top: 1px solid rgba(255, 255, 255, 0.06);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+        }
+
+        .ps-card-status {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-family: var(--ps-font-mono);
+          font-size: 0.69rem;
+          color: rgba(255, 255, 255, 0.52);
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        .ps-status-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          flex-shrink: 0;
+        }
+
+        .ps-status-dot.is-live {
+          background: #34d399;
+          box-shadow: 0 0 8px rgba(52, 211, 153, 0.65);
+        }
+
+        .ps-status-dot.is-open {
+          background: var(--ps-accent);
+        }
+
+        .ps-status-dot.is-private {
+          background: rgba(255, 255, 255, 0.34);
+        }
+
+        /* Nút chi tiết trải pseudo-element ::after phủ toàn bộ .ps-card:
+           cả thẻ vừa bấm được vừa nhận focus bàn phím chuẩn ngữ nghĩa mà không lồng <button>. */
+        .ps-card-cta {
+          appearance: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-family: var(--ps-font-body);
+          font-size: 0.77rem;
+          font-weight: 700;
+          letter-spacing: 0.03em;
+          padding: 7px 13px;
+          border-radius: 9px;
+          border: 1px solid rgba(255, 255, 255, 0.13);
+          background: var(--ps-elevated);
+          color: #ffffff;
+          cursor: pointer;
+          flex-shrink: 0;
+          transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .ps-card-cta::after {
+          content: '';
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          border-radius: inherit;
+        }
+
+        .ps-cta-arrow {
+          display: inline-block;
+          transition: transform 0.2s ease;
+        }
+
+        .ps-card:hover .ps-card-cta {
           background: #ffffff;
-          color: #000000;
+          color: #06070d;
           border-color: #ffffff;
         }
 
-        .expanded-btn.primary-cta:hover {
+        .ps-card:hover .ps-cta-arrow {
+          transform: translateX(3px);
+        }
+
+        .ps-card-cta:focus {
+          outline: none;
+        }
+
+        .ps-card-cta:focus-visible {
+          outline: 2px solid var(--ps-accent);
+          outline-offset: 2px;
+        }
+
+        .ps-card:has(.ps-card-cta:focus-visible) {
+          border-color: var(--ps-accent);
+          box-shadow: 0 0 0 2px var(--ps-accent), 0 22px 48px rgba(0, 0, 0, 0.6);
+        }
+
+        .ps-card:has(.ps-card-cta:focus-visible) .ps-card-cta {
+          outline: none;
+          background: #ffffff;
+          color: #06070d;
+          border-color: #ffffff;
+        }
+
+        /* ===== THANH TÌM KIẾM & BỘ LỌC CHIP ===== */
+        .ps-controls {
+          display: flex;
+          flex-direction: column;
+          gap: 14px;
+          margin-bottom: 24px;
+        }
+
+        .ps-search-row {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: flex-end;
+          justify-content: space-between;
+          gap: 14px 20px;
+        }
+
+        .ps-search-field {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          width: min(400px, 100%);
+        }
+
+        .ps-search-label {
+          font-family: var(--ps-font-mono);
+          font-size: 0.7rem;
+          font-weight: 500;
+          letter-spacing: 0.08em;
+          text-transform: uppercase;
+          color: rgba(255, 255, 255, 0.62);
+        }
+
+        .ps-search-box {
+          position: relative;
+          display: flex;
+          align-items: center;
+          width: 100%;
+        }
+
+        .ps-search-icon {
+          position: absolute;
+          left: 13px;
+          width: 16px;
+          height: 16px;
+          color: rgba(255, 255, 255, 0.44);
+          pointer-events: none;
+        }
+
+        .ps-search-input {
+          width: 100%;
+          height: 42px;
+          padding: 0 38px 0 38px;
+          border-radius: 11px;
+          border: 1px solid rgba(255, 255, 255, 0.13);
+          background: rgba(17, 18, 25, 0.92);
+          color: #ffffff;
+          font-family: var(--ps-font-body);
+          font-size: 0.88rem;
+          user-select: text;
+          -webkit-user-select: text;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+        }
+
+        .ps-search-input::placeholder {
+          color: rgba(255, 255, 255, 0.38);
+        }
+
+        .ps-search-input::-webkit-search-cancel-button,
+        .ps-search-input::-webkit-search-decoration {
+          -webkit-appearance: none;
+          appearance: none;
+        }
+
+        .ps-search-input:hover {
+          border-color: rgba(255, 255, 255, 0.24);
+        }
+
+        .ps-search-input:focus {
+          outline: none;
+        }
+
+        .ps-search-input:focus-visible {
+          border-color: var(--ps-accent);
+          box-shadow: 0 0 0 2px rgba(142, 162, 255, 0.35);
+          background: #141622;
+        }
+
+        .ps-search-clear {
+          position: absolute;
+          right: 7px;
+          width: 28px;
+          height: 28px;
+          border-radius: 7px;
+          border: none;
+          background: rgba(255, 255, 255, 0.08);
+          color: rgba(255, 255, 255, 0.78);
+          font-size: 0.75rem;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .ps-search-clear:hover {
+          background: rgba(255, 255, 255, 0.2);
+          color: #ffffff;
+        }
+
+        .ps-search-clear:focus-visible {
+          outline: 2px solid var(--ps-accent);
+          outline-offset: 2px;
+        }
+
+        .ps-filter-bar {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .ps-chip {
+          appearance: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          min-height: 38px;
+          padding: 7px 14px;
+          border-radius: 999px;
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          background: rgba(17, 18, 25, 0.82);
+          color: rgba(255, 255, 255, 0.76);
+          font-family: var(--ps-font-body);
+          font-size: 0.83rem;
+          font-weight: 600;
+          cursor: pointer;
+          transition:
+            background-color 0.2s ease,
+            border-color 0.2s ease,
+            color 0.2s ease,
+            transform 0.18s ease;
+        }
+
+        .ps-chip:hover {
+          border-color: rgba(255, 255, 255, 0.28);
+          color: #ffffff;
+          background: rgba(30, 34, 50, 0.9);
+        }
+
+        .ps-chip.is-active {
+          background: #ffffff;
+          color: #06070d;
+          border-color: #ffffff;
+          box-shadow: 0 6px 20px rgba(255, 255, 255, 0.14);
+        }
+
+        .ps-chip:focus-visible {
+          outline: 2px solid var(--ps-accent);
+          outline-offset: 3px;
+        }
+
+        .ps-chip-count {
+          font-family: var(--ps-font-mono);
+          font-size: 0.72rem;
+          font-weight: 500;
+          font-variant-numeric: tabular-nums;
+          padding: 1px 7px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.09);
+          color: rgba(255, 255, 255, 0.72);
+        }
+
+        .ps-chip.is-active .ps-chip-count {
+          background: rgba(6, 7, 13, 0.12);
+          color: #06070d;
+          font-weight: 600;
+        }
+
+        /* ===== LƯỚI COMPACT CARDS (3 DESKTOP / 2 TABLET / 1 PHONE) ===== */
+        .ps-compact-grid {
+          display: grid;
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+          gap: 20px;
+        }
+
+        /* ===== NÚT SHOW MORE & TRẠNG THÁI RỖNG ===== */
+        .ps-more-wrap {
+          margin-top: 32px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .ps-more-btn {
+          appearance: none;
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          min-height: 44px;
+          padding: 11px 24px;
+          border-radius: 12px;
+          border: 1px solid rgba(142, 162, 255, 0.34);
+          background: var(--ps-elevated);
+          color: #ffffff;
+          font-family: var(--ps-font-body);
+          font-size: 0.88rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition:
+            background-color 0.22s ease,
+            color 0.22s ease,
+            border-color 0.22s ease,
+            transform 0.2s ease;
+        }
+
+        .ps-more-btn:hover {
+          background: #ffffff;
+          color: #06070d;
+          border-color: #ffffff;
+          transform: translateY(-1px);
+        }
+
+        .ps-more-btn:focus-visible {
+          outline: 2px solid var(--ps-accent);
+          outline-offset: 3px;
+        }
+
+        .ps-more-badge {
+          font-family: var(--ps-font-mono);
+          font-size: 0.74rem;
+          font-weight: 500;
+          font-variant-numeric: tabular-nums;
+          padding: 2px 8px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.12);
+        }
+
+        .ps-more-btn:hover .ps-more-badge {
+          background: rgba(6, 7, 13, 0.12);
+        }
+
+        .ps-empty-state {
+          padding: 48px 24px;
+          border-radius: 18px;
+          border: 1px dashed rgba(255, 255, 255, 0.18);
+          background: rgba(17, 18, 25, 0.78);
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+        }
+
+        .ps-empty-title {
+          font-family: var(--ps-font-display);
+          font-size: 1.14rem;
+          font-weight: 700;
+          color: #ffffff;
+          margin: 0;
+        }
+
+        .ps-empty-desc {
+          max-width: 440px;
+          margin: 0;
+          font-size: 0.88rem;
+          line-height: 1.55;
+          color: rgba(255, 255, 255, 0.6);
+        }
+
+        .ps-reset-btn {
+          margin-top: 8px;
+          appearance: none;
+          min-height: 40px;
+          padding: 9px 18px;
+          border-radius: 10px;
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          background: #ffffff;
+          color: #06070d;
+          font-family: var(--ps-font-body);
+          font-size: 0.83rem;
+          font-weight: 700;
+          cursor: pointer;
+          transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .ps-reset-btn:hover {
           background: #c9d4ff;
           border-color: #c9d4ff;
         }
 
-        /* Dự án không công khai mã nguồn: nút chỉ để thông báo, không bấm được */
-        .expanded-btn.is-private {
-          background: transparent;
-          border-style: dashed;
-          border-color: rgba(255, 255, 255, 0.22);
-          color: rgba(255, 255, 255, 0.55);
-          cursor: default;
-          letter-spacing: 1px;
+        .ps-reset-btn:focus-visible {
+          outline: 2px solid var(--ps-accent);
+          outline-offset: 3px;
         }
 
-        .expanded-btn.is-private:hover {
-          background: transparent;
-          color: rgba(255, 255, 255, 0.55);
-        }
-
-        /* Nút chi tiết là <button> chứ không phải <a>, nên phải trả lại font và
-           con trỏ mặc định của trình duyệt cho khớp các nút dạng link còn lại. */
-        button.expanded-btn {
-          font-family: inherit;
-          cursor: pointer;
-        }
-
-        /* Dòng chú thích nhỏ dưới nút: cho biết dự án có công khai mã nguồn không */
-        .expanded-note {
-          font-size: 0.68rem;
-          letter-spacing: 0.6px;
-          text-transform: uppercase;
-          color: rgba(255, 255, 255, 0.38);
-          text-align: center;
-        }
-
-        /* ===== MODAL CHI TIẾT DỰ ÁN ===== */
+        /* ===== MODAL CHI TIẾT DỰ ÁN (GIỮ NGUYÊN PHONG CÁCH) ===== */
         .pd-overlay {
           position: fixed;
           inset: 0;
@@ -1872,6 +2290,11 @@ export function ProjectSection() {
           background: #ffffff;
           color: #000000;
           transform: rotate(90deg);
+        }
+
+        .pd-close:focus-visible {
+          outline: 2px solid #8ea2ff;
+          outline-offset: 2px;
         }
 
         .pd-banner {
@@ -1982,6 +2405,11 @@ export function ProjectSection() {
 
         .pd-btn:hover { background: #fff; color: #000; }
 
+        .pd-btn:focus-visible {
+          outline: 2px solid #8ea2ff;
+          outline-offset: 3px;
+        }
+
         .pd-btn-primary {
           background: #fff;
           color: #000;
@@ -2003,61 +2431,92 @@ export function ProjectSection() {
           color: rgba(255, 255, 255, 0.5);
         }
 
-        @media (max-width: 640px) {
+        @keyframes psFadeUp {
+          from { opacity: 0; transform: translateY(14px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1023px) {
+          .ps-shell {
+            padding: 104px 22px 72px;
+          }
+
+          .ps-compact-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+          }
+
+          .ps-featured-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+          }
+
+          .ps-card-lead {
+            grid-column: 1 / -1;
+          }
+        }
+
+        @media (max-width: 639px) {
+          .ps-shell {
+            padding: 96px 16px 60px;
+          }
+
+          .ps-featured-grid,
+          .ps-compact-grid {
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+
+          .ps-card-lead {
+            grid-column: auto;
+          }
+
+          .ps-search-field {
+            width: 100%;
+          }
+
           .pd-overlay { padding: 16px 12px; }
           .pd-body { padding: 20px 20px 24px; }
           .pd-title { font-size: 1.3rem; }
           .pd-meta { grid-template-columns: 1fr; gap: 10px; }
         }
 
-        /* ===== ĐIỀU KHIỂN PHÍA DƯỚI ===== */
-        .bottom-controls {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          padding: 0 60px 40px 60px;
-          z-index: 2;
-          opacity: 0;
-          animation: fadeIn 0.9s ease 0.5s forwards;
-        }
+        /* ===== TÔN TRỌNG PREFERS-REDUCED-MOTION ===== */
+        @media (prefers-reduced-motion: reduce) {
+          .ps-hero,
+          .pd-overlay,
+          .pd-panel {
+            animation: none !important;
+          }
 
-        /* Indicator slide */
-        .indicators-wrapper {
-          display: flex;
-          gap: 12px;
-        }
+          .ps-card,
+          .ps-thumb-img,
+          .ps-card-cta,
+          .ps-cta-arrow,
+          .ps-chip,
+          .ps-search-input,
+          .ps-search-clear,
+          .ps-more-btn,
+          .ps-reset-btn,
+          .pd-close,
+          .pd-btn {
+            transition: none !important;
+          }
 
-        .indicator {
-          width: 32px;
-          height: 3px;
-          background: rgba(255, 255, 255, 0.15);
-          border-radius: 2px;
-          transition: background 0.3s ease, width 0.3s ease;
-        }
+          .ps-card:hover,
+          .ps-more-btn:hover,
+          .pd-close:hover {
+            transform: none !important;
+          }
 
-        .indicator.active {
-          background: #ffffff;
-          width: 48px;
-        }
+          .ps-card:hover .ps-thumb-img {
+            transform: none !important;
+          }
 
-        /* Hoạt ảnh */
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to   { opacity: 1; }
-        }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 1024px) {
-          .gallery-title-wrapper { margin-top: 100px; }
-          .project-card { width: 320px; }
-          .project-card.active { height: 510px; }
-          .card-img-box { height: 110px; }
-          .project-card.active .card-img-box { height: 180px; }
-          .bottom-controls { padding: 0 30px 30px 30px; }
+          .ps-card:hover .ps-thumb-img.is-zoom {
+            transform: scale(1.42) !important;
+          }
         }
       `}</style>
 
@@ -2065,150 +2524,434 @@ export function ProjectSection() {
         {/* Thanh điều hướng */}
         <NavBar className="mix-blend-difference" />
 
-        {/* Khối tiêu đề */}
-        <div className="gallery-title-wrapper">
-          <h1 className="gallery-title">
-            <span className="word-project">Project</span>
-            <span className="word-showcase">Showcase</span>
-          </h1>
-        </div>
+        <div className="ps-shell">
+          {/* Tiêu đề trang */}
+          <header className="ps-hero">
+            <div>
+              <p className="ps-eyebrow">
+                <span className="ps-eyebrow-dot" aria-hidden="true" />
+                {t(
+                  `Danh mục kỹ thuật · ${projectList.length} dự án`,
+                  `Engineering Index · ${projectList.length} builds`
+                )}
+              </p>
+              <h1 className="ps-title">
+                {t("Dự án ", "Project ")}
+                <span className="ps-title-accent">
+                  {t("& Sản phẩm thực tế", "Showcase")}
+                </span>
+              </h1>
+            </div>
+            <p className="ps-subtitle">
+              {t(
+                "Các công cụ kiểm tra bảo mật Postgres/Supabase, ứng dụng di động trên App Store & Google Play, cùng hệ thống tự động hoá Python.",
+                "Postgres/Supabase security tooling, App Store & Google Play mobile apps, edge booking systems, and Python data automation."
+              )}
+            </p>
+          </header>
 
-        {/* Slider cuộn phim */}
-        <main className="filmstrip-container" id="filmstripContainer">
-          <div className="filmstrip-bg-ribbon" />
-          <div
-            ref={trackRef}
-            className={`filmstrip-track ${
-              isNoTransitions ? "no-transitions" : ""
-            } ${isFastTransitions ? "fast-transitions" : ""}`}
-            style={{ transform: `translate3d(${translateX}px, 0, 0)` }}
-            onTransitionEnd={handleTransitionEnd}
+          {/* 1. Hàng dự án tiêu biểu (Featured) ở đầu trang */}
+          {featuredProjects.length > 0 ? (
+            <section
+              className="ps-section"
+              aria-labelledby="ps-featured-heading"
+            >
+              <div className="ps-section-head">
+                <div className="ps-section-title-group">
+                  <span className="ps-section-kicker">
+                    {t("Chọn lọc hàng đầu", "Selected Highlights")}
+                  </span>
+                  <h2 id="ps-featured-heading" className="ps-section-title">
+                    {t("Dự án tiêu biểu", "Featured Projects")}
+                  </h2>
+                </div>
+                <p className="ps-section-note">
+                  {t(
+                    "Bấm vào bất kỳ thẻ nào để đọc kiến trúc & kiểm thử chi tiết",
+                    "Select any card for architecture & testing breakdown"
+                  )}
+                </p>
+              </div>
+
+              <div className="ps-featured-grid">
+                {featuredProjects.map((proj, idx) => {
+                  const isLead = hasOddFeatured && idx === 0;
+                  const titleText = String(pick(proj, "title") || "");
+                  const thumbAlt = String(
+                    pick(proj, "shortName") || titleText
+                  );
+                  const contextParts = [
+                    pick(proj, "role"),
+                    pick(proj, "client"),
+                  ].filter(Boolean);
+
+                  return (
+                    <article
+                      key={proj.id}
+                      className={`ps-card ps-card-featured ${
+                        isLead ? "ps-card-lead" : ""
+                      }`}
+                      onMouseEnter={() => triggerCursorHover(true)}
+                      onMouseLeave={() => triggerCursorHover(false)}
+                    >
+                      <ProjectThumbnail
+                        proj={proj}
+                        alt={thumbAlt}
+                        eager={idx < 2}
+                      />
+
+                      <div className="ps-card-body">
+                        <div className="ps-card-topline">
+                          <span className="ps-card-category">
+                            {proj.category}
+                          </span>
+                          <span className="ps-featured-badge">
+                            {t("Tiêu biểu", "Featured")}
+                          </span>
+                        </div>
+
+                        <h3 className="ps-card-title">{titleText}</h3>
+                        <p className="ps-card-desc">{pick(proj, "desc")}</p>
+
+                        {contextParts.length > 0 ? (
+                          <p className="ps-featured-context">
+                            {contextParts.join(" · ")}
+                          </p>
+                        ) : null}
+
+                        {proj.tech?.length ? (
+                          <ul
+                            className="ps-tech-list"
+                            aria-label={t("Công nghệ", "Technologies")}
+                          >
+                            {proj.tech.slice(0, 5).map((techName: string) => (
+                              <li key={techName} className="ps-tech-chip">
+                                {techName}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : null}
+
+                        <div className="ps-card-footer">
+                          <span className="ps-card-status">
+                            {proj.demo ? (
+                              <>
+                                <span
+                                  className="ps-status-dot is-live"
+                                  aria-hidden="true"
+                                />
+                                {t("Có bản chạy thật", "Live version")}
+                              </>
+                            ) : proj.link ? (
+                              <>
+                                <span
+                                  className="ps-status-dot is-open"
+                                  aria-hidden="true"
+                                />
+                                {t("Mã nguồn công khai", "Source public")}
+                              </>
+                            ) : (
+                              <>
+                                <span
+                                  className="ps-status-dot is-private"
+                                  aria-hidden="true"
+                                />
+                                {t("Mã nguồn nội bộ", "Private source")}
+                              </>
+                            )}
+                          </span>
+
+                          <button
+                            type="button"
+                            className="ps-card-cta"
+                            aria-label={`${titleText} — ${t(
+                              "Xem chi tiết",
+                              "View details"
+                            )}`}
+                            onClick={(e) =>
+                              openProjectModal(proj, e.currentTarget)
+                            }
+                          >
+                            <span>{t("Xem chi tiết", "View details")}</span>
+                            <span className="ps-cta-arrow" aria-hidden="true">
+                              →
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          ) : null}
+
+          {/* 2. Danh sách toàn bộ dự án (lọc theo nhóm + tìm kiếm + phân trang 9 thẻ) */}
+          <section
+            className="ps-section ps-section-all"
+            aria-labelledby="ps-all-heading"
           >
-            {cardsData.map((proj) => {
-              const idx = proj.globalIdx;
-              const isActive = idx === activeIndex;
-              const isNeighbor =
-                idx === activeIndex - 1 || idx === activeIndex + 1;
+            <div className="ps-controls">
+              <div className="ps-search-row">
+                <div className="ps-section-title-group">
+                  <span className="ps-section-kicker">
+                    {t("Kho lưu trữ đầy đủ", "Complete Archive")}
+                  </span>
+                  <h2 id="ps-all-heading" className="ps-section-title">
+                    {t("Tất cả dự án", "All projects")}
+                  </h2>
+                  <p className="ps-section-note" aria-live="polite">
+                    {filteredProjects.length === 0
+                      ? t("0 dự án khớp bộ lọc", "0 matching projects")
+                      : t(
+                          `Đang hiển thị ${visibleProjects.length} / ${filteredProjects.length} dự án`,
+                          `Showing ${visibleProjects.length} of ${filteredProjects.length} projects`
+                        )}
+                  </p>
+                </div>
 
-              return (
-                <div
-                  key={idx}
-                  className={`project-card ${isActive ? "active" : ""} ${
-                    isNeighbor ? "neighbor" : ""
-                  }`}
-                  data-index={idx}
-                  onClick={() => handleCardClick(idx)}
-                  onMouseEnter={() => handleCardMouseEnter(idx)}
-                  onMouseLeave={handleCardMouseLeave}
-                >
-                  {/* Khung ảnh dùng chung */}
-                  <div className="card-img-box">
-                    <img
-                      src={proj.image}
-                      alt={proj.title}
-                      className={`project-card-img ${
-                        proj.id === "AI_Lab" ? "zoom" : ""
-                      } ${proj.id === "DiemDanhQR" ? "fit-top" : ""}`}
-                      draggable="false"
-                      onError={(e) => {
-                        const target = e.currentTarget;
-                        const og = ghImage(proj.id);
-                        // Thiếu ảnh local -> thử ảnh OpenGraph GitHub; nếu vẫn lỗi -> placeholder
-                        if (!target.dataset.fallback && proj.id) {
-                          target.dataset.fallback = "og";
-                          target.src = og;
-                        } else {
-                          target.src = `https://placehold.co/600x338/111219/ffffff?text=${encodeURIComponent(
-                            proj.shortName
-                          )}`;
-                        }
-                      }}
+                <div className="ps-search-field">
+                  <label
+                    htmlFor="project-search-input"
+                    className="ps-search-label"
+                  >
+                    {t("Tìm kiếm dự án", "Search projects")}
+                  </label>
+                  <div className="ps-search-box">
+                    <svg
+                      className="ps-search-icon"
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M14.167 14.167L17.5 17.5M15.833 9.167a6.667 6.667 0 11-13.333 0 6.667 6.667 0 0113.333 0z"
+                        stroke="currentColor"
+                        strokeWidth="1.7"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <input
+                      ref={searchInputRef}
+                      id="project-search-input"
+                      type="search"
+                      value={searchQuery}
+                      onChange={(e) => handleSearchChange(e.target.value)}
+                      onMouseEnter={() => triggerCursorHover(true)}
+                      onMouseLeave={() => triggerCursorHover(false)}
+                      placeholder={t(
+                        "Tên, mô tả, công nghệ, danh mục…",
+                        "Title, summary, tech, category…"
+                      )}
+                      autoComplete="off"
+                      spellCheck={false}
+                      className="ps-search-input"
                     />
-                  </div>
-
-                  {/* Thông tin thu gọn */}
-                  <div className="info-collapsed">
-                    <span className="collapsed-num">{proj.category}</span>
-                    <h3 className="collapsed-title">{pick(proj, "shortName")}</h3>
-                    <span className="collapsed-preview-link">
-                      {proj.yearRole}
-                    </span>
-                  </div>
-
-                  {/* Thông tin mở rộng */}
-                  <div className="info-expanded">
-                    <h2 className="expanded-title">{pick(proj, "title")}</h2>
-                    <p className="expanded-desc">{pick(proj, "desc")}</p>
-                    <div className="expanded-details">
-                      <div className="detail-row">
-                        <span className="detail-label">Role:</span>
-                        <span>{pick(proj, "role")}</span>
-                      </div>
-                      <div className="detail-row">
-                        <span className="detail-label">Client:</span>
-                        <span>{pick(proj, "client")}</span>
-                      </div>
-                      <div className="detail-row">
-                        <span className="detail-label">Year:</span>
-                        <span>{proj.year}</span>
-                      </div>
-                    </div>
-                    {/* Card chỉ giữ MỘT hành động cho gọn; link bản chạy thật và mã
-                        nguồn chuyển hết vào modal cùng với mô tả đầy đủ. */}
-                    <div className="expanded-actions">
+                    {searchQuery ? (
                       <button
                         type="button"
-                        className="expanded-btn primary-cta"
+                        className="ps-search-clear"
+                        aria-label={t("Xoá từ khoá tìm kiếm", "Clear search")}
                         onMouseEnter={() => triggerCursorHover(true)}
                         onMouseLeave={() => triggerCursorHover(false)}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setDetailProj(proj);
+                        onClick={() => {
+                          triggerCursorHover(false);
+                          handleSearchChange("");
+                          searchInputRef.current?.focus();
                         }}
                       >
-                        {t("Xem chi tiết", "View details")}
+                        ✕
                       </button>
-                      <span className="expanded-note">
-                        {proj.link
-                          ? t("Mã nguồn công khai", "Source public")
-                          : t("Mã nguồn không công khai", "Source not public")}
-                        {proj.demo ? t(" • có bản chạy thật", " • live version") : ""}
-                      </span>
-                    </div>
+                    ) : null}
                   </div>
                 </div>
-              );
-            })}
-          </div>
-        </main>
+              </div>
+
+              {/* Thanh chip lọc theo nhóm kèm số lượng */}
+              <div
+                className="ps-filter-bar"
+                role="group"
+                aria-label={t(
+                  "Lọc dự án theo nhóm kỹ thuật",
+                  "Filter projects by category"
+                )}
+              >
+                {FILTER_GROUPS.map((group) => {
+                  const isSelected = activeGroup === group.key;
+                  return (
+                    <button
+                      key={group.key}
+                      type="button"
+                      aria-pressed={isSelected}
+                      className={`ps-chip ${isSelected ? "is-active" : ""}`}
+                      onMouseEnter={() => triggerCursorHover(true)}
+                      onMouseLeave={() => triggerCursorHover(false)}
+                      onClick={() => handleSelectGroup(group.key)}
+                    >
+                      <span>{t(group.labelVi, group.labelEn)}</span>
+                      <span className="ps-chip-count">
+                        {groupCounts[group.key]}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {visibleProjects.length > 0 ? (
+              <>
+                <div className="ps-compact-grid">
+                  {visibleProjects.map((proj) => {
+                    const titleText = String(pick(proj, "title") || "");
+                    const thumbAlt = String(
+                      pick(proj, "shortName") || titleText
+                    );
+
+                    return (
+                      <article
+                        key={proj.id}
+                        className="ps-card ps-card-compact"
+                        onMouseEnter={() => triggerCursorHover(true)}
+                        onMouseLeave={() => triggerCursorHover(false)}
+                      >
+                        <ProjectThumbnail proj={proj} alt={thumbAlt} />
+
+                        <div className="ps-card-body">
+                          <span className="ps-card-category">
+                            {proj.category}
+                          </span>
+                          <h3 className="ps-card-title">{titleText}</h3>
+                          <p className="ps-card-desc">{pick(proj, "desc")}</p>
+
+                          {proj.tech?.length ? (
+                            <ul
+                              className="ps-tech-list"
+                              aria-label={t("Công nghệ", "Technologies")}
+                            >
+                              {proj.tech.slice(0, 3).map((techName: string) => (
+                                <li key={techName} className="ps-tech-chip">
+                                  {techName}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : null}
+
+                          <div className="ps-card-footer">
+                            <span className="ps-card-status">
+                              {proj.demo ? (
+                                <>
+                                  <span
+                                    className="ps-status-dot is-live"
+                                    aria-hidden="true"
+                                  />
+                                  {t("Chạy thật", "Live")}
+                                </>
+                              ) : proj.link ? (
+                                <>
+                                  <span
+                                    className="ps-status-dot is-open"
+                                    aria-hidden="true"
+                                  />
+                                  {t("Công khai", "Public")}
+                                </>
+                              ) : (
+                                <>
+                                  <span
+                                    className="ps-status-dot is-private"
+                                    aria-hidden="true"
+                                  />
+                                  {t("Nội bộ", "Private")}
+                                </>
+                              )}
+                            </span>
+
+                            <button
+                              type="button"
+                              className="ps-card-cta"
+                              aria-label={`${titleText} — ${t(
+                                "Xem chi tiết",
+                                "View details"
+                              )}`}
+                              onClick={(e) =>
+                                openProjectModal(proj, e.currentTarget)
+                              }
+                            >
+                              <span>{t("Xem chi tiết", "View details")}</span>
+                              <span
+                                className="ps-cta-arrow"
+                                aria-hidden="true"
+                              >
+                                →
+                              </span>
+                            </button>
+                          </div>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+
+                {remainingCount > 0 ? (
+                  <div className="ps-more-wrap">
+                    <button
+                      type="button"
+                      className="ps-more-btn"
+                      onMouseEnter={() => triggerCursorHover(true)}
+                      onMouseLeave={() => triggerCursorHover(false)}
+                      onClick={() => {
+                        if (remainingCount <= PAGE_SIZE) {
+                          triggerCursorHover(false);
+                        }
+                        setVisibleCount((prev) => prev + PAGE_SIZE);
+                      }}
+                    >
+                      <span>{t("Xem thêm", "Show more")}</span>
+                      <span className="ps-more-badge">
+                        +{Math.min(PAGE_SIZE, remainingCount)} ·{" "}
+                        {t(
+                          `còn ${remainingCount}`,
+                          `${remainingCount} remaining`
+                        )}
+                      </span>
+                    </button>
+                  </div>
+                ) : null}
+              </>
+            ) : (
+              <div className="ps-empty-state" role="status">
+                <h3 className="ps-empty-title">
+                  {t(
+                    "Không có dự án nào khớp điều kiện",
+                    "No projects match your filter"
+                  )}
+                </h3>
+                <p className="ps-empty-desc">
+                  {t(
+                    "Thử xoá bớt từ khoá tìm kiếm hoặc chuyển bộ lọc về Tất cả để xem lại toàn bộ danh sách dự án.",
+                    "Try a shorter keyword or switch the category filter back to All to browse every build."
+                  )}
+                </p>
+                <button
+                  type="button"
+                  className="ps-reset-btn"
+                  onMouseEnter={() => triggerCursorHover(true)}
+                  onMouseLeave={() => triggerCursorHover(false)}
+                  onClick={() => {
+                    triggerCursorHover(false);
+                    handleResetFilters();
+                  }}
+                >
+                  {t("Đặt lại bộ lọc & tìm kiếm", "Reset filter & search")}
+                </button>
+              </div>
+            )}
+          </section>
+        </div>
 
         {detailProj ? (
-          <ProjectDetailModal
-            proj={detailProj}
-            onClose={() => setDetailProj(null)}
-          />
+          <ProjectDetailModal proj={detailProj} onClose={closeProjectModal} />
         ) : null}
-
-        {/* Indicator ở footer */}
-        <footer className="bottom-controls">
-          <div className="indicators-wrapper" id="indicatorsWrapper">
-            {projectList.map((proj, idx) => (
-              <div
-                key={idx}
-                className={`indicator ${
-                  idx === logicalProjIndex ? "active" : ""
-                }`}
-                onMouseEnter={() => triggerCursorHover(true)}
-                onMouseLeave={() => triggerCursorHover(false)}
-                onClick={() => {
-                  setIsFastTransitions(true);
-                  goToProject(idx);
-                  resetAutoplayTimer();
-                }}
-              />
-            ))}
-          </div>
-        </footer>
       </div>
     </>
   );
