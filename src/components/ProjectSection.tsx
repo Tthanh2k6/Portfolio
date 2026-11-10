@@ -35,6 +35,7 @@ const REPO_IMAGES: Record<string, string> = {
   ToolPhone: "/IMG/project-toolphone.png",
   Sothuchi: "/IMG/project-sothuchi.png",
   "NCKH-PeopleCount": "/IMG/project-peoplecount.png",
+  "supabase-multitenant-rls": "/IMG/project-multitenant-rls.png",
 };
 // Ảnh dùng cho card: ưu tiên ảnh chụp local, không có thì dùng ảnh OpenGraph của GitHub
 const projectImage = (repo: string) => REPO_IMAGES[repo] || ghImage(repo);
@@ -738,6 +739,56 @@ const recentProjects = [
     image: projectImage("supabase-rls-check"),
     year: "2026",
     link: "https://github.com/Tthanh2k6/supabase-rls-check",
+  },
+  {
+    id: "supabase-multitenant-rls",
+    category: "SUPABASE • POSTGRES RLS • MULTI-TENANT",
+    shortName: "MULTI-TENANT RLS",
+    shortNameEn: "MULTI-TENANT RLS",
+    title: "Mẫu SaaS nhiều khách hàng trên Supabase, có test cô lập dữ liệu",
+    titleEn: "Multi-tenant Supabase RLS reference with isolation tests",
+    desc: "Nhiều doanh nghiệp dùng chung một cơ sở dữ liệu mà mỗi bên chỉ thấy dữ liệu của mình; 19 test thử vượt ranh giới đều bị chặn.",
+    descEn:
+      "Many customers share one database and each sees only its own rows; 19 tests try to cross the boundary and all are blocked.",
+    detail:
+      "Migration mẫu cho mô hình nhiều khách hàng (multi-tenant) dùng chung một schema Postgres trên Supabase:\n\n• Mọi dòng có tenant_id, mọi bảng bật RLS; bảng dữ liệu bật FORCE ROW LEVEL SECURITY nên cả backend kết nối bằng tài khoản chủ bảng cũng bị lọc.\n\n• Vai trò owner/admin/member nằm trong bảng memberships, không đọc từ user_metadata (người dùng tự sửa được).\n\n• Khoá ngoại ghép (id, tenant_id) chặn việc gắn dữ liệu của khách này vào bản ghi của khách khác; file Storage chia theo thư mục tenant.\n\n• 19 test đăng nhập như người dùng thật và thử đọc, ghi, chuyển dòng, gắn chéo, tự xưng admin: tất cả bị chặn đúng mã lỗi. CI chạy trên PostgreSQL 15 và kiểm schema bằng supabase-rls-check (0 phát hiện).",
+    detailEn:
+      "A reference migration for many customers (tenants) in one shared Postgres schema on Supabase:\n\n• tenant_id on every row and RLS on every table; tenant data tables use FORCE ROW LEVEL SECURITY, so a backend connecting as the table owner is filtered too.\n\n• Roles (owner, admin, member) come from a memberships table, never from user-editable user_metadata.\n\n• Composite foreign keys (id, tenant_id) block cross-tenant references; Storage files live under a tenant folder.\n\n• 19 tests sign in as real users and try to read, write, move rows, cross-link and claim admin: every attempt is blocked with the expected error. CI runs on PostgreSQL 15 and lints the schema with supabase-rls-check (0 findings).",
+    tech: ["PostgreSQL", "Supabase RLS", "SQL", "pytest", "psycopg", "GitHub Actions"],
+    image: projectImage("supabase-multitenant-rls"),
+    role: "Tác giả",
+    roleEn: "Author",
+    client: "Mã nguồn mở (MIT)",
+    clientEn: "Open source (MIT)",
+    year: "2026",
+    yearRole: "2026 • PostgreSQL, Supabase",
+    link: "https://github.com/Tthanh2k6/supabase-multitenant-rls" as string | undefined,
+    demo: undefined as string | undefined,
+  },
+  {
+    id: "market-data-pipeline",
+    category: "PYTHON • SUPABASE • GITHUB ACTIONS",
+    shortName: "MARKET DATA PIPELINE",
+    shortNameEn: "MARKET DATA PIPELINE",
+    title: "Pipeline dữ liệu thị trường tự động vào Supabase",
+    titleEn: "Automated market data pipeline into Supabase",
+    desc: "Tự tải giá chỉ số, ngoại tệ, crypto, hàng hoá, trái phiếu theo lịch, kiểm lỗi dữ liệu và lưu vào cơ sở dữ liệu.",
+    descEn:
+      "Pulls indices, FX, crypto, commodities and bonds on a schedule, checks the data for errors and stores it in a database.",
+    detail:
+      "Job Python chạy theo lịch trên GitHub Actions:\n\n• Nguồn miễn phí: yfinance cho chỉ số, ngoại tệ, hàng hoá, trái phiếu, VIX; API công khai của Binance cho crypto.\n\n• Chuẩn hoá về OHLCV giờ UTC, dựng nến 4 giờ từ nến 1 giờ, nến ngày/tuần đưa về 00:00 UTC.\n\n• Kiểm dữ liệu: trùng thời điểm, OHLC vô lý, khoảng trống bất thường (bỏ qua giờ đóng cửa sàn); thêm SMA, EMA, RSI, ATR.\n\n• Ghi vào Supabase qua PostgREST theo khoá (symbol, timeframe, ts) nên chạy lại không tạo trùng. 22 test; chạy thật 14/14 mã.",
+    detailEn:
+      "A Python job scheduled on GitHub Actions:\n\n• Free sources: yfinance for indices, FX, commodities, bonds and VIX; Binance public klines for crypto.\n\n• Normalises to OHLCV in UTC, builds 4H bars from 1H, and stores daily/weekly bars at 00:00 UTC.\n\n• Validation for duplicates, impossible OHLC values and unusual gaps (market closures excluded), plus SMA, EMA, RSI and ATR.\n\n• Upserts into Supabase through PostgREST on (symbol, timeframe, ts), so re-runs never duplicate. 22 tests; a live dry run fetched all 14 symbols.",
+    tech: ["Python", "pandas", "Supabase", "PostgREST", "GitHub Actions", "pytest"],
+    image: projectImage("market-data-pipeline"),
+    role: "Tác giả",
+    roleEn: "Author",
+    client: "Mã nguồn mở (MIT)",
+    clientEn: "Open source (MIT)",
+    year: "2026",
+    yearRole: "2026 • Python, Supabase",
+    link: "https://github.com/Tthanh2k6/market-data-pipeline" as string | undefined,
+    demo: undefined as string | undefined,
   },
   {
     id: "race-safe-salon-booking",
