@@ -169,7 +169,7 @@ const SCHEMA_ORG_GRAPH = JSON.stringify({
           name: "Multi-Stop Route, Geocoder & 2-Opt TSP Distance Optimizer",
           applicationCategory: "BusinessApplication",
           operatingSystem: "Cloud Serverless (Apify & Python)",
-          url: "https://github.com/Tthanh2k6/apify-multi-stop-route-and-distance-optimizer",
+          url: "https://apify.com/thanh81646/apify-multi-stop-route-and-distance-optimizer",
           author: { "@id": `${SITE_URL}/#person` },
           offers: { "@type": "Offer", price: "2.00", priceCurrency: "USD" },
         },
@@ -285,7 +285,7 @@ function RootShell({ children }: { children: ReactNode }) {
 // Cách xử lý: tăng CONTENT_VERSION mỗi khi đổi các mặc định trong code. Trình duyệt thấy
 // phiên bản lệch sẽ xoá đúng các khoá nội dung cũ để rơi về mặc định mới.
 // Các khoá KHÔNG liên quan tới nội dung mặc định (vd sổ lưu bút khách viết) được giữ nguyên.
-const CONTENT_VERSION = "2026-11-08-1";
+const CONTENT_VERSION = "2026-11-11-1";
 const VERSIONED_CONTENT_KEYS = [
   "project_list",
   "skills_keycaps",

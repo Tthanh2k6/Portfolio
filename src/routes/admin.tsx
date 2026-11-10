@@ -44,7 +44,7 @@ const DEFAULT_INFO = {
   titleBottom: "& Security",
   typing: "Full-stack: Postgres security, React Native, Python",
   description:
-    "Full-stack developer at Madalena (full-time since March 2026) while studying Computer Science at IUH: as the only developer, I built and shipped the customer loyalty app to both the App Store and Google Play (React Native + PHP REST API, 152 commits since May 2026), an Electron desktop admin, and most features of the company's PHP e-commerce site on a vendor's base framework.\nAuthor of open-source supabase-rls-check (Python CLI + MCP server flagging 11 Postgres/RLS misconfiguration types, 66 tests), a race-safe salon booking demo on Cloudflare Workers + D1 + Stripe, and 5 public Apify Store Actors.\nOpen to remote contract work (~20–30 hours/week, async, written updates, UTC+7).",
+    "Full-stack developer at Madalena (full-time since March 2026) while studying Computer Science at IUH: as the only developer, I built and shipped the customer loyalty app to both the App Store and Google Play (React Native + PHP REST API, 152 commits since May 2026), an Electron desktop admin, and most features of the company's PHP e-commerce site on a vendor's base framework.\nAuthor of open-source supabase-rls-check (Python CLI + MCP server flagging 11 Postgres/RLS misconfiguration types, 100 tests), a race-safe salon booking demo on Cloudflare Workers + D1 + Stripe, and 5 public Apify Store Actors.\nOpen to remote contract work (~20–30 hours/week, async, written updates, UTC+7).",
   tags: "Supabase / Postgres RLS, React Native (iOS & Android), Python & Playwright, Cloudflare Workers + D1, AI Agents & MCP",
   explore1: "↗ inspect 28 skills across Security, AI Agents, Mobile & Backend under skills",
   explore2: "→ browse supabase-rls-check, production builds & printable CV above",
@@ -280,7 +280,7 @@ function AdminPanel() {
   // Điều này chấp nhận được vì admin chỉ sửa localStorage của trình duyệt đang mở,
   // không ảnh hưởng nội dung deploy hay người dùng khác.
   //
-  // Mật khẩu mặc định: "thanh-admin-2k6". ĐỔI MẬT KHẨU: chạy trong terminal
+  // ĐỔI MẬT KHẨU: chạy trong terminal
   //   printf '%s' 'matkhaumoi' | sha256sum
   // rồi dán giá trị hash thu được vào hằng ADMIN_PASSWORD_HASH dưới đây.
   const ADMIN_PASSWORD_HASH =
