@@ -59,6 +59,19 @@ const LINKS: LinkItem[] = [
     ),
   },
   {
+    href: "https://www.upwork.com/services/product/2119987807643160130",
+    vi: "Thuê kiểm bảo mật Supabase (Upwork, từ $69)",
+    en: "Hire a Supabase security check (Upwork, from $69)",
+    handle: "upwork.com/services/product/2119987807643160130",
+    external: true,
+    icon: (
+      <svg {...svgProps}>
+        <rect x="3" y="11" width="18" height="11" rx="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </svg>
+    ),
+  },
+  {
     href: "https://www.agensi.io/skills/supabase-rls-review",
     vi: "Skill Supabase RLS Review cho AI agent (Agensi)",
     en: "Supabase RLS Review skill for AI agents (Agensi)",
