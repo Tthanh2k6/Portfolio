@@ -1,7 +1,7 @@
 # Hướng dẫn Thực chiến Đọc-Hiểu & Bảo trì Dự án Portfolio (`agent.md`)
 
 > **Tài liệu điều phối trung tâm dành cho AI Coding Agent và Tác giả dự án (`Trần Trung Thành`).**
-> Đọc tệp này ĐẦU TIÊN trong mọi phiên làm việc mới trước khi chạm vào bất kỳ tệp mã nguồn nào trong `d:\Project\Portfolio`.
+> Đọc tệp này ĐẦU TIÊN trong mọi phiên làm việc mới trước khi chạm vào bất kỳ tệp mã nguồn nào trong `d:\Project\1-dang-ban\Portfolio`.
 
 ---
 
@@ -122,7 +122,7 @@ Tra cứu bảng dưới đây ngay sau khi sửa code để biết **chính xá
 
 ### 5.1. Tổ hợp Lệnh Xác minh Nhanh Trước Khi Kết thúc Phiên Làm việc
 
-Chạy tuần tự các lệnh sau tại thư mục `d:\Project\Portfolio` để đảm bảo mã nguồn sạch lỗi biên dịch, đúng chuẩn lint và đóng gói SSR thành công:
+Chạy tuần tự các lệnh sau tại thư mục `d:\Project\1-dang-ban\Portfolio` để đảm bảo mã nguồn sạch lỗi biên dịch, đúng chuẩn lint và đóng gói SSR thành công:
 
 ```powershell
 # 1. Kiểm tra kiểu tĩnh TypeScript trên toàn dự án (nhanh, không sinh tệp rác)

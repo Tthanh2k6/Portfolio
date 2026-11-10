@@ -1,7 +1,7 @@
 # TÀI LIỆU KIẾN TRÚC & MÃ NGUỒN TOÀN DIỆN — DỰ ÁN PORTFOLIO
 
 > **Dự án:** Trần Trung Thành · Interactive 3D & Full-Stack Portfolio (`tanstack_start_ts`)  
-> **Đường dẫn gốc:** `d:\Project\Portfolio`  
+> **Đường dẫn gốc:** `d:\Project\1-dang-ban\Portfolio`  
 > ** Kho lưu trữ Git:** `https://github.com/Tthanh2k6/Portfolio.git` (nhánh `main`)  
 > **Nền tảng triển khai:** Vercel (thông qua TanStack Start SSR + Nitro preset `vercel`)
 
@@ -314,7 +314,7 @@ sequenceDiagram
 ### 3.1. Cây Thư mục Trực quan
 
 ```text
-d:\Project\Portfolio\
+d:\Project\1-dang-ban\Portfolio\
 ├── .gitattributes                 # Chuẩn hóa xuống dòng LF tự động cho tệp văn bản
 ├── .gitignore                     # Loại trừ node_modules, dist, .output, .vercel, .vinxi, .tanstack...
 ├── .prettierignore                # Loại trừ lockfiles, thư mục build và routeTree.gen.ts
@@ -1094,7 +1094,7 @@ Dự án **không yêu cầu tệp `.env`** để khởi chạy cục bộ hay t
 
 ### 7.3. Tập Lệnh Đầy đủ: Cài đặt, Chạy Dev, Kiểm tra Mã nguồn, Build & Tiện ích
 
-Chạy các lệnh sau tại thư mục gốc `d:\Project\Portfolio`:
+Chạy các lệnh sau tại thư mục gốc `d:\Project\1-dang-ban\Portfolio`:
 
 ```powershell
 # 1. Cài đặt đúng phiên bản phụ thuộc từ package-lock.json (khuyên dùng)
