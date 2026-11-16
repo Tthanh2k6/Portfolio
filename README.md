@@ -1,109 +1,44 @@
-# Trung Thanh Tran — Interactive 3D WebGL Portfolio & Client-Side CMS
+# Portfolio
 
-<div align="center">
-  <a href="https://trungthanhtran.vercel.app/">
-    <img src="./public/og-preview-1200x630.png" alt="Trung Thanh Tran — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation" width="100%" />
-  </a>
+Source of my portfolio site, https://trungthanhtran.vercel.app, in English and Vietnamese.
 
-  <br />
+[![Portfolio preview](./public/og-preview-1200x630.png)](https://trungthanhtran.vercel.app/)
 
-  <p align="center">
-    <a href="https://trungthanhtran.vercel.app/">
-      <img src="https://img.shields.io/badge/Live_Portfolio-trungthanhtran.vercel.app-F06428?style=for-the-badge" alt="Live Demo" />
-    </a>
-    <a href="https://trungthanhtran.vercel.app/cv">
-      <img src="https://img.shields.io/badge/Printable_A4_CV-/cv-10B981?style=for-the-badge" alt="Printable A4 CV" />
-    </a>
-    <a href="https://apify.com/thanh81646">
-      <img src="https://img.shields.io/badge/Apify_Store-5_Public_Actors-0EA5E9?style=for-the-badge" alt="Apify Store" />
-    </a>
-  </p>
+Built with TanStack Start (server rendering), React 19, TypeScript, Three.js and Tailwind CSS v4, deployed on Vercel.
 
-  <p align="center">
-    <img src="https://img.shields.io/badge/TanStack_Start-SSR-00F0FF?style=flat-square" alt="TanStack Start" />
-    <img src="https://img.shields.io/badge/React-19.2-149ECA?style=flat-square&logo=react&logoColor=white" alt="React 19" />
-    <img src="https://img.shields.io/badge/TypeScript-5.8-3178C6?style=flat-square&logo=typescript&logoColor=white" alt="TypeScript" />
-    <img src="https://img.shields.io/badge/Three.js-WebGL-111827?style=flat-square&logo=threedotjs&logoColor=white" alt="Three.js" />
-    <img src="https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white" alt="Tailwind CSS v4" />
-  </p>
-</div>
+## Pages
 
----
+| Route | What is on it |
+| --- | --- |
+| `/` | A 3D grid drawn with Three.js and a bloom pass, reacting to the cursor |
+| `/information` | Education, experience and a timeline, with an ID badge hanging from a rope you can drag (Verlet physics) |
+| `/skills` | A 3D keyboard made with CSS transforms; pressing a key highlights its group in a donut chart |
+| `/project` | Case studies plus my public GitHub repos, loaded live from the GitHub API |
+| `/contact` | Contact form (sent through FormSubmit), a guestbook stored in the browser, social links |
+| `/cv` | A one-page A4 CV with print styles, for saving as PDF |
+| `/admin` | A small content editor in the browser. The password is checked against a SHA-256 hash and edits are saved to `localStorage`, so it only changes what that one browser shows. |
 
-## ✨ Overview
-
-An interactive, bilingual (`EN` / `VI`) full-stack developer portfolio built with **TanStack Start (SSR)**, **React 19**, **TypeScript**, **Three.js (WebGL)**, and **Tailwind CSS v4**. Designed to showcase engineering depth directly in the browser through real-time 3D rendering, custom physics simulations, and live GitHub REST API synchronization.
-
-| Route | Interactive Highlights |
-| :--- | :--- |
-| **`/` (Home)** | Isometric 3D neon grid rendered with **Three.js + `UnrealBloomPass`**, interactive cursor raycasting, and damped spring blob cursor (`CustomCursor`). |
-| **`/information`** | Custom **Verlet Integration** physics simulation (25-node rope + rigid-body developer ID badge with pointer drag & impulse response) alongside education, experience, and timeline cards. |
-| **`/skills`** | Interactive **CSS `preserve-3d` Mechanical Keyboard** (28 keycaps across Security, AI Agents & MCP, Mobile, Backend & Python) synchronized bidirectionally with an exploding **SVG Donut Chart**. |
-| **`/project`** | Infinite **Film-Strip Carousel** combining commercial/private engineering case studies with live public repositories fetched dynamically from the **GitHub REST API (`users/Tthanh2k6/repos`)**, complete with two-tier executive & deep-dive technical modals. |
-| **`/contact`** | Direct email integration (`FormSubmit`), interactive local guestbook, and social links. |
-| **`/cv`** | Dedicated print-engineered **A4 Resume / CV** route (`@media print`) ready for one-click PDF export. |
-| **`/admin`** | Client-side CMS gated by **Web Crypto API (`SHA-256`)** with `localStorage` persistence and `CONTENT_VERSION` cache invalidation. |
-
----
-
-## 🏗️ Architecture
-
-```mermaid
-flowchart LR
-    subgraph Client["Browser Runtime (React 19 + WebGL)"]
-        Hero["HeroScene.tsx\n(Three.js + UnrealBloomPass)"]
-        Verlet["InformationPage.tsx\n(25-Node Verlet Rope Physics)"]
-        Key3D["SkillsSection.tsx\n(3D Keyboard ⇄ SVG Donut)"]
-        Projects["ProjectSection.tsx\n(Carousel + Technical Modals)"]
-    end
-
-    subgraph SSR["TanStack Start SSR + Nitro (Vercel)"]
-        Router["File-Based Router\n(src/routes/*.tsx)"]
-        I18n["Bilingual Context\n(EN Default / VI Toggle)"]
-    end
-
-    GitHub["GitHub REST API\n(users/Tthanh2k6/repos)"] --> Projects
-    SSR --> Client
-```
-
----
-
-## 🚀 Quickstart
-
-**Prerequisites:** Node.js **22.12+** and `npm`.
+## Run it
 
 ```powershell
 git clone https://github.com/Tthanh2k6/Portfolio.git
 cd Portfolio
 npm ci
-npm run dev
+npm run dev       # development server
+npm run build     # production build for Vercel (.vercel/output)
+npm run preview   # preview the build
 ```
 
-| Command | Description |
-| :--- | :--- |
-| `npm run dev` | Start Vite + TanStack Start development server |
-| `npm run build` | Production SSR + client build (outputs `.vercel/output` via Nitro `vercel` preset) |
-| `npm run preview` | Preview production build locally |
-| `npm run lint` | Run ESLint static analysis |
-| `npm run format` | Format codebase with Prettier |
+`npm run lint` and `npm run format` run ESLint and Prettier.
 
----
+## Layout
 
-## 📂 Project Structure
+- `src/routes/`: one file per page
+- `src/components/`: the 3D scenes, navigation, skills, projects and modals
+- `src/lib/`: English and Vietnamese text and helpers
+- `public/IMG/`: project screenshots
+- `Idea Demo/`: early static HTML mock-ups of the pages
 
-```text
-Portfolio/
-├── public/IMG/              # Highlight screenshots (1600×900) and static assets
-├── src/
-│   ├── components/          # 3D scenes, NavBar, CustomCursor, Skills, Projects & Modals
-│   ├── routes/              # File-based routes (/, /information, /skills, /project, /contact, /cv, /admin)
-│   ├── lib/                 # Bilingual i18n engine (en/vi) & utilities
-│   ├── router.tsx           # TanStack Router configuration
-│   └── server.ts            # SSR entry wrapper
-├── CODEBASE.md              # Full architectural & source reference documentation
-└── vite.config.ts           # Vite + TanStack Start + Nitro (Vercel preset) configuration
-```
+## Author
 
----
-
-**Author:** **Trung Thanh Tran** (*Trần Trung Thành*) · [Portfolio](https://trungthanhtran.vercel.app) · [GitHub `@Tthanh2k6`](https://github.com/Tthanh2k6) · [Apify Store `@thanh81646`](https://apify.com/thanh81646) · [Dev.to `@tthanh2k6`](https://dev.to/tthanh2k6) · [Upwork Profile](https://www.upwork.com/freelancers/trungthanhtrandev)
+Trung Thanh Tran: [GitHub](https://github.com/Tthanh2k6) · [Apify Store](https://apify.com/thanh81646) · [dev.to](https://dev.to/tthanh2k6)
