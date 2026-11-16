@@ -405,8 +405,8 @@ function CvPage() {
             box-shadow: none;
             border-radius: 0;
             padding: 0;
-            font-size: 8.2pt;
-            line-height: 1.22;
+            font-size: 8pt;
+            line-height: 1.2;
           }
           .cv-head { padding-bottom: 6px; margin-bottom: 8px; }
           .cv-sheet section { margin-bottom: 8px; break-inside: auto; }
