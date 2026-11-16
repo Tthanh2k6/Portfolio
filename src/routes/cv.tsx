@@ -79,8 +79,8 @@ const T = {
         bullets: [
           "Một mình xây dựng và đưa ứng dụng khách hàng thân thiết lên cả App Store và Google Play: React Native (Expo, TypeScript) kết hợp REST API PHP có xác thực JWT, thông báo đẩy, quét mã QR check-in và tác vụ định kỳ (152 commit từ 05/2026).",
           "Xây dựng chương trình tích điểm: điểm mua hàng và livestream, chiến dịch khuyến mãi, cộng điểm hàng loạt từ Excel, đổi quà có quản lý tồn kho quà tặng, flash sale giới hạn theo từng khách.",
-          "Xây dựng ứng dụng quản trị Electron trên desktop cho nhân viên, có phân quyền theo vai trò và nhật ký kiểm toán (audit log): tra cứu khách hàng, hẹn giờ gửi thông báo, flash sale, nhập doanh thu có kiểm tra trùng kỳ, xuất báo cáo.",
-          "Phát triển hầu hết tính năng của website thương mại điện tử PHP cho công ty từ 03/2026 trên bộ khung có sẵn của bên khác, đồng thời kết nối với app (đồng bộ sản phẩm, số lượng đã bán, bậc miễn phí vận chuyển).",
+          "Xây dựng ứng dụng quản trị Electron cho nhân viên, có phân quyền theo vai trò và nhật ký kiểm toán: tra cứu khách, hẹn giờ thông báo, flash sale, nhập doanh thu, xuất báo cáo.",
+          "Phát triển hầu hết tính năng website thương mại điện tử PHP trên bộ khung có sẵn của bên khác và kết nối với app (đồng bộ sản phẩm, số đã bán, bậc miễn phí vận chuyển).",
           "Chuyển backend từ Node.js trên Render sang PHP hosting; bổ sung sao lưu tự động (automated backups) và chống dò mật khẩu (brute-force protection).",
         ],
       },
@@ -98,7 +98,7 @@ const T = {
       {
         name: "turbo-browser-mcp (mã nguồn mở MIT: Node.js, Playwright, MCP)",
         tech: "github.com/Tthanh2k6/turbo-browser-mcp",
-        desc: "MCP server cho AI agent điều khiển trình duyệt với ít lượt gọi: điền cả form trong 1 lệnh, chỉ trả phần trang thay đổi, chặn mặc định nút Gửi/Thanh toán cuối. Có trên npm; Show HN 48 điểm; hơn 500 test.",
+        desc: "MCP server cho AI agent điều khiển trình duyệt ít lượt gọi: điền cả form trong 1 lệnh, chặn mặc định nút Gửi/Thanh toán. Có trên npm; Show HN 48 điểm; hơn 500 test.",
       },
       {
         name: "supabase-rls-check (mã nguồn mở MIT: Python, SQL, MCP)",
@@ -118,7 +118,7 @@ const T = {
       {
         name: "Các dự án khác",
         tech: "2025 – 2026",
-        desc: "Bot thành viên Discord (webhook có chữ ký Stripe/Whop); đồng bộ Apify sang Twenty CRM; bộ công cụ LLM structured-output (FastAPI, Pydantic, n8n); công cụ offline cho doanh nghiệp nhỏ Việt Nam; 5 bài viết trên dev.to.",
+        desc: "Bot thành viên Discord (webhook Stripe/Whop có chữ ký); đồng bộ Apify sang Twenty CRM; công cụ LLM structured-output (FastAPI, Pydantic, n8n); công cụ offline cho doanh nghiệp nhỏ; 5 bài dev.to.",
       },
     ],
   },
