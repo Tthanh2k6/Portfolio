@@ -41,7 +41,7 @@ const T = {
     role: "Lập trình viên full-stack — bảo mật Supabase/Postgres, app React Native, tự động hoá Python",
     hSummary: "Tóm tắt",
     tagline:
-      "Lập trình viên full-stack xây dựng ứng dụng vận hành thực tế và kiểm tra các lỗi bảo mật thường gặp ở những ứng dụng phát triển nhanh. Làm việc full-time tại một doanh nghiệp bán lẻ mỹ phẩm từ tháng 03/2026, nơi tôi một mình xây dựng ứng dụng khách hàng thân thiết (đã lên cả App Store và Google Play), REST API PHP và phần mềm quản trị Electron. Nhận hợp đồng làm việc từ xa khoảng 20–30 giờ/tuần, trao đổi bất đồng bộ (async) bằng văn bản (tiếng Anh B2, tiếng Việt bản ngữ).",
+      "Lập trình viên full-stack xây dựng ứng dụng vận hành thực tế và kiểm tra các lỗi bảo mật thường gặp ở những ứng dụng phát triển nhanh. Từ 03/2026 một mình làm app khách hàng thân thiết (App Store, Google Play), API PHP và phần mềm quản trị Electron cho một chuỗi bán lẻ mỹ phẩm. Nhận hợp đồng làm việc từ xa khoảng 20–30 giờ/tuần, trao đổi bất đồng bộ (async) bằng văn bản (tiếng Anh B2, tiếng Việt bản ngữ).",
     hSkills: "Kỹ năng kỹ thuật",
     hExp: "Kinh nghiệm làm việc",
     hProjects: "Dự án tiêu biểu",
