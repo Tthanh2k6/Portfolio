@@ -10,12 +10,12 @@ export const Route = createFileRoute("/cv")({
     meta: [
       {
         title:
-          "CV — Trung Thanh Tran | Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
+          "CV — Trung Thanh Tran | Full-stack Developer — browser automation for AI agents, Supabase/Postgres security",
       },
       {
         name: "description",
         content:
-          "CV of Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer: Supabase/Postgres security, React Native apps (App Store & Google Play), Python automation. Full-time at Madalena since March 2026.",
+          "CV of Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer: browser automation and MCP tools for AI agents, Supabase/Postgres security, React Native apps (App Store & Google Play), Python automation. Full-time at Madalena since March 2026.",
       },
       SEO.ogUrl,
     ],
@@ -38,10 +38,10 @@ type Lang = "vi" | "en";
 const T = {
   vi: {
     print: "Tải CV (PDF)",
-    role: "Lập trình viên full-stack — bảo mật Supabase/Postgres, app React Native, tự động hoá Python",
+    role: "Lập trình viên full-stack — tự động hoá trình duyệt cho AI agent, bảo mật Supabase/Postgres",
     hSummary: "Tóm tắt",
     tagline:
-      "Lập trình viên full-stack xây dựng ứng dụng vận hành thực tế và kiểm tra các lỗi bảo mật thường gặp ở những ứng dụng phát triển nhanh. Làm việc full-time tại một doanh nghiệp bán lẻ mỹ phẩm từ tháng 03/2026, nơi tôi một mình xây dựng ứng dụng khách hàng thân thiết (đã lên cả App Store và Google Play), REST API PHP và phần mềm quản trị Electron. Nhận hợp đồng làm việc từ xa khoảng 20–30 giờ/tuần, trao đổi bất đồng bộ (async) bằng văn bản (tiếng Anh B2, tiếng Việt bản ngữ).",
+      "Lập trình viên full-stack làm công cụ tự động hoá trình duyệt cho AI agent, xây dựng ứng dụng vận hành thực tế và kiểm tra các lỗi bảo mật thường gặp ở những ứng dụng phát triển nhanh. Làm việc full-time tại một doanh nghiệp bán lẻ mỹ phẩm từ tháng 03/2026, nơi tôi một mình xây dựng ứng dụng khách hàng thân thiết (đã lên cả App Store và Google Play), REST API PHP và phần mềm quản trị Electron. Nhận hợp đồng làm việc từ xa khoảng 20–30 giờ/tuần, trao đổi bất đồng bộ (async) bằng văn bản (tiếng Anh B2, tiếng Việt bản ngữ).",
     hSkills: "Kỹ năng kỹ thuật",
     hExp: "Kinh nghiệm làm việc",
     hProjects: "Dự án tiêu biểu",
@@ -96,6 +96,11 @@ const T = {
     ],
     projects: [
       {
+        name: "turbo-browser-mcp (mã nguồn mở MIT: Node.js, Playwright, MCP)",
+        tech: "github.com/Tthanh2k6/turbo-browser-mcp",
+        desc: "MCP server cho AI agent điều khiển trình duyệt với ít lượt gọi: điền cả form trong 1 lệnh (ô React, combobox, tải file từ ổ đĩa), chạy chuỗi thao tác trong 1 lệnh, ảnh chụp trang chỉ trả phần thay đổi, chặn mặc định các nút Gửi/Thanh toán cuối. Có trên npm; Show HN 48 điểm; hơn 500 test và bộ kịch bản chạy trên web thật.",
+      },
+      {
         name: "supabase-rls-check (mã nguồn mở MIT: Python, SQL, MCP)",
         tech: "github.com/Tthanh2k6/supabase-rls-check",
         desc: "Truy vấn chỉ-đọc catalog Postgres, CLI Python và chế độ MCP server phát hiện 17 nhóm lỗi cấu hình, trong đó có: bảng tắt RLS, policy true, policy anon trên bảng nhạy cảm, hàm SECURITY DEFINER gọi được bằng anon key, hàm definer thiếu search_path, view bỏ qua RLS, bucket Storage public, extension trong schema public, policy đọc user_metadata, auth.uid() gọi lại từng dòng, view công khai lộ auth.users; kèm chế độ probe chỉ GET/HEAD có cờ đồng ý và quét khoá service_role lộ ở frontend. CI kiểm trên PostgreSQL 15 với lỗi cài sẵn (bắt đủ, không báo nhầm); 133 test; xuất báo cáo HTML/MD + fix.sql bọc ROLLBACK. Có trên PyPI, có GitHub Action; bán gói review trên Contra và skill trên Agensi.",
@@ -120,10 +125,10 @@ const T = {
 
   en: {
     print: "Download CV (PDF)",
-    role: "Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
+    role: "Full-stack Developer — browser automation for AI agents, Supabase/Postgres security",
     hSummary: "Summary",
     tagline:
-      "Full-stack developer who ships production apps and checks them for the security mistakes that fast-built apps often have. Full-time at a cosmetics retailer since March 2026, where I built the loyalty app (App Store and Google Play), its PHP API and an Electron admin as the only developer. Open to remote contract work, about 20–30 hours per week, async and in writing (English B2, Vietnamese native).",
+      "Full-stack developer who builds browser automation tools for AI agents, ships production apps and checks them for the security mistakes that fast-built apps often have. Full-time at a cosmetics retailer since March 2026, where I built the loyalty app (App Store and Google Play), its PHP API and an Electron admin as the only developer. Open to remote contract work, about 20–30 hours per week, async and in writing (English B2, Vietnamese native).",
     hSkills: "Technical Skills",
     hExp: "Work Experience",
     hProjects: "Projects",
@@ -177,6 +182,11 @@ const T = {
       },
     ],
     projects: [
+      {
+        name: "turbo-browser-mcp (open source: Node.js, Playwright, MCP)",
+        tech: "github.com/Tthanh2k6/turbo-browser-mcp",
+        desc: "MCP server that lets AI agents drive a browser in fewer calls: one call fills a whole form (React inputs, comboboxes, uploads from disk), action lists run as one call, snapshots can return only what changed, and final Submit/Pay clicks are blocked by default. On npm; Show HN 48 points; over 500 tests plus a suite of scenarios on real websites.",
+      },
       {
         name: "supabase-rls-check (open source: Python, SQL, MCP)",
         tech: "github.com/Tthanh2k6/supabase-rls-check",

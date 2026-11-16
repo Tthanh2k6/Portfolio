@@ -14,22 +14,22 @@ export const Route = createFileRoute("/")({
     meta: [
       {
         title:
-          "Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
+          "Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer — browser automation for AI agents, Supabase/Postgres security",
       },
       {
         name: "description",
         content:
-          "Portfolio of Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer: Supabase/Postgres security, React Native apps (App Store & Google Play), Cloudflare Workers + D1, and Python automation.",
+          "Portfolio of Trung Thanh Tran (Trần Trung Thành) — Full-stack Developer: browser automation and MCP tools for AI agents (turbo-browser-mcp), Supabase/Postgres RLS security (supabase-rls-check), React Native apps and Python automation.",
       },
       {
         property: "og:title",
         content:
-          "Trung Thanh Tran — Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation",
+          "Trung Thanh Tran — Full-stack Developer — browser automation for AI agents, Supabase/Postgres security",
       },
       {
         property: "og:description",
         content:
-          "Supabase/Postgres RLS security (supabase-rls-check) • React Native loyalty app on the App Store & Google Play • Cloudflare Workers + D1 • Python automation & 5 public Apify Actors.",
+          "Browser automation for AI agents (turbo-browser-mcp) • Supabase/Postgres RLS security (supabase-rls-check) • React Native loyalty app on the App Store & Google Play • 5 public Apify Actors.",
       },
       SEO.ogUrl,
     ],
@@ -47,11 +47,11 @@ export const Route = createFileRoute("/")({
 });
 
 const DEFAULT_HERO_TAGS = [
+  "BROWSER AUTOMATION FOR AI AGENTS",
+  "MCP SERVERS",
   "SUPABASE / POSTGRES SECURITY",
   "REACT NATIVE (IOS & ANDROID)",
   "PYTHON AUTOMATION",
-  "CLOUDFLARE WORKERS & D1",
-  "AI AGENTS & MCP",
 ];
 
 function Index() {
@@ -74,8 +74,8 @@ function Index() {
   const line1 =
     customLine1 ||
     (lang === "en"
-      ? "Full-stack Developer — Supabase/Postgres security, React Native apps, Python automation."
-      : "Lập trình viên full-stack — bảo mật Supabase/Postgres, app React Native, tự động hoá Python.");
+      ? "Full-stack Developer — browser automation for AI agents, Supabase/Postgres security."
+      : "Lập trình viên full-stack — tự động hoá trình duyệt cho AI agent, bảo mật Supabase/Postgres.");
   const line2 = customLine2 || (lang === "en" ? "Trung Thanh Tran" : "Trần Trung Thành");
 
   return (
